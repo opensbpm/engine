@@ -16,7 +16,7 @@ node{
             checkout scm
         }
         
-        stage('Assemble & Test'){
+        stage('Assemble'){
             withMaven(
                 jdk: 'JDK 1.8',
                 maven: 'default', 
