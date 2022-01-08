@@ -1,0 +1,61 @@
+/*******************************************************************************
+ * Copyright (C) 2020 Stefan Sedelmaier
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+package org.opensbpm.engine.api.model.builder;
+
+import org.opensbpm.engine.api.model.definition.StateDefinition;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition.ServiceSubjectDefinition;
+import java.util.List;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class ServiceSubjectBuilder extends SubjectBuilder<ServiceSubjectBuilder, ServiceSubjectDefinition> {
+
+    public ServiceSubjectBuilder(String name) {
+        super(name);
+    }
+
+    @Override
+    protected ServiceSubjectDefinition createSubject(List<StateDefinition> states, boolean starter) {
+        return new ServiceSubjectDefinition() {
+            @Override
+            public String getName() {
+                return ServiceSubjectBuilder.this.getName();
+            }
+
+            @Override
+            public boolean isStarter() {
+                return starter;
+            }
+
+            @Override
+            public List<StateDefinition> getStates() {
+                return states;
+            }
+
+            @Override
+            public String toString() {
+                return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                        .append("name", getName())
+                        .append("starter", isStarter())
+                        .append("states", getStates())
+                        .toString();
+            }
+
+        };
+    }
+
+}

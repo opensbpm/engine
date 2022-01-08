@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright (C) 2020 Stefan Sedelmaier
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  
+  You should have received a copy of the GNU Affero General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:pm="http://api.opensbpm.org/processmodel"
+           targetNamespace="http://api.opensbpm.org/processmodel">
+
+    <!--
+    work in progess; not ready yet
+    -->
+    <xs:element name="process" nillable="false" type="pm:processType">
+    
+        <xs:key name="subjectKey">
+            <xs:selector xpath="userSubject | serviceSubject" />
+            <xs:field xpath="name" />
+        </xs:key>
+
+        <xs:key name="userStateKey">
+            <xs:selector xpath="userSubject/functionState | userSubject/receiveState | userSubject/sendState" />
+            <xs:field xpath="name" />
+        </xs:key>
+
+        <xs:key name="serviceStateKey">
+            <xs:selector xpath="serviceSubject/functionState | serviceSubject/receiveState | serviceSubject/sendState" />
+            <xs:field xpath="name" />
+        </xs:key>
+        
+        <xs:key name="objectKey">
+            <xs:selector xpath="object" />
+            <xs:field xpath="name" />
+        </xs:key>
+        
+        <xs:keyref name="sendStateReceiver" refer="pm:subjectKey">
+            <xs:selector xpath=".//sendState" />
+            <xs:field xpath="receiver" />
+        </xs:keyref>
+
+        <xs:keyref name="sendStateMessage" refer="pm:objectKey">
+            <xs:selector xpath=".//sendState" />
+            <xs:field xpath="message" />
+        </xs:keyref>
+    
+    </xs:element>
+
+    <xs:complexType name="processType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="version" type="xs:int"/>
+            <xs:element name="description" type="xs:string" minOccurs="0" />
+            <xs:element name="state" type="pm:modelStateType" minOccurs="0" />
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="userSubject" type="pm:userSubjectType" />
+                <xs:element name="serviceSubject" type="pm:serviceSubjectType"/>
+            </xs:choice>
+            <xs:element name="object" type="pm:objectType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>    
+    
+    <xs:complexType name="subjectType" abstract="true">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" nillable="false">
+                <xs:annotation>
+                    <xs:documentation>Name of Subject</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element name="functionState" type="pm:functionStateType" />
+                <xs:element name="sendState" 	 type="pm:sendStateType" />
+                <xs:element name="receiveState"  type="pm:receiveStateType" />
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="starter" type="xs:boolean" use="optional"></xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="userSubjectType">
+        <xs:complexContent>
+            <xs:extension base="pm:subjectType">
+                <xs:sequence>
+                    <xs:element name="roles" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="serviceSubjectType">
+        <xs:complexContent>
+            <xs:extension base="pm:subjectType">
+                <xs:sequence/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+  
+    <xs:complexType name="stateType" abstract="true">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="eventType" type="pm:stateEventType"/>
+    </xs:complexType>
+
+    <xs:complexType name="functionStateType">
+        <xs:complexContent>
+            <xs:extension base="pm:stateType">
+                <xs:sequence>
+                    <xs:element name="parameters" type="pm:parametersWrapper" minOccurs="0"/>
+                    <xs:element name="permission" type="pm:permissionType" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="toState" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                </xs:sequence>
+                <xs:attribute name="provider" type="xs:string"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="sendStateType">
+        <xs:complexContent>
+            <xs:extension base="pm:stateType">
+                <xs:sequence>
+                    <xs:element name="receiver" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="message" type="xs:string"  minOccurs="1" maxOccurs="1"/>
+                    <xs:element name="toState" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+                <xs:attribute name="async" type="xs:boolean"/>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+    <xs:complexType name="receiveStateType">
+        <xs:complexContent>
+            <xs:extension base="pm:stateType">
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="message" type="pm:receiveTransitionDefinition"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+
+
+
+
+    <xs:complexType name="parametersWrapper">
+        <xs:sequence>
+            <xs:any maxOccurs="unbounded" minOccurs="0" namespace="##other" processContents="skip"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="permissionType">
+        <xs:sequence>
+            <xs:element name="object" type="pm:objectType" minOccurs="1" maxOccurs="1" nillable="false">
+            </xs:element>
+            <xs:element maxOccurs="unbounded" name="field" type="pm:fieldPermissionDefinition"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="objectType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="field" type="pm:fieldDefinition" />
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="object" type="pm:objectType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="fieldDefinition">
+        <xs:sequence/>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="type" type="pm:fieldType" use="required"/>
+    </xs:complexType>
+
+    <xs:complexType name="fieldPermissionDefinition">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="permission" type="pm:permission" use="required"/>
+                <xs:attribute name="mandatory" type="xs:boolean"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="receiveTransitionDefinition">
+        <xs:sequence>
+            <xs:element name="object" type="xs:IDREF"/>
+            <xs:element name="toState" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="modelStateType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="INACTIVE"/>
+            <xs:enumeration value="ACTIVE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="fieldType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="TIME"/>
+            <xs:enumeration value="NUMBER"/>
+            <xs:enumeration value="BINARY"/>
+            <xs:enumeration value="DECIMAL"/>
+            <xs:enumeration value="BOOLEAN"/>
+            <xs:enumeration value="STRING"/>
+            <xs:enumeration value="DATE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="permission">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="READ"/>
+            <xs:enumeration value="WRITE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="stateEventType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="START"/>
+            <xs:enumeration value="END"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+</xs:schema>

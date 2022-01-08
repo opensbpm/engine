@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  Copyright (C) 2020 Stefan Sedelmaier
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  
+  You should have received a copy of the GNU Affero General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<pm:process
+    xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:pm='http://api.opensbpm.org/processmodel'>
+    
+    <name>Dienstreiseantrag Seite/105</name>
+    <version>1</version>
+    <description>Dienstreiseantrag von 'Subjektorientiertes Prozessmanagment' Seite 105</description>
+
+    <userSubject starter="true">
+        <name>Mitarbeiter</name>
+        <roles>Angestellte</roles>
+        <functionState eventType="START">
+            <name>DR-Antrag ausfüllen</name>
+            <permission>
+                <object>DR-Antrag</object>
+                <field permission="WRITE" mandatory="true">Name</field>
+                <field permission="WRITE" mandatory="true">Reisebeginn</field>
+                <field permission="WRITE" mandatory="true">Reiseende</field>
+                <field permission="WRITE" mandatory="true">Reiseziel</field>
+            </permission>
+            <toState>DR-Antrag an Vorgesetzer senden</toState>
+        </functionState>
+        <sendState>
+            <name>DR-Antrag an Vorgesetzer senden</name>
+            <receiver>Vorgesetzter</receiver>
+            <message>DR-Antrag</message>
+            <toState>Antwort von Vorgesetzter empfangen</toState>
+        </sendState>
+        <receiveState>
+            <name>Antwort von Vorgesetzter empfangen</name>
+            <message>
+                <object>Genehmigung</object>
+                <toState>DR antreten</toState>
+            </message>
+            <message>
+                <object>Ablehnung</object>
+                <toState>DR-Antrag zurückziehen/ändern</toState>
+            </message>
+        </receiveState>
+        <functionState>
+            <name>DR antreten</name>
+            <toState>DR beendet</toState>
+        </functionState>
+        <functionState eventType="END">
+            <name>DR beendet</name>
+        </functionState>
+        <functionState>
+            <name>DR-Antrag zurückziehen/ändern</name>
+            <permission>
+                <object>DR-Antrag</object>
+                <field permission="READ">Name</field>
+                <field permission="WRITE" mandatory="true">Reisebeginn</field>
+                <field permission="WRITE" mandatory="true">Reiseende</field>
+                <field permission="WRITE" mandatory="true">Reiseziel</field>
+            </permission>
+            <toState>DR-Antrag an Vorgesetzer senden</toState>
+            <toState>DR-Antrag zurückziehen</toState>            
+        </functionState>
+        <functionState eventType="END">
+            <name>DR-Antrag zurückziehen</name>
+        </functionState>
+    </userSubject>
+    <userSubject>
+        <name>Vorgesetzter</name>
+        <roles>Abteilungsleiter</roles>
+        <receiveState eventType="START">
+            <name>DR-Antrag empfangen</name> 
+            <message>
+                <object>DR-Antrag</object>
+                <toState>DR-Antrag prüfen</toState>
+            </message>
+        </receiveState>
+        <functionState>
+            <name>DR-Antrag prüfen</name>
+            <permission>
+                <object>DR-Antrag</object>
+                <field permission="READ">Name</field>
+                <field permission="WRITE">Reisebeginn</field>
+                <field permission="WRITE">Reiseende</field>
+                <field permission="READ">Reiseziel</field>
+            </permission>
+            <toState>Genehmigen</toState>
+            <toState>Ablehnen</toState>
+        </functionState>
+        <sendState async="true">
+            <name>Genehmigen</name>
+            <receiver>Mitarbeiter</receiver>
+            <message>Genehmigung</message>
+            <toState>Buchung veranlassen</toState>
+        </sendState>
+        <sendState async="true">
+            <name>Buchung veranlassen</name>
+            <receiver>Reisestelle</receiver>
+            <message>genehmigter DR-Antrag</message>
+            <toState>Ende</toState>
+        </sendState>
+        <sendState>
+            <name>Ablehnen</name>
+            <receiver>Mitarbeiter</receiver>
+            <message>Ablehnung</message>
+            <toState>Ende</toState>
+        </sendState>
+        <functionState eventType="END">
+            <name>Ende</name>
+        </functionState>
+    </userSubject>
+    <userSubject>
+        <name>Reisestelle</name>
+        <roles>Reisestelle</roles>
+        <receiveState eventType="START">
+            <name>DR-Antrag empfangen</name>
+            <message>
+                <object>genehmigter DR-Antrag</object>
+                <toState>Buchen</toState>
+            </message>
+        </receiveState>
+        <functionState>
+            <name>Buchen</name>
+            <toState>Reise gebucht</toState>
+        </functionState>
+        <functionState eventType="END">
+            <name>Reise gebucht</name>
+        </functionState>
+    </userSubject>
+    <object>
+        <name>DR-Antrag</name>
+        <field type="STRING">Name</field>
+        <field type="DATE">Reisebeginn</field>
+        <field type="DATE">Reiseende</field>
+        <field type="STRING">Reiseziel</field>
+    </object>
+    <object>
+        <name>Genehmigung</name>
+    </object>
+    <object>
+        <name>Ablehnung</name>
+    </object>
+    <object>
+        <name>Buchung</name>
+    </object>
+    <object>
+        <name>genehmigter DR-Antrag</name>
+    </object>
+</pm:process>

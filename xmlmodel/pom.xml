@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2020 Stefan SedelmaierSedelmaier Sedelmaier
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  
+  You should have received a copy of the GNU Affero General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.opensbpm.engine</groupId>
+       <artifactId>engine-bom</artifactId>
+        <version>0.1-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>xmlmodel</artifactId>
+
+    <name>OpenSBPM Engine - XML Processmodel</name>
+
+    <dependencies>
+        
+        <!-- 
+        ====================
+        Compile Dependencies 
+        ====================
+        --> 
+            
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
+        
+        <!-- JAXB API only -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+        </dependency>
+
+
+        <!-- 
+        ====================
+        Runtime Dependencies 
+        ====================
+        --> 
+
+        <!-- JAXB RI, Jakarta XML Binding -->
+        <!--dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-ri</artifactId>
+            <scope>runtime</scope>
+        </dependency-->
+        <!--dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <scope>runtime</scope>
+        </dependency-->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        
+        
+        <!-- 
+        ====================
+          Test Dependencies 
+        ====================
+        --> 
+
+            
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>api-junit</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>examples</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>            
+
+        <!-- 
+        ============================
+         Test Runtime Dependencies 
+        ============================
+        -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/main/resources/org/opensbpm/engine/xmlmodel/processmodel.xsd</source>
+                            </sources>                            
+                            <packageName>org.opensbpm.engine.xmlmodel.processmodel</packageName>
+                            <!--addGeneratedAnnotation>true</addGeneratedAnnotation-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2020 Stefan Sedelmaier
+  
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU Affero General Public License as published
+  by the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU Affero General Public License for more details.
+  
+  You should have received a copy of the GNU Affero General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.opensbpm.engine</groupId>
+    <artifactId>engine-bom</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>OpenSBPM Engine</name>
+    <description>Open SBPM Engine API and implementation</description>
+    <organization>
+        <name>OpenSBPM</name>
+        <url>http://openSBPM.org</url>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Stefan Sedelmaier</name>
+            <email>stefan@sedelmaier.at</email>                       
+        </developer>
+    </developers>
+
+    <modules>
+        <module>api</module>
+        <module>api/junit</module>
+        <module>xmlmodel</module>
+        <module>core</module>        
+        <module>utils</module>
+        
+        <module>examples</module>        
+    </modules>
+
+    <distributionManagement>
+        <repository>
+            <id>opensbpm</id>
+            <name>OpenSBPM GitHub Packages</name>
+            <url>https://maven.pkg.github.com/opensbpm/engine</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </distributionManagement>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <surefire.reportsDirectory>${project.build.directory}/surefire-reports</surefire.reportsDirectory>
+        <failsafe.reportsDirectory>${project.build.directory}/failsafe-reports</failsafe.reportsDirectory>
+        
+        <jacoco.surefire.destFile>${project.build.directory}/jacoco.exec</jacoco.surefire.destFile>
+        <jacoco.failsafe.destFile>${project.build.directory}/jacoco-it.exec</jacoco.failsafe.destFile>
+        
+        <!-- surefire + failsafe -->
+        <sonar.junit.reportPaths>
+            ${project.build.directory}/surefire-reports,
+            ${project.build.directory}/failsafe-reports
+        </sonar.junit.reportPaths>  
+        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+
+
+        <!-- dependency versions -->
+        <spring.boot.version>2.3.12.RELEASE</spring.boot.version>
+        <hibernate.version>5.3.11.Final</hibernate.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- 
+            ===================
+            Import Dependencies 
+            ===================
+            -->             
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            
+            <!-- 
+            =======================
+              Compile Dependencies 
+            =======================
+            -->
+            <dependency>
+                <groupId>org.opensbpm.engine</groupId>
+                <artifactId>api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.opensbpm.engine</groupId>
+                <artifactId>core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.opensbpm.engine</groupId>
+                <artifactId>xmlmodel</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- 
+            =====================
+              Test Dependencies 
+            =====================
+            -->
+            <dependency>
+                <groupId>org.opensbpm.engine</groupId>
+                <artifactId>api-junit</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.8.7</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>3.15.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.2.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jxr-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>3.7.0.1746</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.1.1</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>                
+            </plugins>            
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <showDeprecation>true</showDeprecation>
+                    <compilerArgs>
+                        <!--arg>-verbose</arg-->
+                        <arg>-Xlint:all,-options,-path</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>            
+            
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <!-- not needed
+                            <destFile>${surefire.jacoco.destFile}</destFile>
+                            -->
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>default-prepare-agent-integration</id>
+                        <goals>
+                            <goal>prepare-agent-integration</goal>
+                        </goals>
+                        <configuration>
+                            <!-- not needed
+                            <destFile>${failsafe.jacoco.destFile}</destFile>
+                            -->
+                        </configuration>
+                    </execution>
+                    <!-- not needed
+                    <execution>
+                        <id>merge-test</id>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/jacoco.exec</destFile>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>jacoco-surfire.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>merge-integration</id>
+                        <goals>
+                            <goal>merge</goal>
+                        </goals>
+                        <configuration>
+                            <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+                            <fileSets>
+                                <fileSet>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>jacoco-failsafe.exec</include>
+                                    </includes>
+                                </fileSet>
+                            </fileSets>
+                        </configuration>
+                    </execution>
+                    -->                    
+                    <execution>
+                        <id>default-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>default-report-integration</id>
+                        <goals>
+                            <goal>report-integration</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <reportsDirectory>${surefire.reportsDirectory}</reportsDirectory>
+                    <!-- not needed for now
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    -->
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- not needed for now
+                    <useManifestOnlyJar>false</useManifestOnlyJar>
+                    -->
+                    <reportsDirectory>${failsafe.reportsDirectory}</reportsDirectory>
+                    <summaryFile>${failsafe.reportsDirectory}/failsafe-summary.xml</summaryFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
