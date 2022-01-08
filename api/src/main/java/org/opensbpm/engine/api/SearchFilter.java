@@ -17,7 +17,6 @@
  */
 package org.opensbpm.engine.api;
 
-import org.opensbpm.engine.api.SearchFilter.Criteria.Operation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +26,7 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.opensbpm.engine.api.SearchFilter.Criteria.Operation;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -16,14 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.RoleToken;
+import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 
 public class RoleTokenTest {
 

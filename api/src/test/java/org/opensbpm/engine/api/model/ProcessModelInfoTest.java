@@ -16,18 +16,16 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model;
 
-import org.opensbpm.engine.api.DeserializerUtil;
-import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
-
+import org.junit.Test;
+import org.opensbpm.engine.api.DeserializerUtil;
+import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertNotNull;
 
 public class ProcessModelInfoTest {

@@ -16,18 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import static org.opensbpm.engine.utils.StreamUtils.toOne;
-
-import org.opensbpm.engine.api.model.FieldType;
-
-import static java.lang.String.format;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-
-import static java.util.Collections.unmodifiableList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +27,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.FieldType;
+import static java.lang.String.format;
+import static java.util.Collections.unmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.toOne;
 
 public class Task {
 

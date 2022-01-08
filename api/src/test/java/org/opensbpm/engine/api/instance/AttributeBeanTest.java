@@ -16,34 +16,25 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.TaskInfo;
-import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.Task;
-import org.opensbpm.engine.api.instance.TaskResponse;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-
+import java.util.Collections;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
 import org.opensbpm.engine.api.instance.Task.AttributeBean;
 import org.opensbpm.engine.api.model.Binary;
 import org.opensbpm.engine.api.model.FieldType;
-import java.time.LocalDateTime;
-import java.util.Collections;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Theories.class)
 public class AttributeBeanTest {

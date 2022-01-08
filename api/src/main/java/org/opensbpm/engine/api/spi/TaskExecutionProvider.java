@@ -16,12 +16,12 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.spi;
 
-import org.opensbpm.engine.api.instance.NextState;
-import org.opensbpm.engine.api.instance.Task;
-import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import org.opensbpm.engine.api.instance.NextState;
+import org.opensbpm.engine.api.instance.Task;
+import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
 
 public interface TaskExecutionProvider {
 

@@ -16,19 +16,17 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.ProcessModelState;
-import org.opensbpm.engine.api.model.definition.ObjectDefinition;
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
-import org.opensbpm.engine.api.model.definition.SubjectDefinition;
-
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.ProcessModelState;
+import org.opensbpm.engine.api.model.definition.ObjectDefinition;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public class ProcessBuilder extends AbstractBuilder<ProcessDefinition> {
 

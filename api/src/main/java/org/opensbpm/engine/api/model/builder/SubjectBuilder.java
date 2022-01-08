@@ -16,9 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.utils.StreamUtils;
-import org.opensbpm.engine.api.model.definition.StateDefinition;
-import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -26,6 +23,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import org.opensbpm.engine.api.model.definition.StateDefinition;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition;
+import org.opensbpm.engine.utils.StreamUtils;
 
 public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends SubjectDefinition> extends AbstractBuilder<V> {
 

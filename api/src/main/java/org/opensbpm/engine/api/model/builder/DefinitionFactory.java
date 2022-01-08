@@ -16,6 +16,8 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model.builder;
 
+import java.util.Arrays;
+import java.util.List;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.PermissionBuilder;
@@ -37,8 +39,6 @@ import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefi
 import org.opensbpm.engine.api.model.definition.StateDefinition.SendStateDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition.ServiceSubjectDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition.UserSubjectDefinition;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * (Sugar)-Factory to create all kind of process-definition builders

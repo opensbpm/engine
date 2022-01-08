@@ -16,9 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.events;
 
-import org.opensbpm.engine.api.instance.TaskInfo;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.instance.TaskInfo;
 
 public class UserTaskChangedEvent extends EngineEvent<TaskInfo> implements UserChanged {
 

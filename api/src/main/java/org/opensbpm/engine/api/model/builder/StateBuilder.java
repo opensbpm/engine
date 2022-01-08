@@ -17,10 +17,10 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.definition.StateDefinition;
-import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.opensbpm.engine.api.model.definition.StateDefinition;
+import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 
 public abstract class StateBuilder<T extends StateBuilder<T, V>, V extends StateDefinition> extends AbstractBuilder<V> {
 

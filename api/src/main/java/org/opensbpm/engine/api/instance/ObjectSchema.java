@@ -1,7 +1,5 @@
 package org.opensbpm.engine.api.instance;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +7,13 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ObjectSchema implements Serializable, IsAttributesContainer {

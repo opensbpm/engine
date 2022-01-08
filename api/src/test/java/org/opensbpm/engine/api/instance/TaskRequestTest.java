@@ -16,16 +16,12 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.TaskRequest;
-import org.opensbpm.engine.api.instance.NextState;
-import org.opensbpm.engine.api.DeserializerUtil;
 import java.time.LocalDateTime;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Test;
+import org.opensbpm.engine.api.DeserializerUtil;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 
 public class TaskRequestTest {
 

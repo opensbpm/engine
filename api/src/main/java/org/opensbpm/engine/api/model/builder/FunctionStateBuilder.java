@@ -17,8 +17,15 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
@@ -31,19 +38,9 @@ import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToOnePermis
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.FunctionStateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
-
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableMap;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Level;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, FunctionStateDefinition> {
 

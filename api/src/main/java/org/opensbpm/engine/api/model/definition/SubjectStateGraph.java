@@ -16,13 +16,13 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model.definition;
 
-import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlTransient;
+import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
 
 @XmlTransient
 public class SubjectStateGraph {

@@ -16,11 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.definition.StateDefinition;
-import org.opensbpm.engine.api.model.definition.SubjectDefinition.ServiceSubjectDefinition;
 import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.definition.StateDefinition;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition.ServiceSubjectDefinition;
 
 public class ServiceSubjectBuilder extends SubjectBuilder<ServiceSubjectBuilder, ServiceSubjectDefinition> {
 

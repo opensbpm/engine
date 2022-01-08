@@ -17,70 +17,54 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder;
-import org.opensbpm.engine.api.model.builder.UserSubjectBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder;
-import org.opensbpm.engine.api.model.builder.ProcessBuilder;
-import org.opensbpm.engine.api.model.builder.ServiceSubjectBuilder;
-
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFunctionState;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isSubjectName;
-import static org.opensbpm.engine.api.junit.ReceiveStateDefinitionMatchers.isReceiveState;
-import static org.opensbpm.engine.api.junit.SendStateDefinitionMatchers.isSendState;
-
+import java.util.logging.Logger;
+import org.junit.Test;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelState;
-
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.receiveState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsHeads;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsPermisssions;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFieldPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToManyPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToOnePermission;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isStarterSubjectName;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObject;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOne;
-
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToOnePermissionBuilder;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToOneBuilder;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsHeads;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsPermisssions;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFieldPermission;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFunctionState;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isPermission;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToManyPermission;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToOnePermission;
 import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isField;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isFieldWithIndex;
+import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isReference;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToOne;
+import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isStarterSubjectName;
+import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isSubjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToMany;
+import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToOne;
+import static org.opensbpm.engine.api.junit.ReceiveStateDefinitionMatchers.isReceiveState;
+import static org.opensbpm.engine.api.junit.SendStateDefinitionMatchers.isSendState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.receiveState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.reference;
-
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
-import java.util.logging.Logger;
-
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOne;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 public class DefinitionFactoryTest {
     

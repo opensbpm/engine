@@ -17,24 +17,16 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.SourceMap;
-import org.opensbpm.engine.api.instance.NestedAttributeSchema;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.Test;
-
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SourceMapTest {
 

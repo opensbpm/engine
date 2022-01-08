@@ -16,14 +16,10 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model;
 
-import org.opensbpm.engine.api.model.Binary;
-
+import org.junit.Test;
+import org.opensbpm.engine.api.DeserializerUtil;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-
-import org.opensbpm.engine.api.DeserializerUtil;
 
 public class BinaryTest {
 

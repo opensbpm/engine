@@ -16,11 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
+import java.util.Collection;
+import java.util.Set;
 import org.opensbpm.engine.api.instance.AuditTrail;
 import org.opensbpm.engine.api.instance.ProcessInfo;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
-import java.util.Collection;
-import java.util.Set;
 
 public interface InstanceService {
 

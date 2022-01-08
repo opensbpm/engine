@@ -17,6 +17,11 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
@@ -25,14 +30,7 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.NestedAttribute
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
-
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class ObjectBuilder extends AbstractBuilder<ObjectDefinition> implements HasChildAttributes<ObjectBuilder> {
 

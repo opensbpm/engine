@@ -16,12 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.NextState;
-
-import static org.opensbpm.engine.api.EqualsMatchers.isEqualContract;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.opensbpm.engine.api.EqualsMatchers.isEqualContract;
 
 public class NextStateTest {
 

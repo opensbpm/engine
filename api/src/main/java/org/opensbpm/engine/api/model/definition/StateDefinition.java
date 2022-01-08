@@ -17,12 +17,11 @@
  */
 package org.opensbpm.engine.api.model.definition;
 
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
-import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition.ReceiveTransitionDefinition;
 import java.util.List;
 import java.util.Map;
 import javax.xml.bind.annotation.XmlType;
+import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition.ReceiveTransitionDefinition;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public interface StateDefinition {
 

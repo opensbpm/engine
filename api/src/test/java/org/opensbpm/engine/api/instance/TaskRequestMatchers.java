@@ -16,24 +16,17 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.ObjectData;
-import org.opensbpm.engine.api.adapters.MapAdapter.ValueElement;
-
-import static org.opensbpm.engine.api.junit.CommonMatchers.value;
-
 import java.io.Serializable;
 import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.is;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-
+import org.hamcrest.TypeSafeMatcher;
+import org.opensbpm.engine.api.adapters.MapAdapter.ValueElement;
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasEntry;
-
-import org.hamcrest.TypeSafeMatcher;
+import static org.opensbpm.engine.api.junit.CommonMatchers.value;
 
 public class TaskRequestMatchers {
 

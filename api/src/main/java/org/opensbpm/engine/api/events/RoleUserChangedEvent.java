@@ -16,9 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.events;
 
-import org.opensbpm.engine.api.instance.UserToken;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.instance.UserToken;
 
 public class RoleUserChangedEvent extends EngineEvent<UserToken> {
 

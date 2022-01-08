@@ -17,8 +17,8 @@
  */
 package org.opensbpm.engine.api.model.definition;
 
-import org.opensbpm.engine.api.model.FieldType;
 import java.util.List;
+import org.opensbpm.engine.api.model.FieldType;
 
 public interface ObjectDefinition {
 

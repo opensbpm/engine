@@ -16,14 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
+import org.junit.Test;
 import org.opensbpm.engine.api.SearchFilter.Criteria.Operation;
 import org.opensbpm.engine.api.SearchFilter.SearchFilterBuilder;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-
-
-import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class SearchFilterTest {

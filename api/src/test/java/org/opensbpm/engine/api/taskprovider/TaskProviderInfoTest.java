@@ -16,13 +16,10 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.taskprovider;
 
-import org.opensbpm.engine.api.taskprovider.TaskProviderInfo;
+import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 
 public class TaskProviderInfoTest {
 

@@ -16,10 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model.definition;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.api.model.definition.ParametersAdapter.ParametersWrapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,7 +33,10 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.namespace.QName;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.definition.ParametersAdapter.ParametersWrapper;
 import org.w3c.dom.Element;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 public class ParametersAdapter extends XmlAdapter<ParametersWrapper, Map<String, String>> {
 

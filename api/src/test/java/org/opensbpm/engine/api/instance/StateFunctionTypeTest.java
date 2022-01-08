@@ -16,8 +16,8 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import org.junit.Test;
+import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 

@@ -16,16 +16,14 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
-import java.time.LocalDateTime;
-import java.util.Collections;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
 public class SubjectStateInfoTest {

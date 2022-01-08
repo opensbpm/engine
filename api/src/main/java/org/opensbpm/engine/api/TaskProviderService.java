@@ -16,9 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
+import java.util.Collection;
 import org.opensbpm.engine.api.taskprovider.TaskProviderInfo;
 import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
-import java.util.Collection;
 
 public interface TaskProviderService {
 

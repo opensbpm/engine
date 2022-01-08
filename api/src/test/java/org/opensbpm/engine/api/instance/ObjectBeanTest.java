@@ -17,15 +17,6 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.NestedAttributeSchema;
-import org.opensbpm.engine.api.instance.ObjectBean;
-import org.opensbpm.engine.api.instance.AttributeStore;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.model.Binary;
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.ObjectReference;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -35,12 +26,14 @@ import javax.script.ScriptException;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Test;
-
+import org.opensbpm.engine.api.model.Binary;
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.api.model.definition.Occurs;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ObjectBeanTest {
 

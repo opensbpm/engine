@@ -17,16 +17,16 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.definition.ObjectDefinition;
-import org.opensbpm.engine.api.model.definition.StateDefinition;
-import org.opensbpm.engine.api.model.definition.StateDefinition.SendStateDefinition;
-import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
+import org.opensbpm.engine.api.model.definition.ObjectDefinition;
+import org.opensbpm.engine.api.model.definition.StateDefinition;
+import org.opensbpm.engine.api.model.definition.StateDefinition.SendStateDefinition;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 
 public class SendStateBuilder extends StateBuilder<SendStateBuilder, SendStateDefinition> {
 

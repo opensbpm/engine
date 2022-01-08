@@ -16,23 +16,19 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
 import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -17,15 +17,13 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.definition.StateDefinition;
-import org.opensbpm.engine.api.model.definition.SubjectDefinition.UserSubjectDefinition;
-
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.definition.StateDefinition;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition.UserSubjectDefinition;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 public class UserSubjectBuilder extends SubjectBuilder<UserSubjectBuilder, UserSubjectDefinition> {
 

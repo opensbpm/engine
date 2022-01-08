@@ -16,18 +16,14 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.DeserializerUtil;
-
-import static org.opensbpm.engine.api.EqualsMatchers.isEqualContract;
-
 import java.time.LocalDateTime;
-
+import org.junit.Test;
+import org.opensbpm.engine.api.DeserializerUtil;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
+import static org.opensbpm.engine.api.EqualsMatchers.isEqualContract;
 
 public class TaskInfoTest {
 

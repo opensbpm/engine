@@ -17,7 +17,6 @@
 package org.opensbpm.engine.api.spi;
 
 import java.util.List;
-
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.SourceMap;
 

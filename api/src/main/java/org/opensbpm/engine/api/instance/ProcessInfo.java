@@ -16,9 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.InstanceService.ProcessRequest;
-import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -32,6 +29,9 @@ import org.apache.commons.lang3.builder.EqualsExclude;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.InstanceService.ProcessRequest;
+import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

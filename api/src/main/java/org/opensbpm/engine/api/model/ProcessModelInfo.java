@@ -16,8 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model;
 
-import org.opensbpm.engine.api.ModelService.ModelRequest;
-import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -29,6 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
+import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

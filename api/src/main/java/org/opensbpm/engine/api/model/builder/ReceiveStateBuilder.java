@@ -17,19 +17,17 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition.ReceiveTransitionDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
-
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
 
 public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, ReceiveStateDefinition> {
 

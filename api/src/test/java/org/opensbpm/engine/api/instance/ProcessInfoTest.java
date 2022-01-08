@@ -17,22 +17,18 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.DeserializerUtil;
-
-import static org.opensbpm.engine.api.EqualsMatchers.isEqualContract;
-
-import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
-
+import org.junit.Test;
+import org.opensbpm.engine.api.DeserializerUtil;
+import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
+import static org.opensbpm.engine.api.EqualsMatchers.isEqualContract;
 
 public class ProcessInfoTest {
 

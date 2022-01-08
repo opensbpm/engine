@@ -16,34 +16,24 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.NestedAttributeSchema;
-import org.opensbpm.engine.api.instance.TaskResponse;
-import org.opensbpm.engine.api.instance.ObjectData;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.NextState;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
+import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
-
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasEntry;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasDatas;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasSchemas;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isFieldSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isNestedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectData;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectSchema;
-import static java.util.Arrays.asList;
-
-import org.opensbpm.engine.api.model.FieldType;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasEntry;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 
 public class TaskResponseTest {
 

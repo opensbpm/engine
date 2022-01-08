@@ -16,7 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.adapters;
 
-import org.opensbpm.engine.api.adapters.MapAdapter.ValueElement;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +27,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.adapters.MapAdapter.ValueElement;
 
 public class MapAdapter extends XmlAdapter<ValueElement[], Map<Long, Serializable>> {
 

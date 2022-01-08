@@ -16,6 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
+import java.util.Collection;
 import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
 import org.opensbpm.engine.api.instance.ProcessInfo;
@@ -27,7 +28,6 @@ import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
-import java.util.Collection;
 
 /**
  * Service interface to query and execute user specific SBPM processes

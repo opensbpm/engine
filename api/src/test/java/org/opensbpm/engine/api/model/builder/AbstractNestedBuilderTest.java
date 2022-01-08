@@ -17,12 +17,11 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
+import java.util.List;
+import org.junit.Test;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AbstractNestedBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
-import java.util.List;
-import org.junit.Test;
-
 import static org.junit.Assert.fail;
 
 public class AbstractNestedBuilderTest {

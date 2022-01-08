@@ -17,9 +17,8 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.junit.Test;
-
+import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import static org.junit.Assert.fail;
 
 public class ObjectBuilderTest {

@@ -16,15 +16,13 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.model;
 
+import java.util.Arrays;
+import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo;
-import java.util.Arrays;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertNotNull;
 
 public class SubjectModelInfoTest {

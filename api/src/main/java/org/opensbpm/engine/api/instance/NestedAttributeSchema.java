@@ -1,19 +1,15 @@
 package org.opensbpm.engine.api.instance;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NestedAttributeSchema extends AttributeSchema implements IsAttributesContainer {

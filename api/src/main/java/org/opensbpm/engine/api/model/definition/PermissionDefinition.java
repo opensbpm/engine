@@ -17,10 +17,10 @@
  */
 package org.opensbpm.engine.api.model.definition;
 
-import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
-import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
 import java.util.List;
 import javax.xml.bind.annotation.XmlType;
+import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
+import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
 
 /**
  * Definition of a Permission for a {@link FieldDefinition} in a

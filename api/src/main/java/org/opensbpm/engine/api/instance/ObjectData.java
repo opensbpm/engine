@@ -17,7 +17,6 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.adapters.MapAdapter;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.adapters.MapAdapter;
 
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class ObjectData implements Serializable {

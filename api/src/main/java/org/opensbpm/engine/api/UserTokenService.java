@@ -16,8 +16,8 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
-import org.opensbpm.engine.api.instance.UserToken;
 import java.util.Set;
+import org.opensbpm.engine.api.instance.UserToken;
 
 public interface UserTokenService {
 

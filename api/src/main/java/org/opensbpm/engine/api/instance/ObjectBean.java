@@ -23,15 +23,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.beanutils.DynaProperty;
-
 import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
-
-import java.util.Objects;
 
 /**
  * Bean representation of {@link AttributeSchema}. The main purpose of this

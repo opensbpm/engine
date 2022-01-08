@@ -17,33 +17,26 @@
 package org.opensbpm.engine.api.instance;
 
 
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
-import static java.util.Arrays.asList;
-
-import org.opensbpm.engine.api.instance.Task.AttributeBean;
-
-import static org.opensbpm.engine.api.instance.TaskRequestMatchers.containsFields;
-import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isObjectData;
-
-import org.opensbpm.engine.api.model.FieldType;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-
-import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isValueElement;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+import org.junit.Test;
+import org.opensbpm.engine.api.instance.Task.AttributeBean;
+import org.opensbpm.engine.api.model.FieldType;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.fail;
+import static org.opensbpm.engine.api.instance.TaskRequestMatchers.containsFields;
+import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isObjectData;
+import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isValueElement;
+import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
 public class TaskTest {
 

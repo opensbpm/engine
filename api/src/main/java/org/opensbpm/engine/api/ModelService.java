@@ -16,11 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
+import java.util.Collection;
+import java.util.Set;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import java.util.Collection;
-import java.util.Set;
 
 /**
  * Service-Interface to operate with all kind of ProcessModel-Definition operations

@@ -16,7 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +23,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)

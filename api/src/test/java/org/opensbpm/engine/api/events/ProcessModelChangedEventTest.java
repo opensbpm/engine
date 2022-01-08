@@ -16,15 +16,13 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.events;
 
-import org.opensbpm.engine.api.events.ProcessModelChangedEvent;
+import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
-import org.junit.Test;
-
-import static org.opensbpm.engine.api.DeserializerUtil.deserializeObject;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.opensbpm.engine.api.DeserializerUtil.deserializeObject;
 
 public class ProcessModelChangedEventTest {
 
