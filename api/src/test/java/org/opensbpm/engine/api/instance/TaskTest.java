@@ -30,6 +30,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.fail;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.containsFields;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isObjectData;
@@ -57,6 +58,7 @@ public class TaskTest {
         assertThat(task.toString(), task.getProcessName(), is("processName"));
         assertThat(task.toString(), task.getStateName(), is("stateName"));
         assertThat(task.toString(), task.getLastChanged(), is(lastChanged));
+        assertThat(task.toString(), task.getSchemas(), is(empty()));
     }
 
     @Test
