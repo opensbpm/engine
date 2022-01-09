@@ -16,10 +16,6 @@ public class AttributeSchema implements Serializable {
 
     public static final String ID_NAME = "Id";
 
-    public boolean isIdSchema() {
-        return ID_NAME.equals(name);
-    }
-
     @XmlElement(required = true)
     private Long id;
 
@@ -108,6 +104,10 @@ public class AttributeSchema implements Serializable {
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
         return visitor.visitSimple(this);
+    }
+
+    public boolean isIdSchema() {
+        return ID_NAME.equals(name);
     }
 
     @Override
