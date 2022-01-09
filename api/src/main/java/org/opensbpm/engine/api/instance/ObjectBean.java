@@ -225,7 +225,7 @@ public class ObjectBean implements DynaBean {
 
     ObjectData createObjectData() {
         return ObjectData.of(attributesContainer.getName())
-                .withData(attributeStore.getValues())
+                .withData(attributeStore.toIdMap((t) -> true))
                 .build();
     }
 }

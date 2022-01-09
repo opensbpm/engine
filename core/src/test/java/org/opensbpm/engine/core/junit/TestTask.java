@@ -116,7 +116,7 @@ public class TestTask extends TaskObsolete {
     }
 
     private ObjectSchema getObjectSchema(String name) {
-        return filterToOne(getTaskDocument().getSchemas(),
+        return filterToOne(getSchemas(),
                 schema -> schema.getName().equals(name))
                 .orElseThrow(() -> new IllegalArgumentException("ObjectSchema '" + name + "' not found"));
     }
@@ -143,7 +143,7 @@ public class TestTask extends TaskObsolete {
                             return new DynaProperty(attribute.getName(), attribute.getType(), LazyDynaBean.class);
                         }
                     } else {
-                        if(FieldType.REFERENCE == attribute.getFieldType()){
+                        if (FieldType.REFERENCE == attribute.getFieldType()) {
                             return new DynaProperty(attribute.getName(), Map.class);
                         }
                         return new DynaProperty(attribute.getName(), attribute.getType());
@@ -166,9 +166,9 @@ public class TestTask extends TaskObsolete {
             super(dynaClass);
             this.attributes = attributes;
             data.replaceAll((t, u) -> {
-                if(FieldType.REFERENCE == getAttribute(t).getFieldType()){
+                if (FieldType.REFERENCE == getAttribute(t).getFieldType()) {
                     return u;
-                }else if (u instanceof Map) {
+                } else if (u instanceof Map) {
                     NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);
                     return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) u);
                 } else if (u instanceof List) {
@@ -181,7 +181,7 @@ public class TestTask extends TaskObsolete {
                 } else {
                     return u;
                 }
-                
+
             });
             this.values = new NameIdMapDecorator(attributes, data);
         }

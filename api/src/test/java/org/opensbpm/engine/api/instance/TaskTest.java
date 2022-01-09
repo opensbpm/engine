@@ -192,13 +192,13 @@ public class TaskTest {
         assertThat(result.getId(), is(sId));
         assertThat(result.getObjectData(), containsInAnyOrder(
                 isObjectData("Object 1", containsFields(
-                        isValueElement(o1f1mId/*"Field 1"*/, null),
+                        //TODO rethink: isValueElement(o1f1mId/*"Field 1"*/, null),
                         isValueElement(o1f2mId/*""Field 2"*/, "1.2"),
                         isValueElement(o1f3mId/*""Field 3"*/, "1.3"),
                         isValueElement(o1f4mId/*""Field 4"*/, "1.4")
                 )),
                 isObjectData("Object 2", containsFields(
-                        isValueElement(o2f1mId/*""Field 1"*/, null),
+                        //TODO rethink: isValueElement(o2f1mId/*""Field 1"*/, null),
                         isValueElement(o2f2mId/*"Field 2"*/, "2.2"),
                         isValueElement(o2f3mId/*"Field 3"*/, "2.3"),
                         isValueElement(o2f4mId/*"Field 4"*/, "2.4")
