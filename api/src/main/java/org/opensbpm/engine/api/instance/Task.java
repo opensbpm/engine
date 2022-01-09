@@ -43,15 +43,15 @@ public class Task {
     }
 
     public Long getId() {
-        return taskInfo.getId();
+        return getTaskInfo().getId();
     }
 
     public String getProcessName() {
-        return taskInfo.getProcessName();
+        return getTaskInfo().getProcessName();
     }
 
     public String getStateName() {
-        return taskInfo.getStateName();
+        return getTaskInfo().getStateName();
     }
 
     public LocalDateTime getLastChanged() {
