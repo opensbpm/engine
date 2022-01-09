@@ -1,21 +1,21 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.api.instance;
-
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -30,6 +30,7 @@ import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.fail;
@@ -47,7 +48,7 @@ public class TaskTest {
         final LocalDateTime lastChanged = LocalDateTime.now();
 
         final TaskInfo taskInfo = new TaskInfo(sId, Long.MIN_VALUE, "processName", "stateName", LocalDateTime.MIN);
-        final TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE, 
+        final TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
                 Collections.emptyList(), lastChanged,
                 Collections.emptyList(), Collections.emptyList()
         );
@@ -65,8 +66,8 @@ public class TaskTest {
     @Test(expected = IllegalArgumentException.class)
     public void testCreateTaskRequestWithWrongState() {
         //given        
-        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE, 
-                Collections.emptyList(), 
+        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
+                Collections.emptyList(),
                 LocalDateTime.MIN,
                 Collections.emptyList(),
                 Collections.emptyList());
@@ -108,10 +109,10 @@ public class TaskTest {
         ObjectData o2Response = createData(object2Definition, "2.2", o2sResponse);
 
         final LocalDateTime lastChanged = LocalDateTime.MIN;
-        TaskResponse taskResponse = TaskResponse.of(sId, 
-                Arrays.asList(nextState), 
+        TaskResponse taskResponse = TaskResponse.of(sId,
+                Arrays.asList(nextState),
                 lastChanged,
-                asList(object1Definition, object2Definition), 
+                asList(object1Definition, object2Definition),
                 asList(o1Response, o2Response)
         );
         Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
@@ -157,41 +158,70 @@ public class TaskTest {
     }
 
     @Test
-    public void testCreateAttributeStoreFromExistingData() {
+    public void testCreateAttributeStoreWithExistingData() {
         //given
         final long sId = 1l;
-        final NextState nextState = NextState.of(sId, "Next State");
+        NextState nextState = NextState.of(sId, "Next State");
 
-        final long o1f1mId = 11l;
-        final long o1f2mId = 12l;
-        final long o1f3mId = 13l;
-        final long o1f4mId = 14l;
-        final ObjectSchema objectSchema = createSchema("Object 1", o1f1mId, o1f2mId, o1f3mId, o1f4mId);
-        ObjectData objectData = createData(objectSchema, "1.2");
+        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
 
-        LocalDateTime lastChanged = LocalDateTime.MIN;
-        TaskResponse taskResponse = TaskResponse.of(sId, 
-                Arrays.asList(nextState), 
-                lastChanged,
-                asList(objectSchema), 
-                asList(objectData)
+        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
+        //use ObjectBean to easily create repsonse-data map
+        ObjectBean objectBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        objectBean.set("Attribute 1", "Data");
+
+        TaskResponse taskResponse = TaskResponse.of(sId,
+                Arrays.asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                asList(objectBean.createObjectData())
         );
         Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
 
         Task task = new Task(new TaskInfo(), taskResponse);
-        
+
         //when
         AttributeStore attributeStore = task.createAttributeStore(objectSchema);
 
         //then
         assertThat(attributeStore, is(notNullValue()));
+        assertThat(attributeStore.getSimple(attributeSchema), is("Data"));
+    }
+
+    @Test
+    public void testCreateAttributeStoreWithoutData() {
+        //given
+        final long sId = 1l;
+        NextState nextState = NextState.of(sId, "Next State");
+
+        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
+
+        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
+
+        TaskResponse taskResponse = TaskResponse.of(sId,
+                Arrays.asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                Collections.emptyList()
+        );
+        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
+
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        AttributeStore attributeStore = task.createAttributeStore(objectSchema);
+
+        //then
+        assertThat(attributeStore, is(notNullValue()));
+        assertThat(attributeStore.getSimple(attributeSchema), is(nullValue()));
     }
 
     private ObjectSchema createSchema(String name, long f1mId, long f2mId, long f3mId, long f4mId, ObjectData... childs) {
-        ObjectSchema objectDefinition = ObjectSchema.of(1l,name, Arrays.asList(new AttributeSchema(f1mId, "Field 1", FieldType.STRING),
-                new AttributeSchema(f2mId, "Field 2", FieldType.STRING),
-                new AttributeSchema(f3mId, "Field 3", FieldType.STRING),
-                new AttributeSchema(f4mId, "Field 4", FieldType.STRING)
+        ObjectSchema objectDefinition = ObjectSchema.of(1l, name, Arrays.asList(
+                AttributeSchema.of(f1mId, "Field 1", FieldType.STRING),
+                AttributeSchema.of(f2mId, "Field 2", FieldType.STRING),
+                AttributeSchema.of(f3mId, "Field 3", FieldType.STRING),
+                AttributeSchema.of(f4mId, "Field 4", FieldType.STRING)
         )
         //              ,createChildDefs(childs)
         );
