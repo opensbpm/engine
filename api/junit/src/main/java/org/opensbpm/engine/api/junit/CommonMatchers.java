@@ -17,23 +17,16 @@
 package org.opensbpm.engine.api.junit;
 
 import static org.opensbpm.engine.utils.StreamUtils.oneOrMoreAsList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import static org.hamcrest.CoreMatchers.is;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.instanceOf;
 import org.hamcrest.TypeSafeMatcher;
 
 public final class CommonMatchers {
-
-    public static <T> Matcher<Collection<? extends T>> isEmpty() {
-        return is(empty());
-    }
 
     public static <T> Matcher<T> isTypeWith(Class<T> type, Matcher<? super T>... matchers) {
         Matcher<? super T> typeMatcher = instanceOf(type);

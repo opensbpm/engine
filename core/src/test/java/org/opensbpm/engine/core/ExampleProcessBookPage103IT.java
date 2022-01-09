@@ -34,8 +34,8 @@ import org.opensbpm.engine.xmlmodel.ProcessModel;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
-import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProcessInstanceChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserProcessInstanceChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserTaskChangedEvent;
@@ -73,8 +73,8 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
 
         //
         employee.assertTasks(hasOneState("DR-Antrag ausfüllen"));
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
@@ -91,9 +91,9 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         ));
 
         //
-        employee.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
         superior.assertTasks(hasOneState("DR-Antrag prüfen"));
-        travelagency.assertTasks(isEmpty());
+        travelagency.assertTasks(is(empty()));
         //
 
         //Vorgesetzter: "DR-Antrag prüfen", (task after receive message), read message from Mitarbeiter, send message to Mitarbeiter
@@ -109,9 +109,9 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         ));
 
         //
-        employee.assertTasks(isEmpty());
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         //dumpEngineEvents();
@@ -149,8 +149,8 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isProcessInstanceChangedEvent(Type.CREATE)
         );
         employee.assertTasks(hasOneState("DR-Antrag ausfüllen"));
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
@@ -169,7 +169,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
-        employee.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
         superior.assertTasks(hasOneState("DR-Antrag prüfen"));
 
         //
@@ -194,7 +194,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isSubjectState("Reisestelle", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
         employee.assertTasks(hasOneState("DR antreten"));
-        superior.assertTasks(isEmpty());
+        superior.assertTasks(is(empty()));
         travelagency.assertTasks(hasOneState("Buchen"));
         //
 
@@ -212,8 +212,8 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
 
         //
         employee.assertTasks(hasOneState("DR antreten"));
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         //Mitarbeiter: Task "DR antreten" 
@@ -236,9 +236,9 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         ));
 
         //
-        employee.assertTasks(isEmpty());
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         processController.assertTrail(contains(
@@ -280,8 +280,8 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isProcessInstanceChangedEvent(Type.CREATE)
         );
         employee.assertTasks(hasOneState("DR-Antrag ausfüllen"));
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
@@ -300,7 +300,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
-        employee.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
         superior.assertTasks(hasOneState("DR-Antrag prüfen"));
 
         //
@@ -325,7 +325,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isSubjectState("Reisestelle", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
         employee.assertTasks(hasOneState("DR antreten"));
-        superior.assertTasks(isEmpty());
+        superior.assertTasks(is(empty()));
         travelagency.assertTasks(hasOneState("Buchen"));
         //
 
@@ -340,8 +340,8 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
                 isSubjectState("Vorgesetzter", "Ende", StateFunctionType.FUNCTION),
                 isSubjectState("Reisestelle", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
-        employee.assertTasks(isEmpty());
-        superior.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
+        superior.assertTasks(is(empty()));
         travelagency.assertTasks(hasOneState("Buchen"));
 
         //Reisestelle: Task "Buchen" 
@@ -364,9 +364,9 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         ));
 
         //
-        employee.assertTasks(isEmpty());
-        superior.assertTasks(isEmpty());
-        travelagency.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
+        superior.assertTasks(is(empty()));
+        travelagency.assertTasks(is(empty()));
         //
 
         //Reisestelle: "Buchen", (task after receive message), 'Reisestelle' is never active, 

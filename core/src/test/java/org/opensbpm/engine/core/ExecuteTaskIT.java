@@ -34,8 +34,8 @@ import org.opensbpm.engine.core.junit.WorkflowTestCase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
-import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.hasSubjects;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isSubjectState;
@@ -128,8 +128,8 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                 isSubjectState("Send", "Start", StateFunctionType.FUNCTION)
         ));
         sendUser.assertTasks(hasOneState("Start"));
-        receive1User.assertTasks(isEmpty());
-        receive2User.assertTasks(isEmpty());
+        receive1User.assertTasks(is(empty()));
+        receive2User.assertTasks(is(empty()));
 
         //when
         {
@@ -142,9 +142,9 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Send", "Inform Receive1", StateFunctionType.SEND),
                     isSubjectState("Receive1", "Wait for Message", StateFunctionType.RECEIVE)
             ));
-            sendUser.assertTasks(isEmpty());
+            sendUser.assertTasks(is(empty()));
             receive1User.assertTasks(hasOneState("Receive from Sender"));
-            receive2User.assertTasks(isEmpty());
+            receive2User.assertTasks(is(empty()));
         }
 
         {
@@ -157,8 +157,8 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receive1", "End", StateFunctionType.FUNCTION),
                     isSubjectState("Receive2", "Wait for Message", StateFunctionType.RECEIVE)
             ));
-            sendUser.assertTasks(isEmpty());
-            receive1User.assertTasks(isEmpty());
+            sendUser.assertTasks(is(empty()));
+            receive1User.assertTasks(is(empty()));
             receive2User.assertTasks(hasOneState("Receive from Sender"));
         }
 
@@ -172,9 +172,9 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receive1", "End", StateFunctionType.FUNCTION),
                     isSubjectState("Receive2", "End", StateFunctionType.FUNCTION)
             ));
-            sendUser.assertTasks(isEmpty());
-            receive1User.assertTasks(isEmpty());
-            receive2User.assertTasks(isEmpty());
+            sendUser.assertTasks(is(empty()));
+            receive1User.assertTasks(is(empty()));
+            receive2User.assertTasks(is(empty()));
         }
 
         //then
@@ -269,8 +269,8 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                 isSubjectState("Send", "Start", StateFunctionType.FUNCTION)
         ));
         sendUser.assertTasks(hasOneState("Start"));
-        receive1User.assertTasks(isEmpty());
-        receive2User.assertTasks(isEmpty());
+        receive1User.assertTasks(is(empty()));
+        receive2User.assertTasks(is(empty()));
 
         //when
         {
@@ -300,7 +300,7 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receive2", "Wait for Message", StateFunctionType.RECEIVE)
             ));
             sendUser.assertTasks(hasOneState("After Send"));
-            receive1User.assertTasks(isEmpty());
+            receive1User.assertTasks(is(empty()));
             receive2User.assertTasks(hasOneState("Receive from Sender"));
         }
 
@@ -315,8 +315,8 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receive2", "End", StateFunctionType.FUNCTION)
             ));
             sendUser.assertTasks(hasOneState("After Send"));
-            receive1User.assertTasks(isEmpty());
-            receive2User.assertTasks(isEmpty());
+            receive1User.assertTasks(is(empty()));
+            receive2User.assertTasks(is(empty()));
         }
 
         {
@@ -328,9 +328,9 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receive1", "End", StateFunctionType.FUNCTION),
                     isSubjectState("Receive2", "End", StateFunctionType.FUNCTION)
             ));
-            sendUser.assertTasks(isEmpty());
-            receive1User.assertTasks(isEmpty());
-            receive2User.assertTasks(isEmpty());
+            sendUser.assertTasks(is(empty()));
+            receive1User.assertTasks(is(empty()));
+            receive2User.assertTasks(is(empty()));
         }
 
         //then
@@ -428,8 +428,8 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                 isSubjectState("Starter", "Start", StateFunctionType.FUNCTION)
         ));
         startUser.assertTasks(hasOneState("Start"));
-        senderUser.assertTasks(isEmpty());
-        receiverUser.assertTasks(isEmpty());
+        senderUser.assertTasks(is(empty()));
+        receiverUser.assertTasks(is(empty()));
 
         //when
         {
@@ -442,9 +442,9 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receiver", "Receive from Starter", StateFunctionType.RECEIVE),
                     isSubjectState("Sender", "Receive from Starter", StateFunctionType.RECEIVE)
             ));
-            startUser.assertTasks(isEmpty());
+            startUser.assertTasks(is(empty()));
             senderUser.assertTasks(hasOneState("Start"));
-            receiverUser.assertTasks(isEmpty());
+            receiverUser.assertTasks(is(empty()));
         }
 
         {
@@ -458,7 +458,7 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receiver", "Receive from Starter", StateFunctionType.RECEIVE)
             ));
             startUser.assertTasks(hasOneState("After Send"));
-            senderUser.assertTasks(isEmpty());
+            senderUser.assertTasks(is(empty()));
             receiverUser.assertTasks(hasOneState("After Receive"));
         }
 
@@ -474,8 +474,8 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Receiver", "End", StateFunctionType.FUNCTION)
             ));
             startUser.assertTasks(hasOneState("After Send"));
-            senderUser.assertTasks(isEmpty());
-            receiverUser.assertTasks(isEmpty());
+            senderUser.assertTasks(is(empty()));
+            receiverUser.assertTasks(is(empty()));
         }
 
         {
@@ -487,9 +487,9 @@ public class ExecuteTaskIT extends WorkflowTestCase {
                     isSubjectState("Sender", "Send Function", StateFunctionType.SEND),
                     isSubjectState("Receiver", "End", StateFunctionType.FUNCTION)
             ));
-            startUser.assertTasks(isEmpty());
-            senderUser.assertTasks(isEmpty());
-            receiverUser.assertTasks(isEmpty());
+            startUser.assertTasks(is(empty()));
+            senderUser.assertTasks(is(empty()));
+            receiverUser.assertTasks(is(empty()));
         }
 
         //then

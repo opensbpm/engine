@@ -47,9 +47,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.fail;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
-import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProviderTaskChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserTaskChangedEvent;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.hasSubjects;
@@ -233,7 +233,7 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
 
         //User2 is assigned user of Subject2
         subject2User1.assertTasks(hasOneState("After Receive"));
-        subject2User2.assertTasks(isEmpty());
+        subject2User2.assertTasks(is(empty()));
 
         {
             TestTask task = subject2User1.getTask("After Receive");
@@ -308,8 +308,8 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
             subject2User1.execute(subject2User1Task, "Send to Starter");
 
             //Subject2 (User 1) is finished
-            subject2User1.assertTasks(isEmpty());
-            subject2User2.assertTasks(isEmpty());
+            subject2User1.assertTasks(is(empty()));
+            subject2User2.assertTasks(is(empty()));
 
         }
 
@@ -327,8 +327,8 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
             subject2User1.execute(subject2User2Task, "Send to Starter");
 
             //Subject2 (User 1) is finished
-            subject2User1.assertTasks(isEmpty());
-            subject2User2.assertTasks(isEmpty());
+            subject2User1.assertTasks(is(empty()));
+            subject2User2.assertTasks(is(empty()));
         }
 
         TestTask startTask = startUser.getTask("After Receive");

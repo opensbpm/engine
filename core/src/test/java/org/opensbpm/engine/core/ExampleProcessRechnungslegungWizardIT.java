@@ -30,10 +30,11 @@ import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceContr
 import org.opensbpm.engine.core.junit.WorkflowTestCase;
 import org.opensbpm.engine.examples.ExampleModels;
 import org.opensbpm.engine.xmlmodel.ProcessModel;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
-import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.hasSubjects;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isSubjectState;
@@ -129,7 +130,7 @@ public class ExampleProcessRechnungslegungWizardIT extends WorkflowTestCase {
         ));
 
         //
-        employee.assertTasks(isEmpty());
+        employee.assertTasks(is(empty()));
         //
 
         //dumpEngineEvents();
