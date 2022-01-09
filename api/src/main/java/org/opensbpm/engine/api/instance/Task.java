@@ -69,7 +69,7 @@ public class Task {
     }
 
     /**
-     * creaate a new {@link AttributeStore} with the data from
+     * create a new {@link AttributeStore} with the data from
      * {@link TaskResponse}
      *
      * @param objectSchema
