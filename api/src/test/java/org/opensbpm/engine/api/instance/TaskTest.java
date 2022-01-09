@@ -35,6 +35,7 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.containsFields;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isObjectData;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isValueElement;
@@ -62,23 +63,6 @@ public class TaskTest {
         assertThat(task.toString(), task.getProcessName(), is("processName"));
         assertThat(task.toString(), task.getStateName(), is("stateName"));
         assertThat(task.toString(), task.getLastChanged(), is(lastChanged));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCreateTaskRequestWithWrongState() {
-        //given        
-        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
-                Collections.emptyList(),
-                LocalDateTime.MIN,
-                Collections.emptyList(),
-                Collections.emptyList());
-        Task task = new Task(new TaskInfo(), taskResponse);
-
-        //when
-        final TaskRequest result = task.createTaskRequest(new NextState());
-
-        //then
-        fail("createTaskRequest with foreign nextState must throw IllegalArgumentException but was " + result);
     }
 
     @Test
@@ -111,6 +95,24 @@ public class TaskTest {
         assertThat("Two calls of Task.getObjectBean must return the sam instance",
                 objectBean, is(sameInstance(task.getObjectBean(objectSchema))));
         assertThat(objectBean.get("Attribute 1"), is("Data"));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateTaskRequestFromObjectWithWrongState() {
+        //given        
+        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
+                Collections.emptyList(),
+                LocalDateTime.MIN,
+                Collections.emptyList(),
+                Collections.emptyList());
+        Task task = new Task(new TaskInfo(), taskResponse);
+        ObjectBean objectBean = mock(ObjectBean.class);
+
+        //when
+        final TaskRequest result = task.createTaskRequest(new NextState(), objectBean);
+
+        //then
+        fail("createTaskRequest with foreign nextState must throw IllegalArgumentException but was " + result);
     }
 
     @Test
@@ -170,6 +172,23 @@ public class TaskTest {
         //then
         assertThat(attributeStore, is(notNullValue()));
         assertThat(attributeStore.getSimple(attributeSchema), is(nullValue()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateTaskRequestWithWrongState() {
+        //given        
+        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
+                Collections.emptyList(),
+                LocalDateTime.MIN,
+                Collections.emptyList(),
+                Collections.emptyList());
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        final TaskRequest result = task.createTaskRequest(new NextState());
+
+        //then
+        fail("createTaskRequest with foreign nextState must throw IllegalArgumentException but was " + result);
     }
 
     @Test

@@ -90,6 +90,24 @@ public class Task {
     }
 
     /**
+     * create a TaskRequest for a given state and ObjectBean
+     */
+    public TaskRequest createTaskRequest(NextState nextState, ObjectBean objectBean) {
+        Objects.requireNonNull(nextState, "nextState must be non null");
+        if (!getNextStates().contains(nextState)) {
+            throw new IllegalArgumentException("nextStates doesn't contain " + nextState);
+        }
+        Objects.requireNonNull(objectBean, "ObjectBean must be non null");
+        
+        TaskRequest taskRequest = new TaskRequest(taskResponse.getId(),
+                nextState,
+                taskResponse.getLastChanged()
+        );
+        taskRequest.setObjectDatas(Arrays.asList(objectBean.createObjectData()));
+        return taskRequest;
+    }
+
+    /**
      * create a new {@link AttributeStore} with the data from
      * {@link TaskResponse}
      *
