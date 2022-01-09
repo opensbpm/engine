@@ -20,8 +20,8 @@ public class ObjectSchema implements Serializable, IsAttributesContainer {
 
     public static ObjectSchema of(Long id, String name, List<AttributeSchema> attributes) {
         ObjectSchema objectSchema = new ObjectSchema();
-        objectSchema.id = Objects.requireNonNull(id, "id must be nono null");
-        objectSchema.name = Objects.requireNonNull(name, "name must be nono null");
+        objectSchema.id = Objects.requireNonNull(id, "id must not be null");
+        objectSchema.name = Objects.requireNonNull(name, "name must not be null");
         objectSchema.attributes = new ArrayList<>(attributes);
         return objectSchema;
     }
