@@ -50,8 +50,8 @@ public class ObjectBean implements DynaBean {
      * @param attributeStore
      */
     public ObjectBean(IsAttributesContainer attributesContainer, AttributeStore attributeStore) {
-        this.attributesContainer = Objects.requireNonNull(attributesContainer,"attributesContainer must be non null");
-        this.attributeStore = Objects.requireNonNull(attributeStore,"attributeStore must be non null");
+        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
+        this.attributeStore = Objects.requireNonNull(attributeStore, "attributeStore must be non null");
     }
 
     public Collection<AttributeSchema> getAttributeModels() {
@@ -223,4 +223,9 @@ public class ObjectBean implements DynaBean {
                 .orElseThrow(() -> new IllegalArgumentException("No such property " + name));
     }
 
+    ObjectData createObjectData() {
+        return ObjectData.of(attributesContainer.getName())
+                .withData(attributeStore.getValues())
+                .build();
+    }
 }
