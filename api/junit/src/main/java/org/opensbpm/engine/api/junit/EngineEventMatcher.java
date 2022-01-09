@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.api.junit;
 
 import org.opensbpm.engine.api.events.EngineEvent;
@@ -42,8 +43,22 @@ import org.hamcrest.Matcher;
 
 import static org.hamcrest.Matchers.is;
 
+/**
+ * Hamcrest-{@link Matcher}'s for {@link EngineEvent} implementations.
+ * For example:
+ * <pre>assertThat(RolceChangedEvent, isRoleChangedEvent("Role Name", Type.UPDATE));</pre>
+ */
 public final class EngineEventMatcher {
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link RoleChangedEvent} with the given roleName and type.
+     * For example:
+     * <pre>assertThat(new RoleChangedEvent(RoleToken.of(1l,"foo"),Type.CREATE), isRoleChangedEvent("foo", Type.CREATE));</pre>
+     *
+     * @param roleName name of RoleToken (see {@link RoleToken#name})
+     * @param type type of RoleChangedEvent (see {@link RoleChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isRoleChangedEvent(String roleName, Type type) {
         return allOf(instanceOf(RoleChangedEvent.class),
                 isType(RoleChangedEvent.class, type),
@@ -51,6 +66,15 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link RoleUserChangedEvent} with the given userId and type.
+     * For example:
+     * <pre>assertThat(new RoleUserChangedEvent(UserToken.of(1l,"foo"),Type.CREATE), isRoleUserChangedEvent(1l Type.CREATE));</pre>
+     *
+     * @param userId id of UserToken (see {@link UserToken#id})
+     * @param type type of RoleUserChangedEvent (see {@link RoleUserChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isRoleUserChangedEvent(Long userId, Type type) {
         return allOf(instanceOf(RoleUserChangedEvent.class),
                 isType(RoleUserChangedEvent.class, type),
@@ -58,6 +82,15 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserChangedEvent} with the given userName and type.
+     * For example:
+     * <pre>assertThat(new UserChangedEvent(UserToken.of(1l,"foo"),Type.CREATE), isUserChangedEvent("foo", Type.CREATE));</pre>
+     *
+     * @param userName name of UerToken (see {@link UserToken#name})
+     * @param type type of UserChangedEvent (see {@link UserChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isUserChangedEvent(String userName, Type type) {
         return allOf(instanceOf(UserChangedEvent.class),
                 isType(UserChangedEvent.class, type),
@@ -65,6 +98,15 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserChangedEvent} with the given userId and type.
+     * For example:
+     * <pre>assertThat(new UserChangedEvent(UserToken.of(1l,"foo"),Type.CREATE), isUserChangedEvent(1l, Type.CREATE));</pre>
+     *
+     * @param userId id of UerToken (see {@link UserToken#id})
+     * @param type type of UserChangedEvent (see {@link UserChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isUserChangedEvent(Long userId, Type type) {
         return allOf(instanceOf(UserChangedEvent.class),
                 isType(UserChangedEvent.class, type),
@@ -72,6 +114,15 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link ProcessModelChangedEvent} with the given modelName and type.
+     * For example:
+     * <pre>assertThat(new ProcessModelChangedEvent(ProcessModelInfo,Type.CREATE), isProcessModelChangedEvent(1l, Type.CREATE));</pre>
+     *
+     * @param modelName name of ProcessModelInfo (see {@link ProcessModelInfo#name})
+     * @param type type of ProcessModelChangedEvent (see {@link ProcessModelChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isProcessModelChangedEvent(String modelName, Type type) {
         return allOf(
                 instanceOf(ProcessModelChangedEvent.class),
@@ -80,6 +131,14 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserProcessModelChangedEvent} with the given userId.
+     * For example:
+     * <pre>assertThat(new UserProcessModelChangedEvent(1l,ProcessModelInfo,Type.CREATE), isUserProcessModelChangedEvent(1l));</pre>
+     *
+     * @param userId id of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#userId})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<T> isUserProcessModelChangedEvent(Long userId) {
         return allOf(
                 instanceOf(UserProcessModelChangedEvent.class),
@@ -87,6 +146,14 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserProcessModelChangedEvent} with the given type.
+     * For example:
+     * <pre>assertThat(new UserProcessModelChangedEvent(1l,ProcessModelInfo,Type.CREATE), isUserProcessModelChangedEvent(Type.CREATE));</pre>
+     *
+     * @param type type of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<T> isUserProcessModelChangedEvent(Type type) {
         return allOf(
                 instanceOf(UserProcessModelChangedEvent.class),
@@ -94,6 +161,15 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserProcessModelChangedEvent} with the given userId and type.
+     * For example:
+     * <pre>assertThat(new UserProcessModelChangedEvent(1l,ProcessModelInfo,Type.CREATE), isUserProcessModelChangedEvent(1l, Type.CREATE));</pre>
+     *
+     * @param userId id of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#userId})
+     * @param type type of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<T> isUserProcessModelChangedEvent(Long userId, Type type) {
         return allOf(
                 instanceOf(UserProcessModelChangedEvent.class),
@@ -102,6 +178,14 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link ProcessInstanceChangedEvent} with the given type.
+     * For example:
+     * <pre>assertThat(new ProcessInstanceChangedEvent(ProcessInfo,Type.CREATE), isProcessInstanceChangedEvent(Type.CREATE));</pre>
+     *
+     * @param type type of ProcessInstanceChangedEvent (see {@link ProcessInstanceChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isProcessInstanceChangedEvent(Type type) {
         return allOf(
                 instanceOf(ProcessInstanceChangedEvent.class),
@@ -109,6 +193,14 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserProcessInstanceChangedEvent} with the given type.
+     * For example:
+     * <pre>assertThat(new UserProcessInstanceChangedEvent(1l,ProcessInfo,Type.CREATE), isUserProcessInstanceChangedEvent(Type.CREATE));</pre>
+     *
+     * @param type type of UserProcessInstanceChangedEvent (see {@link UserProcessInstanceChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isUserProcessInstanceChangedEvent(Type type) {
         return allOf(
                 instanceOf(UserProcessInstanceChangedEvent.class),
@@ -116,6 +208,15 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserProcessInstanceChangedEvent} with the given userId and type.
+     * For example:
+     * <pre>assertThat(new UserProcessInstanceChangedEvent(1l,ProcessInfo,Type.CREATE), isUserProcessInstanceChangedEvent(1l, Type.CREATE));</pre>
+     *
+     * @param userId id of UserProcessInstanceChangedEvent (see {@link UserProcessInstanceChangedEvent#userId})
+     * @param type type of UserProcessInstanceChangedEvent (see {@link UserProcessInstanceChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isUserProcessInstanceChangedEvent(Long userId, Type type) {
         return allOf(
                 instanceOf(UserProcessInstanceChangedEvent.class),
@@ -124,13 +225,15 @@ public final class EngineEventMatcher {
         );
     }
 
-    public static <T extends EngineEvent<?>> Matcher<? super T> isUserTaskChangedEvent(Type type) {
-        return allOf(
-                instanceOf(UserTaskChangedEvent.class),
-                isType(UserTaskChangedEvent.class, type)
-        );
-    }
-
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserTaskChangedEvent} with the given userId and type.
+     * For example:
+     * <pre>assertThat(new UserTaskChangedEvent(1l,TaskInfo,Type.CREATE), isUserTaskChangedEvent(1l, Type.CREATE));</pre>
+     *
+     * @param userId id of UserTaskChangedEvent (see {@link UserTaskChangedEvent#userId})
+     * @param type type of UserTaskChangedEvent (see {@link UserTaskChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isUserTaskChangedEvent(Long userId, Type type) {
         return allOf(
                 instanceOf(UserTaskChangedEvent.class),
@@ -139,6 +242,16 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link UserTaskChangedEvent} with the given userId, stateName and type.
+     * For example:
+     * <pre>assertThat(new UserTaskChangedEvent(1l,TaskInfo(..."foo"...),Type.CREATE), isUserTaskChangedEvent(1l, "foo", Type.CREATE));</pre>
+     *
+     * @param userId id of UserTaskChangedEvent (see {@link UserTaskChangedEvent#userId})
+     * @param stateName id of UserTaskChangedEvent (see {@link TaskInfo#stateName})
+     * @param type type of UserTaskChangedEvent (see {@link UserTaskChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<T> isUserTaskChangedEvent(Long userId, String stateName, Type type) {
         return allOf(instanceOf(UserTaskChangedEvent.class),
                 isType(UserTaskChangedEvent.class, type),
@@ -147,6 +260,14 @@ public final class EngineEventMatcher {
         );
     }
 
+    /**
+     * creates a matcher that matches when the examined object is a {@link ProviderTaskChangedEvent} with the given type.
+     * For example:
+     * <pre>assertThat(new ProviderTaskChangedEvent(TaskInfo(..."foo"...),Type.CREATE), isProviderTaskChangedEvent(Type.CREATE));</pre>
+     *
+     * @param type type of ProviderTaskChangedEvent (see {@link ProviderTaskChangedEvent#getType()})
+     * @return a {@link Matcher} with given parameters
+     */
     public static <T extends EngineEvent<?>> Matcher<? super T> isProviderTaskChangedEvent(Type type) {
         return allOf(instanceOf(ProviderTaskChangedEvent.class),
                 isType(ProviderTaskChangedEvent.class, type)
