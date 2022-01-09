@@ -23,6 +23,7 @@ nbdist/
 nbproject
 .nb-gradle/
 nb-configuration.xml
+nbactions.xml
 
 ### miscellaneous ###
 *.bak
