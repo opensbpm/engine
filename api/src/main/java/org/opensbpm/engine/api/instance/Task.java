@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import static org.opensbpm.engine.utils.StreamUtils.toOne;
 
 public class Task {
 
@@ -64,6 +65,15 @@ public class Task {
 
     public List<ObjectSchema> getSchemas() {
         return taskResponse.getSchemas();
+    }
+
+    public ObjectData getObjectData(ObjectSchema objectSchema) {
+        return taskResponse.getDatas().stream()
+                .filter(data -> data.getName().equals(objectSchema.getName()))
+                .reduce(toOne())
+                .orElse(ObjectData.of(objectSchema.getName())
+                        .withData(new HashMap<>())
+                        .build());
     }
 
     /**
