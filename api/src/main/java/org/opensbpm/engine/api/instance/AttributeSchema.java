@@ -1,6 +1,7 @@
 package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -15,6 +16,14 @@ import org.opensbpm.engine.api.model.FieldType;
 public class AttributeSchema implements Serializable {
 
     public static final String ID_NAME = "Id";
+
+    public static AttributeSchema of(long id, String name, FieldType fieldType) {
+        AttributeSchema attributeSchema = new AttributeSchema(id, name, fieldType);
+        attributeSchema.id = Objects.requireNonNull(id, "id must not be null");
+        attributeSchema.name = Objects.requireNonNull(name, "name must not be null");
+        attributeSchema.fieldType = Objects.requireNonNull(fieldType, "fieldType must not be null");
+        return attributeSchema;
+    }
 
     @XmlElement(required = true)
     private Long id;
