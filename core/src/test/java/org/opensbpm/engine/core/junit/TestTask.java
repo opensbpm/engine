@@ -42,6 +42,7 @@ import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
+import org.opensbpm.engine.api.instance.TaskObsolete;
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.FieldType;
@@ -51,7 +52,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
-public class TestTask extends Task {
+public class TestTask extends TaskObsolete {
 
     private final Map<ObjectSchema, Pair<ObjectData, LazyDynaBeanImpl>> datas = new HashMap<>();
 

@@ -27,7 +27,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.opensbpm.engine.api.instance.Task.AttributeBean;
+import org.opensbpm.engine.api.instance.TaskObsolete.AttributeBean;
 import org.opensbpm.engine.api.model.Binary;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
@@ -66,7 +66,7 @@ public class AttributeBeanTest {
                 emptyList()
         );
 
-        Task task = new Task(new TaskInfo(), taskResponse);
+        TaskObsolete task = new TaskObsolete(new TaskInfo(), taskResponse);
 
         AttributeBean attributeBean = task.getTaskDocument().getAttribute(objectSchema, attributeSchema);
 

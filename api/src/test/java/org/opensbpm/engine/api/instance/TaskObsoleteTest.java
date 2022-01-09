@@ -35,12 +35,13 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.containsFields;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isObjectData;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isValueElement;
 import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
-public class TaskTest {
+public class TaskObsoleteTest {
 
     @Test
     public void testDelegateMethods() {
@@ -96,36 +97,8 @@ public class TaskTest {
         assertThat(objectBean.get("Attribute 1"), is("Data"));
     }
 
-    @Test
-    public void testGetObjectBeanStoreWithoutData() {
-        //given
-        final long sId = 1l;
-        NextState nextState = NextState.of(sId, "Next State");
-
-        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
-
-        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
-
-        TaskResponse taskResponse = TaskResponse.of(sId,
-                Arrays.asList(nextState),
-                LocalDateTime.MIN,
-                asList(objectSchema),
-                Collections.emptyList()
-        );
-        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
-
-        Task task = new Task(new TaskInfo(), taskResponse);
-
-        //when
-        ObjectBean objectBean = task.getObjectBean(objectSchema);
-
-        //then
-        assertThat(objectBean, is(notNullValue()));
-        assertThat(objectBean.get(attributeSchema), is(nullValue()));
-    }
-
     @Test(expected = IllegalArgumentException.class)
-    public void testCreateTaskRequestWithWrongState() {
+    public void testCreateTaskRequestFromObjectWithWrongState() {
         //given        
         TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
                 Collections.emptyList(),
@@ -136,6 +109,23 @@ public class TaskTest {
 
         //when
         final TaskRequest result = task.createTaskRequest(new NextState());
+
+        //then
+        fail("createTaskRequest with foreign nextState must throw IllegalArgumentException but was " + result);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testCreateTaskRequestWithWrongState() {
+        //given        
+        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
+                Collections.emptyList(),
+                LocalDateTime.MIN,
+                Collections.emptyList(),
+                Collections.emptyList());
+        TaskObsolete task = new TaskObsolete(new TaskInfo(), taskResponse);
+
+        //when
+        TaskRequest result = task.createTaskRequest(new NextState());
 
         //then
         fail("createTaskRequest with foreign nextState must throw IllegalArgumentException but was " + result);
