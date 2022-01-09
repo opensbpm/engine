@@ -81,6 +81,65 @@ public class TaskTest {
     }
 
     @Test
+    public void testCreateAttributeStoreWithExistingData() {
+        //given
+        final long sId = 1l;
+        NextState nextState = NextState.of(sId, "Next State");
+
+        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
+
+        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
+        //use ObjectBean to easily create repsonse-data map
+        ObjectBean objectBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        objectBean.set("Attribute 1", "Data");
+
+        TaskResponse taskResponse = TaskResponse.of(sId,
+                Arrays.asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                asList(objectBean.createObjectData())
+        );
+        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
+
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        AttributeStore attributeStore = task.createAttributeStore(objectSchema);
+
+        //then
+        assertThat(attributeStore, is(notNullValue()));
+        assertThat(attributeStore.getSimple(attributeSchema), is("Data"));
+    }
+
+    @Test
+    public void testCreateAttributeStoreWithoutData() {
+        //given
+        final long sId = 1l;
+        NextState nextState = NextState.of(sId, "Next State");
+
+        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
+
+        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
+
+        TaskResponse taskResponse = TaskResponse.of(sId,
+                Arrays.asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                Collections.emptyList()
+        );
+        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
+
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        AttributeStore attributeStore = task.createAttributeStore(objectSchema);
+
+        //then
+        assertThat(attributeStore, is(notNullValue()));
+        assertThat(attributeStore.getSimple(attributeSchema), is(nullValue()));
+    }
+
+    @Test
     public void testCreateTaskRequest() {
         //given
         final long sId = 1l;
@@ -155,65 +214,6 @@ public class TaskTest {
         ));
         assertThat(result.getNextState(), is(nextState));
         assertThat(result.getLastChanged(), is(lastChanged));
-    }
-
-    @Test
-    public void testCreateAttributeStoreWithExistingData() {
-        //given
-        final long sId = 1l;
-        NextState nextState = NextState.of(sId, "Next State");
-
-        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
-
-        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
-        //use ObjectBean to easily create repsonse-data map
-        ObjectBean objectBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
-        objectBean.set("Attribute 1", "Data");
-
-        TaskResponse taskResponse = TaskResponse.of(sId,
-                Arrays.asList(nextState),
-                LocalDateTime.MIN,
-                asList(objectSchema),
-                asList(objectBean.createObjectData())
-        );
-        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
-
-        Task task = new Task(new TaskInfo(), taskResponse);
-
-        //when
-        AttributeStore attributeStore = task.createAttributeStore(objectSchema);
-
-        //then
-        assertThat(attributeStore, is(notNullValue()));
-        assertThat(attributeStore.getSimple(attributeSchema), is("Data"));
-    }
-
-    @Test
-    public void testCreateAttributeStoreWithoutData() {
-        //given
-        final long sId = 1l;
-        NextState nextState = NextState.of(sId, "Next State");
-
-        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
-
-        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
-
-        TaskResponse taskResponse = TaskResponse.of(sId,
-                Arrays.asList(nextState),
-                LocalDateTime.MIN,
-                asList(objectSchema),
-                Collections.emptyList()
-        );
-        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
-
-        Task task = new Task(new TaskInfo(), taskResponse);
-
-        //when
-        AttributeStore attributeStore = task.createAttributeStore(objectSchema);
-
-        //then
-        assertThat(attributeStore, is(notNullValue()));
-        assertThat(attributeStore.getSimple(attributeSchema), is(nullValue()));
     }
 
     private ObjectSchema createSchema(String name, long f1mId, long f2mId, long f3mId, long f4mId, ObjectData... childs) {
