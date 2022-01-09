@@ -1,4 +1,4 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
  *
  * This program is free software: you can redistribute it and/or modify
@@ -13,7 +13,8 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
@@ -103,13 +104,20 @@ public class Task {
         return taskRequest;
     }
 
+    /**
+     * 
+     * @return
+     * @deprecated use {@link TaskDocument#of(org.opensbpm.engine.api.instance.TaskResponse)} instead
+     */
+    @Deprecated
     public TaskDocument getTaskDocument() {
         if (taskDocument == null) {
-            taskDocument = new TaskDocument(taskResponse);
+            taskDocument = TaskDocument.of(taskResponse);
         }
         return taskDocument;
     }
 
+    @Deprecated
     public TaskRequest createTaskRequest(NextState nextState) {
         Objects.requireNonNull(nextState, "nextState must be non null");
         if (!getNextStates().contains(nextState)) {
@@ -135,7 +143,11 @@ public class Task {
      * @deprecated use {@link ObjectBean} with {@link AttributeStore} instead
      */
     @Deprecated
-    public class TaskDocument {
+    public static class TaskDocument {
+
+        public static TaskDocument of(TaskResponse taskResponse) {
+            return new TaskDocument(taskResponse);
+        }
 
         private final Map<ObjectSchema, ObjectData> datas = new HashMap<>();
 
