@@ -31,6 +31,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.junit.Assert.fail;
@@ -78,6 +79,38 @@ public class TaskTest {
 
         //then
         fail("createTaskRequest with foreign nextState must throw IllegalArgumentException but was " + result);
+    }
+
+    @Test
+    public void testGetObjectBeanWithExistingData() {
+        //given
+        final long sId = 1l;
+        NextState nextState = NextState.of(sId, "Next State");
+
+        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
+
+        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
+        //use ObjectBean to easily create repsonse-data map
+        ObjectBean givenData = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        givenData.set("Attribute 1", "Data");
+
+        TaskResponse taskResponse = TaskResponse.of(sId,
+                Arrays.asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                asList(givenData.createObjectData())
+        );
+        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
+
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        ObjectBean objectBean = task.getObjectBean(objectSchema);
+
+        //then
+        assertThat("Two calls of Task.getObjectBean must return the sam instance",
+                objectBean, is(sameInstance(task.getObjectBean(objectSchema))));
+        assertThat(objectBean.get("Attribute 1"), is("Data"));
     }
 
     @Test

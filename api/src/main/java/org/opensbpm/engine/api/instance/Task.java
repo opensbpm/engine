@@ -37,6 +37,7 @@ public class Task {
 
     private final TaskInfo taskInfo;
     protected final TaskResponse taskResponse;
+    private final Map<ObjectSchema, ObjectBean> objectCache = new HashMap<>();
     private final Map<ObjectSchema, AttributeStore> storeCache = new HashMap<>();
     private TaskDocument taskDocument;
 
@@ -67,6 +68,25 @@ public class Task {
 
     public List<NextState> getNextStates() {
         return taskResponse.getNextStates();
+    }
+
+    /**
+     * retrieve a {@link ObjectBean} for a {@link ObjectSchema}
+     *
+     * @param objectSchema objectSchema to retrieve a ObjectBean
+     * @return an newly created or already instantiated ObjectBean
+     */
+    public ObjectBean getObjectBean(ObjectSchema objectSchema) {
+        //TODO validate given objectSchema against taskResponse.getSchemas()
+        return objectCache.computeIfAbsent(objectSchema, schema -> {
+            Map<Long, Serializable> data = taskResponse.getDatas().stream()
+                    .filter(objectData -> objectData.getName().equals(objectSchema.getName()))
+                    .map(objectData -> objectData.getData())
+                    .findFirst()
+                    .orElse(new HashMap<>());
+            return new ObjectBean(schema, new AttributeStore(objectSchema, new HashMap<>(data)));
+
+        });
     }
 
     /**
@@ -105,7 +125,7 @@ public class Task {
     }
 
     /**
-     * 
+     *
      * @return
      * @deprecated use {@link TaskDocument#of(org.opensbpm.engine.api.instance.TaskResponse)} instead
      */
