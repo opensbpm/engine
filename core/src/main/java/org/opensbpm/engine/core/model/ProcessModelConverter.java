@@ -17,8 +17,12 @@
  */
 package org.opensbpm.engine.core.model;
 
-import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
-
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.builder.ProcessBuilder;
 import org.opensbpm.engine.api.model.builder.ServiceSubjectBuilder;
@@ -28,21 +32,14 @@ import org.opensbpm.engine.api.model.builder.UserSubjectBuilder;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.model.ObjectModelConverter.ObjectModelCache;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.SubjectModelVisitor;
-
-import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
-
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
+import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
 
 public class ProcessModelConverter {
 

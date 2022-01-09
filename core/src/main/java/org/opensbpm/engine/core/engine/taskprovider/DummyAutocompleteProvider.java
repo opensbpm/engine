@@ -16,12 +16,12 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.taskprovider;
 
-import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.SourceMap;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.stereotype.Component;
+import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.SourceMap;
 import org.opensbpm.engine.api.spi.AutocompleteProvider;
+import org.springframework.stereotype.Component;
 
 @Component
 public class DummyAutocompleteProvider implements AutocompleteProvider {

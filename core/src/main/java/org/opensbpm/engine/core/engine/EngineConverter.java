@@ -17,9 +17,6 @@
  */
 package org.opensbpm.engine.core.engine;
 
-import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -27,14 +24,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-
-import org.springframework.stereotype.Component;
-
 import org.opensbpm.engine.api.instance.AuditTrail;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ProcessInfo;
@@ -55,6 +48,9 @@ import org.opensbpm.engine.core.model.entities.ReceiveState;
 import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.StateVisitor;
+import org.springframework.stereotype.Component;
+import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Component
 public class EngineConverter {

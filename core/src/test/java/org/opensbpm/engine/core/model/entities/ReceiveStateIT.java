@@ -16,23 +16,17 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
-import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import javax.persistence.PersistenceException;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
-import static org.hamcrest.CoreMatchers.notNullValue;
-
 import org.hibernate.exception.ConstraintViolationException;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.opensbpm.engine.core.junit.EntityDataTestCase;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 public class ReceiveStateIT extends EntityDataTestCase {
 

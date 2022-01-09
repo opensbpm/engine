@@ -16,9 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
 import javax.persistence.EntityManager;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.model.entities.Role;
 
 public class RbacBuilder {
 

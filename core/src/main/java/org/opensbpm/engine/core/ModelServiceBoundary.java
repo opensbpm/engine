@@ -16,26 +16,24 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ModelService;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.core.model.ProcessModelService;
 import org.opensbpm.engine.core.model.ProcessDefinitionPersistor;
+import org.opensbpm.engine.core.model.ProcessModelConverter;
+import org.opensbpm.engine.core.model.ProcessModelService;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.opensbpm.engine.core.ExceptionFactory.newModelNotFoundException;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModel;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModels;
-
-import org.opensbpm.engine.core.model.ProcessModelConverter;
 
 @Service
 public class ModelServiceBoundary implements ModelService {

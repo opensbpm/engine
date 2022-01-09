@@ -16,16 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model;
 
-import org.opensbpm.engine.api.events.EngineEvent.Type;
-import org.opensbpm.engine.api.model.ProcessModelState;
-import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
-import org.opensbpm.engine.core.EngineEventPublisher;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
-import org.opensbpm.engine.core.model.entities.ModelVersion;
-import org.opensbpm.engine.core.model.entities.State;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -38,23 +28,31 @@ import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 import javax.persistence.criteria.Subquery;
+import org.opensbpm.engine.api.events.EngineEvent.Type;
+import org.opensbpm.engine.api.model.ProcessModelState;
+import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
+import org.opensbpm.engine.core.EngineEventPublisher;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ModelVersion_;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel_;
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.Role_;
+import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.State_;
 import org.opensbpm.engine.core.model.entities.SubjectModel_;
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel_;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.opensbpm.engine.core.model.ProcessModelService.ProcessModelSpecifications.newestVersion;
 import static org.opensbpm.engine.core.model.ProcessModelService.ProcessModelSpecifications.withStartableFor;
 import static org.opensbpm.engine.core.model.ProcessModelService.ProcessModelSpecifications.withStates;
-
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 
 @Service
 public class ProcessModelService {

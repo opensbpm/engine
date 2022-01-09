@@ -16,10 +16,13 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.instance.ObjectData;
-
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
-
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
@@ -28,18 +31,11 @@ import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
 import org.opensbpm.engine.core.model.entities.State;
-import java.util.Objects;
-
-import static org.opensbpm.engine.core.model.entities.StateVisitor.receiveState;
-import static org.opensbpm.engine.core.model.entities.StateVisitor.sendState;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.receiveState;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.sendState;
+import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
 @Service
 public class StateChangeService {

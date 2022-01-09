@@ -16,21 +16,26 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.ModelServiceBoundary;
-
+import java.util.Optional;
+import org.junit.Test;
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.ProcessModelState;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.junit.ServiceITCase;
+import org.opensbpm.engine.core.model.ProcessModelService;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.examples.ExampleModels;
+import org.springframework.beans.factory.annotation.Autowired;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.emptyString;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsHeads;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsPermisssions;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFieldPermission;
-
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-import org.opensbpm.engine.api.model.ProcessModelState;
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
-import org.opensbpm.engine.core.junit.ServiceITCase;
-import org.opensbpm.engine.examples.ExampleModels;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFunctionState;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isPermission;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToManyPermission;
@@ -44,20 +49,9 @@ import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isStarterS
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isSubjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToMany;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToOne;
-
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.core.model.ProcessModelService;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import java.util.Optional;
-
 import static org.opensbpm.engine.api.junit.ReceiveStateDefinitionMatchers.isMessage;
 import static org.opensbpm.engine.api.junit.ReceiveStateDefinitionMatchers.isReceiveState;
 import static org.opensbpm.engine.api.junit.SendStateDefinitionMatchers.isSendState;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.emptyString;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ExampleModelDienstreiseantragIT extends ServiceITCase {
 

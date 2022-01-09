@@ -16,47 +16,38 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.core.engine.ProcessInstanceService;
-import org.opensbpm.engine.core.engine.StateChangeService;
-import org.opensbpm.engine.core.engine.ValidationProviderManager;
-import org.opensbpm.engine.core.engine.TaskProviderManager;
-import org.opensbpm.engine.core.engine.EngineConverter;
-import org.opensbpm.engine.api.instance.NextState;
-import org.opensbpm.engine.api.instance.Task;
-import org.opensbpm.engine.api.instance.TaskInfo;
-import org.opensbpm.engine.core.engine.ProviderTaskChangedObserver.ProviderTaskExecutor;
-import org.opensbpm.engine.core.engine.ProviderTaskChangedObserver.ServiceSubjectRepository;
-import org.opensbpm.engine.core.engine.entities.ProcessInstance;
-import org.opensbpm.engine.core.engine.entities.ServiceSubject;
-
-import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
-import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
-import static org.opensbpm.engine.core.junit.MockData.spyServiceSubject;
-import static org.opensbpm.engine.core.junit.MockData.spyUser;
-
-import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
-import org.opensbpm.engine.core.engine.entities.User;
-import org.opensbpm.engine.api.spi.TaskExecutionException;
-import org.opensbpm.engine.api.spi.TaskExecutionProvider;
 import java.time.LocalDateTime;
 import java.util.Map;
 import javax.script.ScriptEngine;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import org.opensbpm.engine.api.instance.NextState;
+import org.opensbpm.engine.api.instance.Task;
+import org.opensbpm.engine.api.instance.TaskInfo;
+import org.opensbpm.engine.api.spi.TaskExecutionException;
+import org.opensbpm.engine.api.spi.TaskExecutionProvider;
+import org.opensbpm.engine.core.engine.ProviderTaskChangedObserver.ProviderTaskExecutor;
+import org.opensbpm.engine.core.engine.ProviderTaskChangedObserver.ServiceSubjectRepository;
+import org.opensbpm.engine.core.engine.entities.ProcessInstance;
+import org.opensbpm.engine.core.engine.entities.ServiceSubject;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.model.entities.FunctionState;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
+import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
+import static org.opensbpm.engine.core.junit.MockData.spyServiceSubject;
+import static org.opensbpm.engine.core.junit.MockData.spyUser;
 
 /**
  * Spring Mock Unit-Test for {@link ProviderTaskExecutor}

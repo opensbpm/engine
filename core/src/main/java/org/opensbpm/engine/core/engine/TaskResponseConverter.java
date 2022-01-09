@@ -1,12 +1,9 @@
 package org.opensbpm.engine.core.engine;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import javax.script.ScriptEngine;
-
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
@@ -26,7 +23,7 @@ import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-
+import static java.util.stream.Collectors.toList;
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 class TaskResponseConverter {

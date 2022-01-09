@@ -16,25 +16,20 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.junit.EntityDataTestCase;
-import org.opensbpm.engine.core.engine.entities.User;
 import javax.persistence.PersistenceException;
-
+import org.hibernate.exception.ConstraintViolationException;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.hasSize;
-
-import org.hibernate.exception.ConstraintViolationException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.fail;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 public class RoleIT extends EntityDataTestCase {
 

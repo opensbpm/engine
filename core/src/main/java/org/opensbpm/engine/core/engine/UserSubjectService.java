@@ -16,12 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.api.instance.ProcessInstanceState;
-import org.opensbpm.engine.core.engine.entities.ProcessInstance;
-import org.opensbpm.engine.core.engine.entities.UserSubject;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.LockModeType;
@@ -31,22 +25,26 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
+import org.opensbpm.engine.api.instance.ProcessInstanceState;
+import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance_;
 import org.opensbpm.engine.core.engine.entities.Subject_;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.engine.entities.UserSubject_;
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.Role_;
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel_;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.opensbpm.engine.core.engine.UserSubjectService.UserSubjectSpecifications.ofUserOrRoles;
 import static org.opensbpm.engine.core.engine.UserSubjectService.UserSubjectSpecifications.withSubjectId;
-
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 
 @Service
 public class UserSubjectService {

@@ -16,10 +16,10 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.stream.Collectors;
+import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
 
 public class StateGraph {
 

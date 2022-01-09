@@ -16,12 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import static java.util.Collections.unmodifiableList;
-
 import java.util.List;
+import org.opensbpm.engine.api.spi.AutocompleteProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.opensbpm.engine.api.spi.AutocompleteProvider;
+import static java.util.Collections.unmodifiableList;
 
 @Component
 public class ValidationProviderManager {

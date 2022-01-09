@@ -16,9 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.api.spi.TaskExecutionProvider;
 import java.util.Collections;
 import java.util.List;
+import org.opensbpm.engine.api.spi.TaskExecutionProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

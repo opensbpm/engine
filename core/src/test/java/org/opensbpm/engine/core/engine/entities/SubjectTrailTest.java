@@ -16,14 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.engine.entities.SubjectTrail;
-import org.opensbpm.engine.core.junit.EntityTestCase;
-
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.emptyOrNullString;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Test;
+import org.opensbpm.engine.core.junit.EntityTestCase;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyOrNullString;
 
 public class SubjectTrailTest extends EntityTestCase<SubjectTrail> {
 

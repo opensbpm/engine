@@ -17,8 +17,11 @@
  */
 package org.opensbpm.engine.core.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.AbstractNestedBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
@@ -34,10 +37,6 @@ import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.utils.StreamUtils;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.springframework.data.util.Pair;
 
 class ObjectModelConverter {

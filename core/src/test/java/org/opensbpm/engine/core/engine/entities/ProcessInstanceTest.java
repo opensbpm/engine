@@ -16,6 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
+import java.util.Arrays;
+import java.util.Optional;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.core.junit.EntityTestCase;
@@ -23,21 +28,13 @@ import org.opensbpm.engine.core.junit.MockData;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import java.util.Arrays;
-import java.util.Optional;
-
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

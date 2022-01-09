@@ -16,10 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
@@ -39,6 +35,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity
 @Table(uniqueConstraints = {

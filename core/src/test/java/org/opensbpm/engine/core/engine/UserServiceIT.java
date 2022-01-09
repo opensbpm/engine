@@ -16,22 +16,17 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.core.engine.UserService;
+import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.core.engine.entities.User;
-
-import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserChangedEvent;
-
 import org.opensbpm.engine.core.junit.ServiceITCase;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.hamcrest.Matchers.contains;
+import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserChangedEvent;
 
 /**
  * {@link UserService} Integration-Test. Test the transactional-behaviour of the SeviceLayer against a real database.

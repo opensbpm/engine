@@ -16,19 +16,19 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
+import java.util.List;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.utils.entities.HasId;
-import java.util.List;
 
 public abstract class EntityDataTestCase extends DataJpaTestCase {
 

@@ -16,11 +16,38 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.io.IOUtils;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.api.instance.TaskOutOfDateException;
-
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
+import org.opensbpm.engine.api.model.builder.SendStateBuilder;
+import org.opensbpm.engine.api.model.builder.ServiceSubjectBuilder;
+import org.opensbpm.engine.api.model.builder.UserSubjectBuilder;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.engine.taskprovider.GroovyTaskProvider;
+import org.opensbpm.engine.core.junit.TestTask;
+import org.opensbpm.engine.core.junit.UserProcessController;
+import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
+import org.opensbpm.engine.core.junit.WorkflowTestCase;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+import static org.junit.Assert.fail;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
 import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProviderTaskChangedEvent;
@@ -29,10 +56,6 @@ import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.hasSubjects;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isSubjectState;
 import static org.opensbpm.engine.api.junit.TaskInfoMatchers.hasOneState;
-
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
@@ -42,35 +65,6 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.receiveSta
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
-import org.opensbpm.engine.api.model.builder.ObjectBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
-import org.opensbpm.engine.api.model.builder.SendStateBuilder;
-import org.opensbpm.engine.api.model.builder.ServiceSubjectBuilder;
-import org.opensbpm.engine.api.model.builder.UserSubjectBuilder;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.core.engine.taskprovider.GroovyTaskProvider;
-import org.opensbpm.engine.core.junit.UserProcessController;
-import org.opensbpm.engine.core.junit.WorkflowTestCase;
-import org.junit.Test;
-import org.opensbpm.engine.core.junit.TestTask;
-import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
-
-import org.junit.Rule;
-import org.junit.rules.ExpectedException;
 
 /**
  * Workflow Integration-Test for special cases.

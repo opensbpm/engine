@@ -16,10 +16,8 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.junit.EntityTestCase;
-
-
 import org.junit.Test;
+import org.opensbpm.engine.core.junit.EntityTestCase;
 import static org.junit.Assert.assertNotNull;
 
 public class ObjectInstanceTest extends EntityTestCase<ObjectInstance> {

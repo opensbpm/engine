@@ -16,19 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.api.instance.ProcessInstanceState;
-
-import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
-
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.SubjectModel;
-import org.opensbpm.engine.core.utils.entities.HasId;
-import org.opensbpm.engine.core.utils.LocalDateTimeAttributeConverter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -52,6 +39,16 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.instance.ProcessInstanceState;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.SubjectModel;
+import org.opensbpm.engine.core.utils.LocalDateTimeAttributeConverter;
+import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity(name = "processinstance")
 public class ProcessInstance implements HasId, Serializable {

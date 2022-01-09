@@ -16,26 +16,23 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.engine.TaskProviderManager;
+import java.util.Collection;
+import java.util.Map;
+import org.junit.Test;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.Task;
-import org.opensbpm.engine.core.junit.ServiceITCase;
 import org.opensbpm.engine.api.spi.TaskExecutionException;
 import org.opensbpm.engine.api.spi.TaskExecutionProvider;
 import org.opensbpm.engine.api.spi.TaskExecutionProvider.ResourceService;
-import java.util.Collection;
-import java.util.Map;
-
+import org.opensbpm.engine.core.engine.TaskProviderManager;
+import org.opensbpm.engine.core.junit.ServiceITCase;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.Matchers.empty;
-
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
 
 public class TaskProviderManagerIT extends ServiceITCase {
 

@@ -16,13 +16,13 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import java.util.List;
 import java.util.logging.Logger;
+import org.opensbpm.engine.core.engine.entities.ObjectInstance;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 
 @Service
 public class ObjectInstanceService {

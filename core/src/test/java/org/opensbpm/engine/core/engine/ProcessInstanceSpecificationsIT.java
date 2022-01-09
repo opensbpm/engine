@@ -16,29 +16,27 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
+import java.util.Arrays;
+import java.util.List;
+import org.junit.Test;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.core.engine.ProcessInstanceService.ProcessInstanceRepository;
 import org.opensbpm.engine.core.engine.ProcessInstanceService.ProcessInstanceSpecifications;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.junit.DataJpaTestCase;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
-import java.util.Arrays;
-import java.util.List;
-
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.hamcrest.Matchers.hasSize;
 
 public class ProcessInstanceSpecificationsIT extends DataJpaTestCase {
 

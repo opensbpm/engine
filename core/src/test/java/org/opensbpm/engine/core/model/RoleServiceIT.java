@@ -16,39 +16,31 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model;
 
-import org.opensbpm.engine.core.model.RoleService;
+import java.util.Optional;
+import org.junit.Test;
 import org.opensbpm.engine.api.ModelService;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
-import org.opensbpm.engine.core.junit.ServiceITCase;
-import org.opensbpm.engine.core.model.entities.Role;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.builder.ProcessBuilder;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.engine.UserService.UserRepository;
 import org.opensbpm.engine.core.engine.entities.User;
-import java.util.Optional;
-
+import org.opensbpm.engine.core.junit.ServiceITCase;
+import org.opensbpm.engine.core.model.RoleService.RoleRepository;
+import org.opensbpm.engine.core.model.RoleService.RoleSpecifications;
+import org.opensbpm.engine.core.model.entities.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.opensbpm.engine.api.model.builder.ProcessBuilder;
-
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.opensbpm.engine.api.junit.CommonMatchers.value;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isRoleChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isRoleUserChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserProcessModelChangedEvent;
-
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-import org.opensbpm.engine.core.engine.UserService.UserRepository;
-import org.opensbpm.engine.core.model.RoleService.RoleRepository;
-import org.opensbpm.engine.core.model.RoleService.RoleSpecifications;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 /**
  * {@link RoleService} Integration-Test. Test the transactional-behaviour of the SeviceLayer against a real database.

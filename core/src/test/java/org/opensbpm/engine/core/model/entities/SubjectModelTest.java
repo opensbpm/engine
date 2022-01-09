@@ -16,16 +16,12 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.SubjectModel;
-import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
+import org.junit.Test;
 import org.opensbpm.engine.core.junit.EntityTestCase;
-
-import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.serviceSubjectModel;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
+import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.serviceSubjectModel;
 
 public class SubjectModelTest extends EntityTestCase<SubjectModel> {
 

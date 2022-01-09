@@ -16,7 +16,14 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.EngineService;
+import org.opensbpm.engine.api.InstanceService;
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ProcessNotFoundException;
 import org.opensbpm.engine.api.UserNotFoundException;
@@ -28,27 +35,13 @@ import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskNotFoundException;
 import org.opensbpm.engine.api.instance.TaskOutOfDateException;
 import org.opensbpm.engine.api.instance.UserToken;
-
-import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
-
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.core.engine.UserService;
-import java.util.EnumSet;
-
-import static org.opensbpm.engine.core.junit.ServiceITCase.doInTransaction;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import org.hamcrest.Matcher;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import static org.opensbpm.engine.core.ExceptionFactory.newProcessNotFoundException;
-
-import org.opensbpm.engine.api.InstanceService;
-import java.util.Collection;
-
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
+import static org.opensbpm.engine.core.ExceptionFactory.newProcessNotFoundException;
+import static org.opensbpm.engine.core.junit.ServiceITCase.doInTransaction;
 
 public class UserProcessController {
 

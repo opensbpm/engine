@@ -16,11 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.engine.AttributeStore;
-import org.opensbpm.engine.core.engine.ObjectBean;
-import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +31,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.engine.AttributeStore;
+import org.opensbpm.engine.core.engine.ObjectBean;
+import org.opensbpm.engine.core.model.entities.FunctionState;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity
 @Table(uniqueConstraints = {

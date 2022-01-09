@@ -16,9 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
-
-import org.opensbpm.engine.core.engine.entities.User;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -27,6 +24,8 @@ import java.util.stream.Stream;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import org.opensbpm.engine.core.engine.entities.User;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
 
 @Entity
 public class UserSubjectModel extends SubjectModel {

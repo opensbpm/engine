@@ -16,11 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.model.entities.SubjectModel;
-
-import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
-
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -30,6 +25,9 @@ import javax.persistence.ManyToOne;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.model.entities.SubjectModel;
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
+import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
 
 @Entity(name = "subjectuser")
 public class UserSubject extends Subject {

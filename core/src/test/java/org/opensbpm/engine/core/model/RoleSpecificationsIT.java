@@ -16,20 +16,18 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+import org.junit.Test;
 import org.opensbpm.engine.core.junit.DataJpaTestCase;
 import org.opensbpm.engine.core.model.RoleService.RoleRepository;
 import org.opensbpm.engine.core.model.RoleService.RoleSpecifications;
 import org.opensbpm.engine.core.model.entities.Role;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Optional;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertTrue;
 
 public class RoleSpecificationsIT extends DataJpaTestCase {

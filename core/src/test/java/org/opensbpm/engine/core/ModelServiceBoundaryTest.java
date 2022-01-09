@@ -16,55 +16,45 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.ModelServiceBoundary;
-import org.opensbpm.engine.core.EngineEventPublisher;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-import org.opensbpm.engine.api.model.ProcessModelState;
-import org.opensbpm.engine.api.model.builder.ProcessBuilder;
-
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
-
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-
-import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
-import static org.opensbpm.engine.core.junit.MockData.spyUserSubjectModel;
-import static org.opensbpm.engine.core.junit.MockData.spyWithId;
-
-import org.opensbpm.engine.core.model.ProcessModelService;
-import org.opensbpm.engine.core.model.ProcessDefinitionPersistor;
-import org.opensbpm.engine.core.model.ModelConverter;
-import org.opensbpm.engine.core.model.RoleService;
-import org.opensbpm.engine.core.model.entities.ModelVersion;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
-
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.ProcessModelState;
+import org.opensbpm.engine.api.model.builder.ProcessBuilder;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.model.ModelConverter;
+import org.opensbpm.engine.core.model.ProcessDefinitionPersistor;
+import org.opensbpm.engine.core.model.ProcessModelService;
+import org.opensbpm.engine.core.model.RoleService;
+import org.opensbpm.engine.core.model.entities.ModelVersion;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.Role;
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import static org.hamcrest.Matchers.empty;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import org.mockito.invocation.InvocationOnMock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
+import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
+import static org.opensbpm.engine.core.junit.MockData.spyUserSubjectModel;
+import static org.opensbpm.engine.core.junit.MockData.spyWithId;
 
 /**
  * Spring Mock Unit-Test for {@link ModelServiceBoundary}

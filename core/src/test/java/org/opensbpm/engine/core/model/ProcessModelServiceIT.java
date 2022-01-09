@@ -16,19 +16,15 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model;
 
-import org.opensbpm.engine.core.model.ProcessDefinitionPersistor;
-import org.opensbpm.engine.core.model.ProcessModelService;
+import org.junit.Test;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.junit.ServiceITCase;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-
+import org.opensbpm.engine.examples.ExampleModels;
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.opensbpm.engine.examples.ExampleModels;
 
 public class ProcessModelServiceIT extends ServiceITCase {
 

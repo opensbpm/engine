@@ -16,7 +16,8 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.core.engine.StateChangeService;
+import org.junit.Before;
+import org.junit.Test;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
@@ -25,21 +26,11 @@ import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
-
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
-
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder;
-
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
@@ -48,14 +39,16 @@ import org.opensbpm.engine.core.EngineServiceBoundary;
 import org.opensbpm.engine.core.ModelServiceBoundary;
 import org.opensbpm.engine.core.UserTokenServiceBoundary;
 import org.opensbpm.engine.core.engine.entities.Subject;
-import org.opensbpm.engine.core.junit.TestTask;
 import org.opensbpm.engine.core.junit.ServiceITCase;
-
-import static org.junit.Assert.fail;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.opensbpm.engine.core.junit.TestTask;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.junit.Assert.fail;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 public class StateChangeServiceIT extends ServiceITCase {
 

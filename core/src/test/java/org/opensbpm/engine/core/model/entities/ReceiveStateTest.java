@@ -16,19 +16,13 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.MessageModel;
-import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.junit.EntityTestCase;
-
-import static org.opensbpm.engine.core.model.entities.StateVisitor.receiveState;
-
 import java.util.Collection;
-
+import org.junit.Test;
+import org.opensbpm.engine.core.junit.EntityTestCase;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.receiveState;
 
 public class ReceiveStateTest extends EntityTestCase<ReceiveState> {
 

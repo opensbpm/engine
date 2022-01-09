@@ -16,35 +16,28 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.core.engine.UserSubjectService;
-import org.opensbpm.engine.core.engine.ProcessInstanceService;
-import org.opensbpm.engine.core.engine.SubjectService;
-
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
+import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.junit.RbacBuilder;
 import org.opensbpm.engine.core.junit.ServiceITCase;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
-import java.util.List;
-
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import static org.hamcrest.Matchers.hasSize;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
+import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
 public class UserSubjectServiceIT extends ServiceITCase {
 

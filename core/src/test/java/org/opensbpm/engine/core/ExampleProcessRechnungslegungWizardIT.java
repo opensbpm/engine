@@ -16,34 +16,29 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
+import java.time.LocalDate;
+import java.time.Month;
+import org.junit.Before;
+import org.junit.Test;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.junit.TestTask;
 import org.opensbpm.engine.core.junit.UserProcessController;
+import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
 import org.opensbpm.engine.core.junit.WorkflowTestCase;
-import java.time.LocalDate;
-import java.time.Month;
-import org.junit.Test;
 import org.opensbpm.engine.examples.ExampleModels;
-import org.junit.Before;
-
+import org.opensbpm.engine.xmlmodel.ProcessModel;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.opensbpm.engine.api.junit.TaskInfoMatchers.hasOneState;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
 import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.hasSubjects;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isSubjectState;
-
-import org.opensbpm.engine.core.junit.TestTask;
-import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
-
+import static org.opensbpm.engine.api.junit.TaskInfoMatchers.hasOneState;
 import static org.opensbpm.engine.api.junit.TaskInfoMatchers.isNextState;
-
-
-import org.opensbpm.engine.xmlmodel.ProcessModel;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ExampleProcessRechnungslegungWizardIT extends WorkflowTestCase {
 

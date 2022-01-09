@@ -17,16 +17,6 @@
  */
 package org.opensbpm.engine.core.model.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.api.model.ProcessModelState;
-
-import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
-
-import org.opensbpm.engine.core.utils.entities.HasId;
-import org.opensbpm.engine.core.utils.LocalDateTimeAttributeConverter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -57,6 +47,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.ProcessModelState;
+import org.opensbpm.engine.core.utils.LocalDateTimeAttributeConverter;
+import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity(name = "process_model")
 @Table(uniqueConstraints = {

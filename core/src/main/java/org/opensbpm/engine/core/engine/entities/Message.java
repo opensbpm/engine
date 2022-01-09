@@ -16,9 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.SubjectModel;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -28,6 +25,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.model.entities.SubjectModel;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity(name = "message")
 public class Message implements HasId, Serializable {

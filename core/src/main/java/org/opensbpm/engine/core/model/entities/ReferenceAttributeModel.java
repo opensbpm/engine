@@ -17,7 +17,6 @@
  */
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -28,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity
 public class ReferenceAttributeModel extends AttributeModel implements HasId, Serializable {

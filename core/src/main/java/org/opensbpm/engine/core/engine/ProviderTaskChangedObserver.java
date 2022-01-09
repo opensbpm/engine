@@ -16,23 +16,23 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.events.ProviderTaskChangedEvent;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
+import org.opensbpm.engine.api.spi.TaskExecutionProvider;
 import org.opensbpm.engine.core.engine.entities.ServiceSubject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.api.spi.TaskExecutionProvider;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 
 @Component
 public class ProviderTaskChangedObserver {

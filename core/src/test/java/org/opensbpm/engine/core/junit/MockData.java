@@ -16,26 +16,25 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
+import java.util.Arrays;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ServiceSubject;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.ReceiveState;
+import org.opensbpm.engine.core.model.entities.Role;
+import org.opensbpm.engine.core.model.entities.SendState;
+import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.core.model.entities.StatePermission;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
-import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.utils.entities.HasId;
-import java.util.Arrays;
-
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 

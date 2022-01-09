@@ -17,10 +17,11 @@
  */
 package org.opensbpm.engine.core.model;
 
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
-
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinitionVisitor;
@@ -31,6 +32,7 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinitio
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.AttributePermissionDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.NestedPermissionDefinition;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.FunctionStateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition;
@@ -40,30 +42,27 @@ import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition.ServiceSubjectDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition.UserSubjectDefinition;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
 import org.opensbpm.engine.core.model.entities.IsAttributeParent;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
+import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
+import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.SendState;
+import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.StatePermission;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
-import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
+import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
 
 @Component
 public class ProcessDefinitionPersistor {

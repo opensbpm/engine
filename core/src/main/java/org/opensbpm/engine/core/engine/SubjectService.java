@@ -17,31 +17,29 @@
  */
 package org.opensbpm.engine.core.engine;
 
+import java.util.Objects;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.core.EngineEventPublisher;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ServiceSubject;
 import org.opensbpm.engine.core.engine.entities.Subject;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.StateGraph;
-
-import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
-
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.SubjectModelVisitor;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.engine.entities.User;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
 
 @Service
 public class SubjectService {

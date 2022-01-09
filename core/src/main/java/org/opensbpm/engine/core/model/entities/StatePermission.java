@@ -16,11 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -38,6 +33,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
+import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity
 @Table(name = "statepermission", uniqueConstraints = {

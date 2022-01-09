@@ -17,15 +17,15 @@
 package org.opensbpm.engine.core.junit;
 
 import org.opensbpm.engine.api.EngineService;
+import org.opensbpm.engine.api.InstanceService;
 import org.opensbpm.engine.api.ModelService;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.core.UserTokenServiceBoundary;
+import org.opensbpm.engine.core.engine.UserService;
 import org.opensbpm.engine.core.engine.UserSubjectService;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.model.ProcessModelService;
-import org.opensbpm.engine.core.engine.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.opensbpm.engine.api.InstanceService;
 
 /**
  * Abstract Spring-Boot Test-Case for Workflow related Integration-Tests.

@@ -16,7 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -33,6 +32,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity
 @Table(name = "attributemodel", uniqueConstraints = {

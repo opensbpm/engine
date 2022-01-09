@@ -18,31 +18,8 @@
 package org.opensbpm.engine.core.engine;
 
 
-import org.opensbpm.engine.core.engine.SubjectService;
-import org.opensbpm.engine.core.engine.EngineConverter;
-
-import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasSchemas;
-import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isFieldSchema;
-import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isNestedSchema;
-import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectSchema;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOne;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
@@ -69,6 +46,24 @@ import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.core.model.entities.State;
+import org.springframework.beans.factory.annotation.Autowired;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasSchemas;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isFieldSchema;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isNestedSchema;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectSchema;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOne;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 public class EngineConverterIT extends ServiceITCase {
 

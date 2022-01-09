@@ -16,20 +16,30 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
+import org.junit.Test;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.api.instance.TaskOutOfDateException;
-
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder;
+import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
+import org.opensbpm.engine.api.model.builder.UserSubjectBuilder;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.junit.TestTask;
+import org.opensbpm.engine.core.junit.UserProcessController;
+import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
+import org.opensbpm.engine.core.junit.WorkflowTestCase;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
 import static org.opensbpm.engine.api.junit.CommonMatchers.isEmpty;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.hasSubjects;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isSubjectState;
 import static org.opensbpm.engine.api.junit.TaskInfoMatchers.hasOneState;
-
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
@@ -38,21 +48,6 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.receiveState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
-import org.opensbpm.engine.api.model.builder.ObjectBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
-import org.opensbpm.engine.api.model.builder.UserSubjectBuilder;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.core.junit.UserProcessController;
-import org.opensbpm.engine.core.junit.WorkflowTestCase;
-import org.junit.Test;
-import org.opensbpm.engine.core.junit.TestTask;
-import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * Workflow Integration-Test for basic cases.

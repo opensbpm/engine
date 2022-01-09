@@ -16,47 +16,41 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.api.ProcessNotFoundException;
-import org.opensbpm.engine.api.instance.AuditTrail;
-import org.opensbpm.engine.api.instance.ProcessInfo;
-import org.opensbpm.engine.api.instance.ProcessInstanceState;
-import org.opensbpm.engine.core.engine.ValidationProviderManager;
-import org.opensbpm.engine.core.engine.EngineConverter;
-import org.opensbpm.engine.core.engine.ProcessInstanceService;
-import org.opensbpm.engine.core.engine.StateChangeService;
-import org.opensbpm.engine.core.engine.SubjectService;
-import org.opensbpm.engine.core.engine.SubjectTrailService;
-import org.opensbpm.engine.core.engine.UserSubjectService;
-import org.opensbpm.engine.core.engine.entities.ProcessInstance;
-
-import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
-import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
-import static org.opensbpm.engine.core.junit.MockData.spyUser;
-
-import org.opensbpm.engine.core.model.ProcessModelService;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.engine.entities.User;
-import org.opensbpm.engine.core.engine.UserService;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import javax.script.ScriptEngine;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import static org.mockito.Mockito.when;
-
+import org.opensbpm.engine.api.ProcessNotFoundException;
+import org.opensbpm.engine.api.instance.AuditTrail;
+import org.opensbpm.engine.api.instance.ProcessInfo;
+import org.opensbpm.engine.api.instance.ProcessInstanceState;
+import org.opensbpm.engine.core.engine.EngineConverter;
+import org.opensbpm.engine.core.engine.ProcessInstanceService;
+import org.opensbpm.engine.core.engine.StateChangeService;
+import org.opensbpm.engine.core.engine.SubjectService;
+import org.opensbpm.engine.core.engine.SubjectTrailService;
+import org.opensbpm.engine.core.engine.UserService;
+import org.opensbpm.engine.core.engine.UserSubjectService;
+import org.opensbpm.engine.core.engine.ValidationProviderManager;
+import org.opensbpm.engine.core.engine.entities.ProcessInstance;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.model.ProcessModelService;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.when;
+import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
+import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
+import static org.opensbpm.engine.core.junit.MockData.spyUser;
 
 /**
  * Spring Mock Unit-Test for {@link InstanceServiceBoundary}

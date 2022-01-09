@@ -17,19 +17,6 @@
  */
 package org.opensbpm.engine.core.junit;
 
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
-
-import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.NestedAttributeSchema;
-import org.opensbpm.engine.api.instance.NextState;
-import org.opensbpm.engine.api.instance.ObjectData;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.Task;
-import org.opensbpm.engine.api.instance.TaskInfo;
-import org.opensbpm.engine.api.instance.TaskRequest;
-import org.opensbpm.engine.api.instance.TaskResponse;
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,10 +35,21 @@ import org.apache.commons.beanutils.LazyDynaBean;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.hamcrest.Matcher;
+import org.opensbpm.engine.api.instance.AttributeSchema;
+import org.opensbpm.engine.api.instance.NestedAttributeSchema;
+import org.opensbpm.engine.api.instance.NextState;
+import org.opensbpm.engine.api.instance.ObjectData;
+import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.Task;
+import org.opensbpm.engine.api.instance.TaskInfo;
+import org.opensbpm.engine.api.instance.TaskRequest;
+import org.opensbpm.engine.api.instance.TaskResponse;
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.api.model.definition.Occurs;
 import org.springframework.data.util.Pair;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
 public class TestTask extends Task {
 

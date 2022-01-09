@@ -17,17 +17,6 @@
  */
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.api.model.ObjectReference;
-import org.opensbpm.engine.core.model.entities.AttributeModel;
-import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
-
-import static org.opensbpm.engine.core.model.entities.AttributeModelVisitor.indexed;
-
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
-import org.opensbpm.engine.core.model.entities.IsAttributeParent;
-import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,6 +28,15 @@ import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.beanutils.DynaProperty;
+import org.opensbpm.engine.api.model.ObjectReference;
+import org.opensbpm.engine.core.model.entities.AttributeModel;
+import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
+import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
+import org.opensbpm.engine.core.model.entities.IsAttributeParent;
+import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
+import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
+import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
+import static org.opensbpm.engine.core.model.entities.AttributeModelVisitor.indexed;
 
 /**
  * Bean representation of {@link AttributeModel}. The main purpose of this class is to provide a {@link Map} to easy

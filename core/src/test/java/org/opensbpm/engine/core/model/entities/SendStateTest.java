@@ -16,17 +16,12 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.State;
-import org.opensbpm.engine.core.model.entities.SendState;
+import org.junit.Test;
 import org.opensbpm.engine.core.junit.EntityTestCase;
-
-import static org.opensbpm.engine.core.model.entities.StateVisitor.sendState;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.sendState;
 
 public class SendStateTest extends EntityTestCase<SendState> {
 

@@ -16,9 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
+import java.util.ArrayList;
 import org.opensbpm.engine.api.events.EngineEvent;
 import org.opensbpm.engine.core.EngineConfig;
-import java.util.ArrayList;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

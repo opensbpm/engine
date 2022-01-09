@@ -16,14 +16,10 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.junit.EntityTestCase;
 import java.util.Collection;
-
-import static org.junit.Assert.fail;
-
 import org.junit.Test;
+import org.opensbpm.engine.core.junit.EntityTestCase;
+import static org.junit.Assert.fail;
 
 public class UserSubjectModelTest extends EntityTestCase<UserSubjectModel> {
 

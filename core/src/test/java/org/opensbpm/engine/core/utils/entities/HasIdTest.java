@@ -16,12 +16,10 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.utils.entities;
 
-import org.opensbpm.engine.core.utils.entities.HasId;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;

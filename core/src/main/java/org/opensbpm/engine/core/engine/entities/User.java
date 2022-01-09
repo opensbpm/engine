@@ -16,12 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.model.entities.Role;
-
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -33,6 +27,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.model.entities.Role;
+import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity(name = "users")
 public class User implements HasId, Serializable {

@@ -1,12 +1,11 @@
 package org.opensbpm.engine.core.utils;
 
-import org.opensbpm.engine.core.utils.LocalDateTimeAttributeConverter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsNull.notNullValue;
 
 /**
  * @author stefan

@@ -16,22 +16,20 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.engine.entities.User;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.opensbpm.engine.api.UserNotFoundException;
+import org.opensbpm.engine.api.UserTokenService;
+import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.core.engine.UserService;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.model.RoleService;
 import org.opensbpm.engine.core.model.entities.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.opensbpm.engine.api.UserNotFoundException;
-import org.opensbpm.engine.api.instance.UserToken;
-import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.opensbpm.engine.core.ExceptionFactory.newUserNotFoundException;
 import static org.opensbpm.engine.core.engine.EngineConverter.convertUser;
-
-import org.opensbpm.engine.api.UserTokenService;
 
 @Service
 public class UserTokenServiceBoundary implements UserTokenService {

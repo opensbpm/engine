@@ -16,19 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-
-import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.MessageModel;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.model.entities.State;
-import org.opensbpm.engine.core.model.entities.StateVisitor;
-import org.opensbpm.engine.core.model.entities.StateVisitor.OptionalStateAdapter;
-import org.opensbpm.engine.core.model.entities.SubjectModel;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -53,6 +40,18 @@ import javax.persistence.OrderBy;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.model.entities.FunctionState;
+import org.opensbpm.engine.core.model.entities.MessageModel;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.model.entities.ReceiveState;
+import org.opensbpm.engine.core.model.entities.State;
+import org.opensbpm.engine.core.model.entities.StateVisitor;
+import org.opensbpm.engine.core.model.entities.StateVisitor.OptionalStateAdapter;
+import org.opensbpm.engine.core.model.entities.SubjectModel;
+import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity
 /* 

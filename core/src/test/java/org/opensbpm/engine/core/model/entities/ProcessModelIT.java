@@ -16,50 +16,32 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.model.entities.MessageModel;
-import org.opensbpm.engine.core.model.entities.StatePermission;
-import org.opensbpm.engine.core.model.entities.ModelVersion;
-import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.SendState;
+import java.sql.Timestamp;
+import java.util.Arrays;
+import javax.persistence.PersistenceException;
+import org.hamcrest.Matcher;
+import org.hibernate.exception.ConstraintViolationException;
+import org.junit.Ignore;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import org.opensbpm.engine.core.model.RoleService;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import javax.persistence.PersistenceException;
-
+import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
-
-import org.hamcrest.Matcher;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
-
-import org.hibernate.exception.ConstraintViolationException;
-
 import static org.junit.Assert.assertNotNull;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.fail;
-
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class ProcessModelIT extends EntityDataTestCase {
 

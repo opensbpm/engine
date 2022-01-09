@@ -16,35 +16,29 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.ModelServiceBoundary;
+import org.junit.Before;
+import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
-
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.junit.RbacBuilder;
 import org.opensbpm.engine.core.junit.ServiceITCase;
 import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProcessModelChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isRoleChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isRoleUserChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserProcessModelChangedEvent;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 public class ModelServiceBoundaryIT extends ServiceITCase {
 

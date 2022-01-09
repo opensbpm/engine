@@ -16,16 +16,15 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import static org.opensbpm.engine.core.engine.SubjectTrailService.SubjectTrailSpecifications.withProcessInstance;
-
+import java.util.List;
+import javax.persistence.criteria.Join;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance_;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.engine.entities.SubjectTrail;
 import org.opensbpm.engine.core.engine.entities.SubjectTrail_;
-import java.util.List;
-import javax.persistence.criteria.Join;
 import org.opensbpm.engine.core.engine.entities.Subject_;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,7 +33,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
+import static org.opensbpm.engine.core.engine.SubjectTrailService.SubjectTrailSpecifications.withProcessInstance;
 
 @Service
 public class SubjectTrailService {

@@ -16,19 +16,17 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
+import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.events.ProviderTaskChangedEvent;
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.core.engine.ProviderTaskChangedObserver.ProviderTaskExecutor;
 import org.opensbpm.engine.core.junit.ServiceITCase;
-import org.junit.Test;
-
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.verify;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
 
 public class ProviderTaskChangedObserverIT extends ServiceITCase {
 

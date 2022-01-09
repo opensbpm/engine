@@ -17,8 +17,6 @@
  */
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -32,6 +30,8 @@ import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity
 public class SimpleAttributeModel extends AttributeModel implements HasId, Serializable {

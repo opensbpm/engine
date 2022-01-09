@@ -16,8 +16,8 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
-import org.opensbpm.engine.core.SbpmJpaConfig;
 import org.junit.runner.RunWith;
+import org.opensbpm.engine.core.SbpmJpaConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;

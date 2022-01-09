@@ -17,19 +17,15 @@
  */
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.engine.entities.UserSubject;
-import org.opensbpm.engine.core.engine.entities.Subject;
+import org.junit.Test;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.core.junit.EntityTestCase;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.State;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
 
 public class SubjectTest extends EntityTestCase<Subject> {
 

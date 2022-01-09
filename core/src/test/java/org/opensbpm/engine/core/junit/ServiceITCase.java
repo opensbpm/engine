@@ -16,16 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
-import org.opensbpm.engine.api.UserTokenService.TokenRequest;
-
-import static org.opensbpm.engine.utils.StreamUtils.oneOrMoreAsList;
-
-import org.opensbpm.engine.api.events.EngineEvent;
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.core.junit.ServiceITConfig.EngineEventsCollector;
-import org.opensbpm.engine.core.model.ProcessModelService;
-import org.opensbpm.engine.core.model.ProcessDefinitionPersistor;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -38,15 +28,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaDelete;
 import org.hamcrest.Matcher;
-
-import static org.hamcrest.Matchers.containsInAnyOrder;
-
 import org.junit.After;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.opensbpm.engine.api.UserTokenService.TokenRequest;
+import org.opensbpm.engine.api.events.EngineEvent;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.junit.ServiceITConfig.EngineEventsCollector;
+import org.opensbpm.engine.core.model.ProcessDefinitionPersistor;
+import org.opensbpm.engine.core.model.ProcessModelService;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,6 +45,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.TransactionTemplate;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.opensbpm.engine.utils.StreamUtils.oneOrMoreAsList;
 
 /**
  * Abstract Spring-Boot Test-Case for Service-Layer related Integration-Tests.

@@ -16,13 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.UserTokenServiceBoundary;
+import org.junit.Test;
 import org.opensbpm.engine.api.UserTokenService.TokenRequest;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.core.junit.ServiceITCase;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 

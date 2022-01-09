@@ -1,57 +1,48 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core;
 
-import org.opensbpm.engine.core.UserTokenServiceBoundary;
-import org.opensbpm.engine.core.ModelServiceBoundary;
-import org.opensbpm.engine.core.EngineServiceBoundary;
+import java.time.LocalDateTime;
+import org.junit.Before;
+import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.builder.ProcessBuilder;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.core.engine.UserService;
 import org.opensbpm.engine.core.junit.ServiceITCase;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProcessInstanceChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserProcessInstanceChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserProcessModelChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserTaskChangedEvent;
-
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-
-import org.opensbpm.engine.api.model.builder.ProcessBuilder;
-import org.opensbpm.engine.api.model.definition.ProcessDefinition;
-import org.opensbpm.engine.core.engine.UserService;
-import java.time.LocalDateTime;
-
-import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class EngineServiceBoundaryIT extends ServiceITCase {
 

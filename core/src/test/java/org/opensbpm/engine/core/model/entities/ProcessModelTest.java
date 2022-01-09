@@ -16,13 +16,11 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.junit.EntityTestCase;
 import java.util.Collection;
-
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import org.junit.Test;
+import org.opensbpm.engine.core.junit.EntityTestCase;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.fail;
 
 public class ProcessModelTest extends EntityTestCase<ProcessModel> {

@@ -16,9 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.utils.entities.HasDisplayName;
-import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Objects;
@@ -37,6 +34,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
+import org.opensbpm.engine.core.utils.entities.HasDisplayName;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity
 @Table(name = "state", uniqueConstraints = {

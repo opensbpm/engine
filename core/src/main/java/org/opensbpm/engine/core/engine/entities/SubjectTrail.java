@@ -16,8 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.opensbpm.engine.core.model.entities.State;
-import org.opensbpm.engine.core.utils.entities.HasId;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -32,6 +30,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.core.model.entities.State;
+import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity(name = "subjecttrail")
 public class SubjectTrail implements HasId, Serializable {

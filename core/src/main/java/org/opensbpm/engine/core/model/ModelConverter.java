@@ -16,15 +16,14 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model;
 
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
+import java.util.Collection;
+import java.util.List;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.opensbpm.engine.core.model.entities.Role;
-import java.util.Collection;
-import java.util.List;
+import org.opensbpm.engine.core.model.entities.UserSubjectModel;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public class ModelConverter {
 

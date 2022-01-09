@@ -16,9 +16,14 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
-import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.opensbpm.engine.api.events.EngineEvent;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.events.ProcessInstanceChangedEvent;
@@ -31,43 +36,34 @@ import org.opensbpm.engine.api.events.UserProcessInstanceChangedEvent;
 import org.opensbpm.engine.api.events.UserProcessModelChangedEvent;
 import org.opensbpm.engine.api.events.UserTaskChangedEvent;
 import org.opensbpm.engine.api.instance.ProcessInfo;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.instance.RoleToken;
 import org.opensbpm.engine.api.instance.TaskInfo;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.core.engine.EngineConverter;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ServiceSubject;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
-import org.opensbpm.engine.core.model.ProcessModelService;
 import org.opensbpm.engine.core.model.ModelConverter;
+import org.opensbpm.engine.core.model.ProcessModelService;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-
-import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
-
+import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
 import static org.opensbpm.engine.core.engine.EngineConverter.convertUser;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModel;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
+import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Component
 public class EngineEventPublisher {

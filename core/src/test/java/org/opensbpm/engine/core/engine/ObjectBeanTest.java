@@ -16,22 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.core.engine.AttributeStore;
-import org.opensbpm.engine.core.engine.ObjectBean;
-import org.opensbpm.engine.api.model.Binary;
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.ObjectReference;
-import org.opensbpm.engine.core.engine.entities.ObjectInstance;
-import org.opensbpm.engine.core.engine.entities.ProcessInstance;
-import org.opensbpm.engine.core.junit.ServiceITCase;
-import org.opensbpm.engine.core.model.ProcessModelService;
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
-import org.opensbpm.engine.core.model.entities.ModelVersion;
-import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -46,13 +30,26 @@ import org.apache.commons.beanutils.DynaBeanPropertyMapDecorator;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.opensbpm.engine.api.model.Binary;
+import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.api.model.ObjectReference;
+import org.opensbpm.engine.core.engine.entities.ObjectInstance;
+import org.opensbpm.engine.core.engine.entities.ProcessInstance;
+import org.opensbpm.engine.core.junit.ServiceITCase;
+import org.opensbpm.engine.core.model.ProcessModelService;
+import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
+import org.opensbpm.engine.core.model.entities.ModelVersion;
+import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.model.entities.ProcessModel;
+import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
+import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 public class ObjectBeanTest extends ServiceITCase {
 

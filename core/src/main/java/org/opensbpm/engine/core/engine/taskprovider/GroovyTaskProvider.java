@@ -16,11 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.taskprovider;
 
-import org.opensbpm.engine.api.instance.NextState;
-import org.opensbpm.engine.api.instance.Task;
-import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
-import org.opensbpm.engine.api.spi.TaskExecutionException;
-import org.opensbpm.engine.api.spi.TaskExecutionProvider;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -28,6 +23,11 @@ import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+import org.opensbpm.engine.api.instance.NextState;
+import org.opensbpm.engine.api.instance.Task;
+import org.opensbpm.engine.api.spi.TaskExecutionException;
+import org.opensbpm.engine.api.spi.TaskExecutionProvider;
+import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
 import org.springframework.stereotype.Component;
 
 @Component

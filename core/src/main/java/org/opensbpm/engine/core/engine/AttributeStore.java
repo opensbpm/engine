@@ -17,16 +17,6 @@
  */
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.api.instance.SourceMap;
-import org.opensbpm.engine.core.model.entities.AttributeModel;
-import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
-import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
-import org.opensbpm.engine.core.model.entities.IsAttributeParent;
-import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +26,16 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.opensbpm.engine.api.instance.SourceMap;
+import org.opensbpm.engine.core.model.entities.AttributeModel;
+import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
+import org.opensbpm.engine.core.model.entities.FunctionState;
+import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
+import org.opensbpm.engine.core.model.entities.IsAttributeParent;
+import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
+import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
+import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.springframework.data.util.Pair;
 
 /**

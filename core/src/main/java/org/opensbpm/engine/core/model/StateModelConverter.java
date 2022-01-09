@@ -17,10 +17,10 @@
  */
 package org.opensbpm.engine.core.model;
 
+import java.util.Map;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AbstractAttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.NestedAttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.PermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToOnePermissionBuilder;
@@ -44,7 +44,6 @@ import org.opensbpm.engine.core.model.entities.StateGraph;
 import org.opensbpm.engine.core.model.entities.StatePermission;
 import org.opensbpm.engine.core.model.entities.StateVisitor;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
-import java.util.Map;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 

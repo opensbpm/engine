@@ -16,7 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.junit.EntityTestCase;
 
 public class StateTest extends EntityTestCase<State> {

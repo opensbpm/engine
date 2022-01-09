@@ -16,27 +16,25 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
-import org.opensbpm.engine.api.events.EngineEvent.Type;
-import org.opensbpm.engine.core.EngineEventPublisher;
-import org.opensbpm.engine.core.model.entities.Role;
-import org.opensbpm.engine.core.engine.entities.User;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.opensbpm.engine.api.events.EngineEvent.Type;
+import org.opensbpm.engine.core.EngineEventPublisher;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.User_;
+import org.opensbpm.engine.core.model.entities.Role;
+import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withIds;
 import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withUsername;
-
-import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 
 @Service
 @Transactional

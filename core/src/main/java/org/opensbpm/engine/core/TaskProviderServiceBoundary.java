@@ -16,12 +16,12 @@
  ******************************************************************************/
 package org.opensbpm.engine.core;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.TaskProviderService;
 import org.opensbpm.engine.api.taskprovider.TaskProviderInfo;
 import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
 import org.opensbpm.engine.core.engine.TaskProviderManager;
-import java.util.Collection;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

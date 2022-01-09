@@ -16,9 +16,6 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
-import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -27,6 +24,9 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
+import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
+import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Entity
 @Table(name = "statereceive")
