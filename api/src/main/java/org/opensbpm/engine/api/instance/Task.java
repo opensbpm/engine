@@ -32,7 +32,6 @@ public class Task {
     private final TaskInfo taskInfo;
     protected final TaskResponse taskResponse;
     private final Map<ObjectSchema, ObjectBean> objectCache = new HashMap<>();
-    private final Map<ObjectSchema, AttributeStore> storeCache = new HashMap<>();
 
     public Task(TaskInfo taskInfo, TaskResponse taskResponse) {
         this.taskInfo = Objects.requireNonNull(taskInfo, "taskInfo must be non null");

@@ -17,15 +17,11 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 import org.junit.Test;
-import org.opensbpm.engine.api.instance.TaskObsolete.AttributeBean;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -38,7 +34,6 @@ import static org.junit.Assert.fail;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.containsFields;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isObjectData;
 import static org.opensbpm.engine.api.instance.TaskRequestMatchers.isValueElement;
-import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 
 public class TaskTest {
 
@@ -178,12 +173,12 @@ public class TaskTest {
         );
         Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
 
-        TaskObsolete task = new TaskObsolete(new TaskInfo(), taskResponse);
-        getAttribute(task, "Object 1", "Field 3").setValue("1.3");
-        getAttribute(task, "Object 1", "Field 4").setValue("1.4");
+        Task task = new Task(new TaskInfo(), taskResponse);
+        task.getObjectBean(object1Definition).set("Field 3", "1.3");
+        task.getObjectBean(object1Definition).set("Field 4", "1.4");
 
-        getAttribute(task, "Object 2", "Field 3").setValue("2.3");
-        getAttribute(task, "Object 2", "Field 4").setValue("2.4");
+        task.getObjectBean(object2Definition).set("Field 3", "2.3");
+        task.getObjectBean(object2Definition).set("Field 4", "2.4");
 
 //        getChildObject(task, "Object 2", "Object 2 Sub").getAttribute("Field 3").setValue("2.1.3");
 //        getChildObject(task, "Object 2", "Object 2 Sub").getAttribute("Field 4").setValue("2.1.4");
@@ -230,33 +225,13 @@ public class TaskTest {
         return objectDefinition;
     }
 
-    private ObjectData createData(ObjectSchema objectDefinition, String f2Value, ObjectData... childs) {
-        Map<Long, Serializable> datas = new HashMap<>();
-        datas.put(objectDefinition.getAttributes().get(0).getId(), null);
-        datas.put(objectDefinition.getAttributes().get(1).getId(), f2Value);
-        datas.put(objectDefinition.getAttributes().get(2).getId(), null);
-        datas.put(objectDefinition.getAttributes().get(3).getId(), "overriden");
-        ObjectData objectResponse = ObjectData.of(objectDefinition.getName())
-                .withData(datas)
-                .build();
-        if (childs.length != 0) {
-//            objectResponse.setChildren(Arrays.asList(childs));
-        }
-        return objectResponse;
-    }
-
-    private ObjectSchema getObjectSchema(TaskObsolete task, String name) {
-        return filterToOne(task.getTaskDocument().getSchemas(),
-                schema -> schema.getName().equals(name))
-                .orElseThrow(() -> new IllegalArgumentException("ObjectSchema '" + name + "' not found"));
-    }
-
-    private AttributeBean getAttribute(TaskObsolete task, String objectName, String fieldName) {
-        ObjectSchema objectSchema = getObjectSchema(task, objectName);
-        AttributeSchema attributeSchema = filterToOne(objectSchema.getAttributes(),
-                attribute -> attribute.getName().equals(fieldName))
-                .orElseThrow(() -> new IllegalArgumentException("Field '" + fieldName + "' not found"));
-        return task.getTaskDocument().getAttribute(objectSchema, attributeSchema);
+    private ObjectData createData(ObjectSchema objectSchema, String f2Value, ObjectData... childs) {
+        ObjectBean objectBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        objectBean.set(objectSchema.getAttributes().get(0), null);
+        objectBean.set(objectSchema.getAttributes().get(1), f2Value);
+        objectBean.set(objectSchema.getAttributes().get(2), null);
+        objectBean.set(objectSchema.getAttributes().get(3), "overriden");
+        return objectBean.createObjectData();
     }
 
 }
