@@ -156,6 +156,37 @@ public class TaskTest {
         assertThat(result.getLastChanged(), is(lastChanged));
     }
 
+    @Test
+    public void testCreateAttributeStoreFromExistingData() {
+        //given
+        final long sId = 1l;
+        final NextState nextState = NextState.of(sId, "Next State");
+
+        final long o1f1mId = 11l;
+        final long o1f2mId = 12l;
+        final long o1f3mId = 13l;
+        final long o1f4mId = 14l;
+        final ObjectSchema objectSchema = createSchema("Object 1", o1f1mId, o1f2mId, o1f3mId, o1f4mId);
+        ObjectData objectData = createData(objectSchema, "1.2");
+
+        LocalDateTime lastChanged = LocalDateTime.MIN;
+        TaskResponse taskResponse = TaskResponse.of(sId, 
+                Arrays.asList(nextState), 
+                lastChanged,
+                asList(objectSchema), 
+                asList(objectData)
+        );
+        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
+
+        Task task = new Task(new TaskInfo(), taskResponse);
+        
+        //when
+        AttributeStore attributeStore = task.createAttributeStore(objectSchema);
+
+        //then
+        assertThat(attributeStore, is(notNullValue()));
+    }
+
     private ObjectSchema createSchema(String name, long f1mId, long f2mId, long f3mId, long f4mId, ObjectData... childs) {
         ObjectSchema objectDefinition = ObjectSchema.of(1l,name, Arrays.asList(new AttributeSchema(f1mId, "Field 1", FieldType.STRING),
                 new AttributeSchema(f2mId, "Field 2", FieldType.STRING),
