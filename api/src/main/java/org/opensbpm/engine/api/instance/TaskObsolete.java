@@ -70,12 +70,7 @@ public class TaskObsolete extends Task {
             if (datas.containsKey(objectSchema)) {
                 objectData = datas.get(objectSchema);
             } else {
-                objectData = taskResponse.getDatas().stream()
-                        .filter(data -> data.getName().equals(objectSchema.getName()))
-                        .reduce(toOne())
-                        .orElse(ObjectData.of(objectSchema.getName())
-                                .withData(new HashMap<>())
-                                .build());
+                objectData = getObjectData(objectSchema);
                 datas.put(objectSchema, objectData);
             }
             return objectData;
