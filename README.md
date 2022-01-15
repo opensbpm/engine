@@ -7,3 +7,14 @@ OpenSBPM:engine is the core component to execute subject oriented business proce
 Currently there are no known production usages so the library itself is under development und unstable. The public API can change with notice. If you are planning to use this engine in production send a short mail and a release will be created.
 For experimental usage snapshot JARs are available in Maven Repository of this repo.
 
+```xml
+<repositories>
+    <repository>
+        <id>opensbpm</id>
+        <url>https://maven.pkg.github.com/opensbpm/engine</url>
+        <snapshots>
+            <enabled>true</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+```
