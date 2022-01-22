@@ -25,9 +25,10 @@
 
     <name>OpenSBPM Engine</name>
     <description>Open SBPM Engine API and implementation</description>
+    <url>http://opensbpm.org/engine</url>
     <organization>
         <name>OpenSBPM</name>
-        <url>http://openSBPM.org</url>
+        <url>http://opensbpm.org</url>
     </organization>
 
     <developers>
@@ -47,6 +48,11 @@
         <module>examples</module>        
     </modules>
 
+    <scm>
+        <connection>scm:git:git@github.com:opensbpm/engine.git</connection>
+        <developerConnection>scm:git:git@github.com:opensbpm/engine.git</developerConnection>
+        <url>https://github.com/opensbpm/engine</url>
+    </scm>
     <distributionManagement>
         <repository>
             <id>opensbpm</id>
@@ -342,6 +348,22 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.10.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <pubScmUrl>scm:git:git@github.com:opensbpm/opensbpm.github.io.git</pubScmUrl>
+                    <scmBranch>gh-pages</scmBranch>
+                    <subDirectory>engine</subDirectory>
+                </configuration>
+            </plugin>
+        
         </plugins>
     </build>
 </project>
