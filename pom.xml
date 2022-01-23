@@ -62,6 +62,10 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <site>
+            <id>website</id>
+            <url>http://opensbpm.org/engine/</url>
+        </site>
     </distributionManagement>
 
     <properties>
