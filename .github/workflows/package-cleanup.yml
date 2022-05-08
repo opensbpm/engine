@@ -29,8 +29,8 @@ jobs:
     - name: Send greeting
       run: echo "Hello ${{ github.event.inputs.name }}"
   cleanup:
-    - uses: actions/delete-package-versions@v3
+    uses: actions/delete-package-versions@v3
     with:
-      package-name: 'test-package'
-      min-versions-to-keep: 2
+        package-name: 'test-package'
+        min-versions-to-keep: 2
       
