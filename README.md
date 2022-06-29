@@ -11,7 +11,7 @@ For experimental usage snapshot JARs are available in Maven Repository of this r
 <repositories>
     <repository>
         <id>opensbpm</id>
-        <url>https://maven.pkg.github.com/opensbpm/engine</url>
+        <url>https://repo.repsy.io/mvn/sedstef/opensbpm</url>
         <snapshots>
             <enabled>true</enabled>
         </snapshots>
