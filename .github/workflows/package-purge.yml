@@ -1,0 +1,16 @@
+name: package cleanup
+on:
+  push:
+
+jobs:
+  fail_purging_semantic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: clean packages
+        uses: MobileheadHolding/github-action-purge-packages@master
+        with:
+          #owner: github
+          #repo: semantic
+          version-regex: 'sha*'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
