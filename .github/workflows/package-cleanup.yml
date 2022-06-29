@@ -21,6 +21,8 @@ jobs:
       - name: Delete Package Versions    
         uses: actions/delete-package-versions@v3
         with:
-          package-name: 'org.opensbpm.engine.*'
-          min-versions-to-keep: 2
+          owner: 'opensbpm'
+          repo: 'engine'
+          #package-name: 'org.opensbpm.engine.*'
+          min-versions-to-keep: 1
     
