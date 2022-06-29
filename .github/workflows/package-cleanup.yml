@@ -18,10 +18,9 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Delete Package Versions
-    
       - uses: actions/delete-package-versions@v3
-      with:
-        package-name: 'test-package'
-        min-versions-to-keep: 2
+      - name: Delete Package Versions    
+        with:
+          package-name: 'test-package'
+          min-versions-to-keep: 2
     
