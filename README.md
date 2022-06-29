@@ -1,7 +1,7 @@
 # OpenSBPM:engine
 Workflow engine for [S-BPM](https://en.wikipedia.org/wiki/Subject-oriented_business_process_management).
 
-OpenSBPM:engine is the core component to execute subject oriented business 
+*OpenSBPM:engine* is the core component to execute subject oriented business 
 process models. It uses [SpringBoot Data JPA](https://spring.io/projects/spring-data-jpa) 
 to persist the states into a configurable database.
 
