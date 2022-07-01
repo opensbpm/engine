@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.engine;
 
 import java.math.BigDecimal;
@@ -68,7 +69,7 @@ public class ObjectBeanTest extends ServiceITCase {
     private ObjectModel createObjetModel() {
         ObjectModel refObjectModel = new ObjectModel("ref");
         refObjectModel.addAttributeModel(new SimpleAttributeModel(refObjectModel, "name", FieldType.STRING));
-        
+
         ObjectModel objectModel = new ObjectModel("root");
         objectModel.addAttributeModel(new SimpleAttributeModel(objectModel, "string", FieldType.STRING));
         objectModel.addAttributeModel(new SimpleAttributeModel(objectModel, "number", FieldType.NUMBER));
@@ -92,7 +93,6 @@ public class ObjectBeanTest extends ServiceITCase {
         nestedNestedModel.addAttributeModel(new SimpleAttributeModel(nestedNestedModel, "string", FieldType.STRING));
         NestedAttributeModel indexedNestedModel = nestedModel.addAttributeModel(new IndexedAttributeModel(nestedModel, "indexed"));
         indexedNestedModel.addAttributeModel(new SimpleAttributeModel(indexedNestedModel, "string", FieldType.STRING));
-
 
         NestedAttributeModel indexedModel = objectModel.addAttributeModel(new IndexedAttributeModel(objectModel, "indexed"));
         indexedModel.addAttributeModel(new SimpleAttributeModel(indexedModel, "string", FieldType.STRING));
@@ -161,10 +161,12 @@ public class ObjectBeanTest extends ServiceITCase {
 
     @Test
     public void testNestedTypes() throws Exception {
+        //arrange
         ObjectModel objectModel = createObjetModel();
 
         DynaBean dynaBean = new ObjectBean(objectModel, new AttributeStore(objectModel));
 
+        //act + assert
         assertThat(PropertyUtils.getProperty(dynaBean, "nested"), is(instanceOf(ObjectBean.class)));
         assertThat(PropertyUtils.getProperty(dynaBean, "nested.nested"), is(instanceOf(ObjectBean.class)));
         assertThat(PropertyUtils.getProperty(dynaBean, "nested.indexed"), is(instanceOf(List.class)));
@@ -176,48 +178,47 @@ public class ObjectBeanTest extends ServiceITCase {
 
     @Test
     public void testGivenValues() throws Exception {
-        //given
-
+        //arrange
         ObjectModel objectModel = createObjetModel();
-
+        
         ObjectInstance objectInstance = new ObjectInstance(objectModel, new ProcessInstance() {
         });
-        ObjectBean sourceBean = new ObjectBean(objectModel, objectInstance.getAttributeStore());
-        PropertyUtils.setProperty(sourceBean, "string", "a");
-        PropertyUtils.setProperty(sourceBean, "number", 10);
-        PropertyUtils.setProperty(sourceBean, "decimal", BigDecimal.TEN);
-        PropertyUtils.setProperty(sourceBean, "date", LocalDate.now());
-        PropertyUtils.setProperty(sourceBean, "time", LocalTime.now());
-        PropertyUtils.setProperty(sourceBean, "boolean", Boolean.TRUE);
-        PropertyUtils.setProperty(sourceBean, "binary", new Binary());
-        PropertyUtils.setProperty(sourceBean, "reference", ObjectReference.of("1", "Reference"));
+        ObjectBean objectBean = new ObjectBean(objectModel, objectInstance.getAttributeStore());
+        
+        PropertyUtils.setProperty(objectBean, "string", "a");
+        PropertyUtils.setProperty(objectBean, "number", 10);
+        PropertyUtils.setProperty(objectBean, "decimal", BigDecimal.TEN);
+        PropertyUtils.setProperty(objectBean, "date", LocalDate.now());
+        PropertyUtils.setProperty(objectBean, "time", LocalTime.now());
+        PropertyUtils.setProperty(objectBean, "boolean", Boolean.TRUE);
+        PropertyUtils.setProperty(objectBean, "binary", new Binary());
+        PropertyUtils.setProperty(objectBean, "reference", ObjectReference.of("1", "Reference"));
 
-        PropertyUtils.setProperty(sourceBean, "nested.string", "a");
-        PropertyUtils.setProperty(sourceBean, "nested.number", 10);
-        PropertyUtils.setProperty(sourceBean, "nested.decimal", BigDecimal.TEN);
-        PropertyUtils.setProperty(sourceBean, "nested.date", LocalDate.now());
-        PropertyUtils.setProperty(sourceBean, "nested.time", LocalTime.now());
-        PropertyUtils.setProperty(sourceBean, "nested.boolean", Boolean.TRUE);
-        PropertyUtils.setProperty(sourceBean, "nested.binary", new Binary());
-        PropertyUtils.setProperty(sourceBean, "nested.reference", ObjectReference.of("1", "Reference"));
-        PropertyUtils.setProperty(sourceBean, "nested.nested.string", "a");
-        PropertyUtils.setProperty(sourceBean, "nested.indexed[0].string", "a");
+        PropertyUtils.setProperty(objectBean, "nested.string", "a");
+        PropertyUtils.setProperty(objectBean, "nested.number", 10);
+        PropertyUtils.setProperty(objectBean, "nested.decimal", BigDecimal.TEN);
+        PropertyUtils.setProperty(objectBean, "nested.date", LocalDate.now());
+        PropertyUtils.setProperty(objectBean, "nested.time", LocalTime.now());
+        PropertyUtils.setProperty(objectBean, "nested.boolean", Boolean.TRUE);
+        PropertyUtils.setProperty(objectBean, "nested.binary", new Binary());
+        PropertyUtils.setProperty(objectBean, "nested.reference", ObjectReference.of("1", "Reference"));
+        PropertyUtils.setProperty(objectBean, "nested.nested.string", "a");
+        PropertyUtils.setProperty(objectBean, "nested.indexed[0].string", "a");
 
-        PropertyUtils.setProperty(sourceBean, "indexed[0].string", "a");
-        PropertyUtils.setProperty(sourceBean, "indexed[0].number", 10);
-        PropertyUtils.setProperty(sourceBean, "indexed[0].decimal", BigDecimal.TEN);
-        PropertyUtils.setProperty(sourceBean, "indexed[0].date", LocalDate.now());
-        PropertyUtils.setProperty(sourceBean, "indexed[0].time", LocalTime.now());
-        PropertyUtils.setProperty(sourceBean, "indexed[0].boolean", Boolean.TRUE);
-        PropertyUtils.setProperty(sourceBean, "indexed[0].binary", new Binary());
-        PropertyUtils.setProperty(sourceBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
-        PropertyUtils.setProperty(sourceBean, "indexed[0].nested.string", "a");
-        PropertyUtils.setProperty(sourceBean, "indexed[0].indexed[0].string", "a");
+        PropertyUtils.setProperty(objectBean, "indexed[0].string", "a");
+        PropertyUtils.setProperty(objectBean, "indexed[0].number", 10);
+        PropertyUtils.setProperty(objectBean, "indexed[0].decimal", BigDecimal.TEN);
+        PropertyUtils.setProperty(objectBean, "indexed[0].date", LocalDate.now());
+        PropertyUtils.setProperty(objectBean, "indexed[0].time", LocalTime.now());
+        PropertyUtils.setProperty(objectBean, "indexed[0].boolean", Boolean.TRUE);
+        PropertyUtils.setProperty(objectBean, "indexed[0].binary", new Binary());
+        PropertyUtils.setProperty(objectBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
+        PropertyUtils.setProperty(objectBean, "indexed[0].nested.string", "a");
+        PropertyUtils.setProperty(objectBean, "indexed[0].indexed[0].string", "a");
 
-        //when
+        //act + assert
         DynaBean dynaBean = objectInstance.getObjectBean();
 
-        //then
         assertNotNullProperty(dynaBean, "string");
         assertNotNullProperty(dynaBean, "number");
         assertNotNullProperty(dynaBean, "decimal");
