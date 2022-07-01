@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.lang.String.format;
 import static java.util.Collections.unmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.toOne;
 
 @Deprecated
 public class TaskObsolete extends Task {
