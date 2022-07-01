@@ -16,9 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
@@ -32,9 +30,6 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasSize;
 
 public class MessageIT extends EntityDataTestCase {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @Test
     public void testInsert() {

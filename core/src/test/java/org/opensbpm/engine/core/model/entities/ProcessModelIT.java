@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.model.entities;
 
 import java.sql.Timestamp;
@@ -22,9 +23,7 @@ import javax.persistence.PersistenceException;
 import org.hamcrest.Matcher;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
@@ -33,20 +32,18 @@ import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import org.opensbpm.engine.core.model.RoleService;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
 public class ProcessModelIT extends EntityDataTestCase {
-
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     @MockBean
     private RoleService roleService;
@@ -100,17 +97,21 @@ public class ProcessModelIT extends EntityDataTestCase {
 
     @Test
     public void testUniqueConstraint() {
-        thrown.expectCause(isA(ConstraintViolationException.class));
-
         //given
         ProcessModel processModel = entityManager.persistFlushFind(new ProcessModel("process", new ModelVersion(0, 0)));
         assertThat(processModel.getId(), is(notNullValue()));
 
+        ProcessModel newProcessModel = new ProcessModel("process", new ModelVersion(0, 0));
+
         //when
-        ProcessModel result = entityManager.persistFlushFind(new ProcessModel("process", new ModelVersion(0, 0)));
+        PersistenceException persistenceException = assertThrows("UniqueKey doesn't work", PersistenceException.class, () -> {
+            ProcessModel result = entityManager.persistFlushFind(newProcessModel);
+            fail("persist of the same ProcessModel twice must throw exception, but was " + result);
+        });
 
         //then
-        fail("persist of the same ProcessModel twice must throw exception, but was " + result);
+        assertThat("UniqueKey doesn't work", persistenceException.getCause(),
+                is(instanceOf(ConstraintViolationException.class)));
     }
 
     @Test

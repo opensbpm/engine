@@ -32,9 +32,6 @@ import static org.junit.Assert.fail;
 
 public class UserSubjectIT extends EntityDataTestCase {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test(expected = PersistenceException.class)
     public void testInsertEmpty() {
         //given
