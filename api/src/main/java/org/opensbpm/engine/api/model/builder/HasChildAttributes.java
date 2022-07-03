@@ -21,9 +21,9 @@ import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 
 public interface HasChildAttributes<T> {
 
-    T addAttribute(AttributeBuilder<?> attributeBuilder);
+    T addAttribute(AttributeBuilder<?,?> attributeBuilder);
 
-    AttributeBuilder<?> getAttribute(String name);
+    AttributeBuilder<?,?> getAttribute(String name);
 
     String getName();
 

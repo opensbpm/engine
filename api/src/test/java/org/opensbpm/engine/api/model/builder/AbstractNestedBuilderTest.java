@@ -28,7 +28,12 @@ public class AbstractNestedBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetAttributeWithWrongname() {
-        AttributeBuilder<?> result = new AbstractNestedBuilder("Test") {
+        AttributeBuilder<?,?> result = new AbstractNestedBuilder("Test") {
+            @Override
+            protected AbstractNestedBuilder self() {
+                return this;
+            }
+            
             @Override
             protected ObjectDefinition.NestedAttribute create(String name, List attributes) {
                 throw new UnsupportedOperationException("Not supported yet.");

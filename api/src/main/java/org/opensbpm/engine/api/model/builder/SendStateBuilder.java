@@ -41,6 +41,11 @@ public class SendStateBuilder extends StateBuilder<SendStateBuilder, SendStateDe
         this.objectBuilder = objectBuilder;
     }
 
+    @Override
+    protected SendStateBuilder self() {
+        return this;
+    }
+
     public SendStateBuilder asAsync() {
         checkBuilt();
         this.async = true;

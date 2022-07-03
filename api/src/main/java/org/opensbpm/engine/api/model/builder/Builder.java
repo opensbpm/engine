@@ -19,15 +19,15 @@ package org.opensbpm.engine.api.model.builder;
 /**
  * basic interface for all Builders
  *
- * @param <T> type of object to build
+ * @param <V> type of object to build
  */
-public interface Builder<T> {
+public interface Builder<V> {
 
     /**
      * builds the object, this method must be implemented idempotent
      *
-     * @return the object build or an already builded instance
+     * @return the object build or an already built instance
      */
-    T build();
+    V build();
 
 }

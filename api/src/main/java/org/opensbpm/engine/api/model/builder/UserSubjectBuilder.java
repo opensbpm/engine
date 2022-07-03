@@ -34,6 +34,12 @@ public class UserSubjectBuilder extends SubjectBuilder<UserSubjectBuilder, UserS
         this.roles.addAll(roles);
     }
 
+    @Override
+    protected UserSubjectBuilder self() {
+        return this;
+    }
+    
+
     public UserSubjectBuilder addRole(String role) {
         roles.add(role);
         return this;

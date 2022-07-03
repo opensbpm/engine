@@ -113,17 +113,17 @@ public final class DefinitionFactory {
      * @return a new instance of {@link AttributePermissionBuilder}
      */
     public static AttributePermissionBuilder simplePermission(
-            AttributeBuilder<?> attributeBuilder, Permission permission, boolean mandatory){
+            AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory){
         return new AttributePermissionBuilder(attributeBuilder, permission, mandatory);
     }
     
     public static ToOnePermissionBuilder toOnePermission(
-            AttributeBuilder<?> attributeBuilder, Permission permission, boolean mandatory){
+            AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory){
         return new ToOnePermissionBuilder(attributeBuilder, permission, mandatory);
     }
     
     public static ToManyPermissionBuilder toManyPermission(
-            AttributeBuilder<?> attributeBuilder, Permission permission, boolean mandatory){
+            AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory){
         return new ToManyPermissionBuilder(attributeBuilder, permission, mandatory);
     }
     

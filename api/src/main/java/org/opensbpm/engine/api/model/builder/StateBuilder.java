@@ -22,7 +22,7 @@ import java.util.logging.Logger;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 
-public abstract class StateBuilder<T extends StateBuilder<T, V>, V extends StateDefinition> extends AbstractBuilder<V> {
+public abstract class StateBuilder<T extends StateBuilder<T, V>, V extends StateDefinition> extends AbstractBuilder<V,StateBuilder<T,V>> {
 
     protected static final Logger LOGGER = Logger.getLogger(StateBuilder.class.getName());
 
@@ -47,7 +47,7 @@ public abstract class StateBuilder<T extends StateBuilder<T, V>, V extends State
     public T withDisplayName(String displayName) {
         checkBuilt();
         this.displayName = displayName;
-        return castThis();
+        return (T) self();
     }
 
     public T asStart() {
@@ -61,7 +61,7 @@ public abstract class StateBuilder<T extends StateBuilder<T, V>, V extends State
     public T eventType(StateEventType eventType) {
         checkBuilt();
         this.eventType = eventType;
-        return castThis();
+        return (T) self();
     }
 
     @Override

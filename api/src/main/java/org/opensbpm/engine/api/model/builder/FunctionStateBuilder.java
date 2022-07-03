@@ -53,6 +53,11 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         super(name);
     }
 
+    @Override
+    protected FunctionStateBuilder self() {
+        return this;
+    }
+    
     public FunctionStateBuilder withProvider(String provider) {
         checkBuilt();
         this.provider = provider;
@@ -97,35 +102,41 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         ((FunctionStateDefinitionImpl) build()).setHeads(mapToList(heads, StateBuilder::build));
     }
 
-    public static class PermissionBuilder extends AbstractBuilder<PermissionDefinition> {
+    public static class PermissionBuilder extends AbstractBuilder<PermissionDefinition,PermissionBuilder> {
 
         private final ObjectBuilder objectBuilder;
-        private final List<AbstractAttributePermissionBuilder<?, ? extends AttributePermissionDefinition>> attributePermissions = new ArrayList<>();
+        private final List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?>> attributePermissions = new ArrayList<>();
 
         public PermissionBuilder(ObjectBuilder objectBuilder) {
             this.objectBuilder = objectBuilder;
         }
 
-        public PermissionBuilder addReadPermission(AttributeBuilder<?> attributeBuilder) {
+        @Override
+        protected PermissionBuilder self() {
+            return this;
+        }
+        
+
+        public PermissionBuilder addReadPermission(AttributeBuilder<?,?> attributeBuilder) {
             return addPermission(attributeBuilder, Permission.READ, false);
         }
 
-        public PermissionBuilder addWritePermission(AttributeBuilder<?> attributeBuilder, boolean mandatory) {
+        public PermissionBuilder addWritePermission(AttributeBuilder<?,?> attributeBuilder, boolean mandatory) {
             return addPermission(attributeBuilder, Permission.WRITE, mandatory);
         }
 
-        public PermissionBuilder addPermission(AttributeBuilder<?> attributeBuilder,
+        public PermissionBuilder addPermission(AttributeBuilder<?,?> attributeBuilder,
                 Permission permission, boolean mandatory) {
             return addPermission(new AttributePermissionBuilder(attributeBuilder, permission, mandatory));
         }
 
         public PermissionBuilder addPermission(
-                AbstractAttributePermissionBuilder<?, ? extends AttributePermissionDefinition> permission) {
+                AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?> permission) {
             return addPermissions(Arrays.asList(permission));
         }
 
         public PermissionBuilder addPermissions(
-                List<AbstractAttributePermissionBuilder<?, ? extends AttributePermissionDefinition>> permissions) {
+                List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?>> permissions) {
             checkBuilt();
             attributePermissions.addAll(permissions);
             return this;
@@ -151,18 +162,22 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         }
     }
 
-    public abstract static class AbstractAttributePermissionBuilder<T extends AbstractAttributePermissionBuilder<T, V>, V extends AttributePermissionDefinition> extends AbstractBuilder<V> {
+    public abstract static class AbstractAttributePermissionBuilder<
+            V extends AttributePermissionDefinition,
+            T extends AbstractAttributePermissionBuilder<V,T>> 
+            extends AbstractBuilder<V,T> {
 
-        private final AttributeBuilder<?> attributeBuilder;
+        private final AttributeBuilder<?,?> attributeBuilder;
         private final Permission permission;
         private final boolean mandatory;
 
-        protected AbstractAttributePermissionBuilder(AttributeBuilder<?> attributeBuilder,
+        protected AbstractAttributePermissionBuilder(AttributeBuilder<?,?> attributeBuilder,
                 Permission permission, boolean mandatory) {
             this.attributeBuilder = attributeBuilder;
             this.permission = permission;
             this.mandatory = mandatory;
         }
+        
 
         @Override
         protected V create() {
@@ -176,12 +191,18 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
     }
 
     public static class AttributePermissionBuilder
-            extends AbstractAttributePermissionBuilder<AttributePermissionBuilder, AttributePermissionDefinition> {
+            extends AbstractAttributePermissionBuilder<AttributePermissionDefinition,AttributePermissionBuilder> {
 
-        public AttributePermissionBuilder(AttributeBuilder<?> attributeBuilder, Permission permission, boolean mandatory) {
+        public AttributePermissionBuilder(AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory) {
             super(attributeBuilder, permission, mandatory);
         }
 
+        @Override
+        protected AttributePermissionBuilder self() {
+            return this;
+        }
+
+        
         @Override
         protected AttributePermissionDefinition createAttributePermissionDefinition(AttributeDefinition attribute,
                 Permission permission, boolean mandatory) {
@@ -189,33 +210,42 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         }
     }
 
-    public abstract static class NestedAttributePermissionBuilder<T extends NestedAttributePermissionBuilder<T, V>, V extends NestedPermissionDefinition> extends AbstractAttributePermissionBuilder<T, V> {
+    public abstract static class NestedAttributePermissionBuilder<
+            V extends NestedPermissionDefinition,
+            T extends NestedAttributePermissionBuilder<V,T>
+            > extends AbstractAttributePermissionBuilder<V,T> {
 
-        protected final List<AbstractAttributePermissionBuilder<?, ? extends AttributePermissionDefinition>> permissionBuilders = new ArrayList<>();
+        protected final List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?>> permissionBuilders = new ArrayList<>();
 
-        public NestedAttributePermissionBuilder(AttributeBuilder<?> attributeBuilder,
+        public NestedAttributePermissionBuilder(AttributeBuilder<?,?> attributeBuilder,
                 Permission permission, boolean mandatory) {
             super(attributeBuilder, permission, mandatory);
         }
 
-        public T addPermission(AbstractAttributePermissionBuilder<?, ? extends AttributePermissionDefinition> permission) {
+        public T addPermission(AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?> permission) {
             return addPermissions(Arrays.asList(permission));
         }
 
-        public T addPermissions(List<AbstractAttributePermissionBuilder<?, ? extends AttributePermissionDefinition>> permissions) {
+        public T addPermissions(List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?>> permissions) {
             checkBuilt();
             this.permissionBuilders.addAll(permissions);
-            return castThis();
+            return (T) self();
         }
 
     }
 
-    public static class ToOnePermissionBuilder extends NestedAttributePermissionBuilder<ToOnePermissionBuilder, ToOnePermission> {
+    public static class ToOnePermissionBuilder extends NestedAttributePermissionBuilder<ToOnePermission,ToOnePermissionBuilder> {
 
-        public ToOnePermissionBuilder(AttributeBuilder<?> attributeBuilder, Permission permission, boolean mandatory) {
+        public ToOnePermissionBuilder(AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory) {
             super(attributeBuilder, permission, mandatory);
         }
 
+        @Override
+        protected ToOnePermissionBuilder self() {
+            return this;
+        }
+
+        
         @Override
         protected ToOnePermission createAttributePermissionDefinition(AttributeDefinition attribute,
                 Permission permission, boolean mandatory) {
@@ -225,13 +255,19 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
 
     }
 
-    public static class ToManyPermissionBuilder extends NestedAttributePermissionBuilder<ToManyPermissionBuilder, ToManyPermission> {
+    public static class ToManyPermissionBuilder extends NestedAttributePermissionBuilder<ToManyPermission,ToManyPermissionBuilder> {
 
-        public ToManyPermissionBuilder(AttributeBuilder<?> attributeBuilder,
+        public ToManyPermissionBuilder(AttributeBuilder<?,?> attributeBuilder,
                 Permission permission, boolean mandatory) {
             super(attributeBuilder, permission, mandatory);
         }
 
+        @Override
+        protected ToManyPermissionBuilder self() {
+            return this;
+        }
+
+        
         @Override
         protected ToManyPermission createAttributePermissionDefinition(AttributeDefinition attribute,
                 Permission permission, boolean mandatory) {

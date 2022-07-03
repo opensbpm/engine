@@ -28,7 +28,7 @@ import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
-public class ProcessBuilder extends AbstractBuilder<ProcessDefinition> {
+public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBuilder> {
 
     private final String name;
     private String description;
@@ -41,6 +41,12 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition> {
         this.name = name;
     }
 
+    @Override
+    protected ProcessBuilder self() {
+        return this;
+    }
+
+    
     public ProcessBuilder description(String description) {
         checkBuilt();
         this.description = description;

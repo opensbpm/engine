@@ -29,6 +29,11 @@ public class ServiceSubjectBuilder extends SubjectBuilder<ServiceSubjectBuilder,
     }
 
     @Override
+    protected ServiceSubjectBuilder self() {
+        return this;
+    }
+    
+    @Override
     protected ServiceSubjectDefinition createSubject(List<StateDefinition> states, boolean starter) {
         return new ServiceSubjectDefinition() {
             @Override

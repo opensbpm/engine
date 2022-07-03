@@ -19,19 +19,16 @@ package org.opensbpm.engine.api.model.builder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class AbstractBuilder<T> implements Builder<T> {
+public abstract class AbstractBuilder<V,T extends AbstractBuilder<V,T>> implements Builder<V> {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractBuilder.class.getName());
 
-    private T value;
+    private V value;
 
-    @SuppressWarnings(value = "unchecked")
-    protected final <V> V castThis() {
-        return (V) this;
-    }
-
+    protected abstract T self();
+    
     @Override
-    public final T build() {
+    public final V build() {
         if (value == null) {
             value = create();
             LOGGER.log(Level.FINE, "created {0}", value);
@@ -39,7 +36,7 @@ public abstract class AbstractBuilder<T> implements Builder<T> {
         return value;
     }
 
-    protected abstract T create();
+    protected abstract V create();
 
     protected final void checkBuilt() {
         if (value != null) {

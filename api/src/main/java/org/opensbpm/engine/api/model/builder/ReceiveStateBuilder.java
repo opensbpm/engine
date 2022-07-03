@@ -37,6 +37,11 @@ public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, Recei
         super(name);
     }
 
+    @Override
+    protected ReceiveStateBuilder self() {
+        return this;
+    }
+
     public ReceiveStateBuilder toHead(ObjectBuilder objectBuilder, StateBuilder<?, ?> headBuilder) {
         LOGGER.log(Level.FINER, "''{0}'' to head ''{1}''", new Object[]{name, headBuilder.name});
         checkBuilt();
@@ -63,7 +68,7 @@ public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, Recei
         //noop
     }
 
-    private class TransitionBuilder extends AbstractBuilder<ReceiveTransitionDefinition> {
+    private class TransitionBuilder extends AbstractBuilder<ReceiveTransitionDefinition, TransitionBuilder> {
 
         private final StateBuilder<?, ?> headBuilder;
         private final ObjectBuilder objectBuilder;
@@ -71,6 +76,11 @@ public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, Recei
         private TransitionBuilder(ObjectBuilder objectBuilder, StateBuilder<?, ?> headBuilder) {
             this.headBuilder = headBuilder;
             this.objectBuilder = objectBuilder;
+        }
+
+        @Override
+        protected TransitionBuilder self() {
+            return this;
         }
 
         @Override

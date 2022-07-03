@@ -25,7 +25,7 @@ public class ObjectBuilderTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetAttributeWithWrongname() {
-        AttributeBuilder<?> result = new ObjectBuilder("Test").getAttribute("Test");
+        AttributeBuilder<?,?> result = new ObjectBuilder("Test").getAttribute("Test");
         fail("getAttribute with wrong name must throw IllegalArgumentException but was " + result);
     }
 
