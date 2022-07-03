@@ -46,7 +46,7 @@ public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, Recei
         LOGGER.log(Level.FINER, "''{0}'' to head ''{1}''", new Object[]{name, headBuilder.name});
         checkBuilt();
         transitionBuilders.add(new TransitionBuilder(objectBuilder, headBuilder));
-        return this;
+        return self();
     }
 
     @Override

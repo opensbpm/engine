@@ -50,19 +50,19 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
     public ProcessBuilder description(String description) {
         checkBuilt();
         this.description = description;
-        return this;
+        return self();
     }
 
     public ProcessBuilder version(int version) {
         checkBuilt();
         this.version = version;
-        return this;
+        return self();
     }
 
     public ProcessBuilder asIncative() {
         checkBuilt();
         this.state = ProcessModelState.INACTIVE;
-        return this;
+        return self();
     }
 
     public ProcessBuilder addSubject(SubjectBuilder<?, ?> subjectBuilder) {
@@ -70,7 +70,7 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
         if (!subjectBuilders.containsKey(subjectBuilder.getName())) {
             subjectBuilders.put(subjectBuilder.getName(), subjectBuilder);
         }
-        return this;
+        return self();
     }
 
     public SubjectBuilder<?, ?> getSubject(String name) {
@@ -80,7 +80,7 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
     public ProcessBuilder addObject(ObjectBuilder objectBuilder) {
         checkBuilt();
         objectBuilders.put(objectBuilder.getName(), objectBuilder);
-        return this;
+        return self();
     }
 
     public ObjectBuilder getObject(String name) {

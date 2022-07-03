@@ -61,26 +61,26 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
     public FunctionStateBuilder withProvider(String provider) {
         checkBuilt();
         this.provider = provider;
-        return this;
+        return self();
     }
 
     public FunctionStateBuilder addParameter(String name, String value) {
         checkBuilt();
         parameters.put(name, value);
-        return this;
+        return self();
     }
 
     public FunctionStateBuilder addPermission(PermissionBuilder permissionBuilder) {
         checkBuilt();
         permissionBuilders.add(permissionBuilder);
-        return this;
+        return self();
     }
 
     public FunctionStateBuilder toHead(StateBuilder<?, ?> headBuilder) {
         LOGGER.log(Level.FINER, "''{0}'' to head ''{1}''", new Object[]{name, headBuilder.name});
         checkBuilt();
         heads.add(headBuilder);
-        return this;
+        return self();
     }
 
     @Override
@@ -139,7 +139,7 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
                 List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?>> permissions) {
             checkBuilt();
             attributePermissions.addAll(permissions);
-            return this;
+            return self();
         }
 
         @Override

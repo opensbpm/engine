@@ -49,14 +49,14 @@ public class SendStateBuilder extends StateBuilder<SendStateBuilder, SendStateDe
     public SendStateBuilder asAsync() {
         checkBuilt();
         this.async = true;
-        return this;
+        return self();
     }
 
     public SendStateBuilder toHead(StateBuilder<?, ?> headBuilder) {
         LOGGER.log(Level.FINER, "''{0}'' to head ''{1}''", new Object[]{name, headBuilder.name});
         checkBuilt();
         this.headBuilder = Optional.of(headBuilder);
-        return this;
+        return self();
     }
 
     @Override

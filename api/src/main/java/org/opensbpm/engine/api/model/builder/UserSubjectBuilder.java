@@ -42,7 +42,7 @@ public class UserSubjectBuilder extends SubjectBuilder<UserSubjectBuilder, UserS
 
     public UserSubjectBuilder addRole(String role) {
         roles.add(role);
-        return this;
+        return self();
     }
 
     @Override

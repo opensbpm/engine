@@ -56,14 +56,14 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
 
     public ObjectBuilder withDisplayName(String displayName) {
         this.displayName = displayName;
-        return this;
+        return self();
     }
 
     @Override
     public ObjectBuilder addAttribute(AttributeBuilder<?,?> attributeBuilder) {
         checkBuilt();
         attributeBuilders.put(attributeBuilder.getName(), attributeBuilder);
-        return this;
+        return self();
     }
 
     @Override
@@ -166,12 +166,12 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
 
         public FieldBuilder withIndexed(boolean indexed) {
             this.indexed = indexed;
-            return this;
+            return self();
         }
 
         public FieldBuilder withAutocompleteObject(ObjectBuilder objectBuilder) {
             this.autocompleteObject = objectBuilder;
-            return this;
+            return self();
         }
 
         @Override
