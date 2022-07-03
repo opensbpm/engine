@@ -229,7 +229,7 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         public T addPermissions(List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition,?>> permissions) {
             checkBuilt();
             this.permissionBuilders.addAll(permissions);
-            return (T) self();
+            return self();
         }
 
     }

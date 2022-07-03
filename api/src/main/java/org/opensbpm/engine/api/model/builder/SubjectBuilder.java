@@ -28,7 +28,7 @@ import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.utils.StreamUtils;
 
-public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends SubjectDefinition> extends AbstractBuilder<V, SubjectBuilder<T, V>> {
+public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends SubjectDefinition> extends AbstractBuilder<V, T> {
 
     private final String name;
     private boolean starter;
@@ -38,23 +38,18 @@ public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends S
         this.name = Objects.requireNonNull(name, "name must be non null");
     }
 
-    @Override
-    protected SubjectBuilder self() {
-        return this;
-    }
-
     public String getName() {
         return name;
     }
 
     public T asStarter() {
         starter = true;
-        return (T) self();
+        return self();
     }
 
     public T addState(StateBuilder<?, ?> stateBuilder) {
         stateBuilders.put(stateBuilder.getName(), stateBuilder);
-        return (T) self();
+        return self();
     }
 
     public StateBuilder<?, ?> getState(String name) {

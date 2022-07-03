@@ -224,7 +224,7 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
     }
 
     public abstract static class AbstractNestedBuilder<T extends AbstractNestedBuilder<T, V>, V extends NestedAttribute> 
-            extends AttributeBuilder<V, AbstractNestedBuilder<T,V>> implements HasChildAttributes<T> {
+            extends AttributeBuilder<V, T> implements HasChildAttributes<T> {
 
         private final String name;
         private final Map<String, AttributeBuilder<?,?>> attributeBuilders = new LinkedHashMap<>();
@@ -242,7 +242,7 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         public T addAttribute(AttributeBuilder<?,?> attributeBuilder) {
             checkBuilt();
             attributeBuilders.put(attributeBuilder.getName(), attributeBuilder);
-            return (T) self();
+            return self();
         }
 
         @Override
