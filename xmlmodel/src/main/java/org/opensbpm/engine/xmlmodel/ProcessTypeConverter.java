@@ -103,7 +103,7 @@ public class ProcessTypeConverter {
                 .collect(Collectors.toMap(key -> key.getKey(), value -> value.getValue()));
 
         for (Map.Entry<ObjectBuilder, ObjectType> entry : objectsCache.entrySet()) {
-            for (AttributeBuilder<?> attributeBuilder : createAttributes(processBuilder, entry.getValue().getFieldOrReferenceOrToOne())) {
+            for (AttributeBuilder<?,?> attributeBuilder : createAttributes(processBuilder, entry.getValue().getFieldOrReferenceOrToOne())) {
                 entry.getKey().addAttribute(attributeBuilder);
             }
         }
@@ -126,10 +126,10 @@ public class ProcessTypeConverter {
                 .build();
     }
 
-    private List<AttributeBuilder<?>> createAttributes(ProcessBuilder processBuilder, List<Object> attributeTypes) {
-        List<AttributeBuilder<?>> attributeBuilders = new ArrayList<>();
+    private List<AttributeBuilder<?,?>> createAttributes(ProcessBuilder processBuilder, List<Object> attributeTypes) {
+        List<AttributeBuilder<?,?>> attributeBuilders = new ArrayList<>();
         for (Object attributeType : attributeTypes) {
-            AttributeBuilder<?> attributeBuilder;
+            AttributeBuilder<?,?> attributeBuilder;
             if (attributeType instanceof Field) {
                 Field field = (Field) attributeType;
                 FieldBuilder fieldBuilder = field(field.getValue(), FieldType.valueOf(field.getType().value()));
@@ -145,14 +145,14 @@ public class ProcessTypeConverter {
             } else if (attributeType instanceof ToOneType) {
                 ToOneType toOneType = (ToOneType) attributeType;
                 ToOneBuilder toOneBuilder = toOne(toOneType.getName());
-                for (AttributeBuilder<?> childBuilder : createAttributes(processBuilder, toOneType.getFieldOrReferenceOrToOne())) {
+                for (AttributeBuilder<?,?> childBuilder : createAttributes(processBuilder, toOneType.getFieldOrReferenceOrToOne())) {
                     toOneBuilder.addAttribute(childBuilder);
                 }
                 attributeBuilder = toOneBuilder;
             } else if (attributeType instanceof ToManyType) {
                 ToManyType toManyType = (ToManyType) attributeType;
                 ToManyBuilder toManyBuilder = toMany(toManyType.getName());
-                for (AttributeBuilder<?> childBuilder : createAttributes(processBuilder, toManyType.getFieldOrReferenceOrToOne())) {
+                for (AttributeBuilder<?,?> childBuilder : createAttributes(processBuilder, toManyType.getFieldOrReferenceOrToOne())) {
                     toManyBuilder.addAttribute(childBuilder);
                 }
                 attributeBuilder = toManyBuilder;
@@ -261,7 +261,7 @@ public class ProcessTypeConverter {
             AbstractAttributePermissionBuilder<?, ?> attributePermissionBuilder;
             if (attributePermissionType instanceof AttributePermissionType) {
                 AttributePermissionType simpleAttributePermissionType = (AttributePermissionType) attributePermissionType;
-                AttributeBuilder<?> attributeBuilder = parentAttributeBuilder.getAttribute(simpleAttributePermissionType.getValue());
+                AttributeBuilder<?,?> attributeBuilder = parentAttributeBuilder.getAttribute(simpleAttributePermissionType.getValue());
                 Boolean mandatory = simpleAttributePermissionType.isMandatory() != null && simpleAttributePermissionType.isMandatory();
                 attributePermissionBuilder = simplePermission(attributeBuilder, Permission.valueOf(simpleAttributePermissionType.getPermission().value()), mandatory);
             } else if (attributePermissionType instanceof ToOnePermissionType) {
