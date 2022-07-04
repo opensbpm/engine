@@ -20,7 +20,6 @@ package org.opensbpm.engine.core.engine;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -73,20 +72,36 @@ public class AttributeStore {
         return values;
     }
 
+    public boolean isEmpty(SimpleAttributeModel attributeModel) {
+        return getSimple(attributeModel) == null;
+    }
+
     public Serializable getSimple(SimpleAttributeModel attributeModel) {
-        return computeIfAbsent(attributeModel, id -> attributeModel.getDefaultValue());
+        return computeIfAbsent(attributeModel, modelId -> attributeModel.getDefaultValue());
+    }
+
+    public boolean isEmpty(ReferenceAttributeModel attributeModel) {
+        return getReference(attributeModel) == null;
     }
 
     public HashMap<String, String> getReference(ReferenceAttributeModel attributeModel) {
-        return computeIfAbsent(attributeModel, id -> null);
+        return computeIfAbsent(attributeModel, modelId -> null);
+    }
+
+    public boolean isEmpty(NestedAttributeModel attributeModel) {
+        return getNested(attributeModel).isEmpty();
     }
 
     public HashMap<Long, Serializable> getNested(NestedAttributeModel attributeModel) {
-        return computeIfAbsent(attributeModel, id -> new HashMap<>());
+        return computeIfAbsent(attributeModel, modelId -> new HashMap<>());
+    }
+
+    public boolean isEmpty(IndexedAttributeModel attributeModel) {
+        return getIndexed(attributeModel).isEmpty();
     }
 
     public ArrayList<HashMap<Long, Serializable>> getIndexed(IndexedAttributeModel attributeModel) {
-        return computeIfAbsent(attributeModel, id -> new ArrayList<>());
+        return computeIfAbsent(attributeModel, modelId -> new ArrayList<>());
     }
 
     @SuppressWarnings("unchecked")
@@ -259,7 +274,6 @@ public class AttributeStore {
 //
 //        };
 //    }
-    
     private static class AttributeValueDeterminer implements AttributeModelVisitor<Optional<Serializable>> {
 
         private final AttributeStore data;
@@ -272,27 +286,24 @@ public class AttributeStore {
 
         @Override
         public Optional<Serializable> visitSimple(SimpleAttributeModel attributeModel) {
-            Serializable value = data.getSimple(attributeModel);
-            validateMandatoryValue(attributeModel, "Attribute", () -> value == null);
+            validateMandatoryValue(attributeModel, "Attribute", () -> data.isEmpty(attributeModel));
 
-            return Optional.ofNullable(value);
+            return Optional.ofNullable(data.getSimple(attributeModel));
         }
 
         @Override
         public Optional<Serializable> visitReference(ReferenceAttributeModel attributeModel) {
-            HashMap<String, String> value = data.getReference(attributeModel);
-            validateMandatoryValue(attributeModel, "Nestedattribute", () -> value == null);
+            validateMandatoryValue(attributeModel, "Nestedattribute", () -> data.isEmpty(attributeModel));
 
-            return Optional.ofNullable(value);
+            return Optional.ofNullable(data.getReference(attributeModel));
         }
 
         @Override
         public Optional<Serializable> visitNested(NestedAttributeModel attributeModel) {
-            HashMap<Long, Serializable> nestedData = data.getNested(attributeModel);
-            validateMandatoryValue(attributeModel, "Nestedattribute", () -> nestedData.isEmpty());
+            validateMandatoryValue(attributeModel, "Nestedattribute", () -> data.isEmpty(attributeModel));
 
-            if (!nestedData.isEmpty()) {
-                HashMap<Long, Serializable> nested = createNestedInstance(attributeModel, nestedData);
+            if (!data.isEmpty(attributeModel)) {
+                HashMap<Long, Serializable> nested = createNestedInstance(attributeModel, data.getNested(attributeModel));
                 return Optional.ofNullable(nested);
             }
             return Optional.empty();
@@ -300,15 +311,14 @@ public class AttributeStore {
 
         @Override
         public Optional<Serializable> visitIndexed(IndexedAttributeModel attributeModel) {
-            List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeModel);
-            validateMandatoryValue(attributeModel, "Listattribute", () -> listData.isEmpty());
+            validateMandatoryValue(attributeModel, "Listattribute", () -> data.isEmpty(attributeModel));
 
-            if (!listData.isEmpty()) {
-                ArrayList<HashMap<Long, Serializable>> data = new ArrayList<>();
-                for (HashMap<Long, Serializable> nestedData : listData) {
-                    data.add(createNestedInstance(attributeModel, nestedData));
+            if (!data.isEmpty(attributeModel)) {
+                ArrayList<HashMap<Long, Serializable>> indexed = new ArrayList<>();
+                for (HashMap<Long, Serializable> nestedData : data.getIndexed(attributeModel)) {
+                    indexed.add(createNestedInstance(attributeModel, nestedData));
                 }
-                return Optional.ofNullable(data);
+                return Optional.ofNullable(indexed);
             }
             return Optional.empty();
         }
@@ -321,9 +331,9 @@ public class AttributeStore {
 
         private HashMap<Long, Serializable> createNestedInstance(NestedAttributeModel nestedModel, HashMap<Long, Serializable> nestedData) {
             HashMap<Long, Serializable> hashMap = new HashMap<>();
-            
+
             new AttributeStore(nestedModel, hashMap).updateValues(state, nestedData);
-            
+
             return hashMap;
         }
     }
