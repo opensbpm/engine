@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -96,7 +97,7 @@ public class AttributeStore {
         putValue(attributeModel, value);
     }
 
-    public void put(ReferenceAttributeModel attributeModel, HashMap<String,String> value) {
+    public void put(ReferenceAttributeModel attributeModel, HashMap<String, String> value) {
         putValue(attributeModel, value);
     }
 
@@ -166,42 +167,40 @@ public class AttributeStore {
     }
 
     private void updateAttribute(FunctionState state, AttributeModel attributeModel, AttributeStore data) {
-        attributeModel.accept(new AttributeModelVisitor<Void>() {
+        attributeModel.accept(new AttributeModelVisitor<Optional<Serializable>>() {
             @Override
-            public Void visitSimple(SimpleAttributeModel attributeModel) {
+            public Optional<Serializable> visitSimple(SimpleAttributeModel attributeModel) {
                 Serializable value = data.getSimple(attributeModel);
                 if (state.isMandatory(attributeModel) && value == null) {
                     throw new IllegalArgumentException("Attribute " + attributeModel.getName() + " is mandatory, but not value given");
                 }
-                put(attributeModel, value);
-                return null;
+                return Optional.ofNullable(value);
             }
 
             @Override
-            public Void visitReference(ReferenceAttributeModel attributeModel) {
+            public Optional<Serializable> visitReference(ReferenceAttributeModel attributeModel) {
                 HashMap<String, String> value = data.getReference(attributeModel);
                 if (state.isMandatory(attributeModel) && value == null) {
                     throw new IllegalArgumentException("Nestedattribute " + attributeModel.getName() + " is mandatory, but not value given");
                 }
-                put(attributeModel, value);
-                return null;
+                return Optional.ofNullable(value);
             }
 
             @Override
-            public Void visitNested(NestedAttributeModel attributeModel) {
+            public Optional<Serializable> visitNested(NestedAttributeModel attributeModel) {
                 HashMap<Long, Serializable> nestedData = data.getNested(attributeModel);
                 if (state.isMandatory(attributeModel) && nestedData.isEmpty()) {
                     throw new IllegalArgumentException("Nestedattribute " + attributeModel.getName() + " is mandatory, but not value given");
                 }
                 if (!nestedData.isEmpty()) {
                     HashMap<Long, Serializable> nested = createNestedInstance(attributeModel, nestedData);
-                    put(attributeModel, nested);
+                    return Optional.ofNullable(nested);
                 }
-                return null;
+                return Optional.empty();
             }
 
             @Override
-            public Void visitIndexed(IndexedAttributeModel attributeModel) {
+            public Optional<Serializable> visitIndexed(IndexedAttributeModel attributeModel) {
                 List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeModel);
                 if (state.isMandatory(attributeModel) && listData.isEmpty()) {
                     throw new IllegalArgumentException("Listattribute " + attributeModel.getName() + " is mandatory, but not value given");
@@ -211,9 +210,9 @@ public class AttributeStore {
                     for (HashMap<Long, Serializable> nestedData : listData) {
                         data.add(createNestedInstance(attributeModel, nestedData));
                     }
-                    put(attributeModel, data);
+                    return Optional.ofNullable(data);
                 }
-                return null;
+                return Optional.empty();
             }
 
             private HashMap<Long, Serializable> createNestedInstance(NestedAttributeModel nestedModel, HashMap<Long, Serializable> nestedData) {
@@ -221,7 +220,10 @@ public class AttributeStore {
                 new AttributeStore(nestedModel, hashMap).updateValues(state, nestedData);
                 return hashMap;
             }
-        });
+        })
+                .ifPresent(value -> {
+                    putValue(attributeModel, value);
+                });
     }
 
     //not in use for now
