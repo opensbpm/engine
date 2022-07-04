@@ -23,8 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -152,61 +154,8 @@ public class AttributeStore {
     }
 
     private void updateAttribute(AttributeSchema attributeSchema, AttributeStore data) {
-        attributeSchema.accept(new AttributeSchemaVisitor<Void>() {
-            @Override
-            public Void visitSimple(/*Simple*/AttributeSchema attributeModel) {
-                Serializable value = data.getSimple(attributeModel);
-                if (attributeModel.isRequired() && value == null) {
-                    throw new IllegalArgumentException("Attribute " + attributeModel.getName() + " is mandatory, but not value given");
-                }
-                put(attributeModel, value);
-                return null;
-            }
-
-//            @Override
-//            public Void visitReference(ReferenceAttributeModel attributeModel) {
-//                HashMap<String, String> value = data.getReference(attributeModel);
-//                if (attributeModel.isRequired()&& value == null) {
-//                    throw new IllegalArgumentException("Nestedattribute " + attributeModel.getName() + " is mandatory, but not value given");
-//                }
-//                put(attributeModel, value);
-//                return null;
-//            }
-            @Override
-            public Void visitNested(NestedAttributeSchema attributeSchema) {
-                HashMap<Long, Serializable> nestedData = data.getNested(attributeSchema);
-                if (attributeSchema.isRequired() && nestedData.isEmpty()) {
-                    throw new IllegalArgumentException("Nestedattribute " + attributeSchema.getName() + " is mandatory, but not value given");
-                }
-                if (!nestedData.isEmpty()) {
-                    HashMap<Long, Serializable> nested = createNestedInstance(attributeSchema, nestedData);
-                    put(attributeSchema, nested);
-                }
-                return null;
-            }
-
-            @Override
-            public Void visitIndexed(NestedAttributeSchema attributeSchema) {
-                List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeSchema);
-                if (attributeSchema.isRequired() && listData.isEmpty()) {
-                    throw new IllegalArgumentException("Listattribute " + attributeSchema.getName() + " is mandatory, but not value given");
-                }
-                if (!listData.isEmpty()) {
-                    ArrayList<HashMap<Long, Serializable>> data = new ArrayList<>();
-                    for (HashMap<Long, Serializable> nestedData : listData) {
-                        data.add(createNestedInstance(attributeSchema, nestedData));
-                    }
-                    put(attributeSchema, data);
-                }
-                return null;
-            }
-
-            private HashMap<Long, Serializable> createNestedInstance(NestedAttributeSchema nestedModel, HashMap<Long, Serializable> nestedData) {
-                HashMap<Long, Serializable> hashMap = new HashMap<>();
-                new AttributeStore(nestedModel, hashMap).updateValues(nestedData);
-                return hashMap;
-            }
-        });
+        attributeSchema.accept(new AttributeValueDeterminer(data))
+                .ifPresent(value -> put(attributeSchema, value));
     }
 
     //not in use for now
@@ -296,4 +245,74 @@ public class AttributeStore {
 //
 //        };
 //    }
+    private static class AttributeValueDeterminer implements AttributeSchemaVisitor<Optional<Serializable>> {
+
+        private final AttributeStore data;
+
+        private AttributeValueDeterminer(AttributeStore data) {
+            this.data = data;
+        }
+
+        @Override
+        public Optional<Serializable> visitSimple(/*Simple*/AttributeSchema attributeModel) {
+            Serializable value = data.getSimple(attributeModel);
+            validateRequiredValue("Attribute", attributeModel, () -> value == null);
+            
+            return Optional.of(value);
+        }
+//            @Override
+//            public Void visitReference(ReferenceAttributeModel attributeModel) {
+//                HashMap<String, String> value = data.getReference(attributeModel);
+//                validateRequiredValue("Nestedattribute", attributeSchema, () -> value == null);          
+//                put(attributeModel, value);
+//                return null;
+//            }
+
+        @Override
+        public Optional<Serializable> visitNested(NestedAttributeSchema attributeSchema) {
+            HashMap<Long, Serializable> nestedData = data.getNested(attributeSchema);
+            validateRequiredValue("Nestedattribute", attributeSchema, () -> nestedData.isEmpty());
+            
+            if (!nestedData.isEmpty()) {
+                HashMap<Long, Serializable> nested = createNestedInstance(attributeSchema, nestedData);
+                return Optional.of(nested);
+            }
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Serializable> visitIndexed(NestedAttributeSchema attributeSchema) {
+            List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeSchema);
+            validateRequiredValue("Listattribute", attributeSchema, () -> listData.isEmpty());
+            
+            if (!listData.isEmpty()) {
+                ArrayList<HashMap<Long, Serializable>> data = new ArrayList<>();
+                for (HashMap<Long, Serializable> nestedData : listData) {
+                    data.add(createNestedInstance(attributeSchema, nestedData));
+                }
+                return Optional.of(data);
+            }
+            return Optional.empty();
+        }
+
+        private void validateRequiredValue(String prefix, AttributeSchema attributeModel, Supplier<Boolean> valueCheck) throws IllegalArgumentException {
+            if (needRequiredValue(attributeModel, valueCheck)) {
+                throw newIllegalArgumentException(attributeModel, prefix);
+            }
+        }
+
+        private boolean needRequiredValue(AttributeSchema attributeSchema, Supplier<Boolean> hasValue) {
+            return attributeSchema.isRequired() && hasValue.get();
+        }
+
+        private IllegalArgumentException newIllegalArgumentException(AttributeSchema attributeModel, String prefix) {
+            return new IllegalArgumentException(prefix + " " + attributeModel.getName() + " is mandatory, but not value given");
+        }
+
+        private HashMap<Long, Serializable> createNestedInstance(NestedAttributeSchema nestedModel, HashMap<Long, Serializable> nestedData) {
+            HashMap<Long, Serializable> hashMap = new HashMap<>();
+            new AttributeStore(nestedModel, hashMap).updateValues(nestedData);
+            return hashMap;
+        }
+    }
 }
