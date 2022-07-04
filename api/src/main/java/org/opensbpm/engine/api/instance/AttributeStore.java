@@ -257,7 +257,7 @@ public class AttributeStore {
         public Optional<Serializable> visitSimple(/*Simple*/AttributeSchema attributeModel) {
             Serializable value = data.getSimple(attributeModel);
             validateRequiredValue("Attribute", attributeModel, () -> value == null);
-            
+
             return Optional.of(value);
         }
 //            @Override
@@ -272,7 +272,7 @@ public class AttributeStore {
         public Optional<Serializable> visitNested(NestedAttributeSchema attributeSchema) {
             HashMap<Long, Serializable> nestedData = data.getNested(attributeSchema);
             validateRequiredValue("Nestedattribute", attributeSchema, () -> nestedData.isEmpty());
-            
+
             if (!nestedData.isEmpty()) {
                 HashMap<Long, Serializable> nested = createNestedInstance(attributeSchema, nestedData);
                 return Optional.of(nested);
@@ -284,7 +284,7 @@ public class AttributeStore {
         public Optional<Serializable> visitIndexed(NestedAttributeSchema attributeSchema) {
             List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeSchema);
             validateRequiredValue("Listattribute", attributeSchema, () -> listData.isEmpty());
-            
+
             if (!listData.isEmpty()) {
                 ArrayList<HashMap<Long, Serializable>> data = new ArrayList<>();
                 for (HashMap<Long, Serializable> nestedData : listData) {
