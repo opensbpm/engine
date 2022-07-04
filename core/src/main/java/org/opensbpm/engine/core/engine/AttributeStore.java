@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.opensbpm.engine.api.instance.SourceMap;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
@@ -167,63 +168,8 @@ public class AttributeStore {
     }
 
     private void updateAttribute(FunctionState state, AttributeModel attributeModel, AttributeStore data) {
-        attributeModel.accept(new AttributeModelVisitor<Optional<Serializable>>() {
-            @Override
-            public Optional<Serializable> visitSimple(SimpleAttributeModel attributeModel) {
-                Serializable value = data.getSimple(attributeModel);
-                if (state.isMandatory(attributeModel) && value == null) {
-                    throw new IllegalArgumentException("Attribute " + attributeModel.getName() + " is mandatory, but not value given");
-                }
-                return Optional.ofNullable(value);
-            }
-
-            @Override
-            public Optional<Serializable> visitReference(ReferenceAttributeModel attributeModel) {
-                HashMap<String, String> value = data.getReference(attributeModel);
-                if (state.isMandatory(attributeModel) && value == null) {
-                    throw new IllegalArgumentException("Nestedattribute " + attributeModel.getName() + " is mandatory, but not value given");
-                }
-                return Optional.ofNullable(value);
-            }
-
-            @Override
-            public Optional<Serializable> visitNested(NestedAttributeModel attributeModel) {
-                HashMap<Long, Serializable> nestedData = data.getNested(attributeModel);
-                if (state.isMandatory(attributeModel) && nestedData.isEmpty()) {
-                    throw new IllegalArgumentException("Nestedattribute " + attributeModel.getName() + " is mandatory, but not value given");
-                }
-                if (!nestedData.isEmpty()) {
-                    HashMap<Long, Serializable> nested = createNestedInstance(attributeModel, nestedData);
-                    return Optional.ofNullable(nested);
-                }
-                return Optional.empty();
-            }
-
-            @Override
-            public Optional<Serializable> visitIndexed(IndexedAttributeModel attributeModel) {
-                List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeModel);
-                if (state.isMandatory(attributeModel) && listData.isEmpty()) {
-                    throw new IllegalArgumentException("Listattribute " + attributeModel.getName() + " is mandatory, but not value given");
-                }
-                if (!listData.isEmpty()) {
-                    ArrayList<HashMap<Long, Serializable>> data = new ArrayList<>();
-                    for (HashMap<Long, Serializable> nestedData : listData) {
-                        data.add(createNestedInstance(attributeModel, nestedData));
-                    }
-                    return Optional.ofNullable(data);
-                }
-                return Optional.empty();
-            }
-
-            private HashMap<Long, Serializable> createNestedInstance(NestedAttributeModel nestedModel, HashMap<Long, Serializable> nestedData) {
-                HashMap<Long, Serializable> hashMap = new HashMap<>();
-                new AttributeStore(nestedModel, hashMap).updateValues(state, nestedData);
-                return hashMap;
-            }
-        })
-                .ifPresent(value -> {
-                    putValue(attributeModel, value);
-                });
+        attributeModel.accept(new AttributeValueDeterminer(data, state))
+                .ifPresent(value -> putValue(attributeModel, value));
     }
 
     //not in use for now
@@ -313,4 +259,72 @@ public class AttributeStore {
 //
 //        };
 //    }
+    
+    private static class AttributeValueDeterminer implements AttributeModelVisitor<Optional<Serializable>> {
+
+        private final AttributeStore data;
+        private final FunctionState state;
+
+        private AttributeValueDeterminer(AttributeStore data, FunctionState state) {
+            this.data = data;
+            this.state = state;
+        }
+
+        @Override
+        public Optional<Serializable> visitSimple(SimpleAttributeModel attributeModel) {
+            Serializable value = data.getSimple(attributeModel);
+            validateMandatoryValue(attributeModel, "Attribute", () -> value == null);
+
+            return Optional.ofNullable(value);
+        }
+
+        @Override
+        public Optional<Serializable> visitReference(ReferenceAttributeModel attributeModel) {
+            HashMap<String, String> value = data.getReference(attributeModel);
+            validateMandatoryValue(attributeModel, "Nestedattribute", () -> value == null);
+
+            return Optional.ofNullable(value);
+        }
+
+        @Override
+        public Optional<Serializable> visitNested(NestedAttributeModel attributeModel) {
+            HashMap<Long, Serializable> nestedData = data.getNested(attributeModel);
+            validateMandatoryValue(attributeModel, "Nestedattribute", () -> nestedData.isEmpty());
+
+            if (!nestedData.isEmpty()) {
+                HashMap<Long, Serializable> nested = createNestedInstance(attributeModel, nestedData);
+                return Optional.ofNullable(nested);
+            }
+            return Optional.empty();
+        }
+
+        @Override
+        public Optional<Serializable> visitIndexed(IndexedAttributeModel attributeModel) {
+            List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeModel);
+            validateMandatoryValue(attributeModel, "Listattribute", () -> listData.isEmpty());
+
+            if (!listData.isEmpty()) {
+                ArrayList<HashMap<Long, Serializable>> data = new ArrayList<>();
+                for (HashMap<Long, Serializable> nestedData : listData) {
+                    data.add(createNestedInstance(attributeModel, nestedData));
+                }
+                return Optional.ofNullable(data);
+            }
+            return Optional.empty();
+        }
+
+        private void validateMandatoryValue(AttributeModel attributeModel, String prefix, Supplier<Boolean> hasValue) {
+            if (state.isMandatory(attributeModel) && hasValue.get()) {
+                throw new IllegalArgumentException(prefix + " " + attributeModel.getName() + " is mandatory, but not value given");
+            }
+        }
+
+        private HashMap<Long, Serializable> createNestedInstance(NestedAttributeModel nestedModel, HashMap<Long, Serializable> nestedData) {
+            HashMap<Long, Serializable> hashMap = new HashMap<>();
+            
+            new AttributeStore(nestedModel, hashMap).updateValues(state, nestedData);
+            
+            return hashMap;
+        }
+    }
 }
