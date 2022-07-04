@@ -32,7 +32,7 @@ import org.apache.commons.beanutils.DynaProperty;
 import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
 
 /**
- * Bean representation of {@link ObjectSchema}. The main purpose of this
+ * Bean representation of {@link IsAttributesContainer}. The main purpose of this
  * class is to provide a {@link Map} to easy access all values of a
  * {@link org.opensbpm.engine.core.engine.entities.ObjectInstance}
  * in scripts. Nested and indexed attributes are lazy created, so there is no
