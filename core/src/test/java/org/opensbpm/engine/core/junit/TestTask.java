@@ -110,7 +110,7 @@ public class TestTask extends TaskObsolete {
     private Pair<ObjectData, LazyDynaBeanImpl> getFromCache(String name) {
         return datas.computeIfAbsent(getObjectSchema(name), schema
                 -> {
-            ObjectData objectData = getTaskDocument().getData(schema);
+            ObjectData objectData = getObjectData(schema);
             return Pair.of(objectData, createDynaBean(name, schema.getAttributes(), objectData.getData()));
         });
     }
