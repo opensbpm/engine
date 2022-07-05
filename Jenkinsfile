@@ -1,8 +1,5 @@
 #!/usr/bin/env groovy
 
-/**
- * Jenkins Pipeline
- */
 properties([
         buildDiscarder(logRotator(numToKeepStr: '10')), 
         disableConcurrentBuilds(),
