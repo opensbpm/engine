@@ -1,5 +1,6 @@
 #!/usr/bin/env groovy
 
+/* set basic job configurations */
 properties([
         buildDiscarder(logRotator(numToKeepStr: '10')), 
         disableConcurrentBuilds(),
