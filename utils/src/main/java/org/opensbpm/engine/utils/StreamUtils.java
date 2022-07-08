@@ -22,7 +22,7 @@ public class StreamUtils {
 
     /**
      * create a {@link Collections#unmodifiableList(java.util.List) } with the given {@link List}, if the given
-     * {@link List} is {@code null} a {@link Collections#emptyList()} is retourned. Its a shortcut for
+     * {@link List} is {@code null} a {@link Collections#emptyList()} is returned. Its a shortcut for
      * <blockquote><pre>
      *  list == null
      *      ? Collections.emptyList()
@@ -32,7 +32,7 @@ public class StreamUtils {
      * @param <T> type of List
      * @param nullableList can be {@code null}
      * @return return an {@link Collections#unmodifiableList(java.util.List)}, if given list is {@code null} an
-     * {@link Collections#emptyList()} will be returend
+     * {@link Collections#emptyList()} will be returned
      */
     public static <T> List<T> emptyOrUnmodifiableList(List<T> nullableList) {
         return Optional.ofNullable(nullableList)
@@ -42,7 +42,7 @@ public class StreamUtils {
 
     /**
      * create a {@link Collections#unmodifiableSet(java.util.Set) } with the given {@link Set}, if the given {@link Set}
-     * is {@code null} a {@link Collections#emptySet()} is retourned. Its a shortcut for
+     * is {@code null} a {@link Collections#emptySet()} is returned. Its a shortcut for
      * <blockquote><pre>
      *  set == null
      *      ? Collections.emptySet()
@@ -52,7 +52,7 @@ public class StreamUtils {
      * @param <T> type of Set
      * @param nullableSet can be {@code null}
      * @return return an {@link Collections#unmodifiableSet(java.util.Set)}, if given set is {@code null} an
-     * {@link Collections#emptySet()} will be returend
+     * {@link Collections#emptySet()} will be returned
      */
     public static <T> Set<T> emptyOrUnmodifiableSet(Set<T> nullableSet) {
         return Optional.ofNullable(nullableSet)
@@ -62,7 +62,7 @@ public class StreamUtils {
 
     /**
      * create a {@link Collections#unmodifiableMap(java.util.Map) } with the given {@link Map}, if the given {@link Map}
-     * is {@code null} a {@link Collections#emptyMap()} is retourned. Its a shortcut for
+     * is {@code null} a {@link Collections#emptyMap()} is returned. Its a shortcut for
      * <blockquote><pre>
      *  map == null
      *      ? Collections.emptyMap()
@@ -73,7 +73,7 @@ public class StreamUtils {
      * @param <V> value of Map
      * @param nullableMap can be {@code null}
      * @return return an {@link Collections#unmodifiableMap(java.util.Map)}, if given Map is {@code null} an
-     * {@link Collections#emptyMap()} will be returend
+     * {@link Collections#emptyMap()} will be returned
      */
     public static <K, V> Map<K, V> emptyOrUnmodifiableMap(Map<K, V> nullableMap) {
         return Optional.ofNullable(nullableMap)
