@@ -23,10 +23,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
+import org.opensbpm.engine.api.instance.AutocompleteResponse.Autocomplete;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 
 public class AutocompleteResponseTest {
 
@@ -43,13 +45,20 @@ public class AutocompleteResponseTest {
         Long o2ManyOneFieldId = 7L;
         Long o2ManyOneNumber = 8L;
 
-        ObjectSchema object1Schema = ObjectSchema.of(1l,"Object 1", Arrays.asList(attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
-                new NestedAttributeSchema(o1ToOneFieldId, "To One", Occurs.ONE, Arrays.asList(new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
+        ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", Arrays.asList(
+                attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
+                new NestedAttributeSchema(o1ToOneFieldId, "To One", Occurs.ONE, Arrays.asList(
+                        new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER
+                        )
                 ))
         ));
-        ObjectSchema object2Schema = ObjectSchema.of(2l,"Object 2", Arrays.asList(attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
-                new NestedAttributeSchema(o2ToManyFieldId, "To Many", Occurs.UNBOUND, Arrays.asList(new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
-                        new NestedAttributeSchema(o2ManyOneFieldId, "To One", Occurs.ONE, Arrays.asList(new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
+        ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", Arrays.asList(
+                attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
+                new NestedAttributeSchema(o2ToManyFieldId, "To Many", Occurs.UNBOUND, Arrays.asList(
+                        new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
+                        new NestedAttributeSchema(o2ManyOneFieldId, "To One", Occurs.ONE, Arrays.asList(
+                                new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER
+                                )
                         ))
                 ))
         ));
@@ -66,19 +75,15 @@ public class AutocompleteResponseTest {
                 .withData(attributeData)
                 .build();
 
-//        DocumentResponse documentResponse = new DocumentResponse(
-//                Arrays.asList(object1Schema, object2Schema),
-//                Arrays.asList(objectData)
-//        );
-
-        AutocompleteResponse autocompleteResponse = new AutocompleteResponse();
-        //autocompleteResponse.setDocumentResponse(documentResponse);
+        AutocompleteResponse autocompleteResponse = AutocompleteResponse.of(Arrays.asList(Autocomplete.of(objectData)));
 
         //when
         AutocompleteResponse result = DeserializerUtil.deserializeJaxb(AutocompleteResponse.class, autocompleteResponse);
 
         //then
         assertThat(result, notNullValue());
+        assertThat(result.getAutocompletes(), hasSize(1));
+        //TODO validate better
     }
 
     private static AttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly) {
