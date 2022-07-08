@@ -25,7 +25,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  *
  * @param <T> The type of the source-object on which the EngineEvent initially occurred.
  */
-public abstract class EngineEvent<T> implements Serializable {
+public abstract class EngineEvent<T extends Serializable> implements Serializable {
 
     public enum Type {
         CREATE,
