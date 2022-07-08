@@ -42,17 +42,17 @@ node{
         
         stage('Static Analysis'){
             try{
-                withSonarQubeEnv('Sonarqube') {
-                    def model = readMavenPom(file: 'pom.xml')
-                    withMaven(
-                        jdk: 'JDK 1.8',
-                        maven: 'default', 
-                        mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
-                        options: [
-                            openTasksPublisher(highPriorityTaskIdentifiers: 'FIXME', lowPriorityTaskIdentifiers: 'TODO', normalPriorityTaskIdentifiers: 'PENDING', pattern: '**/*.*',excludePattern: '**/target/**')
-                        ]
-                    ) {
-                        //'JDK 1.8' is need for sonarqube (Hostname not verified (no certificates))
+                def model = readMavenPom(file: 'pom.xml')
+                withMaven(
+                    jdk: 'JDK 1.8',
+                    maven: 'default', 
+                    mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
+                    options: [
+                        openTasksPublisher(highPriorityTaskIdentifiers: 'FIXME', lowPriorityTaskIdentifiers: 'TODO', normalPriorityTaskIdentifiers: 'PENDING', pattern: '**/*.*',excludePattern: '**/target/**')
+                    ]
+                ) {
+                    //'JDK 1.8' is need for sonarqube (Hostname not verified (no certificates))
+                    withSonarQubeEnv('Sonarqube') {
                         sh "mvn -DskipTests \
                                 -Dsonar.projectKey=${model.getGroupId()}:${model.getArtifactId()}:${BRANCH_NAME} \
                                 -Dsonar.projectName=\"${model.getName()} ($BRANCH_NAME)\" \
@@ -89,14 +89,14 @@ node{
             }
         }
         
-//        stage('Site'){
-//            withMaven(jdk: 'JDK 1.8',
-//                maven: 'default', 
-//                mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
-//                sh "mvn site site:stage"
-//                sh "mvn scm-publish:publish-scm"
-//            }
-//        }
+        //        stage('Site'){
+        //            withMaven(jdk: 'JDK 1.8',
+        //                maven: 'default', 
+        //                mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
+        //                sh "mvn site site:stage"
+        //                sh "mvn scm-publish:publish-scm"
+        //            }
+        //        }
         
         currentBuild.result = 'SUCCESS'
     }catch(ex){
