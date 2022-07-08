@@ -1,10 +1,11 @@
 package org.opensbpm.engine.utils;
 
-import org.opensbpm.engine.utils.StreamUtils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -15,9 +16,59 @@ import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import static org.hamcrest.Matchers.empty;
+import static org.junit.Assert.assertThrows;
 
 @RunWith(Theories.class)
 public class StreamUtilsTest {
+
+    @Test
+    public void testEmptyOrUnmodifiableListWithNull() throws Exception {
+        //given
+        List<String> values = StreamUtils.emptyOrUnmodifiableList(null);
+        assertThat(values, is(empty()));
+
+        //when + then
+        assertThrows(UnsupportedOperationException.class, () -> {
+            values.add("b");
+        });
+    }
+
+    @Test
+    public void testEmptyOrUnmodifiableListWithValue() throws Exception {
+        //given
+        List<String> values = StreamUtils.oneOrMoreAsList("a");
+
+        //when + then
+        List<String> result = StreamUtils.emptyOrUnmodifiableList(values);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            result.add("b");
+        });
+    }
+
+    @Test
+    public void testEmptyOrUnmodifiableSetWithNull() throws Exception {
+        //given
+        Set<String> values = StreamUtils.emptyOrUnmodifiableSet(null);
+        assertThat(values, is(empty()));
+
+        //when + then
+        assertThrows(UnsupportedOperationException.class, () -> {
+            values.add("b");
+        });
+    }
+
+    @Test
+    public void testEmptyOrUnmodifiableSetWithValue() throws Exception {
+        //given
+        Set<String> values = new HashSet<>(StreamUtils.oneOrMoreAsList("a"));
+
+        //when + then
+        Set<String> result = StreamUtils.emptyOrUnmodifiableSet(values);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            result.add("b");
+        });
+    }
 
     private static final String ONEORMOREASLIST = "oneOrMoreAsList";
     @DataPoints(ONEORMOREASLIST)
