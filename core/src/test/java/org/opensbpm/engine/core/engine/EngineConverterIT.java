@@ -39,17 +39,18 @@ import org.opensbpm.engine.core.engine.entities.ServiceSubject;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.junit.ServiceITCase;
+import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasSchemas;
@@ -64,6 +65,7 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOne;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
+import static org.opensbpm.engine.core.junit.MockData.spyFunctionState;
 
 public class EngineConverterIT extends ServiceITCase {
 
@@ -170,7 +172,8 @@ public class EngineConverterIT extends ServiceITCase {
         ProcessInstance processInstance = new ProcessInstance(processModel, new User("username"));
 
         Subject subject = new ServiceSubject(processInstance, new ServiceSubjectModel("name"));
-        State state = new FunctionState("");
+        FunctionState state = spyFunctionState(1l, subject.getSubjectModel(), "Function");
+        when(state.hasAnyPermission(any(AttributeModel.class))).thenReturn(Boolean.TRUE);
         state.setDisplayName("Text ${model.StringField} with Groovy");
 
         //when
@@ -197,7 +200,8 @@ public class EngineConverterIT extends ServiceITCase {
         processInstance.addObjectInstance(objectModel).getAttributeStore().put(attributeModel, "X");
 
         Subject subject = new ServiceSubject(processInstance, new ServiceSubjectModel("name"));
-        State state = new FunctionState("");
+        FunctionState state = spyFunctionState(1l, subject.getSubjectModel(), "Function");
+        when(state.hasAnyPermission(any(AttributeModel.class))).thenReturn(Boolean.TRUE);
         state.setDisplayName("Text ${model.StringField} with Groovy");
 
         //when

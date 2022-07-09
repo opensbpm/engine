@@ -30,6 +30,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import org.opensbpm.engine.api.instance.AuditTrail;
 import org.opensbpm.engine.api.instance.NextState;
+import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.api.instance.ProcessInfo;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
@@ -169,17 +171,16 @@ public class EngineConverter {
 
     public String evaluteStateDisplayName(Subject subject, State state) {
         return Optional.ofNullable(state.getDisplayName())
-                .map(displayName -> evalStateScript(subject.getProcessInstance(), String.format("\"%s\"", displayName)))
+                .map(displayName -> evalStateScript(subject.getProcessInstance(), state, String.format("\"%s\"", displayName)))
                 .orElse(state.getName());
     }
 
-    private String evalStateScript(ProcessInstance processInstance, String script) {
+    private String evalStateScript(ProcessInstance processInstance, State state, String script) {
         try {
             Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
             processInstance.getProcessModel().getObjectModels().stream()
                     .forEach(objectModel -> {
-                        ObjectBean objectBean = new ObjectBean(objectModel, 
-                                processInstance.getValues(objectModel));
+                        ObjectBean objectBean = createObjectBean(processInstance, state, objectModel);
                         bindings.put(objectModel.getName(), objectBean);
                     });
             //eval returns GString; convert it with toString()
@@ -188,6 +189,12 @@ public class EngineConverter {
             Logger.getLogger(EngineConverter.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return ex.getMessage();
         }
+    }
+
+    private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel) {
+        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
+                .convertToObjectSchema(objectModel);
+        return ObjectBean.from(objectSchema, processInstance.getValues(objectModel));
     }
 
     public static UserToken convertUser(User user) {
