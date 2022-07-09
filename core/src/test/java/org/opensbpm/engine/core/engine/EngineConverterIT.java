@@ -18,6 +18,9 @@
 package org.opensbpm.engine.core.engine;
 
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensbpm.engine.api.instance.TaskInfo;
@@ -197,7 +200,9 @@ public class EngineConverterIT extends ServiceITCase {
 
         ProcessInstance processInstance = new ProcessInstance(processModel, new User("username"));
 
-        processInstance.addObjectInstance(objectModel).getAttributeStore().put(attributeModel, "X");
+        Map<Long, Serializable> values = new HashMap<>();
+        values.put(attributeModel.getId(), "X");        
+        processInstance.addObjectInstance(objectModel).setValue(values);
 
         Subject subject = new ServiceSubject(processInstance, new ServiceSubjectModel("name"));
         FunctionState state = spyFunctionState(1l, subject.getSubjectModel(), "Function");

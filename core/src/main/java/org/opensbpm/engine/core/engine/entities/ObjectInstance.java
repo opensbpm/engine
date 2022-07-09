@@ -91,6 +91,10 @@ public class ObjectInstance implements HasId, Serializable {
     public Map<Long, Serializable> getValue() {
         return emptyOrUnmodifiableMap(value);
     }
+
+    public void setValue(Map<Long, Serializable> value) {
+        this.value = new HashMap<>(value);
+    }    
     
     public AttributeStore getAttributeStore() {
         return new AttributeStore(objectModel, value);
