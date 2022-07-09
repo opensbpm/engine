@@ -34,7 +34,7 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
     private String description;
     private int version;
     private ProcessModelState state = ProcessModelState.ACTIVE;
-    private final Map<String, SubjectBuilder<?, ?>> subjectBuilders = new LinkedHashMap<>();
+    private final Map<String, SubjectBuilder<?, ? extends SubjectDefinition>> subjectBuilders = new LinkedHashMap<>();
     private final Map<String, ObjectBuilder> objectBuilders = new LinkedHashMap<>();
 
     public ProcessBuilder(String name) {
@@ -73,7 +73,7 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
         return self();
     }
 
-    public SubjectBuilder<?, ?> getSubject(String name) {
+    public SubjectBuilder<?, ? extends SubjectDefinition> getSubject(String name) {
         return subjectBuilders.get(name);
     }
 

@@ -60,6 +60,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FunctionStateType;
@@ -113,17 +114,21 @@ public class ProcessTypeConverter {
         }
 
         for (SubjectType subjectType : processType.getUserSubjectOrServiceSubject()) {
-            SubjectBuilder<?, ?> subjectBuilder = processBuilder.getSubject(subjectType.getName());
-
-            for (StateType stateType : subjectType.getFunctionStateOrSendStateOrReceiveState()) {
-                subjectBuilder.addState(createState(stateType, processBuilder));
-            }
-
-            updateHeads(subjectType, subjectBuilder, processBuilder);
+            updateSubject(processBuilder, subjectType);
         }
 
-        return processBuilder
-                .build();
+        return processBuilder.build();
+    }
+
+    private void updateSubject(ProcessBuilder processBuilder, SubjectType subjectType) {
+        SubjectBuilder<?, ? extends SubjectDefinition> subjectBuilder;
+        subjectBuilder = processBuilder.getSubject(subjectType.getName());
+
+        for (StateType stateType : subjectType.getFunctionStateOrSendStateOrReceiveState()) {
+            subjectBuilder.addState(createState(stateType, processBuilder));
+        }
+
+        updateHeads(subjectType, subjectBuilder, processBuilder);
     }
 
     private List<AttributeBuilder<?, ?>> createAttributes(ProcessBuilder processBuilder, List<Object> attributeTypes) {
@@ -263,7 +268,7 @@ public class ProcessTypeConverter {
         return permissions;
     }
 
-    private AbstractAttributePermissionBuilder<?, ?> createAttributePermission(HasChildAttributes<?> parentAttributeBuilder, Object permissionType)  {
+    private AbstractAttributePermissionBuilder<?, ?> createAttributePermission(HasChildAttributes<?> parentAttributeBuilder, Object permissionType) {
         AbstractAttributePermissionBuilder<?, ?> permissionBuilder;
         if (permissionType instanceof AttributePermissionType) {
             AttributePermissionType attributePermissionType = (AttributePermissionType) permissionType;
