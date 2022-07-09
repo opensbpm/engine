@@ -18,12 +18,13 @@
 package org.opensbpm.engine.api.model.builder;
 
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
+import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 
 public interface HasChildAttributes<T> {
 
-    T addAttribute(AttributeBuilder<?,?> attributeBuilder);
+    T addAttribute(AttributeBuilder<?extends AttributeDefinition,?> attributeBuilder);
 
-    AttributeBuilder<?,?> getAttribute(String name);
+    AttributeBuilder<?extends AttributeDefinition,?> getAttribute(String name);
 
     String getName();
 
