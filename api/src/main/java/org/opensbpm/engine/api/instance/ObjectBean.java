@@ -33,24 +33,22 @@ import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
 
 /**
  * Bean representation of {@link IsAttributesContainer}. The main purpose of this
- * class is to provide a {@link Map} to easy access all values of a
- * {@link org.opensbpm.engine.core.engine.entities.ObjectInstance}
- * in scripts. Nested and indexed attributes are lazy created, so there is no
- * need for additional creation of nested {@code ObjectBean}s
+ * class is to provide a {@link DynaBean} implementation to access all values of
+ * a {@link ObjectData} in scripts. Nested and indexed attributes are lazy
+ * created, so there is no need for additional creation of nested {@code ObjectBean}s
  */
 public class ObjectBean implements DynaBean {
 
-        /**
+    /**
      * Instantiate a ObjectBean with the given attribute and values.
      *
      * @param attributesContainer
-     * @param values 
+     * @param values
      */
     public static ObjectBean from(IsAttributesContainer attributesContainer, Map<Long, Serializable> values) {
         return new ObjectBean(attributesContainer, new AttributeStore(attributesContainer, new HashMap<>(values)));
     }
 
-    
     private final IsAttributesContainer attributesContainer;
     private final AttributeStore attributeStore;
 

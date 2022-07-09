@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
 /**
- * Encapsulates the persisted {@link AttributeModel} values in a type-safe API
+ * Encapsulates the persisted {@link AttributeSchema} values in a type-safe API
  */
 public class AttributeStore {
 
