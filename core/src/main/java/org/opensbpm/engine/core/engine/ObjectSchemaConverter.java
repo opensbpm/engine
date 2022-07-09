@@ -74,16 +74,12 @@ class ObjectSchemaConverter {
         return new SchemaCreator(state).apply(objectModel);
     }
 
-    private class SchemaCreator implements Function<ObjectModel, ObjectSchema>, AttributeModelVisitor<AttributeSchema> {
+    private class SchemaCreator implements Function<ObjectModel, ObjectSchema> {
 
         private final State state;
 
         private SchemaCreator(State state) {
             this.state = Objects.requireNonNull(state, "State must be non null");
-        }
-
-        private Optional<FunctionState> getState() {
-            return state.accept(functionState());
         }
 
         @Override
@@ -96,49 +92,50 @@ class ObjectSchemaConverter {
             return ObjectSchema.of(objectModel.getId(), objectModel.getName(), attributes);
         }
 
-        @Override
-        public AttributeSchema visitSimple(SimpleAttributeModel simpleAttribute) {
-            AttributeSchema attributeSchema = new AttributeSchema(simpleAttribute.getId(), simpleAttribute.getName(), simpleAttribute.getFieldType());
-            getState().ifPresent(functionState -> {
-                attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
-                attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
-            });
-            attributeSchema.setIndexed(simpleAttribute.isIndexed());
-
-            //PENDING add attributeSchema.getDefaultValue()
-            return attributeSchema;
-        }
-
-        @Override
-        public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-            AttributeSchema attributeSchema = new AttributeSchema(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
-            getState().ifPresent(functionState -> {
-                attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
-                attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
-            });
-
-            attributeSchema.setAutocompleteReference(toObjectSchema(referenceAttribute.getReference()));
-
-            //PENDING add attributeSchema.getDefaultValue()
-            return attributeSchema;
-        }
-
-        @Override
-        public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {
-            List<AttributeSchema> attributes = createAttributes(nestedAttribute.getAttributeModels());
-            return new NestedAttributeSchema(nestedAttribute.getId(), nestedAttribute.getName(), nestedAttribute.getOccurs(), attributes);
-        }
-
-        @Override
-        public AttributeSchema visitIndexed(IndexedAttributeModel indexedAttribute) {
-            List<AttributeSchema> attributes = createAttributes(indexedAttribute.getAttributeModels());
-            return new NestedAttributeSchema(indexedAttribute.getId(), indexedAttribute.getName(), indexedAttribute.getOccurs(), attributes);
-        }
-
         private List<AttributeSchema> createAttributes(Collection<AttributeModel> attributeModels) {
             return attributeModels.stream()
                     .filter(attributeModel -> hasAnyPermission(attributeModel))
-                    .map(attributeModel -> attributeModel.accept(this))
+                    .map(attributeModel -> attributeModel.accept(new AttributeModelVisitor<AttributeSchema>() {
+                @Override
+                public AttributeSchema visitSimple(SimpleAttributeModel simpleAttribute) {
+                    AttributeSchema attributeSchema = new AttributeSchema(simpleAttribute.getId(), simpleAttribute.getName(), simpleAttribute.getFieldType());
+                    getState().ifPresent(functionState -> {
+                        attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
+                        attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
+                    });
+                    attributeSchema.setIndexed(simpleAttribute.isIndexed());
+
+                    //PENDING add attributeSchema.getDefaultValue()
+                    return attributeSchema;
+                }
+
+                @Override
+                public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
+                    AttributeSchema attributeSchema = new AttributeSchema(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
+                    getState().ifPresent(functionState -> {
+                        attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
+                        attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
+                    });
+
+                    attributeSchema.setAutocompleteReference(toObjectSchema(referenceAttribute.getReference()));
+
+                    //PENDING add attributeSchema.getDefaultValue()
+                    return attributeSchema;
+                }
+
+                @Override
+                public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {
+                    List<AttributeSchema> attributes = createAttributes(nestedAttribute.getAttributeModels());
+                    return new NestedAttributeSchema(nestedAttribute.getId(), nestedAttribute.getName(), nestedAttribute.getOccurs(), attributes);
+                }
+
+                @Override
+                public AttributeSchema visitIndexed(IndexedAttributeModel indexedAttribute) {
+                    List<AttributeSchema> attributes = createAttributes(indexedAttribute.getAttributeModels());
+                    return new NestedAttributeSchema(indexedAttribute.getId(), indexedAttribute.getName(), indexedAttribute.getOccurs(), attributes);
+                }
+
+            }))
                     .collect(toList());
         }
 
@@ -146,6 +143,10 @@ class ObjectSchemaConverter {
             return getState()
                     .map(functionState -> functionState.hasAnyPermission(attributeModel))
                     .orElse(Boolean.TRUE);
+        }
+
+        private Optional<FunctionState> getState() {
+            return state.accept(functionState());
         }
 
     }
