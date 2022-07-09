@@ -32,10 +32,10 @@ import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.core.engine.AttributeStore;
-import org.opensbpm.engine.core.engine.ObjectBean;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.utils.entities.HasId;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableMap;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -88,6 +88,10 @@ public class ObjectInstance implements HasId, Serializable {
         }
     }
 
+    public Map<Long, Serializable> getValue() {
+        return emptyOrUnmodifiableMap(value);
+    }
+    
     public AttributeStore getAttributeStore() {
         return new AttributeStore(objectModel, value);
     }

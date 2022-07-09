@@ -51,6 +51,16 @@ public class ObjectBean implements DynaBean {
     private final AttributeStore attributeStore;
 
     /**
+     * Instantiate a ObjectBean with the given attribute and values.
+     *
+     * @param attributeParent
+     * @param values 
+     */
+    public ObjectBean(IsAttributeParent attributeParent, Map<Long, Serializable> values) {
+        this(attributeParent, new AttributeStore(attributeParent, new HashMap<>(values)));
+    }
+
+    /**
      * instantiate a {@link ObjectBean} with the given attribute and store.
      *
      * @param attributeParent

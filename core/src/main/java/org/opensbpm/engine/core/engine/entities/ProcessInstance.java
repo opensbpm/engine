@@ -20,7 +20,10 @@ package org.opensbpm.engine.core.engine.entities;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -213,12 +216,20 @@ public class ProcessInstance implements HasId, Serializable {
         }
     }
 
+    /**
+     * return a read only {@link ObjectBean}
+     *
+     * @param objectModel
+     * @return
+     */
     public ObjectBean getObjectBean(ObjectModel objectModel) {
         Objects.requireNonNull(objectModel, "objectModel must not be null");
-        AttributeStore store = getObjectInstance(objectModel)
-                .map(objectInstance -> objectInstance.getAttributeStore())
-                .orElse(new AttributeStore(objectModel));
-        return new ObjectBean(objectModel, store);
+
+        Map<Long, Serializable> values = getObjectInstance(objectModel)
+                .map(objectInstance -> objectInstance.getValue())
+                .orElse(Collections.emptyMap());
+
+        return new ObjectBean(objectModel, values);
     }
 
     public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
@@ -242,5 +253,4 @@ public class ProcessInstance implements HasId, Serializable {
                 .toString();
     }
 
-    
 }
