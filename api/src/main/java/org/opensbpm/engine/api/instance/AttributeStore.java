@@ -150,12 +150,10 @@ public class AttributeStore {
     public void updateValues(Map<Long, Serializable> data) {
         AttributeStore dataStore = new AttributeStore(attributeContainer, new HashMap<>(data));
         attributeContainer.getAttributes().stream()
-                .forEach(attributeModel -> updateAttribute(attributeModel, dataStore));
-    }
-
-    private void updateAttribute(AttributeSchema attributeSchema, AttributeStore data) {
-        attributeSchema.accept(new AttributeValueDeterminer(data))
-                .ifPresent(value -> put(attributeSchema, value));
+                .forEach(attributeSchema -> {
+                    attributeSchema.accept(new AttributeValueDeterminer(dataStore))
+                            .ifPresent(value -> put(attributeSchema, value));
+                });
     }
 
     //not in use for now
