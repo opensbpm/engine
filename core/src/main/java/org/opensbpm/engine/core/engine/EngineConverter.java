@@ -44,6 +44,7 @@ import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.ModelConverter;
 import org.opensbpm.engine.core.model.entities.FunctionState;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
 import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.model.entities.State;
@@ -172,14 +173,12 @@ public class EngineConverter {
                 .orElse(state.getName());
     }
 
-    private String evalStateScript(ProcessInstance processInstance, String script)  {
+    private String evalStateScript(ProcessInstance processInstance, String script) {
         try {
             Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
             processInstance.getProcessModel().getObjectModels().stream()
                     .forEach(objectModel -> {
-                        ObjectBean objectBean = processInstance.getObjectInstance(objectModel)
-                                .map(objectInstance -> objectInstance.getObjectBean())
-                                .orElse(new ObjectBean(objectModel, new AttributeStore(objectModel)));
+                        ObjectBean objectBean = processInstance.getObjectBean(objectModel);
                         bindings.put(objectModel.getName(), objectBean);
                     });
             //eval returns GString; convert it with toString()

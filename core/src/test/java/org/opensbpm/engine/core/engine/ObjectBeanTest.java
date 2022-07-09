@@ -217,7 +217,7 @@ public class ObjectBeanTest extends ServiceITCase {
         PropertyUtils.setProperty(objectBean, "indexed[0].indexed[0].string", "a");
 
         //act + assert
-        DynaBean dynaBean = objectInstance.getObjectBean();
+        DynaBean dynaBean = new ObjectBean(objectInstance.getObjectModel(),objectInstance.getAttributeStore());
 
         assertNotNullProperty(dynaBean, "string");
         assertNotNullProperty(dynaBean, "number");

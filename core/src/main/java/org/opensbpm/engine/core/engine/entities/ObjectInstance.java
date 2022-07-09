@@ -92,15 +92,6 @@ public class ObjectInstance implements HasId, Serializable {
         return new AttributeStore(objectModel, value);
     }
 
-    /**
-     * instantiate a {@link ObjectBean} with the values from {@link ObjectInstance#value}.
-     *
-     * @param objectInstance
-     */
-    public ObjectBean getObjectBean() {
-        return new ObjectBean(getObjectModel(), getAttributeStore());
-    }
-    
     public void updateValues(FunctionState state, Map<Long, Serializable> data) {
         getAttributeStore().updateValues(state, data);
     }

@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.engine.entities;
 
 import java.io.Serializable;
@@ -40,6 +41,8 @@ import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
+import org.opensbpm.engine.core.engine.AttributeStore;
+import org.opensbpm.engine.core.engine.ObjectBean;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
@@ -210,7 +213,21 @@ public class ProcessInstance implements HasId, Serializable {
         }
     }
 
-    public Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {
+    public ObjectBean getObjectBean(ObjectModel objectModel) {
+        Objects.requireNonNull(objectModel, "objectModel must not be null");
+        AttributeStore store = getObjectInstance(objectModel)
+                .map(objectInstance -> objectInstance.getAttributeStore())
+                .orElse(new AttributeStore(objectModel));
+        return new ObjectBean(objectModel, store);
+    }
+
+    public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
+        ObjectInstance objectInstance = getObjectInstance(objectModel)
+                .orElseGet(() -> addObjectInstance(objectModel));
+        return objectInstance;
+    }
+
+    private Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {
         Objects.requireNonNull(objectModel, "objectModel must not be null");
         return getObjectInstances().stream()
                 .filter(objectInstance -> objectInstance.getObjectModel().equalsId(objectModel))
@@ -225,4 +242,5 @@ public class ProcessInstance implements HasId, Serializable {
                 .toString();
     }
 
+    
 }
