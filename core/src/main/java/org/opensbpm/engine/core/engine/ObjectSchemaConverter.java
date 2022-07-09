@@ -60,7 +60,7 @@ class ObjectSchemaConverter {
     public List<ObjectSchema> createObjectSchemas(ProcessModel processModel) {
         return processModel.getObjectModels().stream()
                 .filter(objectModel -> hasAnyStatePermission(objectModel))
-                .map(new SchemaCreator())
+                .map(new SchemaCreator(state))
                 .collect(toList());
     }
 
@@ -70,17 +70,31 @@ class ObjectSchemaConverter {
                 .orElse(Boolean.TRUE);
     }
 
-    private boolean hasAnyPermission(AttributeModel attributeModel) {
-        return getState()
-                .map(functionState -> functionState.hasAnyPermission(attributeModel))
-                .orElse(Boolean.TRUE);
-    }
-
     public ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
-        return new SchemaCreator().apply(objectModel);
+        return new SchemaCreator(state).apply(objectModel);
     }
 
-    private class SchemaCreator implements AttributeModelVisitor<AttributeSchema>, Function<ObjectModel, ObjectSchema> {
+    private class SchemaCreator implements Function<ObjectModel, ObjectSchema>, AttributeModelVisitor<AttributeSchema> {
+
+        private final State state;
+
+        private SchemaCreator(State state) {
+            this.state = Objects.requireNonNull(state, "State must be non null");
+        }
+
+        private Optional<FunctionState> getState() {
+            return state.accept(functionState());
+        }
+
+        @Override
+        public ObjectSchema apply(ObjectModel objectModel) {
+            return toObjectSchema(objectModel);
+        }
+
+        private ObjectSchema toObjectSchema(ObjectModel objectModel) {
+            List<AttributeSchema> attributes = createAttributes(objectModel.getAttributeModels());
+            return ObjectSchema.of(objectModel.getId(), objectModel.getName(), attributes);
+        }
 
         @Override
         public AttributeSchema visitSimple(SimpleAttributeModel simpleAttribute) {
@@ -103,7 +117,7 @@ class ObjectSchemaConverter {
                 attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
             });
 
-            attributeSchema.setAutocompleteReference(convertToObjectSchema(referenceAttribute.getReference()));
+            attributeSchema.setAutocompleteReference(toObjectSchema(referenceAttribute.getReference()));
 
             //PENDING add attributeSchema.getDefaultValue()
             return attributeSchema;
@@ -121,12 +135,6 @@ class ObjectSchemaConverter {
             return new NestedAttributeSchema(indexedAttribute.getId(), indexedAttribute.getName(), indexedAttribute.getOccurs(), attributes);
         }
 
-        @Override
-        public ObjectSchema apply(ObjectModel objectModel) {
-            List<AttributeSchema> attributes = createAttributes(objectModel.getAttributeModels());
-            return ObjectSchema.of(objectModel.getId(), objectModel.getName(), attributes);
-        }
-
         private List<AttributeSchema> createAttributes(Collection<AttributeModel> attributeModels) {
             return attributeModels.stream()
                     .filter(attributeModel -> hasAnyPermission(attributeModel))
@@ -134,9 +142,10 @@ class ObjectSchemaConverter {
                     .collect(toList());
         }
 
-        ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
-            List<AttributeSchema> attributes = createAttributes(objectModel.getAttributeModels());
-            return ObjectSchema.of(objectModel.getId(), objectModel.getName(), attributes);
+        private boolean hasAnyPermission(AttributeModel attributeModel) {
+            return getState()
+                    .map(functionState -> functionState.hasAnyPermission(attributeModel))
+                    .orElse(Boolean.TRUE);
         }
 
     }
