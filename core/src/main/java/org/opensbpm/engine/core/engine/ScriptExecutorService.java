@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.script.Bindings;
@@ -48,23 +49,17 @@ public class ScriptExecutorService {
 
     public String evaluteStateDisplayName(Subject subject, State state) {
         return Optional.ofNullable(state.getDisplayName())
-                .map(displayName -> evalStateScript(subject.getProcessInstance(), state, String.format("\"%s\"", displayName)))
+                .map(displayName -> evalStateScript(String.format("\"%s\"", displayName), subject.getProcessInstance(), state))
                 .orElse(state.getName());
     }
 
-    private String evalStateScript(ProcessInstance processInstance, State state, String script) {
-        try {
-            Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+    private String evalStateScript(String script, ProcessInstance processInstance, State state) {
+        return eval(script, bindings -> {
             processInstance.getProcessModel().getObjectModels().stream().forEach(objectModel -> {
                 ObjectBean objectBean = createObjectBean(processInstance, state, objectModel);
                 bindings.put(objectModel.getName(), objectBean);
             });
-            //eval returns GString; convert it with toString()
-            return scriptEngine.eval(script, bindings).toString();
-        } catch (ScriptException ex) {
-            Logger.getLogger(EngineConverter.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return ex.getMessage();
-        }
+        });
     }
 
     private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel) {
@@ -80,10 +75,8 @@ public class ScriptExecutorService {
                 .orElse(objectModel.getName());
     }
 
-    private String evalDisplayNameScript(String script, ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) throws RuntimeException {
-        try {
-            Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-
+    private String evalDisplayNameScript(String script, ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
+        return eval(script, bindings -> {
             ObjectSchema objectSchema = new ObjectSchemaConverter(state)
                     .convertToObjectSchema(objectModel);
 
@@ -93,6 +86,14 @@ public class ScriptExecutorService {
             for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
                 bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));
             }
+        });
+    }
+
+    private String eval(String script, Consumer<Bindings> bindingsConsumer) {
+        try {
+            Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
+            bindingsConsumer.accept(bindings);
+
             //eval returns GString; convert it with toString()
             return scriptEngine.eval(script, bindings).toString();
         } catch (ScriptException ex) {
