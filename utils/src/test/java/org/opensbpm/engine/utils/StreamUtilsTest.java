@@ -3,8 +3,10 @@ package org.opensbpm.engine.utils;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -16,6 +18,7 @@ import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertThrows;
 
@@ -67,6 +70,31 @@ public class StreamUtilsTest {
         Set<String> result = StreamUtils.emptyOrUnmodifiableSet(values);
         assertThrows(UnsupportedOperationException.class, () -> {
             result.add("b");
+        });
+    }
+
+    @Test
+    public void testEmptyOrUnmodifiableMapWithNull() throws Exception {
+        //given
+        Map<String,String> values = StreamUtils.emptyOrUnmodifiableMap(null);
+        assertThat(values, is(anEmptyMap()));
+
+        //when + then
+        assertThrows(UnsupportedOperationException.class, () -> {
+            values.put("a","b");
+        });
+    }
+
+    @Test
+    public void testEmptyOrUnmodifiableMapWithValue() throws Exception {
+        //given
+        Map<String,String> values = new HashMap<>();
+        values.put("a","b");
+
+        //when + then
+        Map<String,String> result = StreamUtils.emptyOrUnmodifiableMap(values);
+        assertThrows(UnsupportedOperationException.class, () -> {
+            result.put("a","b");
         });
     }
 
