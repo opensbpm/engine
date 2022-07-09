@@ -43,8 +43,7 @@ public class ValidationService {
     }
 
     public AutocompleteResponse createAutocompleteResponse(FunctionState state, ObjectModel objectModel, String queryString) {
-        ObjectSchema objectSchema = new TaskResponseConverter(scriptEngine, state)
-                .convertToObjectSchema(objectModel);
+        ObjectSchema objectSchema = new ObjectSchemaConverter(state).convertToObjectSchema(objectModel);
         List<Autocomplete> autocompletes = new ArrayList<>();
         for (AutocompleteProvider autocompleteProvider : validationProviderManager.getAutocompleteProvider()) {
             autocompleteProvider.getAutocomplete(objectSchema, queryString).stream()

@@ -38,6 +38,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.opensbpm.engine.core.junit.MockData.spyFunctionState;
 import static org.opensbpm.engine.core.junit.MockData.spyObjectModel;
 import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
 import static org.opensbpm.engine.core.junit.MockData.spyProcessModel;
@@ -61,13 +62,13 @@ public class ValidationServiceTest {
     @Test
     public void testCreateAutocompleteResponse() {
         //given
-        FunctionState state = null;
 
         User user = spyUser(1L, "User Name", "First Name", "Last Name");
 
         ProcessModel processModel = spyProcessModel(2l, "Process Name");
         ProcessInstance processInstance = spyProcessInstance(3l, processModel, user);
         UserSubjectModel userSubjectModel = processModel.addUserSubjectModel("subject", Arrays.asList(new Role("role")));
+        FunctionState state = spyFunctionState(1l, userSubjectModel, "Function");
 
         ObjectModel objectModel = spyObjectModel(1l, processModel, "Object Model");
 

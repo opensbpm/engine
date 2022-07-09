@@ -163,7 +163,7 @@ public class EngineConverter {
                 .map(functionState -> NextState.of(functionState.getId(), evaluteStateDisplayName(subject, functionState)))
                 .orElse(NextState.ofEnd(nextState.getId(), evaluteStateDisplayName(subject, nextState))));
 
-        return new TaskResponseConverter(scriptEngine, state).convert(subject, nextStates);
+        return new TaskResponseConverter(scriptEngine).convert(subject, state, nextStates);
     }
 
     public String evaluteStateDisplayName(Subject subject, State state) {

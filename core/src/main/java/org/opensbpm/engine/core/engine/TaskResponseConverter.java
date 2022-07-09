@@ -1,143 +1,59 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2022 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.engine;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Function;
+import java.util.Objects;
 import javax.script.ScriptEngine;
-import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
-import org.opensbpm.engine.core.model.entities.AttributeModel;
-import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
 import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
-import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
-import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
-import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import static java.util.stream.Collectors.toList;
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 class TaskResponseConverter {
 
-    private ScriptEngine scriptEngine;
-    private FunctionState state;
+    private final ScriptEngine scriptEngine;
 
-    public TaskResponseConverter(ScriptEngine scriptEngine, FunctionState state) {
-        this.scriptEngine = scriptEngine;
-        this.state = state;
+    public TaskResponseConverter(ScriptEngine scriptEngine) {
+        this.scriptEngine = Objects.requireNonNull(scriptEngine, "ScriptEngine must be nono null");
     }
 
-    public TaskResponse convert(Subject subject, List<NextState> nextStates) {
+    public TaskResponse convert(Subject subject, FunctionState state, List<NextState> nextStates) {
         ProcessInstance processInstance = subject.getProcessInstance();
-        List<ObjectSchema> objectSchemas = createObjectSchemas(processInstance.getProcessModel());
-        List<ObjectData> datas = createObjectDatas(processInstance);
+
+        List<ObjectSchema> objectSchemas = new ObjectSchemaConverter(state)
+                .createObjectSchemas(processInstance.getProcessModel());
+
+        List<ObjectData> datas = mapToList(processInstance.getObjectInstances(),
+                objectInstance -> {
+                    ObjectModel objectModel = objectInstance.getObjectModel();
+                    AttributeStore attributeStore = objectInstance.getAttributeStore();
+
+                    return new ObjectDataCreator(scriptEngine)
+                            .createObjectData(objectModel, state, attributeStore);
+                });
 
         return TaskResponse.of(subject.getId(), nextStates, subject.getLastChanged(), objectSchemas, datas);
-    }
-
-    private List<ObjectSchema> createObjectSchemas(ProcessModel processModel) {
-        return processModel.getObjectModels().stream()
-                .filter(objectModel -> state.hasAnyStatePermission(objectModel))
-                .map(new SchemaCreator())
-                .collect(toList());
-    }
-
-    private List<ObjectData> createObjectDatas(ProcessInstance processInstance) {
-        return mapToList(processInstance.getObjectInstances(),
-                objectInstance -> createObjectData(objectInstance));
-    }
-
-    public ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
-        return new SchemaCreator().apply(objectModel);
-    }
-
-    private class SchemaCreator implements AttributeModelVisitor<AttributeSchema>, Function<ObjectModel, ObjectSchema> {
-
-        @Override
-        public AttributeSchema visitSimple(SimpleAttributeModel simpleAttribute) {
-            AttributeSchema attributeSchema = new AttributeSchema(simpleAttribute.getId(), simpleAttribute.getName(), simpleAttribute.getFieldType());
-            attributeSchema.setRequired(state.isMandatory(simpleAttribute));
-            attributeSchema.setReadonly(state.hasReadPermission(simpleAttribute));
-            attributeSchema.setIndexed(simpleAttribute.isIndexed());
-
-            //PENDING add attributeSchema.getDefaultValue()
-            return attributeSchema;
-        }
-
-        @Override
-        public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-            AttributeSchema attributeSchema = new AttributeSchema(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
-            attributeSchema.setRequired(state.isMandatory(referenceAttribute));
-            attributeSchema.setReadonly(state.hasReadPermission(referenceAttribute));
-            
-            attributeSchema.setAutocompleteReference(convertToObjectSchema(referenceAttribute.getReference()));
-
-            //PENDING add attributeSchema.getDefaultValue()
-            return attributeSchema;
-        }
-
-        @Override
-        public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {
-            List<AttributeSchema> attributes = createAttributes(nestedAttribute.getAttributeModels());
-            return new NestedAttributeSchema(nestedAttribute.getId(), nestedAttribute.getName(), nestedAttribute.getOccurs(), attributes);
-        }
-
-        @Override
-        public AttributeSchema visitIndexed(IndexedAttributeModel indexedAttribute) {
-            List<AttributeSchema> attributes = createAttributes(indexedAttribute.getAttributeModels());
-            return new NestedAttributeSchema(indexedAttribute.getId(), indexedAttribute.getName(), indexedAttribute.getOccurs(), attributes);
-        }
-
-        @Override
-        public ObjectSchema apply(ObjectModel objectModel) {
-            List<AttributeSchema> attributes = createAttributes(objectModel.getAttributeModels());
-            return ObjectSchema.of(objectModel.getId(), objectModel.getName(), attributes);
-        }
-
-        private List<AttributeSchema> createAttributes(Collection<AttributeModel> attributeModels) {
-            return attributeModels.stream()
-                    .filter(attributeModel -> state.hasAnyPermission(attributeModel))
-                    .map(attributeModel -> attributeModel.accept(this))
-                    .collect(toList());
-        }
-
-        ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
-            List<AttributeSchema> attributes = createAttributes(objectModel.getAttributeModels());
-            return ObjectSchema.of(objectModel.getId(), objectModel.getName(), attributes);
-        }
-
-    }
-
-    private ObjectData createObjectData(ObjectInstance objectInstance) {
-        ObjectModel objectModel = objectInstance.getObjectModel();
-        AttributeStore attributeStore = objectInstance.getAttributeStore();
-
-        return new ObjectDataCreator(scriptEngine).createObjectData(objectModel, state, attributeStore);
     }
 
 }
