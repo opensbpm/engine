@@ -40,6 +40,17 @@ import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
  */
 public class ObjectBean implements DynaBean {
 
+        /**
+     * Instantiate a ObjectBean with the given attribute and values.
+     *
+     * @param attributesContainer
+     * @param values 
+     */
+    public static ObjectBean from(IsAttributesContainer attributesContainer, Map<Long, Serializable> values) {
+        return new ObjectBean(attributesContainer, new AttributeStore(attributesContainer, new HashMap<>(values)));
+    }
+
+    
     private final IsAttributesContainer attributesContainer;
     private final AttributeStore attributeStore;
 
