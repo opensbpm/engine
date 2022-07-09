@@ -20,6 +20,7 @@ package org.opensbpm.engine.core.engine;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Function;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
@@ -34,25 +35,39 @@ import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
+import org.opensbpm.engine.core.model.entities.State;
 import static java.util.stream.Collectors.toList;
+import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
 
 class ObjectSchemaConverter {
 
-    private final FunctionState state;
+    private final State state;
 
-    public ObjectSchemaConverter(FunctionState state) {
-        this.state = Objects.requireNonNull(state, "FunctionState must be non null");
+    public ObjectSchemaConverter(State state) {
+        this.state = Objects.requireNonNull(state, "State must be non null");
     }
 
-    public FunctionState getState() {
-        return state;
+    private Optional<FunctionState> getState() {
+        return state.accept(functionState());
     }
 
     public List<ObjectSchema> createObjectSchemas(ProcessModel processModel) {
         return processModel.getObjectModels().stream()
-                .filter(objectModel -> state.hasAnyStatePermission(objectModel))
+                .filter(objectModel -> hasAnyStatePermission(objectModel))
                 .map(new SchemaCreator())
                 .collect(toList());
+    }
+
+    private boolean hasAnyStatePermission(ObjectModel objectModel) {
+        return getState()
+                .map(functionState -> functionState.hasAnyStatePermission(objectModel))
+                .orElse(Boolean.TRUE);
+    }
+
+    private boolean hasAnyPermission(AttributeModel attributeModel) {
+        return getState()
+                .map(functionState -> functionState.hasAnyPermission(attributeModel))
+                .orElse(Boolean.TRUE);
     }
 
     public ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
@@ -64,8 +79,10 @@ class ObjectSchemaConverter {
         @Override
         public AttributeSchema visitSimple(SimpleAttributeModel simpleAttribute) {
             AttributeSchema attributeSchema = new AttributeSchema(simpleAttribute.getId(), simpleAttribute.getName(), simpleAttribute.getFieldType());
-            attributeSchema.setRequired(state.isMandatory(simpleAttribute));
-            attributeSchema.setReadonly(state.hasReadPermission(simpleAttribute));
+            getState().ifPresent(functionState -> {
+                attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
+                attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
+            });
             attributeSchema.setIndexed(simpleAttribute.isIndexed());
 
             //PENDING add attributeSchema.getDefaultValue()
@@ -75,8 +92,10 @@ class ObjectSchemaConverter {
         @Override
         public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
             AttributeSchema attributeSchema = new AttributeSchema(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
-            attributeSchema.setRequired(state.isMandatory(referenceAttribute));
-            attributeSchema.setReadonly(state.hasReadPermission(referenceAttribute));
+            getState().ifPresent(functionState -> {
+                attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
+                attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
+            });
 
             attributeSchema.setAutocompleteReference(convertToObjectSchema(referenceAttribute.getReference()));
 
@@ -104,7 +123,7 @@ class ObjectSchemaConverter {
 
         private List<AttributeSchema> createAttributes(Collection<AttributeModel> attributeModels) {
             return attributeModels.stream()
-                    .filter(attributeModel -> state.hasAnyPermission(attributeModel))
+                    .filter(attributeModel -> hasAnyPermission(attributeModel))
                     .map(attributeModel -> attributeModel.accept(this))
                     .collect(toList());
         }
