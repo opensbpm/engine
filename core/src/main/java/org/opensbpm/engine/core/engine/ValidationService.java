@@ -20,7 +20,6 @@ package org.opensbpm.engine.core.engine;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.script.ScriptEngine;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
 import org.opensbpm.engine.api.instance.AutocompleteResponse.Autocomplete;
 import org.opensbpm.engine.api.instance.ObjectData;
@@ -34,17 +33,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidationService {
 
-    private final ScriptEngine scriptEngine;
+    private final ScriptExecutorService scriptExecutorService;
     private final ValidationProviderManager validationProviderManager;
 
-    public ValidationService(ScriptEngine scriptEngine, ValidationProviderManager validationProviderManager) {
-        this.scriptEngine = scriptEngine;
+    public ValidationService(ScriptExecutorService scriptExecutorService, ValidationProviderManager validationProviderManager) {
+        this.scriptExecutorService = scriptExecutorService;
         this.validationProviderManager = validationProviderManager;
     }
 
     public AutocompleteResponse createAutocompleteResponse(FunctionState state, ObjectModel objectModel, String queryString) {
         ObjectSchema objectSchema = new ObjectSchemaConverter(state).convertToObjectSchema(objectModel);
-        
+
         List<Autocomplete> autocompletes = new ArrayList<>();
         for (AutocompleteProvider autocompleteProvider : validationProviderManager.getAutocompleteProvider()) {
             autocompleteProvider.getAutocomplete(objectSchema, queryString).stream()
@@ -56,7 +55,7 @@ public class ValidationService {
     }
 
     private ObjectData toObjectData(ObjectModel objectModel, FunctionState state, SourceMap sourceMap) {
-        return new ObjectDataCreator(scriptEngine)
+        return new ObjectDataCreator(scriptExecutorService)
                 .createObjectData(objectModel, state, new AttributeStore(objectModel, sourceMap));
     }
 

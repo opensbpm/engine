@@ -19,27 +19,17 @@ package org.opensbpm.engine.core.engine;
 
 import java.io.Serializable;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
-import org.opensbpm.engine.api.instance.ObjectData.ObjectDataBuilder;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 
 class ObjectDataCreator {
 
-    private final ScriptEngine scriptEngine;
+    private final ScriptExecutorService scriptExecutorService;
 
-    public ObjectDataCreator(ScriptEngine scriptEngine) {
-        this.scriptEngine = scriptEngine;
+    public ObjectDataCreator(ScriptExecutorService scriptExecutorService) {
+        this.scriptExecutorService = scriptExecutorService;
     }
 
     public ObjectData createObjectData(ObjectInstance objectInstance, FunctionState state) {
@@ -50,35 +40,17 @@ class ObjectDataCreator {
     }
 
     public ObjectData createObjectData(ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
-        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
-                .convertToObjectSchema(objectModel);
-        
         Map<Long, Serializable> data = attributeStore.toIdMap(attributeModel -> state.hasAnyPermission(attributeModel));
-        ObjectBean objectBean = ObjectBean.from(objectSchema, data);
-        
-        ObjectDataBuilder objectDataBuilder = ObjectData.of(objectModel.getName())
+
+        return ObjectData.of(objectModel.getName())
                 .withData(data)
-                .withId(attributeStore.getId());
-        
-        objectModel.getDisplayName()
-                .map(displayName -> evalDisplayNameScript(String.format("\"%s\"", displayName), objectBean))
-                .ifPresent(evaluatetDisplayName -> objectDataBuilder.withDisplayName(evaluatetDisplayName));
-        
-        return objectDataBuilder.build();
+                .withId(attributeStore.getId())
+                .withDisplayName(evalObjectDisplayName(objectModel, state, attributeStore))
+                .build();
     }
 
-    private String evalDisplayNameScript(String script, ObjectBean objectBean) throws RuntimeException {
-        try {
-            Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-            for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
-                bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));
-            }
-            //eval returns GString; convert it with toString()
-            return scriptEngine.eval(script, bindings).toString();
-        } catch (ScriptException ex) {
-            Logger.getLogger(EngineConverter.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return ex.getMessage();
-        }
+    private String evalObjectDisplayName(ObjectModel objectModel, FunctionState state, AttributeStore store) {
+        return scriptExecutorService.evaluteObjectDisplayName(objectModel, state, store);
     }
 
 }

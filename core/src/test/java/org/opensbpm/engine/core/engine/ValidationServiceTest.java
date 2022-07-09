@@ -54,6 +54,9 @@ import static org.opensbpm.engine.core.junit.MockData.spyUser;
 public class ValidationServiceTest {
 
     @MockBean
+    private ScriptExecutorService scriptExceutorService;
+
+    @MockBean
     private ScriptEngine scriptEngine;
 
     @Autowired

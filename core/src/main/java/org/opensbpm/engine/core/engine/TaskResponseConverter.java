@@ -18,7 +18,6 @@
 package org.opensbpm.engine.core.engine;
 
 import java.util.List;
-import java.util.Objects;
 import javax.script.ScriptEngine;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
@@ -31,10 +30,10 @@ import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 class TaskResponseConverter {
 
-    private final ScriptEngine scriptEngine;
+    private final ScriptExecutorService scriptExecutorService;
 
-    public TaskResponseConverter(ScriptEngine scriptEngine) {
-        this.scriptEngine = Objects.requireNonNull(scriptEngine, "ScriptEngine must be non null");
+    public TaskResponseConverter(ScriptExecutorService scriptExecutorService) {
+        this.scriptExecutorService = scriptExecutorService;
     }
 
     public TaskResponse convert(Subject subject, FunctionState state, List<NextState> nextStates) {
@@ -44,11 +43,10 @@ class TaskResponseConverter {
                 .createObjectSchemas(processInstance.getProcessModel());
 
         List<ObjectData> datas = mapToList(processInstance.getObjectInstances(),
-                objectInstance -> new ObjectDataCreator(scriptEngine)
+                objectInstance -> new ObjectDataCreator(scriptExecutorService)
                         .createObjectData(objectInstance, state));
 
         return TaskResponse.of(subject.getId(), nextStates, subject.getLastChanged(), objectSchemas, datas);
     }
-
 
 }

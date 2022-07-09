@@ -19,19 +19,10 @@ package org.opensbpm.engine.core.engine;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.script.Bindings;
-import javax.script.ScriptContext;
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 import org.opensbpm.engine.api.instance.AuditTrail;
 import org.opensbpm.engine.api.instance.NextState;
-import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.api.instance.ProcessInfo;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
@@ -46,7 +37,6 @@ import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.ModelConverter;
 import org.opensbpm.engine.core.model.entities.FunctionState;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
 import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.model.entities.State;
@@ -58,10 +48,10 @@ import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 @Component
 public class EngineConverter {
 
-    private final ScriptEngine scriptEngine;
+    private final ScriptExecutorService scriptExecutorService;
 
-    public EngineConverter(ScriptEngine scriptEngine) {
-        this.scriptEngine = scriptEngine;
+    public EngineConverter(ScriptExecutorService scriptExecutorService) {
+        this.scriptExecutorService = scriptExecutorService;
     }
 
     public List<ProcessInfo> convertInstances(Collection<ProcessInstance> processInstances) {
@@ -166,35 +156,11 @@ public class EngineConverter {
                 .map(functionState -> NextState.of(functionState.getId(), evaluteStateDisplayName(subject, functionState)))
                 .orElse(NextState.ofEnd(nextState.getId(), evaluteStateDisplayName(subject, nextState))));
 
-        return new TaskResponseConverter(scriptEngine).convert(subject, state, nextStates);
+        return new TaskResponseConverter(scriptExecutorService).convert(subject, state, nextStates);
     }
 
     public String evaluteStateDisplayName(Subject subject, State state) {
-        return Optional.ofNullable(state.getDisplayName())
-                .map(displayName -> evalStateScript(subject.getProcessInstance(), state, String.format("\"%s\"", displayName)))
-                .orElse(state.getName());
-    }
-
-    private String evalStateScript(ProcessInstance processInstance, State state, String script) {
-        try {
-            Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-            processInstance.getProcessModel().getObjectModels().stream()
-                    .forEach(objectModel -> {
-                        ObjectBean objectBean = createObjectBean(processInstance, state, objectModel);
-                        bindings.put(objectModel.getName(), objectBean);
-                    });
-            //eval returns GString; convert it with toString()
-            return scriptEngine.eval(script, bindings).toString();
-        } catch (ScriptException ex) {
-            Logger.getLogger(EngineConverter.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return ex.getMessage();
-        }
-    }
-
-    private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel) {
-        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
-                .convertToObjectSchema(objectModel);
-        return ObjectBean.from(objectSchema, processInstance.getValues(objectModel));
+        return scriptExecutorService.evaluteStateDisplayName(subject, state);
     }
 
     public static UserToken convertUser(User user) {

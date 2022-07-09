@@ -29,6 +29,7 @@ import org.opensbpm.engine.api.instance.ProcessInfo;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.core.engine.EngineConverter;
 import org.opensbpm.engine.core.engine.ProcessInstanceService;
+import org.opensbpm.engine.core.engine.ScriptExecutorService;
 import org.opensbpm.engine.core.engine.StateChangeService;
 import org.opensbpm.engine.core.engine.SubjectService;
 import org.opensbpm.engine.core.engine.SubjectTrailService;
@@ -89,6 +90,9 @@ public class ProcessServiceBoundaryTest {
     @MockBean
     private EngineEventPublisher eventPublisher;
 
+    @MockBean
+    private ScriptExecutorService scriptExceutorService; 
+    
     @MockBean
     private ScriptEngine scriptEngine;
 

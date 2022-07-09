@@ -45,6 +45,7 @@ import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.api.spi.AutocompleteProvider;
 import org.opensbpm.engine.core.engine.EngineConverter;
 import org.opensbpm.engine.core.engine.ProcessInstanceService;
+import org.opensbpm.engine.core.engine.ScriptExecutorService;
 import org.opensbpm.engine.core.engine.StateChangeService;
 import org.opensbpm.engine.core.engine.SubjectService;
 import org.opensbpm.engine.core.engine.SubjectTrailService;
@@ -123,6 +124,9 @@ public class EngineServiceBoundaryTest {
     @MockBean
     private EngineEventPublisher eventPublisher;
 
+    @MockBean
+    private ScriptExecutorService scriptExceutorService; 
+    
     @MockBean
     private ScriptEngine scriptEngine;
 
