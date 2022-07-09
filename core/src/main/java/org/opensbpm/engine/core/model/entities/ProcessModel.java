@@ -188,17 +188,6 @@ public class ProcessModel implements HasId, Serializable {
     }
 
     /**
-     * return all {@link ObjectModel}s where the given {@link FunctionState} has any permission
-     * @param state
-     * @return 
-     * @see FunctionState#hasAnyStatePermission(org.opensbpm.engine.core.model.entities.ObjectModel) 
-     */
-    public Stream<ObjectModel> getObjectModels(FunctionState state) {
-        return getObjectModels().stream()
-                .filter(objectModel -> state.hasAnyStatePermission(objectModel));
-    }
-
-    /**
      * create a new {@link ObjectModel} with the given name and add it to this ProcessModel
      *
      * @param name name of {@link ObjectModel}, see {@link ObjectModel#name}

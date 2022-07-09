@@ -182,7 +182,8 @@ public class EngineServiceBoundary implements EngineService {
                     return new IllegalStateException(msg);
                 });
 
-        ObjectModel objectModel = subject.getProcessInstance().getProcessModel().getObjectModels(currentState)
+        ObjectModel objectModel = subject.getProcessInstance().getProcessModel().getObjectModels().stream()
+                .filter(model -> currentState.hasAnyStatePermission(model))
                 .filter(model -> model.getId().equals(objectRequest.getId()))
                 .findFirst()
                 .orElseThrow(() -> {
