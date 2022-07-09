@@ -52,11 +52,11 @@ public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends S
         return self();
     }
 
-    public <T extends StateBuilder<T, V>, V extends StateDefinition> StateBuilder<T, V> getState(String name) {
+    public StateBuilder<?, ?> getState(String name) {
         if (!stateBuilders.containsKey(name)) {
             throw new IllegalArgumentException("State '" + name + "' not found");
         }
-        return (StateBuilder<T, V>) stateBuilders.get(name);
+        return stateBuilders.get(name);
     }
 
     @Override
