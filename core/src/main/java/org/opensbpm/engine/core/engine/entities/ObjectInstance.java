@@ -31,8 +31,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.opensbpm.engine.core.engine.AttributeStore;
-import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.utils.entities.HasId;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableMap;
@@ -96,10 +94,6 @@ public class ObjectInstance implements HasId, Serializable {
         this.value = new HashMap<>(value);
     }    
     
-    public AttributeStore getAttributeStore() {
-        return new AttributeStore(objectModel, value);
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
