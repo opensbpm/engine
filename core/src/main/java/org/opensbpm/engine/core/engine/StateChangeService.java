@@ -85,24 +85,25 @@ public class StateChangeService {
         return true;
     }
 
-    private List<ObjectInstance> updateObjectInstances(ProcessInstance processInstance, FunctionState state,
-            List<ObjectData> objectDatas) {
+    private List<ObjectInstance> updateObjectInstances(ProcessInstance processInstance, FunctionState state, List<ObjectData> objectDatas) {
         return processInstance.getProcessModel().getObjectModels().stream()
                 .filter(objectModel -> state.hasAnyStatePermission(objectModel))
                 .flatMap(objectModel
                         -> objectDatas.stream()
                         .filter(objectData -> objectModel.getName().equals(objectData.getName()))
-                        .map(objectData -> {
-                            ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
-                            
-                            ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
-                            
-                            AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
-                            attributeStore.updateValues(objectData.getData());
-                            objectInstance.setValue(attributeStore.toIdMap(attribute -> true));
-                            return objectInstance;
-                        }))
+                        .map(objectData -> updateObjectInstance(processInstance, state, objectModel, objectData)))
                 .collect(Collectors.toList());
+    }
+
+    private ObjectInstance updateObjectInstance(ProcessInstance processInstance, FunctionState state, ObjectModel objectModel, ObjectData objectData) {
+        ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
+        
+        ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
+
+        AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
+        attributeStore.updateValues(objectData.getData());
+        objectInstance.setValue(attributeStore.toIdMap(attribute -> true));
+        return objectInstance;
     }
 
     private void switchToNextState(Subject subject, State nextState) {
