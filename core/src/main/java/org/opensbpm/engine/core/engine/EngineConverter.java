@@ -178,7 +178,8 @@ public class EngineConverter {
             Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
             processInstance.getProcessModel().getObjectModels().stream()
                     .forEach(objectModel -> {
-                        ObjectBean objectBean = processInstance.getObjectBean(objectModel);
+                        ObjectBean objectBean = new ObjectBean(objectModel, 
+                                processInstance.getValues(objectModel));
                         bindings.put(objectModel.getName(), objectBean);
                     });
             //eval returns GString; convert it with toString()

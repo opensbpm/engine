@@ -217,19 +217,17 @@ public class ProcessInstance implements HasId, Serializable {
     }
 
     /**
-     * return a read only {@link ObjectBean}
+     * Return the read only values for the given ObjectModel or return an empty 
+     * map.
      *
      * @param objectModel
      * @return
      */
-    public ObjectBean getObjectBean(ObjectModel objectModel) {
+    public Map<Long, Serializable> getValues(ObjectModel objectModel) {
         Objects.requireNonNull(objectModel, "objectModel must not be null");
-
-        Map<Long, Serializable> values = getObjectInstance(objectModel)
+        return getObjectInstance(objectModel)
                 .map(objectInstance -> objectInstance.getValue())
                 .orElse(Collections.emptyMap());
-
-        return new ObjectBean(objectModel, values);
     }
 
     public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
