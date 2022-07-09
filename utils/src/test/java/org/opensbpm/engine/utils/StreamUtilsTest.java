@@ -19,6 +19,7 @@ import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.anEmptyMap;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertThrows;
 
@@ -97,6 +98,32 @@ public class StreamUtilsTest {
             result.put("a","b");
         });
     }
+    
+    @Test
+    public void testLazyAddList() throws Exception {
+        //given
+        List<String> baseList = (List<String>)null;
+        
+        //when
+        List<String> values = StreamUtils.lazyAdd(baseList, "a");
+
+        //then
+        assertThat(values, contains("a"));
+    }
+
+    @Test
+    public void testLazyAddSet() throws Exception {
+        //given
+        Set<String> baseSet = (Set<String>)null;
+        
+        //when
+        Set<String> values = StreamUtils.lazyAdd(baseSet, "a");
+
+        //then
+        assertThat(values, contains("a"));
+    }
+
+    
 
     private static final String ONEORMOREASLIST = "oneOrMoreAsList";
     @DataPoints(ONEORMOREASLIST)
