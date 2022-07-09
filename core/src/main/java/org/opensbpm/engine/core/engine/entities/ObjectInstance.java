@@ -100,10 +100,6 @@ public class ObjectInstance implements HasId, Serializable {
         return new AttributeStore(objectModel, value);
     }
 
-    public void updateValues(FunctionState state, Map<Long, Serializable> data) {
-        getAttributeStore().updateValues(state, data);
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)

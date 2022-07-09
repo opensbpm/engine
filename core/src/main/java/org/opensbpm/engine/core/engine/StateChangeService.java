@@ -17,6 +17,7 @@
  */
 package org.opensbpm.engine.core.engine;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -91,7 +92,10 @@ public class StateChangeService {
                         .filter(objectData -> objectModel.getName().equals(objectData.getName()))
                         .map(objectData -> {
                             ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
-                            objectInstance.updateValues(state, objectData.getData());
+
+                            AttributeStore attributeStore = new AttributeStore(objectModel, new HashMap<>(objectInstance.getValue()));
+                            attributeStore.updateValues(state, objectData.getData());
+                            objectInstance.setValue(attributeStore.getValues());
                             return objectInstance;
                         }))
                 .collect(Collectors.toList());
