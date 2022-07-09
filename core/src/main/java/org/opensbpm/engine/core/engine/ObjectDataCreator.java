@@ -27,6 +27,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectData.ObjectDataBuilder;
+import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
@@ -39,6 +40,13 @@ class ObjectDataCreator {
         this.scriptEngine = scriptEngine;
     }
 
+    public ObjectData createObjectData(ObjectInstance objectInstance, FunctionState state) {
+        ObjectModel objectModel = objectInstance.getObjectModel();
+        AttributeStore attributeStore = objectInstance.getAttributeStore();
+
+        return createObjectData(objectModel, state, attributeStore);
+    }
+
     public ObjectData createObjectData(ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
         Map<Long, Serializable> data = attributeStore.toIdMap(attributeModel -> state.hasAnyPermission(attributeModel));
         ObjectBean objectBean = new ObjectBean(objectModel, attributeStore);
@@ -48,13 +56,13 @@ class ObjectDataCreator {
                 .withId(attributeStore.getId());
         
         objectModel.getDisplayName()
-                .map(displayName -> evalObjectScript(String.format("\"%s\"", displayName), objectBean))
+                .map(displayName -> evalDisplayNameScript(String.format("\"%s\"", displayName), objectBean))
                 .ifPresent(evaluatetDisplayName -> objectDataBuilder.withDisplayName(evaluatetDisplayName));
         
         return objectDataBuilder.build();
     }
 
-    private String evalObjectScript(String script, ObjectBean objectBean) throws RuntimeException {
+    private String evalDisplayNameScript(String script, ObjectBean objectBean) throws RuntimeException {
         try {
             Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
             for (AttributeModel attributeModel : objectBean.getAttributeModels()) {
