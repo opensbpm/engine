@@ -36,10 +36,12 @@ import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.receiveState;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.sendState;
 import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
+import static org.opensbpm.engine.utils.StreamUtils.toOne;
 
 @Service
 public class StateChangeService {
@@ -86,24 +88,27 @@ public class StateChangeService {
     }
 
     private List<ObjectInstance> updateObjectInstances(ProcessInstance processInstance, FunctionState state, List<ObjectData> objectDatas) {
-        return processInstance.getProcessModel().getObjectModels().stream()
-                .filter(objectModel -> state.hasAnyStatePermission(objectModel))
-                .flatMap(objectModel
-                        -> objectDatas.stream()
-                        .filter(objectData -> objectModel.getName().equals(objectData.getName()))
-                        .map(objectData -> updateObjectInstance(processInstance, state, objectModel, objectData)))
+        return objectDatas.stream()
+                .map(objectData -> {
+                    ObjectInstance objectInstance = findObjectModel(processInstance, state, objectData);
+
+                    ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectInstance.getObjectModel());
+
+                    AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
+                    attributeStore.updateValues(objectData.getData());
+                    objectInstance.setValue(attributeStore.toIdMap(attribute -> true));
+                    return objectInstance;
+                })
                 .collect(Collectors.toList());
     }
 
-    private ObjectInstance updateObjectInstance(ProcessInstance processInstance, FunctionState state, ObjectModel objectModel, ObjectData objectData) {
-        ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
-        
-        ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
-
-        AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
-        attributeStore.updateValues(objectData.getData());
-        objectInstance.setValue(attributeStore.toIdMap(attribute -> true));
-        return objectInstance;
+    private ObjectInstance findObjectModel(ProcessInstance processInstance, FunctionState state, ObjectData objectData) {
+        return processInstance.getProcessModel().getObjectModels().stream()
+                .filter(objectModel -> state.hasAnyStatePermission(objectModel))
+                .filter(objectModel -> objectModel.getName().equals(objectData.getName()))
+                .reduce(toOne())
+                .map(objectModel -> processInstance.getOrAddObjectInstance(objectModel))
+                .orElseThrow(() -> new IllegalArgumentException("No ObjectModel for " + objectData + " found"));
     }
 
     private void switchToNextState(Subject subject, State nextState) {
