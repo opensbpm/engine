@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-       <groupId>org.opensbpm.engine</groupId>
-       <artifactId>engine-bom</artifactId>
-       <version>0.1-SNAPSHOT</version>
+        <groupId>org.opensbpm.engine</groupId>
+        <artifactId>engine-bom</artifactId>
+        <version>0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>utils</artifactId>
@@ -19,10 +19,9 @@
         = Compile Dependencies =
         ========================
         -->
-      <dependency>
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>3.11</version>
         </dependency>
     
         <!--
