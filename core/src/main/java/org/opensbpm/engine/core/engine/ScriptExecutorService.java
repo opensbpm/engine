@@ -30,14 +30,17 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectBean;
-import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.stereotype.Component;
+import org.opensbpm.engine.api.instance.AttributeStore;
+
+import static org.opensbpm.engine.core.engine.ObjectDataCreator.hasAnyPermission;
 import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
+
 @Component
 public class ScriptExecutorService {
 
@@ -64,7 +67,7 @@ public class ScriptExecutorService {
 
     private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel) {
         return ObjectBean.from(
-                toObjectSchema(state, objectModel), 
+                toObjectSchema(state, objectModel),
                 processInstance.getValues(objectModel)
         );
     }
@@ -77,9 +80,9 @@ public class ScriptExecutorService {
 
     private String evalDisplayNameScript(String script, ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
         return eval(script, bindings -> {
-            Map<Long, Serializable> data = attributeStore.toIdMap(attributeModel -> state.hasAnyPermission(attributeModel));
+            Map<Long, Serializable> data = attributeStore.toIdMap(attributeSchema -> hasAnyPermission(objectModel, state, attributeSchema));
             ObjectBean objectBean = ObjectBean.from(
-                    toObjectSchema(state, objectModel), 
+                    toObjectSchema(state, objectModel),
                     data
             );
 

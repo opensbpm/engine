@@ -25,6 +25,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.opensbpm.engine.api.instance.ObjectData;
+import org.opensbpm.engine.api.instance.AttributeStore;
+import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
@@ -92,10 +94,12 @@ public class StateChangeService {
                         .filter(objectData -> objectModel.getName().equals(objectData.getName()))
                         .map(objectData -> {
                             ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
-
-                            AttributeStore attributeStore = new AttributeStore(objectModel, new HashMap<>(objectInstance.getValue()));
-                            attributeStore.updateValues(state, objectData.getData());
-                            objectInstance.setValue(attributeStore.getValues());
+                            
+                            ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
+                            
+                            AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
+                            attributeStore.updateValues(objectData.getData());
+                            objectInstance.setValue(attributeStore.toIdMap(attribute -> true));
                             return objectInstance;
                         }))
                 .collect(Collectors.toList());

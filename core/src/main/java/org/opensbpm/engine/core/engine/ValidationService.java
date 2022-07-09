@@ -29,6 +29,7 @@ import org.opensbpm.engine.api.spi.AutocompleteProvider;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.springframework.stereotype.Service;
+import org.opensbpm.engine.api.instance.AttributeStore;
 import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
 
 @Service
@@ -56,8 +57,9 @@ public class ValidationService {
     }
 
     private ObjectData toObjectData(ObjectModel objectModel, FunctionState state, SourceMap sourceMap) {
+        ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
         return new ObjectDataCreator(scriptExecutorService)
-                .createObjectData(objectModel, state, new AttributeStore(objectModel, sourceMap));
+                .createObjectData(objectModel, state, new AttributeStore(objectSchema, sourceMap));
     }
 
 }

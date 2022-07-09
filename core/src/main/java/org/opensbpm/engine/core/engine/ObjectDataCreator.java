@@ -18,14 +18,27 @@
 package org.opensbpm.engine.core.engine;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
+import org.opensbpm.engine.api.instance.AttributeSchema;
+import org.opensbpm.engine.api.instance.AttributeStore;
 import org.opensbpm.engine.api.instance.ObjectData;
+import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 
 class ObjectDataCreator {
 
+    public static boolean hasAnyPermission(ObjectModel objectModel, FunctionState state, AttributeSchema attributeSchema) {
+        return objectModel.getAllAttributeModels()
+                .filter(attribute -> attribute.getId().equals(attributeSchema.getId()))
+                .findFirst()
+                .map(attribute -> state.hasAnyPermission(attribute))
+                .orElse(false);
+    }
+
+    
     private final ScriptExecutorService scriptExecutorService;
 
     public ObjectDataCreator(ScriptExecutorService scriptExecutorService) {
@@ -34,13 +47,15 @@ class ObjectDataCreator {
 
     public ObjectData createObjectData(ObjectInstance objectInstance, FunctionState state) {
         ObjectModel objectModel = objectInstance.getObjectModel();
-        AttributeStore attributeStore = objectInstance.getAttributeStore();
+
+        ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
+        AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
 
         return createObjectData(objectModel, state, attributeStore);
     }
 
     public ObjectData createObjectData(ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
-        Map<Long, Serializable> data = attributeStore.toIdMap(attributeModel -> state.hasAnyPermission(attributeModel));
+        Map<Long, Serializable> data = attributeStore.toIdMap(attributeSchema -> hasAnyPermission(objectModel, state, attributeSchema));
 
         return ObjectData.of(objectModel.getName())
                 .withData(data)
