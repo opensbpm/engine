@@ -25,10 +25,12 @@ import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectData.ObjectDataBuilder;
+import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
-import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 
@@ -48,8 +50,11 @@ class ObjectDataCreator {
     }
 
     public ObjectData createObjectData(ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
+        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
+                .convertToObjectSchema(objectModel);
+        
         Map<Long, Serializable> data = attributeStore.toIdMap(attributeModel -> state.hasAnyPermission(attributeModel));
-        ObjectBean objectBean = new ObjectBean(objectModel, attributeStore);
+        ObjectBean objectBean = ObjectBean.from(objectSchema, data);
         
         ObjectDataBuilder objectDataBuilder = ObjectData.of(objectModel.getName())
                 .withData(data)
@@ -65,8 +70,8 @@ class ObjectDataCreator {
     private String evalDisplayNameScript(String script, ObjectBean objectBean) throws RuntimeException {
         try {
             Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
-            for (AttributeModel attributeModel : objectBean.getAttributeModels()) {
-                bindings.put(attributeModel.getName(), objectBean.get(attributeModel.getName()));
+            for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
+                bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));
             }
             //eval returns GString; convert it with toString()
             return scriptEngine.eval(script, bindings).toString();
