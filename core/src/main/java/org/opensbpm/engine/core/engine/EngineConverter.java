@@ -172,7 +172,7 @@ public class EngineConverter {
                 .orElse(state.getName());
     }
 
-    private String evalStateScript(ProcessInstance processInstance, String script) throws RuntimeException {
+    private String evalStateScript(ProcessInstance processInstance, String script)  {
         try {
             Bindings bindings = scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);
             processInstance.getProcessModel().getObjectModels().stream()
