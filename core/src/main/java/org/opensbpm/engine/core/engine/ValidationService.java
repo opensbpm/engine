@@ -29,6 +29,7 @@ import org.opensbpm.engine.api.spi.AutocompleteProvider;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.springframework.stereotype.Service;
+import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
 
 @Service
 public class ValidationService {
@@ -42,7 +43,7 @@ public class ValidationService {
     }
 
     public AutocompleteResponse createAutocompleteResponse(FunctionState state, ObjectModel objectModel, String queryString) {
-        ObjectSchema objectSchema = new ObjectSchemaConverter(state).convertToObjectSchema(objectModel);
+        ObjectSchema objectSchema = toObjectSchema(state, objectModel);
 
         List<Autocomplete> autocompletes = new ArrayList<>();
         for (AutocompleteProvider autocompleteProvider : validationProviderManager.getAutocompleteProvider()) {

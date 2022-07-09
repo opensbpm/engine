@@ -18,7 +18,6 @@
 package org.opensbpm.engine.core.engine;
 
 import java.util.List;
-import javax.script.ScriptEngine;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;

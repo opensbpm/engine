@@ -37,7 +37,7 @@ import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.stereotype.Component;
-
+import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
 @Component
 public class ScriptExecutorService {
 
@@ -63,10 +63,10 @@ public class ScriptExecutorService {
     }
 
     private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel) {
-        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
-                .convertToObjectSchema(objectModel);
-
-        return ObjectBean.from(objectSchema, processInstance.getValues(objectModel));
+        return ObjectBean.from(
+                toObjectSchema(state, objectModel), 
+                processInstance.getValues(objectModel)
+        );
     }
 
     public String evaluteObjectDisplayName(ObjectModel objectModel, FunctionState state, AttributeStore store) {
@@ -77,11 +77,11 @@ public class ScriptExecutorService {
 
     private String evalDisplayNameScript(String script, ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
         return eval(script, bindings -> {
-            ObjectSchema objectSchema = new ObjectSchemaConverter(state)
-                    .convertToObjectSchema(objectModel);
-
             Map<Long, Serializable> data = attributeStore.toIdMap(attributeModel -> state.hasAnyPermission(attributeModel));
-            ObjectBean objectBean = ObjectBean.from(objectSchema, data);
+            ObjectBean objectBean = ObjectBean.from(
+                    toObjectSchema(state, objectModel), 
+                    data
+            );
 
             for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
                 bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));

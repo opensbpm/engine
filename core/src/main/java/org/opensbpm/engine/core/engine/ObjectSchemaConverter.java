@@ -41,6 +41,12 @@ import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState
 
 class ObjectSchemaConverter {
 
+    public static ObjectSchema toObjectSchema(State state, ObjectModel objectModel) {
+        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
+                .convertToObjectSchema(objectModel);
+        return objectSchema;
+    }
+
     private final State state;
 
     public ObjectSchemaConverter(State state) {
