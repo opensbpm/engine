@@ -17,13 +17,11 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.List;
-import javax.script.ScriptException;
 import org.apache.commons.beanutils.DynaBean;
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -33,7 +31,6 @@ import static org.apache.commons.beanutils.PropertyUtils.setProperty;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class ObjectBeanTest {
@@ -47,10 +44,10 @@ public class ObjectBeanTest {
     }
 
     @Test
-    public void testAllAttributes() throws Exception {
+    public void testSetGetAttributes() throws Exception {
         //arrange
         ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
-        DynaBean dynaBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        DynaBean dynaBean = new ObjectBean(objectSchema);
 
         //act + assert
         assertSetGetProperty(dynaBean, "string", "a");
@@ -89,7 +86,7 @@ public class ObjectBeanTest {
     public void testNestedTypes() throws Exception {
         //arrange
         ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
-        DynaBean dynaBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        DynaBean dynaBean = new ObjectBean(objectSchema);
 
         //act + assert
         assertThat(getProperty(dynaBean, "nested"), is(instanceOf(ObjectBean.class)));
