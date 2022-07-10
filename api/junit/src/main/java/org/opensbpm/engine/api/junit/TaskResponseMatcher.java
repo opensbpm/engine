@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.is;
 import static org.opensbpm.engine.api.junit.CommonMatchers.value;
 
 /**
- * Factory for {@link TaskResponse} specfic {{@link Matcher}'s
+ * Factory for {@link TaskResponse} specific {{@link Matcher}'s
  */
 public final class TaskResponseMatcher {
 
