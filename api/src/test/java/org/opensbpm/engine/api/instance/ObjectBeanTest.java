@@ -45,35 +45,6 @@ public class ObjectBeanTest {
     }
 
     @Test
-    public void testSetAttributeNonExisting() throws Exception {
-        //arrange
-        ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
-        DynaBean dynaBean = new ObjectBean(objectSchema);
-
-        //act+assert
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "doesNotExists", null));
-
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "nested.doesNotExists", null));
-
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "nested.nested.doesNotExists", null));
-
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "nested.indexed[0].doesNotExists", null));
-
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "indexed[0].doesNotExists", null));
-
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "indexed[0].nested.doesNotExists", null));
-
-        assertThrows(NoSuchMethodException.class, ()
-                -> setProperty(dynaBean, "indexed[0].indexed[0].doesNotExists", null));
-    }
-
-    @Test
     public void testSetGetAttributes() throws Exception {
         //arrange
         ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
@@ -110,6 +81,35 @@ public class ObjectBeanTest {
         //assertSetGetProperty(dynaBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
         assertSetGetProperty(dynaBean, "indexed[0].nested.string", "a");
         assertSetGetProperty(dynaBean, "indexed[0].indexed[0].string", "a");
+    }
+
+    @Test
+    public void testSetAttributeNonExisting() throws Exception {
+        //arrange
+        ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
+        DynaBean dynaBean = new ObjectBean(objectSchema);
+
+        //act+assert
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "nested.doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "nested.nested.doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "nested.indexed[0].doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "indexed[0].doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "indexed[0].nested.doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "indexed[0].indexed[0].doesNotExists", null));
     }
 
     @Test
