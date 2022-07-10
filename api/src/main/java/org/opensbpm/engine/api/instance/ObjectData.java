@@ -33,9 +33,16 @@ import org.opensbpm.engine.api.adapters.MapAdapter;
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class ObjectData implements Serializable {
 
+    public static ObjectData from(ObjectBean objectBean) {
+        return ObjectData.of(objectBean.getName())
+                .withData(objectBean.toIdMap())
+                .build();
+    }
+
     /**
      * create a new {@link ObjectDataBuilder} with name.
-     * @return a new {@link ObjectDataBuilder} instance 
+     *
+     * @return a new {@link ObjectDataBuilder} instance
      */
     public static ObjectDataBuilder of(String name) {
         return new ObjectDataBuilder(name);
@@ -54,6 +61,7 @@ public class ObjectData implements Serializable {
 
         /**
          * setter for {@link ObjectData#displayName}
+         *
          * @param displayName {@link ObjectData#displayName}
          * @return the same instance as the caller
          */
@@ -64,6 +72,7 @@ public class ObjectData implements Serializable {
 
         /**
          * setter for {@link ObjectData#data}
+         *
          * @param data {@link ObjectData#data}
          * @return the same instance as the caller
          */
@@ -74,6 +83,7 @@ public class ObjectData implements Serializable {
 
         /**
          * setter for {@link ObjectData#id}
+         *
          * @param id {@link ObjectData#id}
          * @return the same instance as the caller
          */
@@ -84,6 +94,7 @@ public class ObjectData implements Serializable {
 
         /**
          * build an {@link ObjectData}-instance
+         *
          * @return the same instance as the caller
          */
         public ObjectData build() {

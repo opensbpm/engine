@@ -105,7 +105,7 @@ public class Task {
         }
         List<ObjectData> objectDatas = taskResponse.getSchemas().stream()
                 .map(objectSchema -> getObjectBean(objectSchema))
-                .map(objectBean -> objectBean.createObjectData())
+                .map(objectBean -> ObjectData.from(objectBean))
                 .collect(Collectors.toList());
         return createTaskRequest(nextState, objectDatas);
     }

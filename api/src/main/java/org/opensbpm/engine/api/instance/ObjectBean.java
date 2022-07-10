@@ -50,7 +50,6 @@ public class ObjectBean implements DynaBean {
         return new ObjectBean(objectSchema, new AttributeStore(objectSchema, sourceMap));
     }
 
-    
     /**
      * Instantiate a {@link ObjectBean} with the given attributes and values.
      *
@@ -70,7 +69,7 @@ public class ObjectBean implements DynaBean {
      *
      * @param attributesContainer
      * @param attributeStore
-     * @deprecated 
+     * @deprecated
      */
     public ObjectBean(IsAttributesContainer attributesContainer, AttributeStore attributeStore) {
         this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
@@ -80,6 +79,10 @@ public class ObjectBean implements DynaBean {
     public ObjectBean(IsAttributesContainer attributesContainer) {
         this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
         this.attributeStore = new AttributeStore(attributesContainer);
+    }
+
+    public String getName() {
+        return attributesContainer.getName();
     }
 
     public Collection<AttributeSchema> getAttributeModels() {
@@ -153,7 +156,7 @@ public class ObjectBean implements DynaBean {
             @Override
             public Object visitIndexed(NestedAttributeSchema attributeSchema) {
                 List<ObjectBean> indexed = new ArrayList<>();
-                
+
                 List<HashMap<Long, Serializable>> rawValues = attributeStore.getIndexed(attributeSchema);
                 for (HashMap<Long, Serializable> rawMap : rawValues) {
                     indexed.add(new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, rawMap)));
@@ -258,13 +261,8 @@ public class ObjectBean implements DynaBean {
                 .orElseThrow(() -> new IllegalArgumentException("No such property " + name));
     }
 
-    ObjectData createObjectData() {
-        return ObjectData.of(attributesContainer.getName())
-                .withData(attributeStore.toIdMap((t) -> true))
-                .build();
-    }
-
     public Map<Long, Serializable> toIdMap() {
         return attributeStore.toIdMap(m -> true);
     }
+
 }

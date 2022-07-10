@@ -78,7 +78,7 @@ public class TaskTest {
                 Arrays.asList(nextState),
                 LocalDateTime.MIN,
                 asList(objectSchema),
-                asList(givenData.createObjectData())
+                asList(ObjectData.from(givenData))
         );
         Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
 
@@ -233,7 +233,7 @@ public class TaskTest {
         objectBean.set(objectSchema.getAttributes().get(1), f2Value);
         objectBean.set(objectSchema.getAttributes().get(2), null);
         objectBean.set(objectSchema.getAttributes().get(3), "overriden");
-        return objectBean.createObjectData();
+        return ObjectData.from(objectBean);
     }
 
 }
