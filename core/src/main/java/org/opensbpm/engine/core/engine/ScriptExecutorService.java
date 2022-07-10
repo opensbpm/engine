@@ -17,8 +17,6 @@
  */
 package org.opensbpm.engine.core.engine;
 
-import java.io.Serializable;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -32,13 +30,9 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
-import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.stereotype.Component;
-import org.opensbpm.engine.api.instance.AttributeStore;
-
-import static org.opensbpm.engine.core.engine.ObjectDataCreator.hasAnyPermission;
 import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
 
 @Component
@@ -72,20 +66,14 @@ public class ScriptExecutorService {
         );
     }
 
-    public String evaluteObjectDisplayName(ObjectModel objectModel, FunctionState state, AttributeStore store) {
+    public String evaluteObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
         return objectModel.getDisplayName()
-                .map(displayName -> evalDisplayNameScript(String.format("\"%s\"", displayName), objectModel, state, store))
+                .map(displayName -> evalDisplayNameScript(String.format("\"%s\"", displayName), objectBean))
                 .orElse(objectModel.getName());
     }
 
-    private String evalDisplayNameScript(String script, ObjectModel objectModel, FunctionState state, AttributeStore attributeStore) {
+    private String evalDisplayNameScript(String script, ObjectBean objectBean) {
         return eval(script, bindings -> {
-            Map<Long, Serializable> data = attributeStore.toIdMap(attributeSchema -> hasAnyPermission(objectModel, state, attributeSchema));
-            ObjectBean objectBean = ObjectBean.from(
-                    toObjectSchema(state, objectModel),
-                    data
-            );
-
             for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
                 bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));
             }

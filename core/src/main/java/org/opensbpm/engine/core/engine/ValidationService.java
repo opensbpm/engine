@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
 import org.opensbpm.engine.api.instance.AutocompleteResponse.Autocomplete;
 import org.opensbpm.engine.api.instance.ObjectData;
+import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.SourceMap;
 import org.opensbpm.engine.api.spi.AutocompleteProvider;
@@ -58,8 +59,9 @@ public class ValidationService {
 
     private ObjectData toObjectData(ObjectModel objectModel, FunctionState state, SourceMap sourceMap) {
         ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
+        ObjectBean objectBean = ObjectBean.from(objectSchema, sourceMap);
         return new ObjectDataCreator(scriptExecutorService)
-                .createObjectData(objectModel, state, new AttributeStore(objectSchema, sourceMap));
+                .createObjectData(objectModel, state, objectBean, new AttributeStore(objectSchema, sourceMap));
     }
 
 }

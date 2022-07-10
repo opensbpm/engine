@@ -49,6 +49,18 @@ public class ObjectBean implements DynaBean {
     }
 
     /**
+     * Instantiate a {@link ObjectBean} with the given attributes and SourceMap.
+     *
+     * @param attributesContainer to create the {@link ObjectBean}
+     * @param sourceMap id-based Map, must match the attributesContainer
+     */
+    public static ObjectBean from(ObjectSchema objectSchema, SourceMap sourceMap) {
+        //TODO validate values
+        return new ObjectBean(objectSchema, new AttributeStore(objectSchema, sourceMap));
+    }
+
+    
+    /**
      * Instantiate a {@link ObjectBean} with the given attributes and values.
      *
      * @param attributesContainer to create the {@link ObjectBean}
