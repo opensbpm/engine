@@ -36,7 +36,6 @@ import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.receiveState;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.sendState;
