@@ -24,8 +24,10 @@ import java.time.Month;
 import java.util.List;
 import org.apache.commons.beanutils.DynaBean;
 import org.hamcrest.Matcher;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.opensbpm.engine.api.model.Binary;
+import org.opensbpm.engine.api.model.FieldType;
 import static org.apache.commons.beanutils.PropertyUtils.getProperty;
 import static org.apache.commons.beanutils.PropertyUtils.setProperty;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -112,6 +114,41 @@ public class ObjectBeanTest {
                 -> setProperty(dynaBean, "indexed[0].indexed[0].doesNotExists", null));
     }
 
+    @Ignore("not correct implemented yet")
+    @Test
+    public void testSetWrongType() throws Exception {
+        //arrange
+        ObjectBeanHelper objectBeanHelper = new ObjectBeanHelper();
+        ObjectSchema objectSchema = objectBeanHelper.schema("defaults",
+                objectBeanHelper.simpleRequired("number", FieldType.NUMBER)
+        );
+
+        DynaBean dynaBean = new ObjectBean(objectSchema);
+
+        //act + assert
+        assertThrows(ClassCastException.class, ()
+                -> setProperty(dynaBean, "number", LocalDate.now())
+        );
+    }
+
+    @Test
+    public void testSetRequiredToNull() throws Exception {
+        //arrange
+        ObjectBeanHelper objectBeanHelper = new ObjectBeanHelper();
+        ObjectSchema objectSchema = objectBeanHelper.schema("defaults",
+                objectBeanHelper.simpleRequired("number", FieldType.NUMBER)
+        );
+
+        DynaBean dynaBean = new ObjectBean(objectSchema);
+
+        //act + assert
+        assertThrows(IllegalArgumentException.class, ()
+                -> setProperty(dynaBean, "number", null)
+        );
+    }
+
+
+    
     @Test
     public void testNestedTypes() throws Exception {
         //arrange

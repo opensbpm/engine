@@ -100,7 +100,50 @@ public class AttributeStore {
     }
 
     private Serializable putValue(AttributeSchema attributeSchema, Serializable value) {
-        return values.put(findAttributeSchema(attributeSchema).getId(), value);
+        AttributeSchema attribute = findAttributeSchema(attributeSchema);
+        return values.put(attribute.getId(), validate(attribute, value));
+    }
+
+    private Serializable validate(AttributeSchema attribute, Serializable value) {
+        return attribute.accept(new AttributeSchemaVisitor<Serializable>() {
+            @Override
+            public Serializable visitSimple(AttributeSchema attributeSchema) {
+                validateRequiredValue(attributeSchema, () -> value == null);
+                //TODO cast to correct type doesn't work correctly in ExampleProcessDienstreiseantragIT
+//                Serializable checkedValue = Optional.ofNullable(value)
+//                        .map(v -> (Serializable) attributeSchema.getFieldType().getType().cast(v))
+//                        .orElse(null);
+//                return checkedValue;
+                return value;
+            }
+
+            @Override
+            public Serializable visitNested(NestedAttributeSchema attributeSchema) {
+                validateRequiredValue(attributeSchema, () -> value == null);
+                return value;
+            }
+
+            @Override
+            public Serializable visitIndexed(NestedAttributeSchema attributeSchema) {
+                validateRequiredValue(attributeSchema, () -> value == null);
+                return value;
+            }
+
+            private void validateRequiredValue(AttributeSchema attributeModel, Supplier<Boolean> valueCheck) throws IllegalArgumentException {
+                if (needRequiredValue(attributeModel, valueCheck)) {
+                    throw newIllegalArgumentException(attributeModel);
+                }
+            }
+
+            private boolean needRequiredValue(AttributeSchema attributeSchema, Supplier<Boolean> hasValue) {
+                return attributeSchema.isRequired() && hasValue.get();
+            }
+
+            private IllegalArgumentException newIllegalArgumentException(AttributeSchema attributeModel) {
+                return new IllegalArgumentException(attributeModel.getName() + " is mandatory, but not value given");
+            }
+
+        });
     }
 
     private AttributeSchema findAttributeSchema(AttributeSchema attributeSchema) {

@@ -25,11 +25,11 @@ import static java.util.Arrays.asList;
 public class ObjectBeanHelper {
 
     public ObjectSchema createObjetSchema() {
-        ObjectSchema refObjectSchema = ObjectSchema.of(id(), "ref", asList(
+        ObjectSchema refObjectSchema = schema("ref", asList(
                 simple("name", FieldType.STRING)
         ));
 
-        return ObjectSchema.of(id(), "root", asList(
+        return schema("root", asList(
                 simple("string", FieldType.STRING),
                 simple("number", FieldType.NUMBER),
                 simple("decimal", FieldType.DECIMAL),
@@ -73,15 +73,32 @@ public class ObjectBeanHelper {
         ));
     }
 
-    private AttributeSchema simple(String name, FieldType type) {
+    public ObjectSchema schema(String name, AttributeSchema attributes) {
+        return schema(name, asList(attributes));
+    }
+
+    public ObjectSchema schema(String name, List<AttributeSchema> attributes) {
+        return ObjectSchema.of(id(), name, attributes);
+    }
+
+    public AttributeSchema simple(String name, FieldType type) {
         return new /*Simple*/ AttributeSchema(id(), name, type);
     }
 
-    private AttributeSchema nested(String name, List<AttributeSchema> attributes) {
+    public AttributeSchema simpleRequired(String name, FieldType type) {
+        return required(simple(name, type));
+    }
+
+    private AttributeSchema required(AttributeSchema attribute){
+        attribute.setRequired(true);
+        return attribute;
+    }
+
+    public AttributeSchema nested(String name, List<AttributeSchema> attributes) {
         return new NestedAttributeSchema(id(), name, Occurs.ONE, attributes);
     }
 
-    private AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
+    public AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
         return new /*Indexed*/ NestedAttributeSchema(id(), name, Occurs.UNBOUND, attributes);
     }
 
