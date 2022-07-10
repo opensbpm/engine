@@ -18,48 +18,107 @@
 package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.Map;
 import org.junit.Test;
-import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
-import static java.util.Collections.singletonList;
+import org.opensbpm.engine.api.model.Binary;
+import static org.apache.commons.beanutils.PropertyUtils.getProperty;
+import static org.apache.commons.beanutils.PropertyUtils.setProperty;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasEntry;
 
 public class AttributeStoreTest {
 
-    @Test
-    public void testUpdateValues() {
-        //arrange
-        long nameId = 1l;
-        long nestedId = 2l;
-        long nestedNameId = 3l;
+    private static LocalDate today() {
+        return LocalDate.of(2022, Month.JULY, 25);
+    }
 
-        AttributeSchema nameSchema = new AttributeSchema(nameId, "name", FieldType.STRING);
-        
-        AttributeSchema nestedNameSchema = new AttributeSchema(nestedNameId, "nestedName", FieldType.STRING);
-        AttributeSchema nestedSchema = new NestedAttributeSchema(nestedId, "nested", Occurs.ONE, singletonList(nestedNameSchema));
-        
-        ObjectSchema objectSchema = ObjectSchema.of(1l, "Object", Arrays.asList(nameSchema,nestedSchema));
+    private static LocalTime now() {
+        return LocalTime.of(12, 34);
+    }
+
+    @Test
+    public void testUpdateValues() throws Exception {
+        //arrange
+        ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
+
+        ObjectBean sourceBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        setProperty(sourceBean, "string", "a");
+        setProperty(sourceBean, "number", 10);
+        setProperty(sourceBean, "decimal", BigDecimal.TEN);
+        setProperty(sourceBean, "date", today());
+        setProperty(sourceBean, "time", now());
+        setProperty(sourceBean, "boolean", Boolean.TRUE);
+        setProperty(sourceBean, "binary", new Binary());
+//        setProperty(sourceBean, "reference", ObjectReference.of("1", "Reference"));
+
+        setProperty(sourceBean, "nested.string", "a");
+        setProperty(sourceBean, "nested.number", 10);
+        setProperty(sourceBean, "nested.decimal", BigDecimal.TEN);
+        setProperty(sourceBean, "nested.date", today());
+        setProperty(sourceBean, "nested.time", now());
+        setProperty(sourceBean, "nested.boolean", Boolean.TRUE);
+        setProperty(sourceBean, "nested.binary", new Binary());
+//        setProperty(sourceBean, "nested.reference", ObjectReference.of("1", "Reference"));
+        setProperty(sourceBean, "nested.nested.string", "a");
+        setProperty(sourceBean, "nested.indexed[0].string", "a");
+
+        setProperty(sourceBean, "indexed[0].string", "a");
+        setProperty(sourceBean, "indexed[0].number", 10);
+        setProperty(sourceBean, "indexed[0].decimal", BigDecimal.TEN);
+        setProperty(sourceBean, "indexed[0].date", today());
+        setProperty(sourceBean, "indexed[0].time", now());
+        setProperty(sourceBean, "indexed[0].boolean", Boolean.TRUE);
+        setProperty(sourceBean, "indexed[0].binary", new Binary());
+//        setProperty(sourceBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
+        setProperty(sourceBean, "indexed[0].nested.string", "a");
+        setProperty(sourceBean, "indexed[0].indexed[0].string", "a");
+
+        Map<Long, Serializable> values = sourceBean.toIdMap();
 
         AttributeStore attributeStore = new AttributeStore(objectSchema);
-
-        HashMap<Long, Serializable> values = new HashMap<>();
-        values.put(nameId, "Name");
-        
-        HashMap<Long, Serializable> nestedValues = new HashMap<>();
-        nestedValues.put(nestedNameId, "Nested Name");        
-        values.put(nestedId, nestedValues);
 
         //act
         attributeStore.updateValues(values);
 
         //assert
-        assertThat(attributeStore.getValues(), hasEntry(nameId, "Name"));
-        
-        HashMap<Long, Serializable> nestedResult = (HashMap<Long, Serializable>) attributeStore.getValues().get(nestedId);
-        assertThat(nestedResult, hasEntry(nestedNameId, "Nested Name"));
+        ObjectBean resultBean = new ObjectBean(objectSchema, attributeStore);
+
+        assertThat(getProperty(resultBean, "string"), is("a"));
+        assertThat(getProperty(resultBean, "number"), is(10));
+        assertThat(getProperty(resultBean, "decimal"), is(BigDecimal.TEN));
+        assertThat(getProperty(resultBean, "date"), is(today()));
+        assertThat(getProperty(resultBean, "time"), is(now()));
+        assertThat(getProperty(resultBean, "boolean"), is(Boolean.TRUE));
+        assertThat(getProperty(resultBean, "binary"), is(notNullValue()));
+//        assertThat(getProperty(resultBean, "reference", ObjectReference.of("1", "Reference"));
+
+        assertThat(getProperty(resultBean, "nested.string"), is("a"));
+        assertThat(getProperty(resultBean, "nested.number"), is(10));
+        assertThat(getProperty(resultBean, "nested.decimal"), is(BigDecimal.TEN));
+        assertThat(getProperty(resultBean, "nested.date"), is(today()));
+        assertThat(getProperty(resultBean, "nested.time"), is(now()));
+        assertThat(getProperty(resultBean, "nested.boolean"), is(Boolean.TRUE));
+        assertThat(getProperty(resultBean, "nested.binary"), is(notNullValue()));
+//        assertThat(getProperty(resultBean, "nested.reference", ObjectReference.of("1", "Reference"));
+        assertThat(getProperty(resultBean, "nested.nested.string"), is("a"));
+        assertThat(getProperty(resultBean, "nested.indexed[0].string"), is("a"));
+
+        assertThat(getProperty(resultBean, "indexed[0].string"), is("a"));
+        assertThat(getProperty(resultBean, "indexed[0].number"), is(10));
+        assertThat(getProperty(resultBean, "indexed[0].decimal"), is(BigDecimal.TEN));
+        assertThat(getProperty(resultBean, "indexed[0].date"), is(today()));
+        assertThat(getProperty(resultBean, "indexed[0].time"), is(now()));
+        assertThat(getProperty(resultBean, "indexed[0].boolean"), is(Boolean.TRUE));
+        assertThat(getProperty(resultBean, "indexed[0].binary"), is(notNullValue()));
+//        assertThat(getProperty(resultBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
+        assertThat(getProperty(resultBean, "indexed[0].nested.string"), is("a"));
+        assertThat(getProperty(resultBean, "indexed[0].indexed[0].string"), is("a"));
+
     }
 
 }

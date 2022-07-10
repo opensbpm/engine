@@ -133,7 +133,13 @@ public class ObjectBean implements DynaBean {
 
             @Override
             public Object visitIndexed(NestedAttributeSchema attributeSchema) {
-                return attributeStore.getIndexed(attributeSchema);
+                List<ObjectBean> indexed = new ArrayList<>();
+                
+                List<HashMap<Long, Serializable>> rawValues = attributeStore.getIndexed(attributeSchema);
+                for (HashMap<Long, Serializable> rawMap : rawValues) {
+                    indexed.add(new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, rawMap)));
+                }
+                return indexed;
             }
         });
     }
@@ -146,10 +152,11 @@ public class ObjectBean implements DynaBean {
         @SuppressWarnings("unchecked")
         List<ObjectBean> value = (List<ObjectBean>) get(name);
         if (value.size() <= index) {
-            ObjectBean attributeModelBean = findAttributeSchema(name).accept(indexed())
-                    .map(attributeSchema -> new ObjectBean(attributeSchema, new AttributeStore(attributeSchema)))
+            ObjectBean indexedBean = findAttributeSchema(name).accept(indexed())
+                    .map(indexedSchema -> new ObjectBean(indexedSchema, new AttributeStore(indexedSchema)))
                     .orElseThrow(() -> new IllegalArgumentException("No such property " + name));
-            value.add(index, attributeModelBean);
+            value.add(index, indexedBean);
+            set(findAttributeSchema(name), value);
         }
         return value.get(index);
     }
@@ -174,7 +181,7 @@ public class ObjectBean implements DynaBean {
         attribute.accept(new AttributeSchemaVisitor<Void>() {
             @Override
             public Void visitSimple(AttributeSchema attributeSchema) {
-                attributeStore.put(attributeSchema, (Serializable) value);
+                attributeStore.putSimple(attributeSchema, (Serializable) value);
                 return null;
             }
 
@@ -185,7 +192,7 @@ public class ObjectBean implements DynaBean {
 //            }
             @Override
             public Void visitNested(NestedAttributeSchema attributeSchema) {
-                attributeStore.put(attributeSchema, ((ObjectBean) value).attributeStore.getValues());
+                attributeStore.putNested(attributeSchema, ((ObjectBean) value).attributeStore.getValues());
                 return null;
             }
 
@@ -195,7 +202,7 @@ public class ObjectBean implements DynaBean {
                 List<HashMap<Long, Serializable>> rawValue = ((List<ObjectBean>) value).stream()
                         .map(objectBean -> objectBean.attributeStore.getValues())
                         .collect(Collectors.toList());
-                attributeStore.put(attributeSchema, new ArrayList<>(rawValue));
+                attributeStore.putIndexed(attributeSchema, new ArrayList<>(rawValue));
                 return null;
             }
         });
@@ -236,5 +243,9 @@ public class ObjectBean implements DynaBean {
         return ObjectData.of(attributesContainer.getName())
                 .withData(attributeStore.toIdMap((t) -> true))
                 .build();
+    }
+
+    public Map<Long, Serializable> toIdMap() {
+        return attributeStore.toIdMap(m -> true);
     }
 }

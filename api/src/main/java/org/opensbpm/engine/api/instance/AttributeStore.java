@@ -84,18 +84,18 @@ public class AttributeStore {
         return (T) values.computeIfAbsent(findAttributeSchema(attributeSchema).getId(), absentMapping);
     }
 
-    public void put(/*Simple*/AttributeSchema attributeSchema, Serializable value) {
+    public void putSimple(/*Simple*/AttributeSchema attributeSchema, Serializable value) {
         putValue(attributeSchema, value);
     }
 
-//    public void put(ReferenceAttributeModel attributeModel, HashMap<String,String> value) {
+//    public void putReference(ReferenceAttributeModel attributeModel, HashMap<String,String> value) {
 //        putValue(attributeModel, value);
 //    }
-    public void put(NestedAttributeSchema attributeSchema, HashMap<Long, Serializable> value) {
+    public void putNested(NestedAttributeSchema attributeSchema, HashMap<Long, Serializable> value) {
         putValue(attributeSchema, value);
     }
 
-    public void put(/*Indexed*/AttributeSchema attributeSchema, ArrayList<HashMap<Long, Serializable>> value) {
+    public void putIndexed(/*Indexed*/AttributeSchema attributeSchema, ArrayList<HashMap<Long, Serializable>> value) {
         putValue(attributeSchema, value);
     }
 
@@ -149,11 +149,10 @@ public class AttributeStore {
 
     public void updateValues(Map<Long, Serializable> data) {
         AttributeStore dataStore = new AttributeStore(attributeContainer, new HashMap<>(data));
-        attributeContainer.getAttributes().stream()
-                .forEach(attributeSchema -> {
-                    attributeSchema.accept(new AttributeValueDeterminer(dataStore))
-                            .ifPresent(value -> put(attributeSchema, value));
-                });
+        for (AttributeSchema attribute : attributeContainer.getAttributes()) {
+            attribute.accept(new AttributeValueDeterminer(dataStore))
+                    .ifPresent(value -> putSimple(attribute, value));
+        }
     }
 
     //not in use for now
@@ -256,7 +255,7 @@ public class AttributeStore {
             Serializable value = data.getSimple(attributeModel);
             validateRequiredValue("Attribute", attributeModel, () -> value == null);
 
-            return Optional.of(value);
+            return Optional.ofNullable(value);
         }
 //            @Override
 //            public Void visitReference(ReferenceAttributeModel attributeModel) {
