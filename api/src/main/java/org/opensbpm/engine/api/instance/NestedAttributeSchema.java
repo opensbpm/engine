@@ -49,7 +49,7 @@ public class NestedAttributeSchema extends AttributeSchema implements IsAttribut
 
     @Override
     public String toString() {
-    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("id", getId())
                 .append("name", getName())
                 .append("occures", occurs)
