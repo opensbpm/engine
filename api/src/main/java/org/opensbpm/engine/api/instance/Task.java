@@ -90,7 +90,7 @@ public class Task {
                     .map(objectData -> objectData.getData())
                     .findFirst()
                     .orElse(new HashMap<>());
-            return new ObjectBean(schema, new AttributeStore(objectSchema, new HashMap<>(data)));
+            return ObjectBean.from(schema, data);
 
         });
     }
