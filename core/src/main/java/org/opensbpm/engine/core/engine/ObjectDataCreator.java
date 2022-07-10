@@ -17,11 +17,7 @@
  */
 package org.opensbpm.engine.core.engine;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.AttributeStore;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.api.instance.ObjectSchema;
@@ -50,18 +46,15 @@ class ObjectDataCreator {
         ObjectModel objectModel = objectInstance.getObjectModel();
 
         ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
-        AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
         ObjectBean objectBean = ObjectBean.from(objectSchema, objectInstance.getValue());
 
-        return createObjectData(objectModel, state, objectBean, attributeStore);
+        return createObjectData(objectModel, objectBean);
     }
 
-    public ObjectData createObjectData(ObjectModel objectModel, FunctionState state,ObjectBean objectBean, AttributeStore attributeStore) {
-        Map<Long, Serializable> data = attributeStore.toIdMap(attributeSchema -> hasAnyPermission(objectModel, state, attributeSchema));
-
+    public ObjectData createObjectData(ObjectModel objectModel, ObjectBean objectBean) {
         return ObjectData.of(objectModel.getName())
-                .withData(data)
-                .withId(attributeStore.getId())
+                .withData(objectBean.toIdMap())
+                .withId(objectBean.getId())
                 .withDisplayName(evalObjectDisplayName(objectModel, objectBean))
                 .build();
     }

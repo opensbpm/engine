@@ -61,7 +61,7 @@ public class ValidationService {
         ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
         ObjectBean objectBean = ObjectBean.from(objectSchema, sourceMap);
         return new ObjectDataCreator(scriptExecutorService)
-                .createObjectData(objectModel, state, objectBean, new AttributeStore(objectSchema, sourceMap));
+                .createObjectData(objectModel, objectBean);
     }
 
 }

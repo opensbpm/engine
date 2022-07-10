@@ -85,6 +85,10 @@ public class ObjectBean implements DynaBean {
         return attributesContainer.getName();
     }
 
+    public String getId() {
+        return attributeStore.getId();
+    }
+
     public Collection<AttributeSchema> getAttributeModels() {
         return attributesContainer.getAttributes();
     }
