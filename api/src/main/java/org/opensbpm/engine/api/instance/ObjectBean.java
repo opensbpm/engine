@@ -154,7 +154,7 @@ public class ObjectBean implements DynaBean {
 //            }
             @Override
             public Object visitNested(NestedAttributeSchema attributeSchema) {
-                return ObjectBean.from(attributeSchema, attributeStore.getNested(attributeSchema));
+                return new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, attributeStore.getNested(attributeSchema)));
             }
 
             @Override
@@ -163,7 +163,7 @@ public class ObjectBean implements DynaBean {
 
                 List<HashMap<Long, Serializable>> rawValues = attributeStore.getIndexed(attributeSchema);
                 for (HashMap<Long, Serializable> rawMap : rawValues) {
-                    indexed.add(ObjectBean.from(attributeSchema, rawMap));
+                    indexed.add(new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, rawMap)));
                 }
                 return indexed;
             }
@@ -179,7 +179,7 @@ public class ObjectBean implements DynaBean {
         List<ObjectBean> value = (List<ObjectBean>) get(name);
         if (value.size() <= index) {
             ObjectBean indexedBean = findAttributeSchema(name).accept(indexed())
-                    .map(indexedSchema -> new ObjectBean(indexedSchema))
+                    .map(indexedSchema -> new ObjectBean(indexedSchema, new AttributeStore(indexedSchema)))
                     .orElseThrow(() -> new IllegalArgumentException("No such property " + name));
             value.add(index, indexedBean);
             set(findAttributeSchema(name), value);
