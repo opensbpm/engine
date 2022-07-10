@@ -122,7 +122,8 @@ public class AttributeSchema implements Serializable {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("name", getName())
+                .append("id", id)
+                .append("name", name)
                 .append("type", fieldType)
                 .toString();
     }
