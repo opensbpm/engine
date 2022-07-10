@@ -17,59 +17,72 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import java.util.Arrays;
+import java.util.List;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
+import static java.util.Arrays.asList;
 
 public class ObjectBeanHelper {
 
     public ObjectSchema createObjetSchema() {
-        ObjectSchema refObjectSchema = ObjectSchema.of(id(), "ref", Arrays.asList(
-                new /*Simple*/ AttributeSchema(id(), "name", FieldType.STRING)
+        ObjectSchema refObjectSchema = ObjectSchema.of(id(), "ref", asList(
+                simple("name", FieldType.STRING)
         ));
 
-        return ObjectSchema.of(id(), "root", Arrays.asList(
-                new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING),
-                new /*Simple*/ AttributeSchema(id(), "number", FieldType.NUMBER),
-                new /*Simple*/ AttributeSchema(id(), "decimal", FieldType.DECIMAL),
-                new /*Simple*/ AttributeSchema(id(), "date", FieldType.DATE),
-                new /*Simple*/ AttributeSchema(id(), "time", FieldType.TIME),
-                new /*Simple*/ AttributeSchema(id(), "boolean", FieldType.BOOLEAN),
-                new /*Simple*/ AttributeSchema(id(), "binary", FieldType.BINARY),
+        return ObjectSchema.of(id(), "root", asList(
+                simple("string", FieldType.STRING),
+                simple("number", FieldType.NUMBER),
+                simple("decimal", FieldType.DECIMAL),
+                simple("date", FieldType.DATE),
+                simple("time", FieldType.TIME),
+                simple("boolean", FieldType.BOOLEAN),
+                simple("binary", FieldType.BINARY),
                 //new ReferenceAttributeSchema(id(), "reference", refObjectSchema)
-                new NestedAttributeSchema(id(), "nested", Occurs.ONE, Arrays.asList(
-                        new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING),
-                        new /*Simple*/ AttributeSchema(id(), "number", FieldType.NUMBER),
-                        new /*Simple*/ AttributeSchema(id(), "decimal", FieldType.DECIMAL),
-                        new /*Simple*/ AttributeSchema(id(), "date", FieldType.DATE),
-                        new /*Simple*/ AttributeSchema(id(), "time", FieldType.TIME),
-                        new /*Simple*/ AttributeSchema(id(), "boolean", FieldType.BOOLEAN),
-                        new /*Simple*/ AttributeSchema(id(), "binary", FieldType.BINARY),
+                nested("nested", asList(
+                        simple("string", FieldType.STRING),
+                        simple("number", FieldType.NUMBER),
+                        simple("decimal", FieldType.DECIMAL),
+                        simple("date", FieldType.DATE),
+                        simple("time", FieldType.TIME),
+                        simple("boolean", FieldType.BOOLEAN),
+                        simple("binary", FieldType.BINARY),
                         //new ReferenceAttributeSchema(id(), "reference", refObjectSchema),
-                        new NestedAttributeSchema(id(), "nested", Occurs.ONE, Arrays.asList(
-                                new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING)
+                        nested("nested", asList(
+                                simple("string", FieldType.STRING)
                         )),
-                        new /*Indexed*/ NestedAttributeSchema(id(), "indexed", Occurs.UNBOUND, Arrays.asList(
-                                new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING)
+                        indexed("indexed", asList(
+                                simple("string", FieldType.STRING)
                         ))
                 )),
-                new NestedAttributeSchema(id(), "indexed", Occurs.UNBOUND, Arrays.asList(
-                        new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING),
-                        new /*Simple*/ AttributeSchema(id(), "number", FieldType.NUMBER),
-                        new /*Simple*/ AttributeSchema(id(), "decimal", FieldType.DECIMAL),
-                        new /*Simple*/ AttributeSchema(id(), "date", FieldType.DATE),
-                        new /*Simple*/ AttributeSchema(id(), "time", FieldType.TIME),
-                        new /*Simple*/ AttributeSchema(id(), "boolean", FieldType.BOOLEAN),
-                        new /*Simple*/ AttributeSchema(id(), "binary", FieldType.BINARY),
+                indexed("indexed", asList(
+                        simple("string", FieldType.STRING),
+                        simple("number", FieldType.NUMBER),
+                        simple("decimal", FieldType.DECIMAL),
+                        simple("date", FieldType.DATE),
+                        simple("time", FieldType.TIME),
+                        simple("boolean", FieldType.BOOLEAN),
+                        simple("binary", FieldType.BINARY),
                         //new ReferenceAttributeSchema(id(), "reference", refObjectSchema),
-                        new NestedAttributeSchema(id(), "nested", Occurs.ONE, Arrays.asList(
-                                new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING)
+                        nested("nested", asList(
+                                simple("string", FieldType.STRING)
                         )),
-                        new /*Indexed*/ NestedAttributeSchema(id(), "indexed", Occurs.UNBOUND, Arrays.asList(
-                                new /*Simple*/ AttributeSchema(id(), "string", FieldType.STRING)
+                        indexed("indexed", asList(
+                                simple("string", FieldType.STRING)
                         ))
                 ))
         ));
+    }
+
+    private AttributeSchema simple(String name, FieldType type) {
+        return new /*Simple*/ AttributeSchema(id(), name, type);
+    }
+
+    private AttributeSchema nested(String name, List<AttributeSchema> attributes) {
+        return new NestedAttributeSchema(id(), name, Occurs.ONE, attributes);
+    }
+
+    private AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
+        return new /*Indexed*/ NestedAttributeSchema(id(), name, Occurs.UNBOUND, attributes);
     }
 
     private long id = 1l;
@@ -77,6 +90,5 @@ public class ObjectBeanHelper {
     private long id() {
         return id++;
     }
-    
-    
+
 }
