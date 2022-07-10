@@ -49,7 +49,7 @@ public class AttributeStore {
         this.values = values;
     }
 
-    public AttributeStore(ObjectSchema attributeContainer, SourceMap sourceMap) {
+    /* default */ AttributeStore(ObjectSchema attributeContainer, SourceMap sourceMap) {
         this.attributeContainer = attributeContainer;
         this.id = sourceMap.getId();
         this.values = sourceMap.toIdMap();
