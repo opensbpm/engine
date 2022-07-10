@@ -40,12 +40,22 @@ import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
 public class ObjectBean implements DynaBean {
 
     /**
-     * Instantiate a ObjectBean with the given attribute and values.
+     * Instantiate a empty {@link ObjectBean} with the given attributes.
      *
-     * @param attributesContainer
-     * @param values
+     * @param attributesContainer to create the {@link ObjectBean}
+     */
+    public static ObjectBean from(IsAttributesContainer attributesContainer) {
+        return new ObjectBean(attributesContainer);
+    }
+
+    /**
+     * Instantiate a {@link ObjectBean} with the given attributes and values.
+     *
+     * @param attributesContainer to create the {@link ObjectBean}
+     * @param values id-based Map, must match the attributesContainer
      */
     public static ObjectBean from(IsAttributesContainer attributesContainer, Map<Long, Serializable> values) {
+        //TODO validate values
         return new ObjectBean(attributesContainer, new AttributeStore(attributesContainer, new HashMap<>(values)));
     }
 
@@ -61,6 +71,11 @@ public class ObjectBean implements DynaBean {
     public ObjectBean(IsAttributesContainer attributesContainer, AttributeStore attributeStore) {
         this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
         this.attributeStore = Objects.requireNonNull(attributeStore, "attributeStore must be non null");
+    }
+
+    private ObjectBean(IsAttributesContainer attributesContainer) {
+        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
+        this.attributeStore = new AttributeStore(attributesContainer);
     }
 
     public Collection<AttributeSchema> getAttributeModels() {
