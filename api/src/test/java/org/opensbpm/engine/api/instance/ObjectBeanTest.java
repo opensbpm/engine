@@ -32,6 +32,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThrows;
 
 public class ObjectBeanTest {
 
@@ -41,6 +42,35 @@ public class ObjectBeanTest {
 
     private static LocalTime now() {
         return LocalTime.of(12, 34);
+    }
+
+    @Test
+    public void testSetAttributeNonExisting() throws Exception {
+        //arrange
+        ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
+        DynaBean dynaBean = new ObjectBean(objectSchema);
+
+        //act+assert
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "nested.doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "nested.nested.doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "nested.indexed[0].doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "indexed[0].doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "indexed[0].nested.doesNotExists", null));
+
+        assertThrows(NoSuchMethodException.class, ()
+                -> setProperty(dynaBean, "indexed[0].indexed[0].doesNotExists", null));
     }
 
     @Test
@@ -103,7 +133,7 @@ public class ObjectBeanTest {
         //given
 
         ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
-        
+
         ObjectBean sourceBean = new ObjectBean(objectSchema);
         setProperty(sourceBean, "string", "a");
         setProperty(sourceBean, "number", 10);
