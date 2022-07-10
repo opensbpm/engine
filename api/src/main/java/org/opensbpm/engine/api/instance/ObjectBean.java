@@ -40,18 +40,9 @@ import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
 public class ObjectBean implements DynaBean {
 
     /**
-     * Instantiate a empty {@link ObjectBean} with the given attributes.
-     *
-     * @param attributesContainer to create the {@link ObjectBean}
-     */
-    public static ObjectBean from(IsAttributesContainer attributesContainer) {
-        return new ObjectBean(attributesContainer);
-    }
-
-    /**
      * Instantiate a {@link ObjectBean} with the given attributes and SourceMap.
      *
-     * @param attributesContainer to create the {@link ObjectBean}
+     * @param objectSchema to create the {@link ObjectBean}
      * @param sourceMap id-based Map, must match the attributesContainer
      */
     public static ObjectBean from(ObjectSchema objectSchema, SourceMap sourceMap) {
@@ -79,13 +70,14 @@ public class ObjectBean implements DynaBean {
      *
      * @param attributesContainer
      * @param attributeStore
+     * @deprecated 
      */
     public ObjectBean(IsAttributesContainer attributesContainer, AttributeStore attributeStore) {
         this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
         this.attributeStore = Objects.requireNonNull(attributeStore, "attributeStore must be non null");
     }
 
-    private ObjectBean(IsAttributesContainer attributesContainer) {
+    public ObjectBean(IsAttributesContainer attributesContainer) {
         this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
         this.attributeStore = new AttributeStore(attributesContainer);
     }

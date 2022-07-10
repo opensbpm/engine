@@ -106,9 +106,8 @@ public class ObjectBeanTest {
         //given
 
         ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
-        AttributeStore sourceStore = new AttributeStore(objectSchema);
-
-        ObjectBean sourceBean = new ObjectBean(objectSchema, sourceStore);
+        
+        ObjectBean sourceBean = new ObjectBean(objectSchema);
         setProperty(sourceBean, "string", "a");
         setProperty(sourceBean, "number", 10);
         setProperty(sourceBean, "decimal", BigDecimal.TEN);
@@ -142,8 +141,7 @@ public class ObjectBeanTest {
 
         //when
         //initialize an new AtttributeStore with given values
-        AttributeStore attributeStore = new AttributeStore(objectSchema, sourceStore.getValues());
-        DynaBean resultBean = new ObjectBean(objectSchema, attributeStore);
+        DynaBean resultBean = ObjectBean.from(objectSchema, sourceBean.toIdMap());
 
         //then
         assertGetProperty(resultBean, "string", "a");

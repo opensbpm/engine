@@ -71,7 +71,7 @@ public class TaskTest {
 
         ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
         //use ObjectBean to easily create repsonse-data map
-        ObjectBean givenData = ObjectBean.from(objectSchema);
+        ObjectBean givenData = new ObjectBean(objectSchema);
         givenData.set("Attribute 1", "Data");
 
         TaskResponse taskResponse = TaskResponse.of(sId,
@@ -228,7 +228,7 @@ public class TaskTest {
     }
 
     private ObjectData createData(ObjectSchema objectSchema, String f2Value, ObjectData... childs) {
-        ObjectBean objectBean = ObjectBean.from(objectSchema);
+        ObjectBean objectBean = new ObjectBean(objectSchema);
         objectBean.set(objectSchema.getAttributes().get(0), null);
         objectBean.set(objectSchema.getAttributes().get(1), f2Value);
         objectBean.set(objectSchema.getAttributes().get(2), null);
