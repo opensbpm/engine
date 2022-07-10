@@ -154,7 +154,7 @@ public class ObjectBean implements DynaBean {
 //            }
             @Override
             public Object visitNested(NestedAttributeSchema attributeSchema) {
-                return new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, attributeStore.getNested(attributeSchema)));
+                return ObjectBean.from(attributeSchema, attributeStore.getNested(attributeSchema));
             }
 
             @Override
@@ -163,7 +163,7 @@ public class ObjectBean implements DynaBean {
 
                 List<HashMap<Long, Serializable>> rawValues = attributeStore.getIndexed(attributeSchema);
                 for (HashMap<Long, Serializable> rawMap : rawValues) {
-                    indexed.add(new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, rawMap)));
+                    indexed.add(ObjectBean.from(attributeSchema, rawMap));
                 }
                 return indexed;
             }
