@@ -179,7 +179,7 @@ public class ObjectBean implements DynaBean {
         List<ObjectBean> value = (List<ObjectBean>) get(name);
         if (value.size() <= index) {
             ObjectBean indexedBean = findAttributeSchema(name).accept(indexed())
-                    .map(indexedSchema -> new ObjectBean(indexedSchema, new AttributeStore(indexedSchema)))
+                    .map(indexedSchema -> new ObjectBean(indexedSchema))
                     .orElseThrow(() -> new IllegalArgumentException("No such property " + name));
             value.add(index, indexedBean);
             set(findAttributeSchema(name), value);

@@ -46,7 +46,7 @@ public class AttributeStoreTest {
         //arrange
         ObjectSchema objectSchema = new ObjectBeanHelper().createObjetSchema();
 
-        ObjectBean sourceBean = new ObjectBean(objectSchema, new AttributeStore(objectSchema));
+        ObjectBean sourceBean = new ObjectBean(objectSchema);
         setProperty(sourceBean, "string", "a");
         setProperty(sourceBean, "number", 10);
         setProperty(sourceBean, "decimal", BigDecimal.TEN);
