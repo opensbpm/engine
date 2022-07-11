@@ -18,12 +18,12 @@
 package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,13 +34,13 @@ public class SourceMapTest {
     public void test() {
         Map<String, Object> source = createSource();
 
-        ObjectSchema objectSchema = ObjectSchema.of(1l, "Test", Arrays.asList(
+        ObjectSchema objectSchema = ObjectSchema.of(1l, "Test", asList(
                 new AttributeSchema(1L, "Name", FieldType.STRING),
-                NestedAttributeSchema.create(2L, "Adresse", Occurs.ONE, Arrays.asList(
+                NestedAttributeSchema.createNested(2L, "Adresse", asList(
                         new AttributeSchema(3L, "PLZ", FieldType.STRING),
                         new AttributeSchema(4L, "Ort", FieldType.STRING)
                 )),
-                NestedAttributeSchema.create(5L, "Kontakte", Occurs.UNBOUND, Arrays.asList(
+                NestedAttributeSchema.createIndexed(5L, "Kontakte", asList(
                         new AttributeSchema(6L, "Name", FieldType.STRING),
                         new AttributeSchema(7L, "EMail", FieldType.STRING)
                 ))
@@ -59,7 +59,7 @@ public class SourceMapTest {
         address.put("Ort", "Wien");
         source.put("Adresse", address);
         
-        source.put("Kontakte", Arrays.asList(
+        source.put("Kontakte", asList(
                 createContact("Kontakt1", "mail@irgendwo.at"),
                 createContact("Kontakt2", "mail@daham.at")
         ));

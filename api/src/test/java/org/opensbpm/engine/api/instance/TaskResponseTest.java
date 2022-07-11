@@ -50,13 +50,18 @@ public class TaskResponseTest {
         Long o2ManyOneFieldId = 7L;
         Long o2ManyOneNumber = 8L;
 
-        ObjectSchema object1Schema = ObjectSchema.of(1l,"Object 1", asList(attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
-                NestedAttributeSchema.create(o1ToOneFieldId, "To One", Occurs.ONE, asList(new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
+        ObjectSchema object1Schema = ObjectSchema.of(1l,"Object 1", asList(
+                attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
+                NestedAttributeSchema.createNested(o1ToOneFieldId, "To One", asList(
+                        new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
                 ))
         ));
-        ObjectSchema object2Schema = ObjectSchema.of(2l,"Object 2", asList(attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
-                NestedAttributeSchema.create(o2ToManyFieldId, "To Many", Occurs.UNBOUND, asList(new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
-                        NestedAttributeSchema.create(o2ManyOneFieldId, "To One", Occurs.ONE, asList(new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
+        ObjectSchema object2Schema = ObjectSchema.of(2l,"Object 2", asList(
+                attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
+                NestedAttributeSchema.createIndexed(o2ToManyFieldId, "To Many", asList(
+                        new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
+                        NestedAttributeSchema.createNested(o2ManyOneFieldId, "To One", asList(
+                                new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
                         ))
                 ))
         ));

@@ -126,13 +126,13 @@ class ObjectSchemaConverter {
                 @Override
                 public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {
                     List<AttributeSchema> attributes = createAttributes(nestedAttribute.getAttributeModels());
-                    return NestedAttributeSchema.create(nestedAttribute.getId(), nestedAttribute.getName(), nestedAttribute.getOccurs(), attributes);
+                    return NestedAttributeSchema.createNested(nestedAttribute.getId(), nestedAttribute.getName(), attributes);
                 }
 
                 @Override
                 public AttributeSchema visitIndexed(IndexedAttributeModel indexedAttribute) {
                     List<AttributeSchema> attributes = createAttributes(indexedAttribute.getAttributeModels());
-                    return NestedAttributeSchema.create(indexedAttribute.getId(), indexedAttribute.getName(), indexedAttribute.getOccurs(), attributes);
+                    return NestedAttributeSchema.createIndexed(indexedAttribute.getId(), indexedAttribute.getName(), attributes);
                 }
 
             }))

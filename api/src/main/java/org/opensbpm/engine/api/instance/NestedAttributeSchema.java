@@ -14,7 +14,15 @@ import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NestedAttributeSchema extends AttributeSchema implements IsAttributesContainer {
 
-    public static NestedAttributeSchema create(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
+    public static NestedAttributeSchema createNested(Long id, String name, List<AttributeSchema> attributes) {
+        return create(id, name, Occurs.ONE, attributes);
+    }
+
+    public static NestedAttributeSchema createIndexed(Long id, String name, List<AttributeSchema> attributes) {
+        return create(id, name, Occurs.UNBOUND, attributes);
+    }
+
+    private static NestedAttributeSchema create(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
         return new NestedAttributeSchema(id, name, occurs, attributes);
     }
 
@@ -27,7 +35,7 @@ public class NestedAttributeSchema extends AttributeSchema implements IsAttribut
         //JAXB constructor
     }
 
-    public NestedAttributeSchema(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
+    private NestedAttributeSchema(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
         super(id, name, occurs == Occurs.ONE ? FieldType.NESTED : FieldType.LIST);
         this.occurs = occurs;
         this.attributes = new ArrayList<>(attributes);

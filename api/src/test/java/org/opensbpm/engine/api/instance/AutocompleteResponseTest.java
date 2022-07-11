@@ -18,7 +18,6 @@
 package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
@@ -26,6 +25,7 @@ import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.instance.AutocompleteResponse.Autocomplete;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -45,18 +45,18 @@ public class AutocompleteResponseTest {
         Long o2ManyOneFieldId = 7L;
         Long o2ManyOneNumber = 8L;
 
-        ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", Arrays.asList(
+        ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", asList(
                 attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
-                NestedAttributeSchema.create(o1ToOneFieldId, "To One", Occurs.ONE, Arrays.asList(
+                NestedAttributeSchema.createNested(o1ToOneFieldId, "To One", asList(
                         new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER
                         )
                 ))
         ));
-        ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", Arrays.asList(
+        ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
-                NestedAttributeSchema.create(o2ToManyFieldId, "To Many", Occurs.UNBOUND, Arrays.asList(
+                NestedAttributeSchema.createIndexed(o2ToManyFieldId, "To Many", asList(
                         new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
-                        NestedAttributeSchema.create(o2ManyOneFieldId, "To One", Occurs.ONE, Arrays.asList(
+                        NestedAttributeSchema.createIndexed(o2ManyOneFieldId, "To One", asList(
                                 new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER
                                 )
                         ))
@@ -75,7 +75,7 @@ public class AutocompleteResponseTest {
                 .withData(attributeData)
                 .build();
 
-        AutocompleteResponse autocompleteResponse = AutocompleteResponse.of(Arrays.asList(Autocomplete.of(objectData)));
+        AutocompleteResponse autocompleteResponse = AutocompleteResponse.of(asList(Autocomplete.of(objectData)));
 
         //when
         AutocompleteResponse result = DeserializerUtil.deserializeJaxb(AutocompleteResponse.class, autocompleteResponse);
