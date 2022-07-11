@@ -22,7 +22,7 @@ public class NestedAttributeSchema extends AttributeSchema implements IsAttribut
         return create(id, name, Occurs.UNBOUND, attributes);
     }
 
-    private static NestedAttributeSchema create(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
+    public static NestedAttributeSchema create(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
         return new NestedAttributeSchema(id, name, occurs, attributes);
     }
 
