@@ -14,6 +14,10 @@ import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NestedAttributeSchema extends AttributeSchema implements IsAttributesContainer {
 
+    public static NestedAttributeSchema create(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
+        return new NestedAttributeSchema(id, name, occurs, attributes);
+    }
+
     @XmlAttribute(required = true)
     private Occurs occurs;
 

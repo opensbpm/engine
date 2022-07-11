@@ -47,16 +47,16 @@ public class AutocompleteResponseTest {
 
         ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", Arrays.asList(
                 attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
-                new NestedAttributeSchema(o1ToOneFieldId, "To One", Occurs.ONE, Arrays.asList(
+                NestedAttributeSchema.create(o1ToOneFieldId, "To One", Occurs.ONE, Arrays.asList(
                         new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER
                         )
                 ))
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", Arrays.asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
-                new NestedAttributeSchema(o2ToManyFieldId, "To Many", Occurs.UNBOUND, Arrays.asList(
+                NestedAttributeSchema.create(o2ToManyFieldId, "To Many", Occurs.UNBOUND, Arrays.asList(
                         new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
-                        new NestedAttributeSchema(o2ManyOneFieldId, "To One", Occurs.ONE, Arrays.asList(
+                        NestedAttributeSchema.create(o2ManyOneFieldId, "To One", Occurs.ONE, Arrays.asList(
                                 new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER
                                 )
                         ))

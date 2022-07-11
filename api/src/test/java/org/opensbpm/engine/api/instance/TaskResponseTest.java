@@ -51,12 +51,12 @@ public class TaskResponseTest {
         Long o2ManyOneNumber = 8L;
 
         ObjectSchema object1Schema = ObjectSchema.of(1l,"Object 1", asList(attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
-                new NestedAttributeSchema(o1ToOneFieldId, "To One", Occurs.ONE, asList(new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
+                NestedAttributeSchema.create(o1ToOneFieldId, "To One", Occurs.ONE, asList(new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
                 ))
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l,"Object 2", asList(attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
-                new NestedAttributeSchema(o2ToManyFieldId, "To Many", Occurs.UNBOUND, asList(new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
-                        new NestedAttributeSchema(o2ManyOneFieldId, "To One", Occurs.ONE, asList(new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
+                NestedAttributeSchema.create(o2ToManyFieldId, "To Many", Occurs.UNBOUND, asList(new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
+                        NestedAttributeSchema.create(o2ManyOneFieldId, "To One", Occurs.ONE, asList(new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
                         ))
                 ))
         ));

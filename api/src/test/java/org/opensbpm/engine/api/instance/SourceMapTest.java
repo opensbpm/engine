@@ -36,11 +36,11 @@ public class SourceMapTest {
 
         ObjectSchema objectSchema = ObjectSchema.of(1l, "Test", Arrays.asList(
                 new AttributeSchema(1L, "Name", FieldType.STRING),
-                new NestedAttributeSchema(2L, "Adresse", Occurs.ONE, Arrays.asList(
+                NestedAttributeSchema.create(2L, "Adresse", Occurs.ONE, Arrays.asList(
                         new AttributeSchema(3L, "PLZ", FieldType.STRING),
                         new AttributeSchema(4L, "Ort", FieldType.STRING)
                 )),
-                new NestedAttributeSchema(5L, "Kontakte", Occurs.UNBOUND, Arrays.asList(
+                NestedAttributeSchema.create(5L, "Kontakte", Occurs.UNBOUND, Arrays.asList(
                         new AttributeSchema(6L, "Name", FieldType.STRING),
                         new AttributeSchema(7L, "EMail", FieldType.STRING)
                 ))

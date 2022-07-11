@@ -95,11 +95,11 @@ public class ObjectBeanHelper {
     }
 
     public AttributeSchema nested(String name, List<AttributeSchema> attributes) {
-        return new NestedAttributeSchema(id(), name, Occurs.ONE, attributes);
+        return NestedAttributeSchema.create(id(), name, Occurs.ONE, attributes);
     }
 
     public AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
-        return new /*Indexed*/ NestedAttributeSchema(id(), name, Occurs.UNBOUND, attributes);
+        return NestedAttributeSchema.create(id(), name, Occurs.UNBOUND, attributes);
     }
 
     private long id = 1l;
