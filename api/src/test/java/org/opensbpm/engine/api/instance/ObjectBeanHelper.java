@@ -98,7 +98,7 @@ public class ObjectBeanHelper {
     }
 
     public AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
-        return NestedAttributeSchema.createIndexed(id(), name, attributes);
+        return IndexedAttributeSchema.create(id(), name, attributes);
     }
 
     private long id = 1l;

@@ -39,7 +39,7 @@ public class SourceMapTest {
                         new AttributeSchema(3L, "PLZ", FieldType.STRING),
                         new AttributeSchema(4L, "Ort", FieldType.STRING)
                 )),
-                NestedAttributeSchema.createIndexed(5L, "Kontakte", asList(
+                IndexedAttributeSchema.create(5L, "Kontakte", asList(
                         new AttributeSchema(6L, "Name", FieldType.STRING),
                         new AttributeSchema(7L, "EMail", FieldType.STRING)
                 ))

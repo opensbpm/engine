@@ -59,7 +59,7 @@ public class TaskResponseTest {
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
-                NestedAttributeSchema.createIndexed(o2ToManyFieldId, "To Many", asList(
+                IndexedAttributeSchema.create(o2ToManyFieldId, "To Many", asList(
                         new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
                         NestedAttributeSchema.createNested(o2ManyOneFieldId, "To One", asList(
                                 new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)

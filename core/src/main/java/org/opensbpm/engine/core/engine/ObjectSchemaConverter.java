@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import org.opensbpm.engine.api.instance.AttributeSchema;
+import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.model.FieldType;
@@ -132,7 +133,7 @@ class ObjectSchemaConverter {
                 @Override
                 public AttributeSchema visitIndexed(IndexedAttributeModel indexedAttribute) {
                     List<AttributeSchema> attributes = createAttributes(indexedAttribute.getAttributeModels());
-                    return NestedAttributeSchema.createIndexed(indexedAttribute.getId(), indexedAttribute.getName(), attributes);
+                    return IndexedAttributeSchema.create(indexedAttribute.getId(), indexedAttribute.getName(), attributes);
                 }
 
             }))
