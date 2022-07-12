@@ -28,7 +28,7 @@ public interface ObjectDefinition {
 
     List<AttributeDefinition> getAttributes();
 
-    public static interface AttributeDefinition {
+    interface AttributeDefinition {
 
         String getName();
 
