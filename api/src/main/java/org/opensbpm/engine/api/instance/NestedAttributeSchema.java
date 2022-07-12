@@ -35,24 +35,16 @@ public class NestedAttributeSchema extends AbstractContainerAttributeSchema {
         return new IndexedAttributeSchema(id, name, attributes);
     }
 
-    @XmlAttribute(required = true)
-    private Occurs occurs;
-
     public NestedAttributeSchema() {
         //JAXB constructor
     }
 
     protected NestedAttributeSchema(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
         super(id, name, occurs == Occurs.ONE ? FieldType.NESTED : FieldType.LIST, attributes);
-        this.occurs = occurs;
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
-        if (Occurs.ONE == occurs) {
-            return visitor.visitNested(this);
-        }  else {
-            throw new UnsupportedOperationException(occurs + " not implemented yet");
-        }
+        return visitor.visitNested(this);
     }
 
 }
