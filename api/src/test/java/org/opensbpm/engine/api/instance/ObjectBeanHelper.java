@@ -19,7 +19,6 @@ package org.opensbpm.engine.api.instance;
 
 import java.util.List;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import static java.util.Arrays.asList;
 
 public class ObjectBeanHelper {
