@@ -32,7 +32,7 @@ public interface ObjectDefinition {
 
         String getName();
 
-        abstract <T> T accept(AttributeDefinitionVisitor<T> visitor);
+        <T> T accept(AttributeDefinitionVisitor<T> visitor);
     }
 
     interface AttributeDefinitionVisitor<T> {
