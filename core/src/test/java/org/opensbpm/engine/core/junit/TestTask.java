@@ -37,6 +37,7 @@ import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AttributeSchemaVisitor;
+import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
@@ -150,7 +151,7 @@ public class TestTask extends Task {
                     }
 
                     @Override
-                    public DynaProperty visitIndexed(NestedAttributeSchema attributeSchema) {
+                    public DynaProperty visitIndexed(IndexedAttributeSchema attributeSchema) {
                         return new DynaProperty(attribute.getName(), attribute.getType(), LazyDynaBean.class);
                     }
                 }))

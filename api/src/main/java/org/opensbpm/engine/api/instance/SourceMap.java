@@ -65,7 +65,7 @@ public final class SourceMap {
                         }
 
                         @Override
-                        public Serializable visitIndexed(NestedAttributeSchema attributeSchema) {
+                        public Serializable visitIndexed(IndexedAttributeSchema attributeSchema) {
                             ArrayList<Map<Long, Serializable>> values = new ArrayList<>();
                             for (Map<String, Object> data : (List<Map<String, Object>>) entry.getValue()) {
                                 values.add(new SourceMap(attributeSchema, data,null).toIdMap());

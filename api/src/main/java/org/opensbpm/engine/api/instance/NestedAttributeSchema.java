@@ -50,9 +50,7 @@ public class NestedAttributeSchema extends AbstractContainerAttributeSchema {
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
         if (Occurs.ONE == occurs) {
             return visitor.visitNested(this);
-        } else if (Occurs.UNBOUND == occurs) {
-            return visitor.visitIndexed(this);
-        } else {
+        }  else {
             throw new UnsupportedOperationException(occurs + " not implemented yet");
         }
     }

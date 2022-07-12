@@ -9,7 +9,7 @@ public interface AttributeSchemaVisitor<T> {
 
     T visitNested(NestedAttributeSchema attributeSchema);
 
-    T visitIndexed(/*Indexed*/NestedAttributeSchema attributeSchema);
+    T visitIndexed(IndexedAttributeSchema attributeSchema);
 
     static AttributeSchemaVisitor<Optional</*Simple*/AttributeSchema>> simple() {
         return new OptionalAttributeSchemaAdapter</*Simple*/AttributeSchema>() {
@@ -37,10 +37,10 @@ public interface AttributeSchemaVisitor<T> {
         };
     }
 
-    static AttributeSchemaVisitor<Optional</*Indexed*/NestedAttributeSchema>> indexed() {
-        return new OptionalAttributeSchemaAdapter</*Indexed*/NestedAttributeSchema>() {
+    static AttributeSchemaVisitor<Optional<IndexedAttributeSchema>> indexed() {
+        return new OptionalAttributeSchemaAdapter<IndexedAttributeSchema>() {
             @Override
-            public Optional</*Indexed*/NestedAttributeSchema> visitIndexed(/*Indexed*/NestedAttributeSchema indexedSchema) {
+            public Optional<IndexedAttributeSchema> visitIndexed(IndexedAttributeSchema indexedSchema) {
                 return Optional.of(indexedSchema);
             }
         };
@@ -63,7 +63,7 @@ public interface AttributeSchemaVisitor<T> {
         }
 
         @Override
-        public Optional<T> visitIndexed(/*Indexed*/NestedAttributeSchema indexedSchema) {
+        public Optional<T> visitIndexed(IndexedAttributeSchema indexedSchema) {
             return Optional.empty();
         }
     }

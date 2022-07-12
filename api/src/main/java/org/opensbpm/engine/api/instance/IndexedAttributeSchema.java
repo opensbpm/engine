@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import org.opensbpm.engine.api.model.definition.Occurs;
 
 @XmlAccessorType(value = XmlAccessType.FIELD)
-class IndexedAttributeSchema extends NestedAttributeSchema {
+public class IndexedAttributeSchema extends NestedAttributeSchema {
 
     public IndexedAttributeSchema() {
         //JAXB constructor

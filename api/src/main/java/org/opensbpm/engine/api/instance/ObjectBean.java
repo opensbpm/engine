@@ -115,7 +115,7 @@ public class ObjectBean implements DynaBean {
             }
 
             @Override
-            public DynaProperty visitIndexed(NestedAttributeSchema indexedAttributeSchema) {
+            public DynaProperty visitIndexed(IndexedAttributeSchema indexedAttributeSchema) {
                 return new DynaProperty(attributeSchema.getName(), List.class, ObjectBean.class);
             }
 
@@ -158,7 +158,7 @@ public class ObjectBean implements DynaBean {
             }
 
             @Override
-            public Object visitIndexed(NestedAttributeSchema attributeSchema) {
+            public Object visitIndexed(IndexedAttributeSchema attributeSchema) {
                 List<ObjectBean> indexed = new ArrayList<>();
 
                 List<HashMap<Long, Serializable>> rawValues = attributeStore.getIndexed(attributeSchema);
@@ -223,7 +223,7 @@ public class ObjectBean implements DynaBean {
             }
 
             @Override
-            public Void visitIndexed(NestedAttributeSchema attributeSchema) {
+            public Void visitIndexed(IndexedAttributeSchema attributeSchema) {
                 @SuppressWarnings("unchecked")
                 List<HashMap<Long, Serializable>> rawValue = ((List<ObjectBean>) value).stream()
                         .map(objectBean -> objectBean.attributeStore.getValues())

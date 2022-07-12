@@ -124,7 +124,7 @@ public class AttributeStore {
             }
 
             @Override
-            public Serializable visitIndexed(NestedAttributeSchema attributeSchema) {
+            public Serializable visitIndexed(IndexedAttributeSchema attributeSchema) {
                 validateRequiredValue(attributeSchema, () -> value == null);
                 return value;
             }
@@ -173,7 +173,7 @@ public class AttributeStore {
                         }
 
                         @Override
-                        public Serializable visitIndexed(/*Indexed*/NestedAttributeSchema attributeSchema) {
+                        public Serializable visitIndexed(IndexedAttributeSchema attributeSchema) {
                             return new ArrayList<>(getIndexed(attributeSchema).stream()
                                     .map(values -> new AttributeStore(attributeSchema, values).toIdMap(filter))
                                     .collect(Collectors.toList()));
@@ -321,7 +321,7 @@ public class AttributeStore {
         }
 
         @Override
-        public Optional<Serializable> visitIndexed(NestedAttributeSchema attributeSchema) {
+        public Optional<Serializable> visitIndexed(IndexedAttributeSchema attributeSchema) {
             List<HashMap<Long, Serializable>> listData = data.getIndexed(attributeSchema);
             validateRequiredValue("Listattribute", attributeSchema, () -> listData.isEmpty());
 
