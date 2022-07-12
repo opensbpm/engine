@@ -20,16 +20,36 @@ package org.opensbpm.engine.api.model.definition;
 import java.util.List;
 import org.opensbpm.engine.api.model.FieldType;
 
+/**
+ * Definition of an document in SPM
+ *
+ */
 public interface ObjectDefinition {
 
+    /**
+     * Name of a document as valid Java identifier.
+     */
     String getName();
 
+    /**
+     * The visible representation of a document.
+     */
     String getDisplayName();
 
+    /**
+     * The list of attributes of this document.
+     *
+     */
     List<AttributeDefinition> getAttributes();
 
+    /**
+     * Definition of an attribute of an document.
+     */
     interface AttributeDefinition {
 
+        /**
+         * Name of an attribute as valid Java identifier.
+         */
         String getName();
 
         <T> T accept(AttributeDefinitionVisitor<T> visitor);
@@ -47,6 +67,9 @@ public interface ObjectDefinition {
 
     }
 
+    /**
+     * Definition of an field.
+     */
     interface FieldDefinition extends AttributeDefinition {
 
         FieldType getFieldType();
@@ -62,6 +85,9 @@ public interface ObjectDefinition {
 
     }
 
+    /**
+     * Definition of an referencing attribute.
+     */
     interface ReferenceDefinition extends AttributeDefinition {
 
         ObjectDefinition getObjectDefinition();
@@ -73,11 +99,17 @@ public interface ObjectDefinition {
 
     }
 
+    /**
+     * Definition of an nested attribute.
+     */
     interface NestedAttribute extends AttributeDefinition {
 
         List<AttributeDefinition> getAttributes();
     }
 
+    /**
+     * Definition of an single nested attribute.
+     */
     interface ToOneDefinition extends NestedAttribute {
 
         @Override
@@ -86,6 +118,9 @@ public interface ObjectDefinition {
         }
     }
 
+    /**
+     * Definition of an list nested attribute.
+     */
     interface ToManyDefinition extends NestedAttribute {
 
         @Override
