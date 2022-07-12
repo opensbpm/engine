@@ -15,15 +15,11 @@ import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 public class NestedAttributeSchema extends AttributeSchema implements IsAttributesContainer {
 
     public static NestedAttributeSchema createNested(Long id, String name, List<AttributeSchema> attributes) {
-        return create(id, name, Occurs.ONE, attributes);
+        return new NestedAttributeSchema(id, name, Occurs.ONE, attributes);
     }
 
     public static NestedAttributeSchema createIndexed(Long id, String name, List<AttributeSchema> attributes) {
-        return create(id, name, Occurs.UNBOUND, attributes);
-    }
-
-    public static NestedAttributeSchema create(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
-        return new NestedAttributeSchema(id, name, occurs, attributes);
+        return new NestedAttributeSchema(id, name, Occurs.UNBOUND, attributes);
     }
 
     @XmlAttribute(required = true)
