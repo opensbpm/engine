@@ -17,7 +17,6 @@
 package org.opensbpm.engine.core.model.entities;
 
 import javax.persistence.Entity;
-import org.opensbpm.engine.api.model.definition.Occurs;
 
 @Entity
 public class IndexedAttributeModel extends NestedAttributeModel {
