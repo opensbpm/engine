@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
