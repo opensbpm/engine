@@ -36,6 +36,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.instance.AttributeSchema;
+import org.opensbpm.engine.api.instance.AttributeSchemaVisitor;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
@@ -133,21 +134,27 @@ public class TestTask extends Task {
 
     private static DynaClass createDynaClass(String name, List<AttributeSchema> attributes) {
         DynaProperty[] properties = attributes.stream()
-                .map(attribute -> {
-                    if (attribute instanceof NestedAttributeSchema) {
-                        //DynaClass nestedClass = createDynaClass(attribute.getName(), ((NestedAttributeSchema) attribute).getAttributes());
-                        if (Occurs.ONE == ((NestedAttributeSchema) attribute).getOccurs()) {
-                            return new DynaProperty(attribute.getName(), LazyDynaBean.class);
-                        } else {
-                            return new DynaProperty(attribute.getName(), attribute.getType(), LazyDynaBean.class);
-                        }
-                    } else {
+                .map(attribute
+                        -> attribute.accept(new AttributeSchemaVisitor<DynaProperty>() {
+                    @Override
+                    public DynaProperty visitSimple(AttributeSchema attributeSchema) {
                         if (FieldType.REFERENCE == attribute.getFieldType()) {
                             return new DynaProperty(attribute.getName(), Map.class);
+                        } else {
+                            return new DynaProperty(attribute.getName(), attribute.getType());
                         }
-                        return new DynaProperty(attribute.getName(), attribute.getType());
                     }
-                })
+
+                    @Override
+                    public DynaProperty visitNested(NestedAttributeSchema attributeSchema) {
+                        return new DynaProperty(attribute.getName(), LazyDynaBean.class);
+                    }
+
+                    @Override
+                    public DynaProperty visitIndexed(NestedAttributeSchema attributeSchema) {
+                        return new DynaProperty(attribute.getName(), attribute.getType(), LazyDynaBean.class);
+                    }
+                }))
                 .toArray(DynaProperty[]::new);
         return new BasicDynaClass(name, null, properties);
     }
