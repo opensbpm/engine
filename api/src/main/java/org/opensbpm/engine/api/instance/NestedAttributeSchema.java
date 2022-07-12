@@ -41,21 +41,17 @@ public class NestedAttributeSchema extends AttributeSchema implements IsAttribut
         this.attributes = new ArrayList<>(attributes);
     }
 
-    public Occurs getOccurs() {
-        return occurs;
-    }
-
     public List<AttributeSchema> getAttributes() {
         return emptyOrUnmodifiableList(attributes);
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
-        if (Occurs.ONE == getOccurs()) {
+        if (Occurs.ONE == occurs) {
             return visitor.visitNested(this);
-        } else if (Occurs.UNBOUND == getOccurs()) {
+        } else if (Occurs.UNBOUND == occurs) {
             return visitor.visitIndexed(this);
         } else {
-            throw new UnsupportedOperationException(getOccurs() + " not implemented yet");
+            throw new UnsupportedOperationException(occurs + " not implemented yet");
         }
     }
 
