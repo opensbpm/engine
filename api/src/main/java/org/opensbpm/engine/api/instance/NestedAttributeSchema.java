@@ -17,19 +17,15 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.Occurs;
-import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class NestedAttributeSchema extends AttributeSchema implements IsAttributesContainer {
+public class NestedAttributeSchema extends AbstractContainerAttributeSchema {
 
     public static NestedAttributeSchema createNested(Long id, String name, List<AttributeSchema> attributes) {
         return new NestedAttributeSchema(id, name, Occurs.ONE, attributes);
@@ -42,20 +38,13 @@ public class NestedAttributeSchema extends AttributeSchema implements IsAttribut
     @XmlAttribute(required = true)
     private Occurs occurs;
 
-    private List<AttributeSchema> attributes;
-
     public NestedAttributeSchema() {
         //JAXB constructor
     }
 
     protected NestedAttributeSchema(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
-        super(id, name, occurs == Occurs.ONE ? FieldType.NESTED : FieldType.LIST);
+        super(id, name, occurs == Occurs.ONE ? FieldType.NESTED : FieldType.LIST, attributes);
         this.occurs = occurs;
-        this.attributes = new ArrayList<>(attributes);
-    }
-
-    public List<AttributeSchema> getAttributes() {
-        return emptyOrUnmodifiableList(attributes);
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
@@ -66,16 +55,6 @@ public class NestedAttributeSchema extends AttributeSchema implements IsAttribut
         } else {
             throw new UnsupportedOperationException(occurs + " not implemented yet");
         }
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", getId())
-                .append("name", getName())
-                .append("occures", occurs)
-                .append("attributes", attributes)
-                .toString();
     }
 
 }

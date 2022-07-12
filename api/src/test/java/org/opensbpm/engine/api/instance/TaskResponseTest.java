@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
@@ -50,13 +51,13 @@ public class TaskResponseTest {
         Long o2ManyOneFieldId = 7L;
         Long o2ManyOneNumber = 8L;
 
-        ObjectSchema object1Schema = ObjectSchema.of(1l,"Object 1", asList(
+        ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", asList(
                 attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
                 NestedAttributeSchema.createNested(o1ToOneFieldId, "To One", asList(
                         new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
                 ))
         ));
-        ObjectSchema object2Schema = ObjectSchema.of(2l,"Object 2", asList(
+        ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
                 NestedAttributeSchema.createIndexed(o2ToManyFieldId, "To Many", asList(
                         new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
@@ -72,12 +73,12 @@ public class TaskResponseTest {
         HashMap<Long, Serializable> nestedData = new HashMap<>();
         nestedData.put(o1NumberFieldId/*"Number Field"*/, 1);
         attributeData.put(o1ToOneFieldId/*"To One"*/, nestedData);
-        
+
         ObjectData objectData = ObjectData.of("Object 1")
                 .withDisplayName("Object 1 Display")
                 .withData(attributeData)
                 .build();
-        
+
         TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
                 asList(NextState.of(Long.MIN_VALUE, "next state")),
                 LocalDateTime.MIN,
@@ -94,15 +95,15 @@ public class TaskResponseTest {
         assertThat("wrong document-schemas", result, hasSchemas(
                 isObjectSchema("Object 1",
                         isFieldSchema("String Field", FieldType.STRING, true, false),
-                        isNestedSchema("To One", 
+                        isNestedSchema("To One",
                                 isFieldSchema("Number Field", FieldType.NUMBER)
                         )
                 ),
                 isObjectSchema("Object 2",
                         isFieldSchema("String Field", FieldType.STRING, true, false),
-                        isIndexedSchema("To Many", 
+                        isIndexedSchema("To Many",
                                 isFieldSchema("Number Field", FieldType.NUMBER),
-                                isNestedSchema("To One", 
+                                isNestedSchema("To One",
                                         isFieldSchema("Number Field", FieldType.NUMBER)
                                 )
                         )

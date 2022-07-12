@@ -21,12 +21,11 @@ import java.util.Map;
 import java.util.Optional;
 import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.instance.AttributeSchema;
-import org.opensbpm.engine.api.instance.NestedAttributeSchema;
+import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import static org.hamcrest.CoreMatchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
@@ -67,18 +66,17 @@ public final class TaskResponseMatcher {
     }
 
     public static Matcher<AttributeSchema> isNestedSchema(String name, Matcher<AttributeSchema>... attributes) {
-        return isNestedSchema(name, Occurs.ONE, attributes);
+        return isNestedSchema(name, FieldType.NESTED, attributes);
     }
 
     public static Matcher<AttributeSchema> isIndexedSchema(String name, Matcher<AttributeSchema>... attributes) {
-        return isNestedSchema(name, Occurs.UNBOUND, attributes);
+        return isNestedSchema(name, FieldType.LIST, attributes);
     }
 
-    private static Matcher<AttributeSchema> isNestedSchema(String name, Occurs occurs, Matcher<AttributeSchema>... attributes) {
-        return allOf(
-                value(NestedAttributeSchema.class, NestedAttributeSchema::getName, is(name)),
-                //value(NestedAttributeSchema.class, NestedAttributeSchema::getOccurs, is(occurs)),
-                value(NestedAttributeSchema.class, NestedAttributeSchema::getAttributes, contains(attributes))
+    private static Matcher<AttributeSchema> isNestedSchema(String name, FieldType fieldType, Matcher<AttributeSchema>... attributes) {
+        return allOf(value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getName, is(name)),
+                value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getFieldType, is(fieldType)),
+                value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getAttributes, contains(attributes))
         );
     }
 
