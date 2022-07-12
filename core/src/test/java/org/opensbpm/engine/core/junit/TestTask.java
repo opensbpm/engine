@@ -46,7 +46,6 @@ import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import org.springframework.data.util.Pair;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
