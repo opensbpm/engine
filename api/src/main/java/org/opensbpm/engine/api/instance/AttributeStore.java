@@ -75,7 +75,7 @@ public class AttributeStore {
         return computeIfAbsent(attributeSchema, id -> new HashMap<>());
     }
 
-    public ArrayList<HashMap<Long, Serializable>> getIndexed(NestedAttributeSchema attributeSchema) {
+    public ArrayList<HashMap<Long, Serializable>> getIndexed(IndexedAttributeSchema attributeSchema) {
         return computeIfAbsent(attributeSchema, id -> new ArrayList<>());
     }
 
@@ -349,7 +349,7 @@ public class AttributeStore {
             return new IllegalArgumentException(prefix + " " + attributeModel.getName() + " is mandatory, but not value given");
         }
 
-        private HashMap<Long, Serializable> createNestedInstance(NestedAttributeSchema nestedModel, HashMap<Long, Serializable> nestedData) {
+        private HashMap<Long, Serializable> createNestedInstance(AbstractContainerAttributeSchema nestedModel, HashMap<Long, Serializable> nestedData) {
             HashMap<Long, Serializable> hashMap = new HashMap<>();
             new AttributeStore(nestedModel, hashMap).updateValues(nestedData);
             return hashMap;

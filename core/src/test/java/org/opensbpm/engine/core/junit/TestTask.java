@@ -35,6 +35,7 @@ import org.apache.commons.beanutils.LazyDynaBean;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.expression.DefaultResolver;
 import org.hamcrest.Matcher;
+import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AttributeSchemaVisitor;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
@@ -180,7 +181,7 @@ public class TestTask extends Task {
                 } else if (u instanceof List) {
                     return (Serializable) ((List) u).stream()
                             .map(row -> {
-                                NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);
+                                IndexedAttributeSchema attribute = (IndexedAttributeSchema) getAttribute(t);
                                 return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) row);
                             })
                             .collect(Collectors.toList());
@@ -223,22 +224,22 @@ public class TestTask extends Task {
         @Override
         protected Object createDynaBeanProperty(String name, Class<?> type) {
             String attributeName = new DefaultResolver().getProperty(name);
-            NestedAttributeSchema nestedAttribute = filterToOne(attributes, attribute
+            AbstractContainerAttributeSchema attributeSchema = filterToOne(attributes, attribute
                     -> attribute.getName().equals(attributeName))
-                    .filter(attribute -> attribute instanceof NestedAttributeSchema)
-                    .map(NestedAttributeSchema.class::cast)
-                    .orElseThrow(() -> new IllegalArgumentException(name + " not NestedAttributeSchema"));
+                    .filter(attribute -> attribute instanceof AbstractContainerAttributeSchema)
+                    .map(AbstractContainerAttributeSchema.class::cast)
+                    .orElseThrow(() -> new IllegalArgumentException(name + " not AbstractContainerAttributeSchema"));
             int index = new DefaultResolver().getIndex(name);
 
             List<Map<Long, Serializable>> listData = (List<Map<Long, Serializable>>) values
-                    .computeIfAbsent(nestedAttribute.getName(), t -> new ArrayList<Map<Long, Serializable>>());
+                    .computeIfAbsent(attributeSchema.getName(), t -> new ArrayList<Map<Long, Serializable>>());
             Map<Long, Serializable> nestedData;
             if (index > 0 && index < listData.size()) {
                 nestedData = listData.get(index);
             } else {
                 nestedData = new HashMap<>();
             }
-            return createDynaBean(attributeName, nestedAttribute.getAttributes(), nestedData);
+            return createDynaBean(attributeName, attributeSchema.getAttributes(), nestedData);
         }
 
         private class NameIdMapDecorator implements Map<String, Object>, Serializable {

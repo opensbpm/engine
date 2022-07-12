@@ -20,27 +20,29 @@ package org.opensbpm.engine.api.instance;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NestedAttributeSchema extends AbstractContainerAttributeSchema {
 
-    public static NestedAttributeSchema createNested(Long id, String name, List<AttributeSchema> attributes) {
-        return new NestedAttributeSchema(id, name, Occurs.ONE, attributes);
+    public static IndexedAttributeSchema createIndexed(Long id, String name, List<AttributeSchema> attributes) {
+        return IndexedAttributeSchema.create(id, name, attributes);
     }
 
-    public static NestedAttributeSchema createIndexed(Long id, String name, List<AttributeSchema> attributes) {
-        return new IndexedAttributeSchema(id, name, attributes);
+    public static NestedAttributeSchema createNested(Long id, String name, List<AttributeSchema> attributes) {
+        return create(id, name, attributes);
+    }
+
+    public static NestedAttributeSchema create(Long id, String name, List<AttributeSchema> attributes) {
+        return new NestedAttributeSchema(id, name, attributes);
     }
 
     public NestedAttributeSchema() {
         //JAXB constructor
     }
 
-    protected NestedAttributeSchema(Long id, String name, Occurs occurs, List<AttributeSchema> attributes) {
-        super(id, name, occurs == Occurs.ONE ? FieldType.NESTED : FieldType.LIST, attributes);
+    private NestedAttributeSchema(Long id, String name, List<AttributeSchema> attributes) {
+        super(id, name, FieldType.NESTED, attributes);
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {

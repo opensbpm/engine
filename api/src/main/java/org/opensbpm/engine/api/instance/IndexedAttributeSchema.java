@@ -20,17 +20,21 @@ package org.opensbpm.engine.api.instance;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import org.opensbpm.engine.api.model.definition.Occurs;
+import org.opensbpm.engine.api.model.FieldType;
 
 @XmlAccessorType(value = XmlAccessType.FIELD)
-public class IndexedAttributeSchema extends NestedAttributeSchema {
+public class IndexedAttributeSchema extends AbstractContainerAttributeSchema {
+
+    public static IndexedAttributeSchema create(Long id, String name, List<AttributeSchema> attributes) {
+        return new IndexedAttributeSchema(id, name, attributes);
+    }
 
     public IndexedAttributeSchema() {
         //JAXB constructor
     }
 
-    public IndexedAttributeSchema(Long id, String name, List<AttributeSchema> attributes) {
-        super(id, name, Occurs.UNBOUND, attributes);
+    private IndexedAttributeSchema(Long id, String name, List<AttributeSchema> attributes) {
+        super(id, name, FieldType.LIST, attributes);
     }
 
     @Override
