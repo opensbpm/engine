@@ -39,8 +39,11 @@ public class AttributeStore {
     private final HashMap<Long, Serializable> values;
     private final String id;
 
+    /**
+     * create a new store for the given attributeContainer.
+     */
     public AttributeStore(IsAttributesContainer attributeContainer) {
-        this(attributeContainer, new HashMap<Long, Serializable>());
+        this(attributeContainer, new HashMap<>());
     }
 
     public AttributeStore(IsAttributesContainer attributeContainer, HashMap<Long, Serializable> values) {
