@@ -66,7 +66,15 @@ public final class TaskResponseMatcher {
         );
     }
 
-    public static Matcher<AttributeSchema> isNestedSchema(String name, Occurs occurs, Matcher<AttributeSchema>... attributes) {
+    public static Matcher<AttributeSchema> isNestedSchema(String name, Matcher<AttributeSchema>... attributes) {
+        return isNestedSchema(name, Occurs.ONE, attributes);
+    }
+
+    public static Matcher<AttributeSchema> isIndexedSchema(String name, Matcher<AttributeSchema>... attributes) {
+        return isNestedSchema(name, Occurs.UNBOUND, attributes);
+    }
+
+    private static Matcher<AttributeSchema> isNestedSchema(String name, Occurs occurs, Matcher<AttributeSchema>... attributes) {
         return allOf(
                 value(NestedAttributeSchema.class, NestedAttributeSchema::getName, is(name)),
                 value(NestedAttributeSchema.class, NestedAttributeSchema::getOccurs, is(occurs)),

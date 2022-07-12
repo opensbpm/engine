@@ -17,7 +17,6 @@
  */
 package org.opensbpm.engine.core.engine;
 
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,6 @@ import org.opensbpm.engine.api.model.builder.ObjectBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToOneBuilder;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.EngineServiceBoundary;
 import org.opensbpm.engine.core.ModelServiceBoundary;
@@ -58,6 +56,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasSchemas;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isFieldSchema;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isIndexedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isNestedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectSchema;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
@@ -150,8 +149,12 @@ public class EngineConverterIT extends ServiceITCase {
         assertThat("wrong document-schemas", result, hasSchemas(
                 isObjectSchema("Object 1",
                         isFieldSchema("String Field", FieldType.STRING, true, false),
-                        isNestedSchema("To One", Occurs.ONE, isFieldSchema("String Field", FieldType.STRING, true, false)),
-                        isNestedSchema("To Many", Occurs.UNBOUND, isFieldSchema("String Field", FieldType.STRING, true, false))
+                        isNestedSchema("To One",
+                                isFieldSchema("String Field", FieldType.STRING, true, false)
+                        ),
+                        isIndexedSchema("To Many",
+                                isFieldSchema("String Field", FieldType.STRING, true, false)
+                        )
                 )
         ));
 //        assertThat("wrong document-data", result.getDocumentResponse(), hasDatas(
@@ -201,7 +204,7 @@ public class EngineConverterIT extends ServiceITCase {
         ProcessInstance processInstance = new ProcessInstance(processModel, new User("username"));
 
         Map<Long, Serializable> values = new HashMap<>();
-        values.put(attributeModel.getId(), "X");        
+        values.put(attributeModel.getId(), "X");
         processInstance.addObjectInstance(objectModel).setValue(values);
 
         Subject subject = new ServiceSubject(processInstance, new ServiceSubjectModel("name"));

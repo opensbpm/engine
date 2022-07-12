@@ -23,7 +23,6 @@ import java.util.Map;
 import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.definition.Occurs;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,6 +30,7 @@ import static org.hamcrest.Matchers.hasEntry;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasDatas;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.hasSchemas;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isFieldSchema;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isIndexedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isNestedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectData;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectSchema;
@@ -94,15 +94,15 @@ public class TaskResponseTest {
         assertThat("wrong document-schemas", result, hasSchemas(
                 isObjectSchema("Object 1",
                         isFieldSchema("String Field", FieldType.STRING, true, false),
-                        isNestedSchema("To One", Occurs.ONE,
+                        isNestedSchema("To One", 
                                 isFieldSchema("Number Field", FieldType.NUMBER)
                         )
                 ),
                 isObjectSchema("Object 2",
                         isFieldSchema("String Field", FieldType.STRING, true, false),
-                        isNestedSchema("To Many", Occurs.UNBOUND,
+                        isIndexedSchema("To Many", 
                                 isFieldSchema("Number Field", FieldType.NUMBER),
-                                isNestedSchema("To One", Occurs.ONE,
+                                isNestedSchema("To One", 
                                         isFieldSchema("Number Field", FieldType.NUMBER)
                                 )
                         )
