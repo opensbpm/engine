@@ -23,7 +23,7 @@ import org.opensbpm.engine.api.model.FieldType;
 public interface ObjectDefinition {
 
     String getName();
-    
+
     String getDisplayName();
 
     List<AttributeDefinition> getAttributes();
@@ -35,24 +35,24 @@ public interface ObjectDefinition {
         abstract <T> T accept(AttributeDefinitionVisitor<T> visitor);
     }
 
-    public interface AttributeDefinitionVisitor<T> {
+    interface AttributeDefinitionVisitor<T> {
 
         T visitField(FieldDefinition fieldDefinition);
 
         T visitReference(ReferenceDefinition referenceDefinition);
-        
+
         T visitToOne(ToOneDefinition toOneDefinition);
 
         T visitToMany(ToManyDefinition toManyDefinition);
 
     }
 
-    public interface FieldDefinition extends AttributeDefinition {
+    interface FieldDefinition extends AttributeDefinition {
 
         FieldType getFieldType();
-        
+
         boolean isIndexed();
-        
+
         ObjectDefinition getAucompleteObject();
 
         @Override
@@ -62,7 +62,7 @@ public interface ObjectDefinition {
 
     }
 
-    public interface ReferenceDefinition extends AttributeDefinition {
+    interface ReferenceDefinition extends AttributeDefinition {
 
         ObjectDefinition getObjectDefinition();
 
@@ -73,12 +73,12 @@ public interface ObjectDefinition {
 
     }
 
-    public interface NestedAttribute extends AttributeDefinition {
+    interface NestedAttribute extends AttributeDefinition {
 
         List<AttributeDefinition> getAttributes();
     }
 
-    public interface ToOneDefinition extends NestedAttribute {
+    interface ToOneDefinition extends NestedAttribute {
 
         @Override
         default <T> T accept(AttributeDefinitionVisitor<T> visitor) {
@@ -86,7 +86,7 @@ public interface ObjectDefinition {
         }
     }
 
-    public interface ToManyDefinition extends NestedAttribute {
+    interface ToManyDefinition extends NestedAttribute {
 
         @Override
         default <T> T accept(AttributeDefinitionVisitor<T> visitor) {
