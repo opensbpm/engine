@@ -35,15 +35,15 @@ public class ObjectSchemaBuilder {
     }
 
     public static SimpleAttributeBuilder simple(String name, FieldType type) {
-        return SimpleAttributeBuilder.create(name, type);
+        return new SimpleAttributeBuilder(name, type);
     }
 
     public static NestedAttributeBuilder nested(String name) {
-        return NestedAttributeBuilder.create(name);
+        return new NestedAttributeBuilder(name);
     }
 
     public static IndexedAttributeBuilder indexed(String name) {
-        return IndexedAttributeBuilder.create(name);
+        return new IndexedAttributeBuilder(name);
     }
 
     private final String name;
@@ -68,31 +68,40 @@ public class ObjectSchemaBuilder {
         return ObjectSchema.of(id.incrementAndGet(), name, attributes);
     }
 
-    public static abstract class AttributeBuilder<T extends AttributeSchema> {
+    public static abstract class AttributeBuilder<T extends AttributeSchema, V extends AttributeBuilder<T, V>> {
+
+        protected String name;
+        protected boolean required = true;
+
+        protected AttributeBuilder(String name) {
+            this.name = Objects.requireNonNull(name, "name must be non null");
+        }
+
+        protected abstract V self();
+
+        public final V required() {
+            required = true;
+            return self();
+        }
 
         abstract T build(AtomicLong id);
     }
 
-    public static class SimpleAttributeBuilder extends AttributeBuilder</*Simple*/AttributeSchema> {
+    public static class SimpleAttributeBuilder extends AttributeBuilder</*Simple*/AttributeSchema, SimpleAttributeBuilder> {
 
-        public static SimpleAttributeBuilder create(String name, FieldType type) {
-            return new SimpleAttributeBuilder(name, type);
-        }
-
-        private String name;
-        private FieldType type;
-        boolean required = true;
+        private final FieldType type;
 
         public SimpleAttributeBuilder(String name, FieldType type) {
-            this.name = name;
+            super(name);
             this.type = type;
         }
 
-        public SimpleAttributeBuilder required() {
-            required = true;
+        @Override
+        protected SimpleAttributeBuilder self() {
             return this;
         }
 
+        @Override
         public /*Simple*/ AttributeSchema build(AtomicLong id) {
             AttributeSchema attributeSchema = new /*Simple*/ AttributeSchema(id.getAndIncrement(), name, type);
             attributeSchema.setRequired(required);
@@ -101,90 +110,59 @@ public class ObjectSchemaBuilder {
 
     }
 
-    public static abstract class ContainerAttributeBuilder<T extends AttributeSchema> extends AttributeBuilder<T> {
+    public static abstract class ContainerAttributeBuilder<T extends AttributeSchema, V extends ContainerAttributeBuilder<T, V>>
+            extends AttributeBuilder<T, V> {
 
-        protected final String name;
-        protected final FieldType type;
         private final List<AttributeBuilder> attributeBuilders = new ArrayList<>();
-        boolean required = true;
 
-        protected ContainerAttributeBuilder(String name, FieldType type) {
-            this.name = name;
-            this.type = type;
+        protected ContainerAttributeBuilder(String name) {
+            super(name);
         }
 
-        public ContainerAttributeBuilder required() {
-            required = true;
-            return this;
-        }
-
-        public ContainerAttributeBuilder attribute(AttributeBuilder attributeBuilder) {
+        public final V attribute(AttributeBuilder attributeBuilder) {
             attributeBuilders.add(attributeBuilder);
-            return this;
+            return self();
+        }
+
+        protected final List<AttributeSchema> buildAttributes(AtomicLong id) {
+            return attributeBuilders.stream()
+                    .map(builder -> builder.build(id))
+                    .collect(Collectors.toList());
         }
     }
 
-    public static class NestedAttributeBuilder extends ContainerAttributeBuilder<NestedAttributeSchema> {
-
-        public static NestedAttributeBuilder create(String name) {
-            return new NestedAttributeBuilder(name);
-        }
-
-        private final List<AttributeBuilder> attributeBuilders = new ArrayList<>();
-        boolean required = true;
+    public static class NestedAttributeBuilder extends ContainerAttributeBuilder<NestedAttributeSchema, NestedAttributeBuilder> {
 
         public NestedAttributeBuilder(String name) {
-            super(name, FieldType.NESTED);
+            super(name);
         }
 
-        public NestedAttributeBuilder required() {
-            required = true;
+        @Override
+        protected NestedAttributeBuilder self() {
             return this;
         }
 
-        public NestedAttributeBuilder attribute(AttributeBuilder attributeBuilder) {
-            attributeBuilders.add(attributeBuilder);
-            return this;
-        }
-
+        @Override
         public NestedAttributeSchema build(AtomicLong id) {
-            List<AttributeSchema> attributes = attributeBuilders.stream()
-                    .map(builder -> builder.build(id))
-                    .collect(Collectors.toList());
-
-            return NestedAttributeSchema.createNested(id.incrementAndGet(), name, attributes);
+            return NestedAttributeSchema.createNested(id.incrementAndGet(), name, buildAttributes(id));
         }
     }
 
-    public static class IndexedAttributeBuilder extends ContainerAttributeBuilder<IndexedAttributeSchema> {
-
-        public static IndexedAttributeBuilder create(String name) {
-            return new IndexedAttributeBuilder(name);
-        }
-
-        private final List<AttributeBuilder> attributeBuilders = new ArrayList<>();
-        boolean required = true;
+    public static class IndexedAttributeBuilder extends ContainerAttributeBuilder<IndexedAttributeSchema, IndexedAttributeBuilder> {
 
         public IndexedAttributeBuilder(String name) {
-            super(name, FieldType.LIST);
+            super(name);
         }
 
-        public IndexedAttributeBuilder required() {
-            required = true;
+        @Override
+        protected IndexedAttributeBuilder self() {
             return this;
         }
 
-        public IndexedAttributeBuilder attribute(AttributeBuilder attributeBuilder) {
-            attributeBuilders.add(attributeBuilder);
-            return this;
-        }
-
+        @Override
         public IndexedAttributeSchema build(AtomicLong id) {
-            List<AttributeSchema> attributes = attributeBuilders.stream()
-                    .map(builder -> builder.build(id))
-                    .collect(Collectors.toList());
-
-            return IndexedAttributeSchema.create(id.incrementAndGet(), name, attributes);
+            return IndexedAttributeSchema.create(id.incrementAndGet(), name, buildAttributes(id));
         }
+
     }
 }
