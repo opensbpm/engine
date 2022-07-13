@@ -26,6 +26,7 @@ import org.apache.commons.beanutils.DynaBean;
 import org.hamcrest.Matcher;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.opensbpm.engine.api.junit.ObjectSchemaBuilder;
 import org.opensbpm.engine.api.model.Binary;
 import org.opensbpm.engine.api.model.FieldType;
 import static org.apache.commons.beanutils.PropertyUtils.getProperty;
@@ -35,6 +36,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThrows;
+import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.simple;
 
 public class ObjectBeanTest {
 
@@ -118,10 +120,9 @@ public class ObjectBeanTest {
     @Test
     public void testSetWrongType() throws Exception {
         //arrange
-        ObjectBeanHelper objectBeanHelper = new ObjectBeanHelper();
-        ObjectSchema objectSchema = objectBeanHelper.schema("defaults",
-                objectBeanHelper.simpleRequired("number", FieldType.NUMBER)
-        );
+        ObjectSchema objectSchema = ObjectSchemaBuilder.schema("defaults")
+                .attribute(simple("number", FieldType.NUMBER).required())
+                .build();
 
         DynaBean dynaBean = new ObjectBean(objectSchema);
 
@@ -134,10 +135,9 @@ public class ObjectBeanTest {
     @Test
     public void testSetRequiredToNull() throws Exception {
         //arrange
-        ObjectBeanHelper objectBeanHelper = new ObjectBeanHelper();
-        ObjectSchema objectSchema = objectBeanHelper.schema("defaults",
-                objectBeanHelper.simpleRequired("number", FieldType.NUMBER)
-        );
+        ObjectSchema objectSchema = ObjectSchemaBuilder.schema("defaults")
+                .attribute(simple("number", FieldType.NUMBER).required())
+                .build();
 
         DynaBean dynaBean = new ObjectBean(objectSchema);
 
@@ -147,8 +147,6 @@ public class ObjectBeanTest {
         );
     }
 
-
-    
     @Test
     public void testNestedTypes() throws Exception {
         //arrange

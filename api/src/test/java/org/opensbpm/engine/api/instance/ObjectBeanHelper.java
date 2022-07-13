@@ -17,90 +17,62 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import org.opensbpm.engine.api.junit.ObjectSchemaBuilder;
 import org.opensbpm.engine.api.model.FieldType;
-import static java.util.Arrays.asList;
+import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.indexed;
+import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.nested;
+import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.schema;
+import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.simple;
 
 public class ObjectBeanHelper {
 
-    public ObjectSchema createObjetSchema() {
-        ObjectSchema refObjectSchema = schema("ref", asList(
-                simple("name", FieldType.STRING)
-        ));
+    public static ObjectSchema createObjetSchema() {
+        ObjectSchema refObjectSchema = ObjectSchemaBuilder.schema("ref")
+                .attribute(simple("name", FieldType.STRING))
+                .build();
 
-        return schema("root", asList(
-                simple("string", FieldType.STRING),
-                simple("number", FieldType.NUMBER),
-                simple("decimal", FieldType.DECIMAL),
-                simple("date", FieldType.DATE),
-                simple("time", FieldType.TIME),
-                simple("boolean", FieldType.BOOLEAN),
-                simple("binary", FieldType.BINARY),
-                //new ReferenceAttributeSchema(id(), "reference", refObjectSchema)
-                nested("nested", asList(
-                        simple("string", FieldType.STRING),
-                        simple("number", FieldType.NUMBER),
-                        simple("decimal", FieldType.DECIMAL),
-                        simple("date", FieldType.DATE),
-                        simple("time", FieldType.TIME),
-                        simple("boolean", FieldType.BOOLEAN),
-                        simple("binary", FieldType.BINARY),
-                        //new ReferenceAttributeSchema(id(), "reference", refObjectSchema),
-                        nested("nested", asList(
-                                simple("string", FieldType.STRING)
-                        )),
-                        indexed("indexed", asList(
-                                simple("string", FieldType.STRING)
-                        ))
-                )),
-                indexed("indexed", asList(
-                        simple("string", FieldType.STRING),
-                        simple("number", FieldType.NUMBER),
-                        simple("decimal", FieldType.DECIMAL),
-                        simple("date", FieldType.DATE),
-                        simple("time", FieldType.TIME),
-                        simple("boolean", FieldType.BOOLEAN),
-                        simple("binary", FieldType.BINARY),
-                        //new ReferenceAttributeSchema(id(), "reference", refObjectSchema),
-                        nested("nested", asList(
-                                simple("string", FieldType.STRING)
-                        )),
-                        indexed("indexed", asList(
-                                simple("string", FieldType.STRING)
-                        ))
-                ))
-        ));
-    }
-    private AtomicLong id = new AtomicLong(0l);
-
-    public ObjectSchema schema(String name, AttributeSchema attributes) {
-        return schema(name, asList(attributes));
-    }
-
-    public ObjectSchema schema(String name, List<AttributeSchema> attributes) {
-        return ObjectSchema.of(id.getAndIncrement(), name, attributes);
-    }
-
-    public AttributeSchema simple(String name, FieldType type) {
-        return new /*Simple*/ AttributeSchema(id.getAndIncrement(), name, type);
-    }
-
-    public AttributeSchema simpleRequired(String name, FieldType type) {
-        return required(simple(name, type));
-    }
-
-    private AttributeSchema required(AttributeSchema attribute) {
-        attribute.setRequired(true);
-        return attribute;
-    }
-
-    public AttributeSchema nested(String name, List<AttributeSchema> attributes) {
-        return NestedAttributeSchema.createNested(id.getAndIncrement(), name, attributes);
-    }
-
-    public AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
-        return IndexedAttributeSchema.create(id.getAndIncrement(), name, attributes);
+        return schema("root")
+                .attribute(simple("string", FieldType.STRING))
+                .attribute(simple("number", FieldType.NUMBER))
+                .attribute(simple("decimal", FieldType.DECIMAL))
+                .attribute(simple("date", FieldType.DATE))
+                .attribute(simple("time", FieldType.TIME))
+                .attribute(simple("boolean", FieldType.BOOLEAN))
+                .attribute(simple("binary", FieldType.BINARY))
+                //.attribute(new ReferenceAttributeSchema(id(), "reference", refObjectSchema)
+                .attribute(nested("nested")
+                        .attribute(simple("string", FieldType.STRING))
+                        .attribute(simple("number", FieldType.NUMBER))
+                        .attribute(simple("decimal", FieldType.DECIMAL))
+                        .attribute(simple("date", FieldType.DATE))
+                        .attribute(simple("time", FieldType.TIME))
+                        .attribute(simple("boolean", FieldType.BOOLEAN))
+                        .attribute(simple("binary", FieldType.BINARY))
+                        //.attribute(new ReferenceAttributeSchema(id(), "reference", refObjectSchema))
+                        .attribute(nested("nested")
+                                .attribute(simple("string", FieldType.STRING))
+                        )
+                        .attribute(indexed("indexed")
+                                .attribute(simple("string", FieldType.STRING))
+                        )
+                )
+                .attribute(indexed("indexed")
+                        .attribute(simple("string", FieldType.STRING))
+                        .attribute(simple("number", FieldType.NUMBER))
+                            .attribute(                        simple("decimal", FieldType.DECIMAL))
+                        .attribute(simple("date", FieldType.DATE))
+                        .attribute(simple("time", FieldType.TIME))
+                        .attribute(simple("boolean", FieldType.BOOLEAN))
+                        .attribute(simple("binary", FieldType.BINARY))
+                        //.attribute(new ReferenceAttributeSchema(id(), "reference", refObjectSchema))
+                        .attribute(nested("nested")
+                                .attribute(simple("string", FieldType.STRING))
+                        )
+                        .attribute(indexed("indexed")
+                                .attribute(simple("string", FieldType.STRING))
+                        )
+                )
+                .build();
     }
 
 }
