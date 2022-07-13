@@ -18,6 +18,7 @@
 package org.opensbpm.engine.api.instance;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
 
@@ -71,40 +72,35 @@ public class ObjectBeanHelper {
                 ))
         ));
     }
+    private AtomicLong id = new AtomicLong(0l);
 
     public ObjectSchema schema(String name, AttributeSchema attributes) {
         return schema(name, asList(attributes));
     }
 
     public ObjectSchema schema(String name, List<AttributeSchema> attributes) {
-        return ObjectSchema.of(id(), name, attributes);
+        return ObjectSchema.of(id.getAndIncrement(), name, attributes);
     }
 
     public AttributeSchema simple(String name, FieldType type) {
-        return new /*Simple*/ AttributeSchema(id(), name, type);
+        return new /*Simple*/ AttributeSchema(id.getAndIncrement(), name, type);
     }
 
     public AttributeSchema simpleRequired(String name, FieldType type) {
         return required(simple(name, type));
     }
 
-    private AttributeSchema required(AttributeSchema attribute){
+    private AttributeSchema required(AttributeSchema attribute) {
         attribute.setRequired(true);
         return attribute;
     }
 
     public AttributeSchema nested(String name, List<AttributeSchema> attributes) {
-        return NestedAttributeSchema.createNested(id(), name, attributes);
+        return NestedAttributeSchema.createNested(id.getAndIncrement(), name, attributes);
     }
 
     public AttributeSchema indexed(String name, List<AttributeSchema> attributes) {
-        return IndexedAttributeSchema.create(id(), name, attributes);
-    }
-
-    private long id = 1l;
-
-    private long id() {
-        return id++;
+        return IndexedAttributeSchema.create(id.getAndIncrement(), name, attributes);
     }
 
 }
