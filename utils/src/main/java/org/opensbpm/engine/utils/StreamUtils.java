@@ -120,6 +120,16 @@ public class StreamUtils {
         };
     }
 
+    /**
+     * Reduce the given iterable with the given filter to one element. If there are
+     * duplicate elements after the use of the filter an {@link IllegalStateException} 
+     * will be thrown.
+     *
+     * @param <T>
+     * @param from
+     * @param filter
+     * @return
+     */
     public static <T> Optional<T> filterToOne(Iterable<T> from, Predicate<? super T> filter) {
         return filterToOne(asStream(from), filter);
     }
