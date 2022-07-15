@@ -178,7 +178,9 @@ public class EngineEventPublisher {
 
             @Override
             public List<EngineEvent<?>> visitUserSubject(UserSubject userSubject) {
-                return mapToList(userSubject.getCurrentOrAllUsers(), user -> createUserTaskChangedEvent(user));
+                return userSubject.getCurrentOrAllUsers()
+                        .map(user -> createUserTaskChangedEvent(user))
+                        .collect(Collectors.toList());
             }
 
             private UserTaskChangedEvent createUserTaskChangedEvent(User user) {
