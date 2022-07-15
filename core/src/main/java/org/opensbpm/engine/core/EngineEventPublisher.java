@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.events.EngineEvent;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.events.ProcessInstanceChangedEvent;
@@ -127,12 +129,15 @@ public class EngineEventPublisher {
     }
 
     private void publishUserEvents(ProcessModel processModel, Type type) {
-        ProcessModelInfo processModelInfo = toModelInfo(processModel);
-        List<UserProcessModelChangedEvent> userEvents = mapToList(processModel.getUserSubjectModels().stream()
+        publishEvents(createUserEvents(processModel, type));
+    }
+
+    private List<UserProcessModelChangedEvent> createUserEvents(ProcessModel processModel, Type type) {
+        return processModel.getUserSubjectModels().stream()
                 .filter(SubjectModel::isStarter)
-                .flatMap(UserSubjectModel::getAllUsers),
-                user -> new UserProcessModelChangedEvent(user.getId(), processModelInfo, type));
-        publishEvents(userEvents);
+                .flatMap(UserSubjectModel::getAllUsers)
+                .map(user -> new UserProcessModelChangedEvent(user.getId(), toModelInfo(processModel), type))
+                .collect(Collectors.toList());
     }
 
     private ProcessModelInfo toModelInfo(ProcessModel processModel) {
