@@ -81,17 +81,35 @@ public class StreamUtils {
                 .orElse(Collections.emptyMap());
     }
 
-    public static <T> List<T> lazyAdd(List<T> nullableList, T... elements) {
+    /**
+     * Add the given elements to a nullable list. if the list is null a new list is created.
+     *
+     * @param <T> Type of the given list, the elements to add and the returning list
+     * @param nullableList the nullable list
+     * @param element mandatory element
+     * @param elements optional elements
+     * @return a non null list with the given elements
+     */
+    public static <T> List<T> lazyAdd(List<T> nullableList, T element, T... elements) {
         final List<T> list = Optional.ofNullable(nullableList)
                 .orElse(new ArrayList<>());
-        Collections.addAll(list, elements);
+        Collections.addAll(list, safeVarargs(element, elements));
         return list;
     }
 
-    public static <T> Set<T> lazyAdd(Set<T> nullableList, T... elements) {
-        final Set<T> list = Optional.ofNullable(nullableList)
+    /**
+     * Add the given elements to a nullable set. if the set is null a new set is created.
+     *
+     * @param <T> Type of the given set, the elements to add and the returning set
+     * @param nullableSet the nullable set
+     * @param element mandatory element
+     * @param elements optional elements
+     * @return a non null list with the given elements
+     */
+    public static <T> Set<T> lazyAdd(Set<T> nullableSet,T element, T... elements) {
+        final Set<T> list = Optional.ofNullable(nullableSet)
                 .orElse(new HashSet<>());
-        Collections.addAll(list, elements);
+        Collections.addAll(list, safeVarargs(element, elements));
         return list;
     }
 
@@ -185,7 +203,6 @@ public class StreamUtils {
         return difference;
     }
 
-    /*TODO currently unused and untestet
     public static <T> T[] safeVarargs(T arg1, T... varargs) {
         Objects.requireNonNull(arg1);
         Objects.requireNonNull(varargs);
@@ -198,7 +215,7 @@ public class StreamUtils {
         System.arraycopy(varargs, 0, args, 1, varargs.length);
         return args;
     }
-     */
+
     @SafeVarargs
     public static <T> List<T> oneOrMoreAsList(T arg1, T... varargs) {
         Objects.requireNonNull(arg1);
