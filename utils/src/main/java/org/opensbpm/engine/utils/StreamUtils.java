@@ -209,21 +209,6 @@ public class StreamUtils {
         return Collectors.toMap(Pair::getLeft, Pair::getRight);
     }
 
-    public static <T> Collection<T> subtract(final Collection<T> subtrahend, Collection<T> minuend) {
-        Objects.requireNonNull(subtrahend);
-        Objects.requireNonNull(minuend);
-
-        List<T> difference = new ArrayList<>(subtrahend);
-        difference.removeAll(minuend);
-        return difference;
-    }
-
-    public static <T> Set<T> subtract(Set<T> subtrahend, Set<T> minuend) {
-        Set<T> difference = new HashSet<>(subtrahend);
-        difference.removeAll(minuend);
-        return difference;
-    }
-
     @SafeVarargs
     public static <T> T[] safeVarargs(T arg1, T... varargs) {
         Objects.requireNonNull(arg1);

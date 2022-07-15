@@ -80,33 +80,33 @@ public class StreamUtilsTest {
     @Test
     public void testEmptyOrUnmodifiableMapWithNull() throws Exception {
         //given
-        Map<String,String> values = StreamUtils.emptyOrUnmodifiableMap(null);
+        Map<String, String> values = StreamUtils.emptyOrUnmodifiableMap(null);
         assertThat(values, is(anEmptyMap()));
 
         //when + then
         assertThrows(UnsupportedOperationException.class, () -> {
-            values.put("a","b");
+            values.put("a", "b");
         });
     }
 
     @Test
     public void testEmptyOrUnmodifiableMapWithValue() throws Exception {
         //given
-        Map<String,String> values = new HashMap<>();
-        values.put("a","b");
+        Map<String, String> values = new HashMap<>();
+        values.put("a", "b");
 
         //when + then
-        Map<String,String> result = StreamUtils.emptyOrUnmodifiableMap(values);
+        Map<String, String> result = StreamUtils.emptyOrUnmodifiableMap(values);
         assertThrows(UnsupportedOperationException.class, () -> {
-            result.put("a","b");
+            result.put("a", "b");
         });
     }
-    
+
     @Test
     public void testLazyAddList() throws Exception {
         //given
-        List<String> baseList = (List<String>)null;
-        
+        List<String> baseList = (List<String>) null;
+
         //when
         List<String> values = StreamUtils.lazyAdd(baseList, "a");
 
@@ -117,8 +117,8 @@ public class StreamUtilsTest {
     @Test
     public void testLazyAddSet() throws Exception {
         //given
-        Set<String> baseSet = (Set<String>)null;
-        
+        Set<String> baseSet = (Set<String>) null;
+
         //when
         Set<String> values = StreamUtils.lazyAdd(baseSet, "a");
 
@@ -126,12 +126,11 @@ public class StreamUtilsTest {
         assertThat(values, contains("a"));
     }
 
-    
     @Test
     public void testFilterToOneWithIterable() throws Exception {
         //given
-        Iterable<String> iterable = asList("a","b","c");
-        
+        Iterable<String> iterable = asList("a", "b", "c");
+
         //when
         Optional<String> values = StreamUtils.filterToOne(iterable, item -> item.equals("a"));
 
@@ -142,16 +141,14 @@ public class StreamUtilsTest {
     @Test
     public void testFilterToOneWithStream() throws Exception {
         //given        
-        Stream<String> stream = asList("a","b","c").stream();
-        
+        Stream<String> stream = asList("a", "b", "c").stream();
+
         //when
         Optional<String> values = StreamUtils.filterToOne(stream, item -> item.equals("a"));
 
         //then
         assertThat(values.get(), is("a"));
     }
-
-    
 
     private static final String ONEORMOREASLIST = "oneOrMoreAsList";
     @DataPoints(ONEORMOREASLIST)
@@ -200,43 +197,6 @@ public class StreamUtilsTest {
         //then
 
         assertThat(result, hasItem(object));
-    }
-
-    private static final String SUBTRACT = "subtract";
-
-    @DataPoints(SUBTRACT)
-    public static SubtractData[] SUBTRACT_DATA = new SubtractData[]{
-        new SubtractData(Collections.emptyList(), Collections.emptyList(), Collections.emptyList()),
-        new SubtractData(Collections.emptyList(), Arrays.asList(1), Collections.emptyList()),
-        new SubtractData(Arrays.asList(1), Collections.emptyList(), Arrays.asList(1)),
-        new SubtractData(Arrays.asList(1), Arrays.asList(1), Collections.emptyList()),
-        new SubtractData(Arrays.asList(1, 2), Arrays.asList(2), Arrays.asList(1))
-    };
-
-    public static final class SubtractData {
-
-        private final Collection<Integer> subtrahend;
-        private final Collection<Integer> minuend;
-        private final Collection<Integer> result;
-
-        private SubtractData(Collection<Integer> subtrahend, Collection<Integer> minuend, Collection<Integer> result) {
-            this.subtrahend = subtrahend;
-            this.minuend = minuend;
-            this.result = result;
-        }
-
-    }
-
-    @Theory
-    @Test
-    public void testSubtract(final @FromDataPoints(SUBTRACT) SubtractData data) throws Exception {
-        //given
-
-        //when
-        Collection<Integer> result = StreamUtils.subtract(data.subtrahend, data.minuend);
-
-        //then
-        assertThat(result, is(equalTo(data.result)));
     }
 
 }
