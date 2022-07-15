@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
@@ -18,6 +20,7 @@ import org.junit.experimental.theories.FromDataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.anEmptyMap;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
@@ -121,6 +124,31 @@ public class StreamUtilsTest {
 
         //then
         assertThat(values, contains("a"));
+    }
+
+    
+    @Test
+    public void testFilterToOneWithIterable() throws Exception {
+        //given
+        Iterable<String> iterable = asList("a","b","c");
+        
+        //when
+        Optional<String> values = StreamUtils.filterToOne(iterable, item -> item.equals("a"));
+
+        //then
+        assertThat(values.get(), is("a"));
+    }
+
+    @Test
+    public void testFilterToOneWithStream() throws Exception {
+        //given        
+        Stream<String> stream = asList("a","b","c").stream();
+        
+        //when
+        Optional<String> values = StreamUtils.filterToOne(stream, item -> item.equals("a"));
+
+        //then
+        assertThat(values.get(), is("a"));
     }
 
     

@@ -124,6 +124,16 @@ public class StreamUtils {
         return filterToOne(asStream(from), filter);
     }
 
+    /**
+     * Reduce the given stream with the given filter to one element. If there are
+     * duplicate elements after the use of the filter an {@link IllegalStateException} 
+     * will be thrown.
+     *
+     * @param <T>
+     * @param from
+     * @param filter
+     * @return
+     */
     public static <T> Optional<T> filterToOne(Stream<T> from, Predicate<? super T> filter) {
         return from.filter(filter)
                 .reduce(toOne());
