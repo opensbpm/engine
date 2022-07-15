@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.apache.commons.lang3.tuple.Pair;
+import static java.util.Arrays.asList;
 
 public class StreamUtils {
 
@@ -106,7 +107,7 @@ public class StreamUtils {
      * @param elements optional elements
      * @return a non null list with the given elements
      */
-    public static <T> Set<T> lazyAdd(Set<T> nullableSet,T element, T... elements) {
+    public static <T> Set<T> lazyAdd(Set<T> nullableSet, T element, T... elements) {
         final Set<T> list = Optional.ofNullable(nullableSet)
                 .orElse(new HashSet<>());
         Collections.addAll(list, safeVarargs(element, elements));
@@ -203,6 +204,7 @@ public class StreamUtils {
         return difference;
     }
 
+    @SafeVarargs
     public static <T> T[] safeVarargs(T arg1, T... varargs) {
         Objects.requireNonNull(arg1);
         Objects.requireNonNull(varargs);
@@ -218,13 +220,7 @@ public class StreamUtils {
 
     @SafeVarargs
     public static <T> List<T> oneOrMoreAsList(T arg1, T... varargs) {
-        Objects.requireNonNull(arg1);
-        Objects.requireNonNull(varargs);
-
-        List<T> args = new ArrayList<>();
-        args.add(arg1);
-        Collections.addAll(args, varargs);
-        return args;
+        return asList(safeVarargs(arg1, varargs));
     }
 
     private StreamUtils() {
