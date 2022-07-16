@@ -46,6 +46,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.utils.PairUtils;
 import org.opensbpm.engine.utils.StreamUtils;
 import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
@@ -73,6 +74,7 @@ import org.opensbpm.engine.xmlmodel.processmodel.UserSubject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import static org.opensbpm.engine.utils.PairUtils.toMap;
 
 public class ProcessDefinitionConverter {
 
@@ -89,16 +91,16 @@ public class ProcessDefinitionConverter {
 
         objects = definition.getObjects().stream()
                 .map(this::createObjectModel)
-                .collect(StreamUtils.toMap());
+                .collect(PairUtils.toMap());
         objects.values().forEach(objectType -> processType.getObject().add(objectType));
 
         subjects = definition.getSubjects().stream()
                 .map(this::createSubjectModel)
-                .collect(StreamUtils.toMap());
+                .collect(PairUtils.toMap());
 
         states = subjects.entrySet().stream()
                 .flatMap(entry -> createState(entry))
-                .collect(StreamUtils.toMap());
+                .collect(PairUtils.toMap());
 
         subjects.keySet().forEach(this::createSubjectStateGraph);
         subjects.values().forEach(subjectType -> processType.getUserSubjectOrServiceSubject().add(subjectType));

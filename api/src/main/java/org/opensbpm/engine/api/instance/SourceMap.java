@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.utils.PairUtils;
 
 public final class SourceMap {
 
@@ -61,20 +61,20 @@ public final class SourceMap {
 
                         @Override
                         public Serializable visitNested(NestedAttributeSchema attributeSchema) {
-                            return new SourceMap(attributeSchema, (Map<String, Object>) entry.getValue(),null).toIdMap();
+                            return new SourceMap(attributeSchema, (Map<String, Object>) entry.getValue(), null).toIdMap();
                         }
 
                         @Override
                         public Serializable visitIndexed(IndexedAttributeSchema attributeSchema) {
                             ArrayList<Map<Long, Serializable>> values = new ArrayList<>();
                             for (Map<String, Object> data : (List<Map<String, Object>>) entry.getValue()) {
-                                values.add(new SourceMap(attributeSchema, data,null).toIdMap());
+                                values.add(new SourceMap(attributeSchema, data, null).toIdMap());
                             }
                             return values;
                         }
                     });
                     return Pair.of(attributeSchema.getId(), value);
-                }).collect(Collectors.toMap(pair -> pair.getKey(), pair -> pair.getValue()))
+                }).collect(PairUtils.toMap())
         );
     }
 

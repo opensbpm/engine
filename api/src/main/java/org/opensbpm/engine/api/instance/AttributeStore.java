@@ -29,6 +29,8 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.utils.PairUtils;
+import static org.opensbpm.engine.utils.PairUtils.toMap;
 
 /**
  * Encapsulates the persisted {@link AttributeSchema} values in a type-safe API
@@ -189,7 +191,7 @@ public class AttributeStore {
                     }
                 })
                 .filter(Objects::nonNull)
-                .collect(Collectors.toMap(pair -> pair.getKey(), pair -> pair.getValue()))
+                .collect(PairUtils.toMap())
         );
     }
 

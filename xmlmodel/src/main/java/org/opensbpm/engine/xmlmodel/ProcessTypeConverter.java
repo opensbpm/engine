@@ -60,7 +60,7 @@ import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.lang3.tuple.Pair;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
-import org.opensbpm.engine.utils.StreamUtils;
+import org.opensbpm.engine.utils.PairUtils;
 import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FunctionStateType;
@@ -101,7 +101,7 @@ public class ProcessTypeConverter {
 
                     return Pair.of(objectBuilder, objectType);
                 })
-                .collect(StreamUtils.toMap());
+                .collect(PairUtils.toMap());
 
         for (Map.Entry<ObjectBuilder, ObjectType> entry : objectsCache.entrySet()) {
             for (AttributeBuilder<?, ?> attributeBuilder : createAttributes(processBuilder, entry.getValue().getFieldOrReferenceOrToOne())) {
