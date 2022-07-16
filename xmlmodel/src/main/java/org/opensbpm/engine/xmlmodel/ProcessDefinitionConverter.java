@@ -17,7 +17,6 @@
  */
 package org.opensbpm.engine.xmlmodel;
 
-import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
 
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
@@ -93,7 +92,10 @@ public class ProcessDefinitionConverter {
                 .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
         objects.values().forEach(objectType -> processType.getObject().add(objectType));
 
-        subjects = mapToMap(definition.getSubjects(), this::createSubjectModel);
+        subjects = definition.getSubjects().stream()
+                .map(this::createSubjectModel)
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+        
         states = createStates();
 
         subjects.keySet().forEach(this::createSubjectStateGraph);
@@ -169,7 +171,7 @@ public class ProcessDefinitionConverter {
         return toManyType;
     }
 
-    private SubjectType createSubjectModel(SubjectDefinition subjectDefinition) {
+    private Pair<SubjectDefinition, SubjectType> createSubjectModel(SubjectDefinition subjectDefinition) {
         SubjectType subjectType;
         if (subjectDefinition instanceof UserSubjectDefinition) {
             UserSubject userSubject = new ObjectFactory().createUserSubject();
@@ -186,7 +188,7 @@ public class ProcessDefinitionConverter {
         if (subjectDefinition.isStarter()) {
             subjectType.setStarter(Boolean.TRUE);
         }
-        return subjectType;
+        return Pair.of(subjectDefinition, subjectType);
     }
 
     private Map<StateDefinition, StateType> createStates() {
