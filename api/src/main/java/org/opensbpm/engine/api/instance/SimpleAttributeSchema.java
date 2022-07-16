@@ -41,9 +41,6 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
     @XmlAttribute(required = true)
     private FieldType fieldType;
 
-    @XmlAttribute
-    private boolean indexed;
-
     //TODO @XmlAttribute
     @XmlTransient
     private ObjectSchema autocompleteReference;
@@ -71,13 +68,6 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
         return fieldType.getType();
     }
 
-    public boolean isIndexed() {
-        return indexed;
-    }
-
-    public void setIndexed(boolean indexed) {
-        this.indexed = indexed;
-    }
 
     public Optional<ObjectSchema> getAutocompleteReference() {
         return Optional.ofNullable(autocompleteReference);

@@ -40,6 +40,9 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
     @XmlAttribute
     private boolean readonly;
 
+    @XmlAttribute
+    private boolean indexed;
+
     protected AbstractAttributeSchema() {
         //JAXB constructor
     }
@@ -59,6 +62,7 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
         return name;
     }
 
+    @Override
     public boolean isRequired() {
         return required;
     }
@@ -67,12 +71,21 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
         this.required = required;
     }
 
+    @Override
     public boolean isReadonly() {
         return readonly;
     }
 
     public void setReadonly(boolean readonly) {
         this.readonly = readonly;
+    }
+
+    public boolean isIndexed() {
+        return indexed;
+    }
+
+    public void setIndexed(boolean indexed) {
+        this.indexed = indexed;
     }
 
     @Override

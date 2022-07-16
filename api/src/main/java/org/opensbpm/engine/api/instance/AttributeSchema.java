@@ -26,6 +26,8 @@ public interface AttributeSchema {
     boolean isRequired();
 
     boolean isReadonly();
+    
+    boolean isIndexed();
 
     <T> T accept(AttributeSchemaVisitor<T> visitor);
 
