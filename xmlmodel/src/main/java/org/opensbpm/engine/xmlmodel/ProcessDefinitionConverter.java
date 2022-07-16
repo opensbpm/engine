@@ -89,12 +89,12 @@ public class ProcessDefinitionConverter {
 
         objects = definition.getObjects().stream()
                 .map(this::createObjectModel)
-                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+                .collect(Pair.toMap());
         objects.values().forEach(objectType -> processType.getObject().add(objectType));
 
         subjects = definition.getSubjects().stream()
                 .map(this::createSubjectModel)
-                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
+                .collect(Pair.toMap());
         
         states = createStates();
 
