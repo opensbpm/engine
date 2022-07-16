@@ -69,7 +69,7 @@ public class ProcessModelConverter {
 
         subjects = processModel.getSubjectModels().stream()
                 .map(subjectModel -> createSubject(subjectModel))
-                .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+                .collect(Pair.toMap());
         
         subjects.values().forEach(subjectBuilder
                 -> processBuilder.addSubject(subjectBuilder));

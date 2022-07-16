@@ -45,7 +45,7 @@ class ObjectModelConverter {
     public ObjectModelCache convert(ProcessModel processModel) {
         Map<ObjectModel, ObjectCache> objects = processModel.getObjectModels().stream()
                 .map(objectDefinition -> createObjectBuilder(objectDefinition))
-                .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+                .collect(Pair.toMap());
         objectModelCache = new ObjectModelCache(objects);
         for (Map.Entry<ObjectModel, ObjectCache> entry : objects.entrySet()) {
             createAttributes(entry.getValue(), entry.getKey());

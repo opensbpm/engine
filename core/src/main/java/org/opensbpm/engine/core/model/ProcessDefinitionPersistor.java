@@ -112,7 +112,7 @@ public class ProcessDefinitionPersistor {
 
             objects = definition.getObjects().stream()
                     .map(this::createObjectModel)
-                    .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+                    .collect(Pair.toMap());
 
             for (Map.Entry<ObjectDefinition, ObjectCache> entry : objects.entrySet()) {
                 createAttributes(entry.getKey(), entry.getValue().getObjectModel(), entry.getValue());
@@ -120,7 +120,7 @@ public class ProcessDefinitionPersistor {
 
             subjects = definition.getSubjects().stream()
                     .map(this::createSubjectModel)
-                    .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+                    .collect(Pair.toMap());
 
             states = createStates();
 
