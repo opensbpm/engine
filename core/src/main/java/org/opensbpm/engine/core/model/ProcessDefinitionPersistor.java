@@ -62,7 +62,6 @@ import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
-import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
 
 @Component
 public class ProcessDefinitionPersistor {
@@ -112,15 +111,17 @@ public class ProcessDefinitionPersistor {
             processModel.setDescription(definition.getDescription());
 
             objects = definition.getObjects().stream()
-                    .map(objectDefinition -> createObjectModel(objectDefinition))
+                    .map(this::createObjectModel)
                     .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
 
             for (Map.Entry<ObjectDefinition, ObjectCache> entry : objects.entrySet()) {
                 createAttributes(entry.getKey(), entry.getValue().getObjectModel(), entry.getValue());
             }
 
-            subjects = mapToMap(definition.getSubjects(),
-                    subjectDefinition -> createSubjectModel(subjectDefinition));
+            subjects = definition.getSubjects().stream()
+                    .map(this::createSubjectModel)
+                    .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+
             states = createStates();
 
             subjects.keySet().forEach(subjectDefinition
@@ -212,7 +213,7 @@ public class ProcessDefinitionPersistor {
             return attributeModel;
         }
 
-        private SubjectModel createSubjectModel(SubjectDefinition subjectDefinition) {
+        private Pair<SubjectDefinition, SubjectModel> createSubjectModel(SubjectDefinition subjectDefinition) {
             final SubjectModel subjectModel;
             if (subjectDefinition instanceof UserSubjectDefinition) {
                 subjectModel = processModel.addUserSubjectModel(subjectDefinition.getName(), createRoles((UserSubjectDefinition) subjectDefinition));
@@ -224,7 +225,7 @@ public class ProcessDefinitionPersistor {
             if (subjectDefinition.isStarter()) {
                 processModel.setStarterSubject(subjectModel);
             }
-            return subjectModel;
+            return Pair.of(subjectDefinition, subjectModel);
         }
 
         private List<Role> createRoles(UserSubjectDefinition userSubjectDefinition) {
