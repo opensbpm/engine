@@ -36,7 +36,6 @@ import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
-import org.opensbpm.engine.utils.StreamUtils;
 import org.springframework.data.util.Pair;
 
 class ObjectModelConverter {
@@ -61,16 +60,18 @@ class ObjectModelConverter {
     }
 
     private void createAttributes(ObjectCache objectCache, ObjectModel objectModel) {
-        Map<AttributeModel, AttributeBuilder<?,?>> attributes = StreamUtils.mapToMap(objectModel.getAttributeModels(), attributeModel -> {
-            AttributeBuilder<?,?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
-            objectCache.objectBuilder.addAttribute(attributeBuilder);
-            return attributeBuilder;
-        });
+        Map<AttributeModel, AttributeBuilder<?, ?>> attributes = objectModel.getAttributeModels().stream()
+                .map(attributeModel -> {
+                    AttributeBuilder<?, ?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
+                    objectCache.objectBuilder.addAttribute(attributeBuilder);
+                    return Pair.of(attributeModel, attributeBuilder);
+                })
+                .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
         objectCache.putAll(attributes);
     }
 
-    private AttributeBuilder<?,?> createAttributeBuilder(ObjectCache objectCache, AttributeModel attributeModel) {
-        return attributeModel.accept(new AttributeModelVisitor<AttributeBuilder<?,?>>() {
+    private AttributeBuilder<?, ?> createAttributeBuilder(ObjectCache objectCache, AttributeModel attributeModel) {
+        return attributeModel.accept(new AttributeModelVisitor<AttributeBuilder<?, ?>>() {
             @Override
             public FieldBuilder visitSimple(SimpleAttributeModel simpleAttributeModel) {
                 FieldBuilder fieldBuilder = new FieldBuilder(simpleAttributeModel.getName(), simpleAttributeModel.getFieldType());
@@ -89,7 +90,7 @@ class ObjectModelConverter {
             public ToOneBuilder visitNested(NestedAttributeModel nestedAttributeModel) {
                 ToOneBuilder toOneBuilder = new ToOneBuilder(nestedAttributeModel.getName());
                 nestedAttributeModel.getAttributeModels().forEach(attributeModel -> {
-                    AttributeBuilder<?,?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
+                    AttributeBuilder<?, ?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
                     toOneBuilder.addAttribute(attributeBuilder);
                     objectCache.put(attributeModel, attributeBuilder);
                 });
@@ -100,7 +101,7 @@ class ObjectModelConverter {
             public ToManyBuilder visitIndexed(IndexedAttributeModel indexedAttributeModel) {
                 ToManyBuilder toManyBuilder = new ToManyBuilder(indexedAttributeModel.getName());
                 indexedAttributeModel.getAttributeModels().forEach(attributeModel -> {
-                    AttributeBuilder<?,?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
+                    AttributeBuilder<?, ?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
                     toManyBuilder.addAttribute(attributeBuilder);
                     objectCache.put(attributeModel, attributeBuilder);
                 });
@@ -126,7 +127,7 @@ class ObjectModelConverter {
             return objects.get(objectModel).getObjectBuilder();
         }
 
-        public AttributeBuilder<?,?> getAttributeBuilder(ObjectModel objectModel, AttributeModel attributeModel) {
+        public AttributeBuilder<?, ?> getAttributeBuilder(ObjectModel objectModel, AttributeModel attributeModel) {
             return objects.get(objectModel).get(attributeModel);
         }
 
@@ -142,7 +143,7 @@ class ObjectModelConverter {
         static class ObjectCache {
 
             private final ObjectBuilder objectBuilder;
-            private Map<AttributeModel, AttributeBuilder<?,?>> cache = new HashMap<>();
+            private Map<AttributeModel, AttributeBuilder<?, ?>> cache = new HashMap<>();
 
             public ObjectCache(ObjectBuilder objectBuilder) {
                 super();
@@ -153,15 +154,15 @@ class ObjectModelConverter {
                 return objectBuilder;
             }
 
-            private void put(AttributeModel attributeModel, AttributeBuilder<?,?> attributeBuilder) {
+            private void put(AttributeModel attributeModel, AttributeBuilder<?, ?> attributeBuilder) {
                 cache.put(attributeModel, attributeBuilder);
             }
 
-            private void putAll(Map<AttributeModel, AttributeBuilder<?,?>> attributes) {
+            private void putAll(Map<AttributeModel, AttributeBuilder<?, ?>> attributes) {
                 cache.putAll(attributes);
             }
 
-            private AttributeBuilder<?,?> get(AttributeModel attributeModel) {
+            private AttributeBuilder<?, ?> get(AttributeModel attributeModel) {
                 return cache.get(attributeModel);
             }
 
