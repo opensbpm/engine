@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition.ReceiveTransitionDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, ReceiveStateDefinition> {
 
@@ -51,7 +51,9 @@ public class ReceiveStateBuilder extends StateBuilder<ReceiveStateBuilder, Recei
 
     @Override
     protected ReceiveStateDefinition createState(String displayName, StateEventType eventType) {
-        List<ReceiveTransitionDefinition> transitions = mapToList(transitionBuilders, TransitionBuilder::build);
+        List<ReceiveTransitionDefinition> transitions = transitionBuilders.stream()
+                .map(TransitionBuilder::build)
+                .collect(Collectors.toList());
         return new ReceiveStateDefinitionImpl(name, displayName, eventType, transitions);
     }
 

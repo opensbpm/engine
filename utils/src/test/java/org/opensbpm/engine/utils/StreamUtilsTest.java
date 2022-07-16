@@ -199,20 +199,4 @@ public class StreamUtilsTest {
         assertThat(result, is(equalTo(data.result)));
     }
 
-    @Test
-    public void testMapToList() {
-        System.out.println("mapToList");
-        Object object = new Object();
-        //given
-        Iterable<Object> from = Arrays.asList(object);
-
-        //when
-        List<Object> result = StreamUtils.mapToList(from, t -> {
-            return t;
-        });
-        //then
-
-        assertThat(result, hasItem(object));
-    }
-
 }

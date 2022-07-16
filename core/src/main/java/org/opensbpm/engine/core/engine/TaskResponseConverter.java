@@ -18,6 +18,7 @@
 package org.opensbpm.engine.core.engine;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
@@ -25,7 +26,6 @@ import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 class TaskResponseConverter {
 
@@ -41,9 +41,9 @@ class TaskResponseConverter {
         List<ObjectSchema> objectSchemas = new ObjectSchemaConverter(state)
                 .createObjectSchemas(processInstance.getProcessModel());
 
-        List<ObjectData> datas = mapToList(processInstance.getObjectInstances(),
-                objectInstance -> new ObjectDataCreator(scriptExecutorService)
-                        .createObjectData(objectInstance, state));
+        List<ObjectData> datas = processInstance.getObjectInstances().stream()
+                .map(objectInstance -> new ObjectDataCreator(scriptExecutorService).createObjectData(objectInstance, state))
+                .collect(Collectors.toList());
 
         return TaskResponse.of(subject.getId(), nextStates, subject.getLastChanged(), objectSchemas, datas);
     }

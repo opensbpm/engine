@@ -20,6 +20,7 @@ package org.opensbpm.engine.api.model.builder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.FieldType;
@@ -30,7 +31,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.NestedAttribute
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilder> 
         implements HasChildAttributes<ObjectBuilder> {
@@ -76,7 +76,9 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
 
     @Override
     protected ObjectDefinition create() {
-        List<AttributeDefinition> attributes = mapToList(attributeBuilders.values(), AttributeBuilder::build);
+        List<AttributeDefinition> attributes = attributeBuilders.values().stream()
+                .map(AttributeBuilder::build)
+                .collect(Collectors.toList());
         return new ObjectDefinition() {
             @Override
             public String getName() {
@@ -255,7 +257,9 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
 
         @Override
         protected V create() {
-            List<AttributeDefinition> attributes = mapToList(attributeBuilders.values(), AttributeBuilder::build);
+            List<AttributeDefinition> attributes = attributeBuilders.values().stream()
+                    .map(AttributeBuilder::build)
+                    .collect(Collectors.toList());
             return create(name, attributes);
         }
 

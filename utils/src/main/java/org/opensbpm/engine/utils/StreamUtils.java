@@ -26,13 +26,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BinaryOperator;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import org.apache.commons.lang3.tuple.Pair;
 import static java.util.Arrays.asList;
 
 public class StreamUtils {
@@ -138,7 +134,7 @@ public class StreamUtils {
 
     /**
      * Reduce the given iterable with the given filter to one element. If there are
-     * duplicate elements after the use of the filter an {@link IllegalStateException} 
+     * duplicate elements after the use of the filter an {@link IllegalStateException}
      * will be thrown.
      *
      * @param <T>
@@ -152,7 +148,7 @@ public class StreamUtils {
 
     /**
      * Reduce the given stream with the given filter to one element. If there are
-     * duplicate elements after the use of the filter an {@link IllegalStateException} 
+     * duplicate elements after the use of the filter an {@link IllegalStateException}
      * will be thrown.
      *
      * @param <T>
@@ -163,15 +159,6 @@ public class StreamUtils {
     public static <T> Optional<T> filterToOne(Stream<T> from, Predicate<? super T> filter) {
         return from.filter(filter)
                 .reduce(toOne());
-    }
-
-    public static <T, U> List<U> mapToList(Iterable<T> from, Function<T, U> mapper) {
-        return mapToList(asStream(from), mapper);
-    }
-
-    public static <T, U> List<U> mapToList(Stream<T> from, Function<T, U> mapper) {
-        return from.map(mapper)
-                .collect(Collectors.toList());
     }
 
     private static <T> Stream<T> asStream(Iterable<T> from) {

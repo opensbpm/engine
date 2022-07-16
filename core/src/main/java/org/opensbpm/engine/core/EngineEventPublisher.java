@@ -64,7 +64,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import static org.opensbpm.engine.core.engine.EngineConverter.convertUser;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModel;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Component
 public class EngineEventPublisher {
@@ -99,9 +98,9 @@ public class EngineEventPublisher {
         List<EngineEvent<?>> engineEvent = new ArrayList<>();
         engineEvent.add(new RoleUserChangedEvent(role.getId(), convertUser(user), type));
 
-        List<UserProcessModelChangedEvent> changeEvents = mapToList(processModelService.findAllStartableByRole(role),
-                processModel -> new UserProcessModelChangedEvent(user.getId(), convertModel(processModel), type)
-        );
+        List<UserProcessModelChangedEvent> changeEvents = processModelService.findAllStartableByRole(role).stream()
+                .map(processModel -> new UserProcessModelChangedEvent(user.getId(), convertModel(processModel), type))
+                .collect(Collectors.toList());
         engineEvent.addAll(changeEvents);
         return engineEvent;
     }

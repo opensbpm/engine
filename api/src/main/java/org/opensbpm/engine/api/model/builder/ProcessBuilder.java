@@ -19,6 +19,7 @@ package org.opensbpm.engine.api.model.builder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.ProcessModelState;
@@ -26,7 +27,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBuilder> {
 
@@ -92,9 +92,13 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
 
     @Override
     protected ProcessDefinition create() {
-        List<ObjectDefinition> objects = mapToList(objectBuilders.values(), AbstractBuilder::build);
+        List<ObjectDefinition> objects = objectBuilders.values().stream()
+                .map(AbstractBuilder::build)
+                .collect(Collectors.toList());
 
-        List<SubjectDefinition> subjects = mapToList(subjectBuilders.values(), SubjectBuilder::build);
+        List<SubjectDefinition> subjects = subjectBuilders.values().stream()
+                .map(SubjectBuilder::build)
+                .collect(Collectors.toList());
 
         //avoid stackoverflow and update sendstate-receiver as last
         subjectBuilders.values().stream()

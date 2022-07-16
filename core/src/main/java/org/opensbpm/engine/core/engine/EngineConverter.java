@@ -20,7 +20,6 @@ package org.opensbpm.engine.core.engine;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.opensbpm.engine.api.instance.AuditTrail;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ProcessInfo;
@@ -43,7 +42,6 @@ import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.StateVisitor;
 import org.springframework.stereotype.Component;
 import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Component
 public class EngineConverter {
@@ -55,7 +53,9 @@ public class EngineConverter {
     }
 
     public List<ProcessInfo> convertInstances(Collection<ProcessInstance> processInstances) {
-        return mapToList(processInstances, process -> convertInstance(process));
+        return processInstances.stream()
+                .map(process -> convertInstance(process))
+                .collect(Collectors.toList());
     }
 
     public ProcessInfo convertInstance(ProcessInstance processInstance) {
@@ -72,12 +72,11 @@ public class EngineConverter {
 
     private List<SubjectStateInfo> convertSubjects(ProcessInstance processInstance) {
         //PENDING don't filter UserSubjects
-        Stream<UserSubject> userSubjects = processInstance.getSubjects().stream()
+        return processInstance.getSubjects().stream()
                 .filter(subject -> subject instanceof UserSubject)
-                .map(UserSubject.class::cast);
-
-        return mapToList(userSubjects, subject
-                -> convertSubject(subject));
+                .map(UserSubject.class::cast)
+                .map(subject -> convertSubject(subject))
+                .collect(Collectors.toList());
     }
 
     private SubjectStateInfo convertSubject(UserSubject subject) {
@@ -127,15 +126,16 @@ public class EngineConverter {
     }
 
     public List<AuditTrail> convertAuditTrails(List<SubjectTrail> subjectTrails) {
-        Stream<SubjectTrail> sortedTrails = subjectTrails.stream()
+        return subjectTrails.stream()
                 .sorted((SubjectTrail o1, SubjectTrail o2) -> {
                     int result = Long.valueOf(o1.getLastModified()).compareTo(o2.getLastModified());
                     if (0 == result) {
                         result = o1.getId().compareTo(o2.getId());
                     }
                     return result;
-                });
-        return mapToList(sortedTrails, this::convertTrail);
+                })
+                .map(this::convertTrail)
+                .collect(Collectors.toList());
     }
 
     private AuditTrail convertTrail(SubjectTrail subjectTrail) {
@@ -151,12 +151,18 @@ public class EngineConverter {
         FunctionState state = subject.getVisibleCurrentState()
                 .orElseThrow(() -> new IllegalStateException("visible state " + subject.getVisibleCurrentState().toString() + " not FunctionState"));
 
-        List<NextState> nextStates = mapToList(state.getHeads(), nextState -> subject.getVisibleState(nextState)
-                .filter(functionState -> !functionState.isEnd())
-                .map(functionState -> NextState.of(functionState.getId(), evaluteStateDisplayName(subject, functionState)))
-                .orElse(NextState.ofEnd(nextState.getId(), evaluteStateDisplayName(subject, nextState))));
+        List<NextState> nextStates = state.getHeads().stream()
+                .map(nextState -> getNextState(subject, nextState))
+                .collect(Collectors.toList());
 
         return new TaskResponseConverter(scriptExecutorService).convert(subject, state, nextStates);
+    }
+
+    private NextState getNextState(Subject subject, State nextState) {
+        return subject.getVisibleState(nextState)
+                .filter(functionState -> !functionState.isEnd())
+                .map(functionState -> NextState.of(functionState.getId(), evaluteStateDisplayName(subject, functionState)))
+                .orElse(NextState.ofEnd(nextState.getId(), evaluteStateDisplayName(subject, nextState)));
     }
 
     public String evaluteStateDisplayName(Subject subject, State state) {

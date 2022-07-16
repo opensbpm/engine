@@ -61,7 +61,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Component
 public class ProcessDefinitionPersistor {
@@ -161,7 +160,7 @@ public class ProcessDefinitionPersistor {
 
                 @Override
                 public AttributeModel visitReference(ReferenceDefinition referenceDefinition) {
-                    ObjectModel reference =objects.get(referenceDefinition.getObjectDefinition()).getObjectModel();
+                    ObjectModel reference = objects.get(referenceDefinition.getObjectDefinition()).getObjectModel();
                     ReferenceAttributeModel referenceAttributeModel;
                     if (attributeParent instanceof ObjectModel) {
                         referenceAttributeModel = new ReferenceAttributeModel((ObjectModel) attributeParent, referenceDefinition.getName(), reference);
@@ -173,7 +172,6 @@ public class ProcessDefinitionPersistor {
                     return referenceAttributeModel;
                 }
 
-                
                 @Override
                 public AttributeModel visitToOne(ToOneDefinition toOneDefinition) {
                     NestedAttributeModel attributeModel;
@@ -229,13 +227,15 @@ public class ProcessDefinitionPersistor {
         }
 
         private List<Role> createRoles(UserSubjectDefinition userSubjectDefinition) {
-            return mapToList(userSubjectDefinition.getRoles(), name -> {
-                Role role = roleService.findByName(name)
-                        .orElse(new Role(name));
-                //necessary for changeevents
-                roleService.save(role);
-                return role;
-            });
+            return userSubjectDefinition.getRoles().stream()
+                    .map(name -> {
+                        Role role = roleService.findByName(name)
+                                .orElse(new Role(name));
+                        //necessary for changeevents
+                        roleService.save(role);
+                        return role;
+                    })
+                    .collect(Collectors.toList());
         }
 
         private Map<StateDefinition, State> createStates() {

@@ -19,6 +19,7 @@ package org.opensbpm.engine.core.model.entities;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -26,7 +27,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
 import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
-import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Entity
 @Table(name = "statereceive")
@@ -68,7 +68,9 @@ public class ReceiveState extends State {
 
     @Override
     public Collection<State> getHeads() {
-        return mapToList(getMessageModels(), MessageModel::getHead);
+        return getMessageModels().stream()
+                .map(MessageModel::getHead)
+                .collect(Collectors.toList());
     }
 
 }
