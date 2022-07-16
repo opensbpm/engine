@@ -38,8 +38,8 @@ import org.opensbpm.engine.core.model.entities.State;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.opensbpm.engine.core.model.entities.SubjectModelVisitor;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
+import org.springframework.data.util.Pair;
 import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.userSubjectModel;
-import static org.opensbpm.engine.utils.StreamUtils.mapToMap;
 
 public class ProcessModelConverter {
 
@@ -67,15 +67,19 @@ public class ProcessModelConverter {
         objectModelCache.getObjectBuilders()
                 .forEach(objectBuilder -> processBuilder.addObject(objectBuilder));
 
-        subjects = createSubjects();
+        subjects = processModel.getSubjectModels().stream()
+                .map(subjectModel -> createSubject(subjectModel))
+                .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+        
         subjects.values().forEach(subjectBuilder
                 -> processBuilder.addSubject(subjectBuilder));
 
         StateModelConverter stateConverter = new StateModelConverter(objectModelCache, subjects);
         subjects.forEach((subjectModel, subjectBuilder)
                 -> {
-            Map<State, StateBuilder<?, ?>> states = mapToMap(subjectModel.getStates(),
-                    state -> stateConverter.createStateBuilder(state));
+            Map<State, StateBuilder<?, ?>> states = subjectModel.getStates().stream()
+                    .map(state -> Pair.of(state, stateConverter.createStateBuilder(state)))
+                    .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
             stateConverter.createStateGraph(subjectModel, states);
 
             states.values().forEach(stateBuilder
@@ -85,27 +89,25 @@ public class ProcessModelConverter {
         return processBuilder.build();
     }
 
-    private Map<SubjectModel, SubjectBuilder<?, ?>> createSubjects() {
-        return mapToMap(processModel.getSubjectModels(), subjectModel -> {
-            SubjectBuilder<?, ?> subjectBuilder = subjectModel.accept(new SubjectModelVisitor<SubjectBuilder<?, ?>>() {
-                @Override
-                public SubjectBuilder<?, ?> visitUserSubjectModel(UserSubjectModel userSubjectModel) {
-                    List<String> roles = getUserSubjectModelRoles(subjectModel).stream()
-                            .map(role -> role.getName())
-                            .collect(Collectors.toList());
-                    return new UserSubjectBuilder(subjectModel.getName(), roles);
-                }
-
-                @Override
-                public SubjectBuilder<?, ?> visitServiceSubjectModel(ServiceSubjectModel serviceSubjectModel) {
-                    return new ServiceSubjectBuilder(subjectModel.getName());
-                }
-            });
-            if (processModel.isStarterSubjectModel(subjectModel)) {
-                subjectBuilder.asStarter();
+    private Pair<SubjectModel, SubjectBuilder<?, ?>> createSubject(SubjectModel subjectModel) {
+        SubjectBuilder<?, ?> subjectBuilder = subjectModel.accept(new SubjectModelVisitor<SubjectBuilder<?, ?>>() {
+            @Override
+            public SubjectBuilder<?, ?> visitUserSubjectModel(UserSubjectModel userSubjectModel) {
+                List<String> roles = getUserSubjectModelRoles(subjectModel).stream()
+                        .map(role -> role.getName())
+                        .collect(Collectors.toList());
+                return new UserSubjectBuilder(subjectModel.getName(), roles);
             }
-            return subjectBuilder;
+
+            @Override
+            public SubjectBuilder<?, ?> visitServiceSubjectModel(ServiceSubjectModel serviceSubjectModel) {
+                return new ServiceSubjectBuilder(subjectModel.getName());
+            }
         });
+        if (processModel.isStarterSubjectModel(subjectModel)) {
+            subjectBuilder.asStarter();
+        }
+        return Pair.of(subjectModel, subjectBuilder);
     }
 
     /**
