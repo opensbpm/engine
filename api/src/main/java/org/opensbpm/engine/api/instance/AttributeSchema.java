@@ -6,39 +6,23 @@ import java.util.Optional;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.FieldType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AttributeSchema implements Serializable {
+public class AttributeSchema extends AbstractAttributeSchema implements Serializable {
 
     public static final String ID_NAME = "Id";
 
     public static AttributeSchema of(long id, String name, FieldType fieldType) {
         AttributeSchema attributeSchema = new AttributeSchema(id, name, fieldType);
-        attributeSchema.id = Objects.requireNonNull(id, "id must not be null");
-        attributeSchema.name = Objects.requireNonNull(name, "name must not be null");
-        attributeSchema.fieldType = Objects.requireNonNull(fieldType, "fieldType must not be null");
         return attributeSchema;
     }
 
-    @XmlElement(required = true)
-    private Long id;
-
-    @XmlElement(required = true)
-    private String name;
-
     @XmlAttribute(required = true)
     private FieldType fieldType;
-
-    @XmlAttribute
-    private boolean required;
-
-    @XmlAttribute
-    private boolean readonly;
 
     @XmlAttribute
     private boolean indexed;
@@ -52,17 +36,8 @@ public class AttributeSchema implements Serializable {
     }
 
     public AttributeSchema(Long id, String name, FieldType fieldType) {
-        this.id = id;
-        this.name = name;
-        this.fieldType = fieldType;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+        super(id, name);
+        this.fieldType = Objects.requireNonNull(fieldType, "fieldType must not be null");
     }
 
     public FieldType getFieldType() {
@@ -77,22 +52,6 @@ public class AttributeSchema implements Serializable {
      */
     public Class<?> getType() {
         return fieldType.getType();
-    }
-
-    public boolean isRequired() {
-        return required;
-    }
-
-    public void setRequired(boolean required) {
-        this.required = required;
-    }
-
-    public boolean isReadonly() {
-        return readonly;
-    }
-
-    public void setReadonly(boolean readonly) {
-        this.readonly = readonly;
     }
 
     public boolean isIndexed() {
@@ -116,14 +75,14 @@ public class AttributeSchema implements Serializable {
     }
 
     public boolean isIdSchema() {
-        return ID_NAME.equals(name);
+        return ID_NAME.equals(getName());
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                .append("id", id)
-                .append("name", name)
+                .append("id", getId())
+                .append("name", getName())
                 .append("type", fieldType)
                 .toString();
     }
