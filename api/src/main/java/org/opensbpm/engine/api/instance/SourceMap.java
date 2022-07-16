@@ -55,7 +55,7 @@ public final class SourceMap {
                     AttributeSchema attributeSchema = findAttribute(entry.getKey());
                     Serializable value = attributeSchema.accept(new AttributeSchemaVisitor<Serializable>() {
                         @Override
-                        public Serializable visitSimple(AttributeSchema attributeSchema) {
+                        public Serializable visitSimple(SimpleAttributeSchema attributeSchema) {
                             return (Serializable) entry.getValue();
                         }
 

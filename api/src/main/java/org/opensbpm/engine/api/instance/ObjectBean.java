@@ -101,7 +101,7 @@ public class ObjectBean implements DynaBean {
         DynaProperty[] dynaProperties = getAttributeModels().stream()
                 .map(attributeSchema -> attributeSchema.accept(new AttributeSchemaVisitor<DynaProperty>() {
             @Override
-            public DynaProperty visitSimple(AttributeSchema simpleAttributeSchema) {
+            public DynaProperty visitSimple(SimpleAttributeSchema simpleAttributeSchema) {
                 return new DynaProperty(attributeSchema.getName(), simpleAttributeSchema.getFieldType().getType());
             }
 
@@ -142,7 +142,7 @@ public class ObjectBean implements DynaBean {
     public Object get(AttributeSchema attribute) {
         return attribute.accept(new AttributeSchemaVisitor<Object>() {
             @Override
-            public Object visitSimple(AttributeSchema attributeSchema) {
+            public Object visitSimple(SimpleAttributeSchema attributeSchema) {
                 return attributeStore.getSimple(attributeSchema);
             }
 
@@ -206,7 +206,7 @@ public class ObjectBean implements DynaBean {
     public void set(AttributeSchema attribute, Object value) {
         attribute.accept(new AttributeSchemaVisitor<Void>() {
             @Override
-            public Void visitSimple(AttributeSchema attributeSchema) {
+            public Void visitSimple(SimpleAttributeSchema attributeSchema) {
                 attributeStore.putSimple(attributeSchema, (Serializable) value);
                 return null;
             }

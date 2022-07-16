@@ -24,6 +24,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.FieldType;
 import static org.hamcrest.CoreMatchers.allOf;
@@ -59,7 +60,7 @@ public final class TaskResponseMatcher {
 
     public static Matcher<AttributeSchema> isFieldSchema(String name, FieldType fieldType, boolean required, boolean readOnly) {
         return allOf(value(AttributeSchema.class, AttributeSchema::getName, is(name)),
-                value(AttributeSchema.class, AttributeSchema::getFieldType, is(fieldType)),
+                value(SimpleAttributeSchema.class, SimpleAttributeSchema::getFieldType, is(fieldType)),
                 value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
                 value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly))
         );
@@ -75,7 +76,7 @@ public final class TaskResponseMatcher {
 
     private static Matcher<AttributeSchema> isNestedSchema(String name, FieldType fieldType, Matcher<AttributeSchema>... attributes) {
         return allOf(value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getName, is(name)),
-                value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getFieldType, is(fieldType)),
+                //value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getFieldType, is(fieldType)),
                 value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getAttributes, contains(attributes))
         );
     }

@@ -54,15 +54,15 @@ public class TaskResponseTest {
         ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", asList(
                 attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
                 NestedAttributeSchema.createNested(o1ToOneFieldId, "To One", asList(
-                        new AttributeSchema(o1NumberFieldId, "Number Field", FieldType.NUMBER)
+                        SimpleAttributeSchema.of(o1NumberFieldId, "Number Field", FieldType.NUMBER)
                 ))
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
                 IndexedAttributeSchema.create(o2ToManyFieldId, "To Many", asList(
-                        new AttributeSchema(o2ManyNumberField, "Number Field", FieldType.NUMBER),
+                        SimpleAttributeSchema.of(o2ManyNumberField, "Number Field", FieldType.NUMBER),
                         NestedAttributeSchema.createNested(o2ManyOneFieldId, "To One", asList(
-                                new AttributeSchema(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
+                                SimpleAttributeSchema.of(o2ManyOneNumber, "Number Field", FieldType.NUMBER)
                         ))
                 ))
         ));
@@ -119,8 +119,8 @@ public class TaskResponseTest {
         ));
     }
 
-    private static AttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly) {
-        AttributeSchema attributeSchema = new AttributeSchema(id, name, type);
+    private static SimpleAttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly) {
+        SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id, name, type);
         attributeSchema.setRequired(required);
         attributeSchema.setReadonly(readOnly);
         return attributeSchema;

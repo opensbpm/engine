@@ -43,6 +43,7 @@ import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskRequest;
@@ -138,11 +139,11 @@ public class TestTask extends Task {
                 .map(attribute
                         -> attribute.accept(new AttributeSchemaVisitor<DynaProperty>() {
                     @Override
-                    public DynaProperty visitSimple(AttributeSchema attributeSchema) {
-                        if (FieldType.REFERENCE == attribute.getFieldType()) {
-                            return new DynaProperty(attribute.getName(), Map.class);
+                    public DynaProperty visitSimple(SimpleAttributeSchema attributeSchema) {
+                        if (FieldType.REFERENCE == attributeSchema.getFieldType()) {
+                            return new DynaProperty(attributeSchema.getName(), Map.class);
                         } else {
-                            return new DynaProperty(attribute.getName(), attribute.getType());
+                            return new DynaProperty(attributeSchema.getName(), attributeSchema.getType());
                         }
                     }
 
@@ -153,7 +154,7 @@ public class TestTask extends Task {
 
                     @Override
                     public DynaProperty visitIndexed(IndexedAttributeSchema attributeSchema) {
-                        return new DynaProperty(attribute.getName(), attribute.getType(), LazyDynaBean.class);
+                        return new DynaProperty(attribute.getName(), List.class, LazyDynaBean.class);
                     }
                 }))
                 .toArray(DynaProperty[]::new);
@@ -173,7 +174,8 @@ public class TestTask extends Task {
             super(dynaClass);
             this.attributes = attributes;
             data.replaceAll((t, u) -> {
-                if (FieldType.REFERENCE == getAttribute(t).getFieldType()) {
+                if (getAttribute(t) instanceof SimpleAttributeSchema
+                        && FieldType.REFERENCE == ((SimpleAttributeSchema)getAttribute(t)).getFieldType()) {
                     return u;
                 } else if (u instanceof Map) {
                     NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);

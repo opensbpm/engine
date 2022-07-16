@@ -26,6 +26,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.model.FieldType;
 
 public class ObjectSchemaBuilder {
@@ -103,7 +104,7 @@ public class ObjectSchemaBuilder {
 
         @Override
         public /*Simple*/ AttributeSchema build(AtomicLong id) {
-            AttributeSchema attributeSchema = new /*Simple*/ AttributeSchema(id.getAndIncrement(), name, type);
+            SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id.getAndIncrement(), name, type);
             attributeSchema.setRequired(required);
             return attributeSchema;
         }

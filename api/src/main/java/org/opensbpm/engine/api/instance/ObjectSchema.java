@@ -33,7 +33,7 @@ public class ObjectSchema implements Serializable, IsAttributesContainer {
     private String name;
 
     @XmlElements({
-        @XmlElement(name = "field", type = AttributeSchema.class),
+        @XmlElement(name = "field", type = SimpleAttributeSchema.class),
         @XmlElement(name = "nested", type = NestedAttributeSchema.class),
         @XmlElement(name = "indexed", type = IndexedAttributeSchema.class)
     })
@@ -61,9 +61,9 @@ public class ObjectSchema implements Serializable, IsAttributesContainer {
         return getAttributes(filter).findFirst();
     }
 
-    public Optional<AttributeSchema> getIdAttribute() {
-        return getAttribute(AttributeSchema::isIdSchema);
-    }
+//    public Optional<AttributeSchema> getIdAttribute() {
+//        return getAttribute(SimpleAttributeSchema::isIdSchema);
+//    }
 
     public Stream<AttributeSchema> getAttributes(Predicate<AttributeSchema> filter) {
         return attributes.stream().filter(filter);

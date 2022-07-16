@@ -26,17 +26,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class AbstractAttributeSchema {
+public abstract class AbstractAttributeSchema implements AttributeSchema {
 
     @XmlElement(required = true)
     private Long id;
-    
+
     @XmlElement(required = true)
-    private  String name;
-    
+    private String name;
+
     @XmlAttribute
-    private  boolean required;
-    
+    private boolean required;
+
     @XmlAttribute
     private boolean readonly;
 
@@ -49,10 +49,12 @@ public abstract class AbstractAttributeSchema {
         this.name = Objects.requireNonNull(name, "name must be non null");
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -72,8 +74,6 @@ public abstract class AbstractAttributeSchema {
     public void setReadonly(boolean readonly) {
         this.readonly = readonly;
     }
-
-    public abstract <T> T accept(AttributeSchemaVisitor<T> visitor);
 
     @Override
     public String toString() {

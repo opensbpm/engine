@@ -3,9 +3,8 @@ package org.opensbpm.engine.api.instance;
 import java.util.Optional;
 
 public interface AttributeSchemaVisitor<T> {
-    //TODO: rename classes SimpleAttributeSchema and IndexedNestedAttributeSchema
 
-    T visitSimple(/*Simple*/AttributeSchema attributeSchema);
+    T visitSimple(SimpleAttributeSchema attributeSchema);
 
     T visitNested(NestedAttributeSchema attributeSchema);
 
@@ -14,7 +13,7 @@ public interface AttributeSchemaVisitor<T> {
     static AttributeSchemaVisitor<Optional</*Simple*/AttributeSchema>> simple() {
         return new OptionalAttributeSchemaAdapter</*Simple*/AttributeSchema>() {
             @Override
-            public Optional</*Simple*/AttributeSchema> visitSimple(/*Simple*/AttributeSchema simpleSchema) {
+            public Optional</*Simple*/AttributeSchema> visitSimple(SimpleAttributeSchema simpleSchema) {
                 return Optional.of(simpleSchema);
             }
         };
@@ -49,7 +48,7 @@ public interface AttributeSchemaVisitor<T> {
     public static class OptionalAttributeSchemaAdapter<T> implements AttributeSchemaVisitor<Optional<T>> {
 
         @Override
-        public Optional<T> visitSimple(/*Simple*/AttributeSchema simpleSchema) {
+        public Optional<T> visitSimple(SimpleAttributeSchema simpleSchema) {
             return Optional.empty();
         }
 

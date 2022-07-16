@@ -34,14 +34,14 @@ public class SourceMapTest {
         Map<String, Object> source = createSource();
 
         ObjectSchema objectSchema = ObjectSchema.of(1l, "Test", asList(
-                new AttributeSchema(1L, "Name", FieldType.STRING),
+                SimpleAttributeSchema.of(1L, "Name", FieldType.STRING),
                 NestedAttributeSchema.createNested(2L, "Adresse", asList(
-                        new AttributeSchema(3L, "PLZ", FieldType.STRING),
-                        new AttributeSchema(4L, "Ort", FieldType.STRING)
+                        SimpleAttributeSchema.of(3L, "PLZ", FieldType.STRING),
+                        SimpleAttributeSchema.of(4L, "Ort", FieldType.STRING)
                 )),
                 IndexedAttributeSchema.create(5L, "Kontakte", asList(
-                        new AttributeSchema(6L, "Name", FieldType.STRING),
-                        new AttributeSchema(7L, "EMail", FieldType.STRING)
+                        SimpleAttributeSchema.of(6L, "Name", FieldType.STRING),
+                        SimpleAttributeSchema.of(7L, "EMail", FieldType.STRING)
                 ))
         ));
 

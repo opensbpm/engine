@@ -67,7 +67,7 @@ public class TaskTest {
         final long sId = 1l;
         NextState nextState = NextState.of(sId, "Next State");
 
-        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
+        AttributeSchema attributeSchema = SimpleAttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
 
         ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
         //use ObjectBean to easily create repsonse-data map
@@ -99,7 +99,7 @@ public class TaskTest {
         final long sId = 1l;
         NextState nextState = NextState.of(sId, "Next State");
 
-        AttributeSchema attributeSchema = AttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
+        AttributeSchema attributeSchema = SimpleAttributeSchema.of(11l, "Attribute 1", FieldType.STRING);
 
         ObjectSchema objectSchema = ObjectSchema.of(1l, "Object 1", Arrays.asList(attributeSchema));
 
@@ -217,10 +217,10 @@ public class TaskTest {
 
     private ObjectSchema createSchema(String name, long f1mId, long f2mId, long f3mId, long f4mId, ObjectData... childs) {
         ObjectSchema objectDefinition = ObjectSchema.of(1l, name, Arrays.asList(
-                AttributeSchema.of(f1mId, "Field 1", FieldType.STRING),
-                AttributeSchema.of(f2mId, "Field 2", FieldType.STRING),
-                AttributeSchema.of(f3mId, "Field 3", FieldType.STRING),
-                AttributeSchema.of(f4mId, "Field 4", FieldType.STRING)
+                SimpleAttributeSchema.of(f1mId, "Field 1", FieldType.STRING),
+                SimpleAttributeSchema.of(f2mId, "Field 2", FieldType.STRING),
+                SimpleAttributeSchema.of(f3mId, "Field 3", FieldType.STRING),
+                SimpleAttributeSchema.of(f4mId, "Field 4", FieldType.STRING)
         )
         //              ,createChildDefs(childs)
         );

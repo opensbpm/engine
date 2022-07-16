@@ -29,10 +29,10 @@ import org.opensbpm.engine.api.model.FieldType;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AbstractContainerAttributeSchema extends AttributeSchema implements IsAttributesContainer {
+public abstract class AbstractContainerAttributeSchema extends AbstractAttributeSchema implements IsAttributesContainer {
 
     @XmlElements({
-        @XmlElement(name = "field", type = AttributeSchema.class),
+        @XmlElement(name = "field", type = SimpleAttributeSchema.class),
         @XmlElement(name = "nested", type = NestedAttributeSchema.class),
         @XmlElement(name = "indexed", type = IndexedAttributeSchema.class)
     })
@@ -46,11 +46,12 @@ public class AbstractContainerAttributeSchema extends AttributeSchema implements
             String name,
             FieldType fieldType,
             List<AttributeSchema> attributes) {
-        super(id, name, fieldType);
+        super(id, name);
         this.attributes = new ArrayList<>(attributes);
 
     }
 
+    @Override
     public List<AttributeSchema> getAttributes() {
         return emptyOrUnmodifiableList(attributes);
     }

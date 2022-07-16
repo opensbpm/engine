@@ -26,6 +26,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
@@ -99,7 +100,7 @@ class ObjectSchemaConverter {
                     .map(attributeModel -> attributeModel.accept(new AttributeModelVisitor<AttributeSchema>() {
                 @Override
                 public AttributeSchema visitSimple(SimpleAttributeModel simpleAttribute) {
-                    AttributeSchema attributeSchema = new AttributeSchema(simpleAttribute.getId(), simpleAttribute.getName(), simpleAttribute.getFieldType());
+                    SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(simpleAttribute.getId(), simpleAttribute.getName(), simpleAttribute.getFieldType());
                     getState().ifPresent(functionState -> {
                         attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
                         attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
@@ -112,7 +113,7 @@ class ObjectSchemaConverter {
 
                 @Override
                 public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-                    AttributeSchema attributeSchema = new AttributeSchema(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
+                    SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
                     getState().ifPresent(functionState -> {
                         attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
                         attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));

@@ -112,7 +112,7 @@ public class AttributeStore {
     private Serializable validate(AttributeSchema attribute, Serializable value) {
         return attribute.accept(new AttributeSchemaVisitor<Serializable>() {
             @Override
-            public Serializable visitSimple(AttributeSchema attributeSchema) {
+            public Serializable visitSimple(SimpleAttributeSchema attributeSchema) {
                 validateRequiredValue(attributeSchema, () -> value == null);
                 //TODO cast to correct type doesn't work correctly in ExampleProcessDienstreiseantragIT
 //                Serializable checkedValue = Optional.ofNullable(value)
@@ -164,7 +164,7 @@ public class AttributeStore {
                 .map(attributeSchema -> {
                     Serializable serializable = attributeSchema.accept(new AttributeSchemaVisitor<Serializable>() {
                         @Override
-                        public Serializable visitSimple(/*Simple*/AttributeSchema attributeSchema) {
+                        public Serializable visitSimple(SimpleAttributeSchema attributeSchema) {
                             return getSimple(attributeSchema);
                         }
 
@@ -299,7 +299,7 @@ public class AttributeStore {
         }
 
         @Override
-        public Optional<Serializable> visitSimple(/*Simple*/AttributeSchema attributeModel) {
+        public Optional<Serializable> visitSimple(SimpleAttributeSchema attributeModel) {
             Serializable value = data.getSimple(attributeModel);
             validateRequiredValue("Attribute", attributeModel, () -> value == null);
 
