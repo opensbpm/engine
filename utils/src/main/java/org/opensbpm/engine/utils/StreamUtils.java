@@ -174,15 +174,6 @@ public class StreamUtils {
                 .collect(Collectors.toList());
     }
 
-    public static <T, U> List<U> flatMapToList(Iterable<T> from, Function<? super T, ? extends Stream<? extends U>> mapper) {
-        return flatMapToList(asStream(from), mapper);
-    }
-
-    public static <T, U> List<U> flatMapToList(Stream<T> from, Function<? super T, ? extends Stream<? extends U>> mapper) {
-        return from.flatMap(mapper)
-                .collect(Collectors.toList());
-    }
-
     private static <T> Stream<T> asStream(Iterable<T> from) {
         return StreamSupport.stream(from.spliterator(), false);
     }

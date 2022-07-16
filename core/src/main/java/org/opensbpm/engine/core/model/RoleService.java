@@ -37,7 +37,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.model.RoleService.RoleSpecifications.withIds;
 import static org.opensbpm.engine.core.model.RoleService.RoleSpecifications.withName;
-import static org.opensbpm.engine.utils.StreamUtils.mapToSet;
 
 @Service
 public class RoleService {

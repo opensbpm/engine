@@ -64,7 +64,6 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import static org.opensbpm.engine.core.engine.EngineConverter.convertUser;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModel;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
-import static org.opensbpm.engine.utils.StreamUtils.flatMapToList;
 import static org.opensbpm.engine.utils.StreamUtils.mapToList;
 
 @Component
@@ -90,8 +89,9 @@ public class EngineEventPublisher {
     }
 
     public void publishUserEvents(Role role, Collection<User> users, Type type) {
-        List<EngineEvent<?>> events = flatMapToList(users, user
-                -> createUserEvents(role, user, type).stream());
+        List<EngineEvent<?>> events = users.stream()
+                .flatMap(user -> createUserEvents(role, user, type).stream())
+                .collect(Collectors.toList());
         publishEvents(events);
     }
 
