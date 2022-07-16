@@ -41,11 +41,6 @@
             <artifactId>api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency>
         
         <!-- JAXB API only -->
         <dependency>

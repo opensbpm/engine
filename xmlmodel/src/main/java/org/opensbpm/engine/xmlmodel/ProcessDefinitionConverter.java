@@ -17,7 +17,6 @@
  */
 package org.opensbpm.engine.xmlmodel;
 
-
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
@@ -41,11 +40,13 @@ import org.opensbpm.engine.api.model.definition.SubjectDefinition.UserSubjectDef
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.utils.StreamUtils;
 import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FieldType;
@@ -69,7 +70,6 @@ import org.opensbpm.engine.xmlmodel.processmodel.ToManyType;
 import org.opensbpm.engine.xmlmodel.processmodel.ToOnePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ToOneType;
 import org.opensbpm.engine.xmlmodel.processmodel.UserSubject;
-import org.springframework.data.util.Pair;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -89,13 +89,13 @@ public class ProcessDefinitionConverter {
 
         objects = definition.getObjects().stream()
                 .map(this::createObjectModel)
-                .collect(Pair.toMap());
+                .collect(StreamUtils.toMap());
         objects.values().forEach(objectType -> processType.getObject().add(objectType));
 
         subjects = definition.getSubjects().stream()
                 .map(this::createSubjectModel)
-                .collect(Pair.toMap());
-        
+                .collect(StreamUtils.toMap());
+
         states = createStates();
 
         subjects.keySet().forEach(this::createSubjectStateGraph);
@@ -193,10 +193,13 @@ public class ProcessDefinitionConverter {
 
     private Map<StateDefinition, StateType> createStates() {
         return subjects.entrySet().stream()
-                .flatMap(entry -> entry.getKey().getStates().stream()
-                .map(stateDefinition -> createState(stateDefinition, entry.getValue()))
-                )
-                .collect(Pair.toMap());
+                .flatMap(entry -> createState(entry))
+                .collect(StreamUtils.toMap());
+    }
+
+    private Stream<Pair<StateDefinition, StateType>> createState(Map.Entry<SubjectDefinition, SubjectType> entry) {
+        return entry.getKey().getStates().stream()
+                .map(stateDefinition -> createState(stateDefinition, entry.getValue()));
     }
 
     private Pair<StateDefinition, StateType> createState(StateDefinition stateDefinition, SubjectType subjectType) {
