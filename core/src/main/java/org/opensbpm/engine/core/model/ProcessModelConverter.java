@@ -79,7 +79,7 @@ public class ProcessModelConverter {
                 -> {
             Map<State, StateBuilder<?, ?>> states = subjectModel.getStates().stream()
                     .map(state -> Pair.of(state, stateConverter.createStateBuilder(state)))
-                    .collect(Collectors.toMap(k -> k.getFirst(), v -> v.getSecond()));
+                    .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
             stateConverter.createStateGraph(subjectModel, states);
 
             states.values().forEach(stateBuilder

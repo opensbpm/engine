@@ -46,9 +46,12 @@ class ObjectModelConverter {
         Map<ObjectModel, ObjectCache> objects = processModel.getObjectModels().stream()
                 .map(objectDefinition -> createObjectBuilder(objectDefinition))
                 .collect(Pair.toMap());
+
         objectModelCache = new ObjectModelCache(objects);
         for (Map.Entry<ObjectModel, ObjectCache> entry : objects.entrySet()) {
-            createAttributes(entry.getValue(), entry.getKey());
+            ObjectCache objectCache = entry.getValue();
+            Map<AttributeModel, AttributeBuilder<?, ?>> attributes = createAttributes(entry.getKey(), objectCache);
+            objectCache.putAll(attributes);
         }
         return objectModelCache;
     }
@@ -59,15 +62,16 @@ class ObjectModelConverter {
         return Pair.of(objectModel, new ObjectCache(objectBuilder));
     }
 
-    private void createAttributes(ObjectCache objectCache, ObjectModel objectModel) {
-        Map<AttributeModel, AttributeBuilder<?, ?>> attributes = objectModel.getAttributeModels().stream()
-                .map(attributeModel -> {
-                    AttributeBuilder<?, ?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
-                    objectCache.objectBuilder.addAttribute(attributeBuilder);
-                    return Pair.of(attributeModel, attributeBuilder);
-                })
+    private Map<AttributeModel, AttributeBuilder<?, ?>> createAttributes(ObjectModel objectModel, ObjectCache objectCache) {
+        return objectModel.getAttributeModels().stream()
+                .map(attributeModel -> createAttribute(objectCache, attributeModel))
                 .collect(Collectors.toMap(Pair::getFirst, Pair::getSecond));
-        objectCache.putAll(attributes);
+    }
+
+    private Pair<AttributeModel, AttributeBuilder<?, ?>> createAttribute(ObjectCache objectCache, AttributeModel attributeModel) {
+        AttributeBuilder<?, ?> attributeBuilder = createAttributeBuilder(objectCache, attributeModel);
+        objectCache.objectBuilder.addAttribute(attributeBuilder);
+        return Pair.of(attributeModel, attributeBuilder);
     }
 
     private AttributeBuilder<?, ?> createAttributeBuilder(ObjectCache objectCache, AttributeModel attributeModel) {
