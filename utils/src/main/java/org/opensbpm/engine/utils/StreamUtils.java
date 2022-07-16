@@ -185,15 +185,6 @@ public class StreamUtils {
                 .collect(Collectors.toSet());
     }
 
-    public static <T, U> Map<T, U> mapToMap(Iterable<T> from, Function<T, U> mapper) {
-        return mapToMap(asStream(from), mapper);
-    }
-
-    public static <T, U> Map<T, U> mapToMap(Stream<T> from, Function<T, U> mapper) {
-        return from.map(t -> Pair.of(t, mapper.apply(t)))
-                .collect(toMap());
-    }
-
     private static <T> Stream<T> asStream(Iterable<T> from) {
         return StreamSupport.stream(from.spliterator(), false);
     }
