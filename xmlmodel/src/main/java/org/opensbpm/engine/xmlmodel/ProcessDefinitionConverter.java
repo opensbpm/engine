@@ -96,7 +96,9 @@ public class ProcessDefinitionConverter {
                 .map(this::createSubjectModel)
                 .collect(StreamUtils.toMap());
 
-        states = createStates();
+        states = subjects.entrySet().stream()
+                .flatMap(entry -> createState(entry))
+                .collect(StreamUtils.toMap());
 
         subjects.keySet().forEach(this::createSubjectStateGraph);
         subjects.values().forEach(subjectType -> processType.getUserSubjectOrServiceSubject().add(subjectType));
@@ -139,21 +141,21 @@ public class ProcessDefinitionConverter {
         });
     }
 
-    private Object createFieldAttribute(FieldDefinition fieldDefinition) {
+    private Field createFieldAttribute(FieldDefinition fieldDefinition) {
         Field field = new ObjectFactory().createField();
         field.setValue(fieldDefinition.getName());
         field.setType(FieldType.fromValue(fieldDefinition.getFieldType().name()));
         return field;
     }
 
-    private Object createReferenceAttribute(ReferenceDefinition referenceDefinition) {
+    private ReferenceType createReferenceAttribute(ReferenceDefinition referenceDefinition) {
         ReferenceType referenceType = new ObjectFactory().createReferenceType();
         referenceType.setValue(referenceDefinition.getName());
         referenceType.setObject(referenceDefinition.getObjectDefinition().getName());
         return referenceType;
     }
 
-    private Object createToOneAttribute(ObjectType objectCache, ToOneDefinition toOneDefinition) {
+    private ToOneType createToOneAttribute(ObjectType objectCache, ToOneDefinition toOneDefinition) {
         ToOneType toOneType = new ObjectFactory().createToOneType();
         toOneType.setName(toOneDefinition.getName());
         for (AttributeDefinition attributeDefinition : toOneDefinition.getAttributes()) {
@@ -162,7 +164,7 @@ public class ProcessDefinitionConverter {
         return toOneType;
     }
 
-    private Object createToManyAttribute(ObjectType objectCache, ToManyDefinition toManyDefinition) {
+    private ToManyType createToManyAttribute(ObjectType objectCache, ToManyDefinition toManyDefinition) {
         ToManyType toManyType = new ObjectFactory().createToManyType();
         toManyType.setName(toManyDefinition.getName());
         for (AttributeDefinition attributeDefinition : toManyDefinition.getAttributes()) {
@@ -189,12 +191,6 @@ public class ProcessDefinitionConverter {
             subjectType.setStarter(Boolean.TRUE);
         }
         return Pair.of(subjectDefinition, subjectType);
-    }
-
-    private Map<StateDefinition, StateType> createStates() {
-        return subjects.entrySet().stream()
-                .flatMap(entry -> createState(entry))
-                .collect(StreamUtils.toMap());
     }
 
     private Stream<Pair<StateDefinition, StateType>> createState(Map.Entry<SubjectDefinition, SubjectType> entry) {
