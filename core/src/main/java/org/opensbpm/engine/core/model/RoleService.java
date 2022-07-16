@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -72,7 +73,9 @@ public class RoleService {
         eventPublisher.fireRoleChanged(role, type);
 
         //publish changes
-        Set<Long> newUsers = mapToSet(savedRole.getAllUsers(), user -> user.getId());
+        Set<Long> newUsers = savedRole.getAllUsers().stream()
+                .map(user -> user.getId())
+                .collect(Collectors.toSet());
 //        publishUserEvents(savedRole, subtract(oldUsers, newUsers), Type.DELETE);
 //        publishUserEvents(savedRole, subtract(newUsers, oldUsers), Type.CREATE);        
         eventPublisher.publishUserEvents(savedRole, savedRole.getAllUsers(), Type.CREATE);

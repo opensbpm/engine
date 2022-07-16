@@ -183,24 +183,6 @@ public class StreamUtils {
                 .collect(Collectors.toList());
     }
 
-    public static <T, U> Set<U> mapToSet(Iterable<T> from, Function<T, U> mapper) {
-        return mapToSet(asStream(from), mapper);
-    }
-
-    public static <T, U> Set<U> mapToSet(Stream<T> from, Function<T, U> mapper) {
-        return from.map(mapper)
-                .collect(Collectors.toSet());
-    }
-
-    public static <T, U> Set<U> flatMapToSet(Iterable<T> from, Function<? super T, ? extends Stream<? extends U>> mapper) {
-        return flatMapToSet(asStream(from), mapper);
-    }
-
-    public static <T, U> Set<U> flatMapToSet(Stream<T> from, Function<? super T, ? extends Stream<? extends U>> mapper) {
-        return from.flatMap(mapper)
-                .collect(Collectors.toSet());
-    }
-
     private static <T> Stream<T> asStream(Iterable<T> from) {
         return StreamSupport.stream(from.spliterator(), false);
     }

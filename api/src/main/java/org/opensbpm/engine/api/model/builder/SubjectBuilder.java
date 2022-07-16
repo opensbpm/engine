@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.utils.StreamUtils;
@@ -63,7 +64,9 @@ public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends S
     protected V create() {
         Set<StateBuilder<?, ?>> allStateBuilders = getAllStateBuilders();
 
-        Set<StateDefinition> states = StreamUtils.mapToSet(allStateBuilders, StateBuilder::build);
+        Set<StateDefinition> states = allStateBuilders.stream()
+                .map(StateBuilder::build)
+                .collect(Collectors.toSet());
 
         allStateBuilders.forEach(StateBuilder::updateHeads);
 
