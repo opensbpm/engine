@@ -20,7 +20,6 @@ package org.opensbpm.engine.api.instance;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import org.opensbpm.engine.api.model.FieldType;
 
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class IndexedAttributeSchema extends AbstractContainerAttributeSchema {
@@ -34,7 +33,7 @@ public class IndexedAttributeSchema extends AbstractContainerAttributeSchema {
     }
 
     private IndexedAttributeSchema(Long id, String name, List<AttributeSchema> attributes) {
-        super(id, name, FieldType.LIST, attributes);
+        super(id, name, attributes);
     }
 
     @Override

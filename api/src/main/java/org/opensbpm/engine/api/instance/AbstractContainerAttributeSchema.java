@@ -25,7 +25,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.opensbpm.engine.api.model.FieldType;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -44,7 +43,6 @@ public abstract class AbstractContainerAttributeSchema extends AbstractAttribute
 
     protected AbstractContainerAttributeSchema(Long id,
             String name,
-            FieldType fieldType,
             List<AttributeSchema> attributes) {
         super(id, name);
         this.attributes = new ArrayList<>(attributes);

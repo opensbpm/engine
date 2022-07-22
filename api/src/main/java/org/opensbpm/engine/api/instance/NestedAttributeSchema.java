@@ -20,7 +20,6 @@ package org.opensbpm.engine.api.instance;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import org.opensbpm.engine.api.model.FieldType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NestedAttributeSchema extends AbstractContainerAttributeSchema {
@@ -42,7 +41,7 @@ public class NestedAttributeSchema extends AbstractContainerAttributeSchema {
     }
 
     private NestedAttributeSchema(Long id, String name, List<AttributeSchema> attributes) {
-        super(id, name, FieldType.NESTED, attributes);
+        super(id, name, attributes);
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {

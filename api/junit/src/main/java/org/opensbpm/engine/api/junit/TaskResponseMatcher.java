@@ -67,16 +67,16 @@ public final class TaskResponseMatcher {
     }
 
     public static Matcher<AttributeSchema> isNestedSchema(String name, Matcher<AttributeSchema>... attributes) {
-        return isNestedSchema(name, FieldType.NESTED, attributes);
+        return isContainerSchema(name, attributes);
     }
 
     public static Matcher<AttributeSchema> isIndexedSchema(String name, Matcher<AttributeSchema>... attributes) {
-        return isNestedSchema(name, FieldType.LIST, attributes);
+        return isContainerSchema(name, attributes);
     }
 
-    private static Matcher<AttributeSchema> isNestedSchema(String name, FieldType fieldType, Matcher<AttributeSchema>... attributes) {
-        return allOf(value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getName, is(name)),
-                //value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getFieldType, is(fieldType)),
+    private static Matcher<AttributeSchema> isContainerSchema(String name, Matcher<AttributeSchema>... attributes) {
+        return allOf(
+                value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getName, is(name)),
                 value(AbstractContainerAttributeSchema.class, AbstractContainerAttributeSchema::getAttributes, contains(attributes))
         );
     }
