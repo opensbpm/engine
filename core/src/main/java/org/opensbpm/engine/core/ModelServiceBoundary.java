@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core;
 
 import java.util.List;
@@ -61,7 +62,7 @@ public class ModelServiceBoundary implements ModelService {
     public ProcessModelInfo save(ProcessDefinition definition) {
         Objects.requireNonNull(definition, "processDefinition must not be null");
         ProcessModel processModel = definitionPersistor.saveDefinition(definition);
-        return toModelInfo(processModel);
+        return convertModel(processModel);
     }
 
     @Transactional
@@ -81,10 +82,6 @@ public class ModelServiceBoundary implements ModelService {
     private ProcessModel findModel(ModelRequest modelRequest) throws ModelNotFoundException {
         return processModelService.findById(modelRequest.getId())
                 .orElseThrow(newModelNotFoundException(modelRequest.getId()));
-    }
-
-    private ProcessModelInfo toModelInfo(ProcessModel processModel) {
-        return convertModel(processModel);
     }
 
 }
