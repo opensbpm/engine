@@ -25,6 +25,7 @@ import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.EngineService;
 import org.opensbpm.engine.api.InstanceService;
 import org.opensbpm.engine.api.ModelNotFoundException;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.ProcessNotFoundException;
 import org.opensbpm.engine.api.UserNotFoundException;
 import org.opensbpm.engine.api.instance.AuditTrail;
@@ -68,7 +69,7 @@ public class UserProcessController {
     }
 
     public ProcessInstanceController startProcess(ProcessModelInfo modelInfo) throws UserNotFoundException, ModelNotFoundException {
-        TaskInfo taskInfo = engineService.startProcess(userToken, modelInfo);
+        TaskInfo taskInfo = engineService.startProcess(userToken, ModelRequest.of(modelInfo));
         return new ProcessInstanceController(taskInfo.getProcessId());
     }
 
