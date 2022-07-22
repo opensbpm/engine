@@ -20,13 +20,13 @@ package org.opensbpm.engine.core;
 import java.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.builder.ProcessBuilder;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.engine.UserService;
@@ -87,12 +87,12 @@ public class EngineServiceBoundaryIT extends ServiceITCase {
                         .addState(functionState("Start").asStart()
                                 .toHead(functionState("End").asEnd()))
                 ).build();
-        ProcessModelInfo modelInfo = modelService.save(processDefinition);
+        ModelRequest modelRequest = ModelRequest.of(modelService.save(processDefinition));
 
         engineEventsCollector.clear();
 
         //when
-        TaskInfo result = engineService.startProcess(user1, modelInfo);
+        TaskInfo result = engineService.startProcess(user1, modelRequest);
 
         //then
         assertThat(result.getProcessId(), is(notNullValue()));
@@ -116,8 +116,8 @@ public class EngineServiceBoundaryIT extends ServiceITCase {
                         .addState(functionState("Start").asStart()
                                 .toHead(functionState("End").asEnd()))
                 ).build();
-        ProcessModelInfo modelInfo = modelService.save(processDefinition);
-        TaskInfo taskInfo = engineService.startProcess(user1, modelInfo);
+        ModelRequest modelRequest = ModelRequest.of(modelService.save(processDefinition));
+        TaskInfo taskInfo = engineService.startProcess(user1, modelRequest);
 
         TaskResponse taskResponse = engineService.getTaskResponse(new UserToken(), taskInfo);
 

@@ -18,6 +18,7 @@ package org.opensbpm.engine.core.engine;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
@@ -95,8 +96,8 @@ public class StateChangeServiceIT extends ServiceITCase {
                 .build();
 
         Long piId = doInTransaction(() -> {
-            ProcessModelInfo modelInfo = modelService.save(processDefinition);
-            return engineService.startProcess(userToken, modelInfo).getProcessId();
+            ModelRequest modelRequest = ModelRequest.of(modelService.save(processDefinition));
+            return engineService.startProcess(userToken, modelRequest).getProcessId();
         });
 
         //when
@@ -142,7 +143,7 @@ public class StateChangeServiceIT extends ServiceITCase {
 
         Long piId = doInTransaction(() -> {
             ProcessModelInfo modelInfo = modelService.save(processDefinition);
-            return engineService.startProcess(userToken, modelInfo).getProcessId();
+            return engineService.startProcess(userToken, ModelRequest.of(modelInfo)).getProcessId();
         });
 
         //when

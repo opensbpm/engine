@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensbpm.engine.api.EngineService.ObjectRequest;
 import org.opensbpm.engine.api.ModelNotFoundException;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.UserNotFoundException;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
 import org.opensbpm.engine.api.instance.NextState;
@@ -170,10 +171,10 @@ public class EngineServiceBoundaryTest {
         User user = spyUser(1L, "User Name", "First Name", "Last Name");
         when(userService.findById(anyLong())).thenReturn(Optional.of(user));
 
-        ProcessModelInfo modelInfo = new ProcessModelInfo();
+        ModelRequest modelRequest = ModelRequest.of(new ProcessModelInfo());
 
         //when
-        TaskInfo taskInfo = engineServiceBoundary.startProcess(userToken, modelInfo);
+        TaskInfo taskInfo = engineServiceBoundary.startProcess(userToken, modelRequest);
 
         //then
         fail("startProcess with wrong 'pmId' must throw IllegalArgumentException but was " + taskInfo);
@@ -212,9 +213,10 @@ public class EngineServiceBoundaryTest {
                 .thenReturn(userSubject);
 
         ProcessModelInfo modelInfo = ModelConverter.convertModel(processModel);
+        ModelRequest modelRequest = ModelRequest.of(modelInfo);
 
         //when
-        TaskInfo taskInfo = engineServiceBoundary.startProcess(userToken, modelInfo);
+        TaskInfo taskInfo = engineServiceBoundary.startProcess(userToken, modelRequest);
 
         //then
         fail("startProcess with initial end-state must throw Exception but was " + taskInfo);
@@ -251,9 +253,10 @@ public class EngineServiceBoundaryTest {
                 .thenReturn(userSubject);
 
         ProcessModelInfo modelInfo = ModelConverter.convertModel(processModel);
+        ModelRequest modelRequest = ModelRequest.of(modelInfo);
 
         //when
-        TaskInfo taskInfo = engineServiceBoundary.startProcess(userToken, modelInfo);
+        TaskInfo taskInfo = engineServiceBoundary.startProcess(userToken, modelRequest);
 
         //then
         assertThat(taskInfo, is(notNullValue()));

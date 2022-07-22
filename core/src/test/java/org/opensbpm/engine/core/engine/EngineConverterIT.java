@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
@@ -128,8 +129,8 @@ public class EngineConverterIT extends ServiceITCase {
                 ).build();
 
         Long piId = doInTransaction(() -> {
-            ProcessModelInfo modelInfo = modelService.save(processDefinition);
-            return engineService.startProcess(userToken, modelInfo).getProcessId();
+            ModelRequest modelRequest = ModelRequest.of(modelService.save(processDefinition));
+            return engineService.startProcess(userToken, modelRequest).getProcessId();
         });
 
         TaskInfo taskInfo = engineService.getTasks(userToken).stream()
