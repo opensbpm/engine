@@ -1,51 +1,43 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.utils.entities;
 
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertThrows;
 
 public class HasIdTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void testEqualsIdWithNull() {
-        thrown.expect(isA(NullPointerException.class));
-        thrown.expectMessage(containsString("other must be non null"));
-
         //given
         HasId hasId1 = () -> {
             throw new UnsupportedOperationException("Not supported yet.");
         };
 
         //when
-        boolean equalsId = hasId1.equalsId(null);
+        NullPointerException exception = assertThrows(NullPointerException.class, () -> hasId1.equalsId(null));
 
         //then
-        fail("equalsId(null) must throw NullPointerException but was " + equalsId);
+        assertThat("equalsId(null) must throw NullPointerException",
+                exception.getMessage(), is("other must be non null"));
     }
 
     @Ignore("Typecheck doesn't work Hibernate Proxies")
