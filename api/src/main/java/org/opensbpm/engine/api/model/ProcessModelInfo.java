@@ -27,12 +27,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProcessModelInfo implements Serializable, ModelRequest {
+public class ProcessModelInfo implements Serializable {
 
     private Long id;
     private String name;
@@ -65,7 +64,6 @@ public class ProcessModelInfo implements Serializable, ModelRequest {
         this.subjectModels = Collections.unmodifiableList(subjectModels);
     }
 
-    @Override
     public Long getId() {
         return id;
     }
