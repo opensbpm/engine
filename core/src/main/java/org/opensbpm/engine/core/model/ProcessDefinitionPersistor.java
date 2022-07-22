@@ -41,6 +41,7 @@ import org.opensbpm.engine.api.model.definition.StateDefinitionVisitor;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition.ServiceSubjectDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition.UserSubjectDefinition;
+import org.opensbpm.engine.core.model.entities.AbstractContainerAttributeModel;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
@@ -183,12 +184,12 @@ public class ProcessDefinitionPersistor {
                         throw new UnsupportedOperationException(attributeParent + " not supported yet");
                     }
 
-                    return createNested(toOneDefinition, attributeModel);
+                    return createContainer(toOneDefinition, attributeModel);
                 }
 
                 @Override
                 public AttributeModel visitToMany(ToManyDefinition toManyDefinition) {
-                    NestedAttributeModel attributeModel;
+                    IndexedAttributeModel attributeModel;
                     if (attributeParent instanceof ObjectModel) {
                         attributeModel = new IndexedAttributeModel((ObjectModel) attributeParent, toManyDefinition.getName());
                     } else if (attributeParent instanceof AttributeModel) {
@@ -196,10 +197,10 @@ public class ProcessDefinitionPersistor {
                     } else {
                         throw new UnsupportedOperationException(attributeParent + " not supported yet");
                     }
-                    return createNested(toManyDefinition, attributeModel);
+                    return createContainer(toManyDefinition, attributeModel);
                 }
 
-                private AttributeModel createNested(NestedAttribute nestedAttribute, NestedAttributeModel attributeModel) {
+                private AttributeModel createContainer(NestedAttribute nestedAttribute, AbstractContainerAttributeModel attributeModel) {
                     nestedAttribute.getAttributes().forEach(attribute -> {
                         attributeModel.addAttributeModel(createAttribute(objectCache, attributeModel, attribute));
                     });
