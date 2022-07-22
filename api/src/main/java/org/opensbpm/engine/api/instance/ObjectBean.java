@@ -47,7 +47,7 @@ public class ObjectBean implements DynaBean {
      */
     public static ObjectBean from(ObjectSchema objectSchema, SourceMap sourceMap) {
         //TODO validate values
-        return new ObjectBean(objectSchema, new AttributeStore(objectSchema, sourceMap));
+        return new ObjectBean(objectSchema, AttributeStore.of(objectSchema, sourceMap));
     }
 
     /**

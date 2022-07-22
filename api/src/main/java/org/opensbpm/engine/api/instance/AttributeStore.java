@@ -30,12 +30,26 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.opensbpm.engine.utils.PairUtils;
-import static org.opensbpm.engine.utils.PairUtils.toMap;
 
 /**
  * Encapsulates the persisted {@link AttributeSchema} values in a type-safe API
  */
 public class AttributeStore {
+
+    /**
+     * create a new {@link AttributeStore} for the given {@link ObjectSchema} and {@link SourceMap}.
+     *
+     * @param objectSchema the schema to define the valid attributes
+     * @param sourceMap the sourceMap is used for the values,; must match the ObjectSchema
+     * @return a new instance with the given parameters
+     */
+    public static AttributeStore of(ObjectSchema objectSchema, SourceMap sourceMap) {
+        Objects.requireNonNull(objectSchema, "attributeContainer must be non null");
+        Objects.requireNonNull(sourceMap, "sourceMap must be non null");
+        return new AttributeStore(objectSchema,
+                sourceMap.getId(),
+                sourceMap.toIdMap());
+    }
 
     private final IsAttributesContainer attributeContainer;
     private final HashMap<Long, Serializable> values;
@@ -54,10 +68,10 @@ public class AttributeStore {
         this.values = values;
     }
 
-    /* default */ AttributeStore(ObjectSchema attributeContainer, SourceMap sourceMap) {
+    private AttributeStore(IsAttributesContainer attributeContainer, String id, HashMap<Long, Serializable> values) {
         this.attributeContainer = attributeContainer;
-        this.id = sourceMap.getId();
-        this.values = sourceMap.toIdMap();
+        this.id = id;
+        this.values = values;
     }
 
     public String getId() {
