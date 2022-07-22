@@ -24,6 +24,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.invocation.InvocationOnMock;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.builder.ProcessBuilder;
@@ -104,10 +105,10 @@ public class ModelServiceBoundaryTest {
 
         when(processModelService.findById(modelId)).thenReturn(Optional.of(processModel));
 
-        ProcessModelInfo modelInfo = ModelConverter.convertModel(processModel);
+        ModelRequest modelRequest = ModelRequest.of(ModelConverter.convertModel(processModel));
 
         //when
-        ProcessDefinition result = modelServiceBoundary.retrieveDefinition(modelInfo);
+        ProcessDefinition result = modelServiceBoundary.retrieveDefinition(modelRequest);
 
         //then
         assertThat(result, is(notNullValue()));
@@ -168,10 +169,10 @@ public class ModelServiceBoundaryTest {
         final ProcessModel processModel = spyProcessModel(1l, "Process Model");
         when(processModelService.findById(pmId)).thenReturn(Optional.of(processModel));
 
-        ProcessModelInfo modelInfo = ModelConverter.convertModel(processModel);
+        ModelRequest modelRequest = ModelRequest.of(ModelConverter.convertModel(processModel));
 
         //when
-        modelServiceBoundary.updateState(modelInfo, state);
+        modelServiceBoundary.updateState(modelRequest, state);
 
         //then
         verify(processModelService, times(1)).updateState(processModel, state);
@@ -185,10 +186,10 @@ public class ModelServiceBoundaryTest {
         final ProcessModel processModel = spyProcessModel(1l, "Process Model");
         when(processModelService.findById(pmId)).thenReturn(Optional.of(processModel));
 
-        ProcessModelInfo modelInfo = ModelConverter.convertModel(processModel);
+        ModelRequest modelRequest = ModelRequest.of(ModelConverter.convertModel(processModel));
 
         //when
-        modelServiceBoundary.delete(modelInfo);
+        modelServiceBoundary.delete(modelRequest);
 
         //then
         verify(processModelService, times(1)).delete(processModel);

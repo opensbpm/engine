@@ -18,6 +18,7 @@ package org.opensbpm.engine.core;
 
 import java.util.Optional;
 import org.junit.Test;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
@@ -75,7 +76,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
 
         //when
         ProcessDefinition result = doInTransaction(()
-                -> modelServiceBoundary.retrieveDefinition(modelInfo)
+                -> modelServiceBoundary.retrieveDefinition(ModelRequest.of(modelInfo))
         );
 
         //then
@@ -199,7 +200,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
 
         //when
         doInTransaction(() -> {
-            modelServiceBoundary.delete(modelInfo);
+            modelServiceBoundary.delete(ModelRequest.of(modelInfo));
             return null;
         }
         );

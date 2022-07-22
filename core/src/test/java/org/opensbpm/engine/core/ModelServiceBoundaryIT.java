@@ -18,6 +18,7 @@ package org.opensbpm.engine.core;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
@@ -123,12 +124,12 @@ public class ModelServiceBoundaryIT extends ServiceITCase {
                 .addSubject(userSubject("starter", "starter-role").asStarter())
                 .addSubject(userSubject("subject", "subject-role"))
                 .build();
-        ProcessModelInfo modelInfo = modelService.save(processDefinition);
+        ModelRequest modelRequest = ModelRequest.of(modelService.save(processDefinition));
 
         engineEventsCollector.clear();
 
         //when
-        modelService.updateState(modelInfo, ProcessModelState.INACTIVE);
+        modelService.updateState(modelRequest, ProcessModelState.INACTIVE);
 
         //then
         assertThat(engineEventsCollector, containsInAnyOrder(
@@ -145,11 +146,11 @@ public class ModelServiceBoundaryIT extends ServiceITCase {
                 .addSubject(userSubject("starter", "starter-role").asStarter())
                 .addSubject(userSubject("subject", "subject-role"))
                 .build();
-        ProcessModelInfo modelInfo = modelService.save(processDefinition);
+        ModelRequest modelRequest = ModelRequest.of(modelService.save(processDefinition));
         engineEventsCollector.clear();
 
         //when
-        modelService.delete(modelInfo);
+        modelService.delete(modelRequest);
 
         //then
         assertThat(engineEventsCollector, containsInAnyOrder(
