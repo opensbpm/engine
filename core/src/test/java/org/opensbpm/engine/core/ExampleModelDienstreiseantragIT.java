@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core;
 
 import java.util.Optional;
@@ -91,7 +92,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
                         isSubjectName("Reisestelle")
                 ));
 
-        assertThat("wrong states for 'Mitarbeiter' ", getSubject(result,"Mitarbeiter").getStates(),
+        assertThat("wrong states for 'Mitarbeiter' ", getSubject(result, "Mitarbeiter").getStates(),
                 containsInAnyOrder(isFunctionState("DR-Antrag ausfüllen",
                         containsPermisssions(isPermission("DR-Antrag",
                                 isFieldPermission("Name", Permission.WRITE, true),
@@ -119,7 +120,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
                         isFunctionState("DR-Antrag zurückziehen")
                 ));
 
-        assertThat("wrong states for 'Vorgesetzter' ", getSubject(result,"Vorgesetzter").getStates(),
+        assertThat("wrong states for 'Vorgesetzter' ", getSubject(result, "Vorgesetzter").getStates(),
                 containsInAnyOrder(isReceiveState("DR-Antrag empfangen", isMessage("DR-Antrag", "DR-Antrag prüfen")),
                         isFunctionState("DR-Antrag prüfen",
                                 containsPermisssions(isPermission("DR-Antrag",
@@ -148,7 +149,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
                         isSendState("Ablehnen", "Mitarbeiter", "Ablehnung")
                 ));
 
-        assertThat("wrong states for 'Reisestelle' ", getSubject(result,"Reisestelle").getStates(),
+        assertThat("wrong states for 'Reisestelle' ", getSubject(result, "Reisestelle").getStates(),
                 containsInAnyOrder(isReceiveState("DR-Antrag empfangen", isMessage("genehmigter DR-Antrag", "Buchen")),
                         isFunctionState("Buchen",
                                 containsPermisssions(isPermission("Buchung",
@@ -202,8 +203,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
         doInTransaction(() -> {
             modelServiceBoundary.delete(ModelRequest.of(modelInfo));
             return null;
-        }
-        );
+        });
 
         //then
         Optional<ProcessModel> processModel = processModelService.findById(modelInfo.getId());
