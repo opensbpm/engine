@@ -21,9 +21,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
@@ -45,9 +43,11 @@ import org.opensbpm.engine.core.junit.WorkflowTestCase;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProviderTaskChangedEvent;
@@ -71,13 +71,8 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubjec
  */
 public class ExecuteTaskExtendedIT extends WorkflowTestCase {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void executeTaskTwiceWithSameUser() throws Exception {
-        //originial exception is wrappped in doInTransaction
-        thrown.expectCause(isA(TaskOutOfDateException.class));
 
         //given
         ProcessModelInfo modelInfo = doInTransaction(() -> {
@@ -106,14 +101,15 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
         }
 
         //2.nd execution of task must throw TaskOutOfDateException
-        startUser.execute(task, "Function");
-        fail("executing the same Task twice must throw TaskOutOfDateException but was successfull");
+        
+        RuntimeException exception = assertThrows(RuntimeException.class,() -> startUser.execute(task, "Function"));
+        assertThat("original exception is wrappped in doInTransaction", (TaskOutOfDateException)exception.getCause(), isA(TaskOutOfDateException.class));
+        assertThat("executing the same Task twice must throw TaskOutOfDateException but was successfull", 
+                exception.getCause().getMessage(), startsWith("Subject Starter of User Start User changed since"));
     }
 
     @Test
     public void executeTaskTwiceWithDifferentUsers() throws Exception {
-        thrown.expectMessage(containsString("is not user of subject"));
-
         //given
         ProcessModelInfo modelInfo = doInTransaction(() -> {
             FieldBuilder field = field("Field", FieldType.STRING);
@@ -169,9 +165,10 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
         }
 
         //Subject2 User 2
-        subject2User2.execute(subject2User2ask, "End");
-        fail("executing the same Task twice must throw IllegalStateException but was successfull");
-
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> 
+                subject2User2.execute(subject2User2ask, "End"));
+        assertThat(exception.getMessage(), containsString("is not user of subject"));
+        
     }
 
     @Test
