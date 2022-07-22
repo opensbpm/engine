@@ -45,16 +45,6 @@ public interface ModelService {
     public static interface ModelRequest {
 
         /**
-         * Create an new instance of a {@link ModelRequest} with the given id.
-         *
-         * @param id must match the id from a {@link ProcessModelInfo}
-         * @return a new instance
-         */
-        public static ModelRequest of(Long id) {
-            return () -> id;
-        }
-
-        /**
          * Create an new instance of a {@link ModelRequest} with the given {@link ProcessModelInfo}.
          *
          * @param modelInfo must be a valid {@link ProcessModelInfo}
