@@ -19,6 +19,7 @@ package org.opensbpm.engine.api;
 import java.util.Collection;
 import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
+import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.ProcessInfo;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
 import org.opensbpm.engine.api.instance.TaskInfo;
@@ -117,8 +118,19 @@ public interface EngineService {
 
     public static interface ObjectRequest {
 
+        /**
+         * 
+         * @param id
+         * @return
+         * @deprecated use {@link #of(org.opensbpm.engine.api.instance.ObjectSchema)} instead
+         */
+        @Deprecated
         public static ObjectRequest of(Long id) {
             return () -> id;
+        }
+
+        public static ObjectRequest of(ObjectSchema  objectSchema) {
+            return () -> objectSchema.getId();
         }
 
         Long getId();
