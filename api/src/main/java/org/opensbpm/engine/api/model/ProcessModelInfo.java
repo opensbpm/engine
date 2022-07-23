@@ -27,6 +27,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.adapters.LocalDateTimeAdapter;
@@ -147,12 +149,12 @@ public class ProcessModelInfo implements Serializable {
         @XmlAccessorType(value = XmlAccessType.FIELD)
         public static class RoleInfo implements Serializable {
 
-            public static RoleInfo of(String name){
+            public static RoleInfo of(String name) {
                 RoleInfo roleInfo = new RoleInfo();
                 roleInfo.name = Objects.requireNonNull(name, "name must be non null");
                 return roleInfo;
             }
-            
+
             private String name;
 
             public RoleInfo() {
@@ -161,6 +163,25 @@ public class ProcessModelInfo implements Serializable {
 
             public String getName() {
                 return name;
+            }
+
+            @Override
+            public int hashCode() {
+                return new HashCodeBuilder()
+                        .append(name)
+                        .build();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return EqualsBuilder.reflectionEquals(this, obj);
+            }
+
+            @Override
+            public String toString() {
+                return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                        .append("name", name)
+                        .toString();
             }
 
         }
