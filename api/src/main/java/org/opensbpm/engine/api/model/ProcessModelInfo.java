@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.api.model;
 
 import java.io.Serializable;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -108,17 +110,17 @@ public class ProcessModelInfo implements Serializable {
         //TODO rename to id
         private Long smId;
         private String name;
-        private Collection<String> roles;
+        private Collection<RoleInfo> roles;
 
         public SubjectModelInfo() {
-            super();
+            //JAXB constructor
         }
 
-        public SubjectModelInfo(Long smId, String name, Collection<String> roleIds) {
+        public SubjectModelInfo(Long smId, String name, Collection<RoleInfo> roles) {
             super();
             this.smId = smId;
             this.name = name;
-            this.roles = Collections.unmodifiableCollection(roleIds);
+            this.roles = Collections.unmodifiableCollection(roles);
         }
 
         public Long getSmId() {
@@ -129,7 +131,7 @@ public class ProcessModelInfo implements Serializable {
             return name;
         }
 
-        public Collection<String> getRoles() {
+        public Collection<RoleInfo> getRoles() {
             return Collections.unmodifiableCollection(roles);
         }
 
@@ -140,6 +142,27 @@ public class ProcessModelInfo implements Serializable {
                     .append("name", name)
                     .append("roles", roles)
                     .toString();
+        }
+
+        @XmlAccessorType(value = XmlAccessType.FIELD)
+        public static class RoleInfo implements Serializable {
+
+            public static RoleInfo of(String name){
+                RoleInfo roleInfo = new RoleInfo();
+                roleInfo.name = Objects.requireNonNull(name, "name must be non null");
+                return roleInfo;
+            }
+            
+            private String name;
+
+            public RoleInfo() {
+                //JAXB constructor
+            }
+
+            public String getName() {
+                return name;
+            }
+
         }
     }
 

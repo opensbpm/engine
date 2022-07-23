@@ -17,11 +17,12 @@
 package org.opensbpm.engine.api.model;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo;
+import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo.RoleInfo;
+import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,7 +35,9 @@ public class ProcessModelInfoTest {
     public void deserializeWithJaxb() throws Exception {
         System.out.println("JAXB-Marshalling");
 
-        List<SubjectModelInfo> subjectModels = Arrays.asList(new SubjectModelInfo(Long.MIN_VALUE, "name", Arrays.asList("Role")));
+        List<SubjectModelInfo> subjectModels = asList(new SubjectModelInfo(Long.MIN_VALUE, "name", asList(
+                RoleInfo.of("Role")
+        )));
         ProcessModelInfo processModelInfo = new ProcessModelInfo(Long.MIN_VALUE, "name", "1.1", "description", ProcessModelState.ACTIVE, LocalDateTime.MAX, subjectModels);
         ProcessModelInfo result = DeserializerUtil.deserializeJaxb(ProcessModelInfo.class, processModelInfo);
         assertNotNull(result);

@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo;
+import org.opensbpm.engine.api.model.ProcessModelInfo.SubjectModelInfo.RoleInfo;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
@@ -54,9 +55,10 @@ public class ModelConverter {
         return new SubjectModelInfo(subject.getId(), subject.getName(), convertRoles(subject.getRoles()));
     }
 
-    private static List<String> convertRoles(Collection<Role> roles) {
+    private static List<RoleInfo> convertRoles(Collection<Role> roles) {
         return roles.stream()
                 .map(Role::getName)
+                .map(RoleInfo::of)
                 .collect(Collectors.toList());
     }
 
