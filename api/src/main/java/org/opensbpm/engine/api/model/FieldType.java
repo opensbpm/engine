@@ -19,8 +19,6 @@ package org.opensbpm.engine.api.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Map;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlType
@@ -33,9 +31,7 @@ public enum FieldType {
     TIME(LocalTime.class),
     BOOLEAN(Boolean.class),
     BINARY(Binary.class),
-    REFERENCE(ObjectReference.class),
-    NESTED(Map.class),
-    LIST(List.class);
+    REFERENCE(ObjectReference.class);
 
     private final Class<?> type;
 
