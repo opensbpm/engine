@@ -129,6 +129,12 @@ public interface EngineService {
             return () -> id;
         }
 
+        /**
+         * Create an new instance of a {@link ObjectRequest} with the given {@link ObjectSchema}.
+         *
+         * @param objectSchema  must be a valid {@link ObjectSchema}
+         * @return a new instance
+         */
         public static ObjectRequest of(ObjectSchema  objectSchema) {
             return () -> objectSchema.getId();
         }
