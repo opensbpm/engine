@@ -29,7 +29,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ModelRequestTest {
 
     @Test
-    public void testOf() {
+    public void testOfWithLongInfoCreatesInstance() throws Exception {
+        //given
+        long id = Long.MIN_VALUE;
+
+        //when
+        ModelRequest modelRequest = ModelRequest.of(id);
+
+        //then
+        assertThat("ModelRequest not instantiated", modelRequest.getId(), is(id));
+    }
+    
+    @Test
+    public void testOfWithProcessModelInfoCreatesInstance() throws Exception {
         //arrange
         long id = 1l;
         ProcessModelInfo processModelInfo = new ProcessModelInfo(
@@ -46,7 +58,8 @@ public class ModelRequestTest {
         ModelRequest modelRequest = ModelRequest.of(processModelInfo);
 
         //assert
-        assertThat(modelRequest.getId(), is(id));
+        assertThat("ModelRequest not instantiated", 
+                modelRequest.getId(), is(id));
     }
 
 }
