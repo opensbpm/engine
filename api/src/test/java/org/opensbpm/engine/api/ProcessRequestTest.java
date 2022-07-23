@@ -31,7 +31,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ProcessRequestTest {
 
     @Test
-    public void testOf() {
+    public void testOfWithLongInfoCreatesInstance() throws Exception {
+        //given
+        long id = Long.MIN_VALUE;
+
+        //when
+        ProcessRequest processRequest = ProcessRequest.of(id);
+
+        //then
+        assertThat("ProcessRequest not instantiated", processRequest.getId(), is(id));
+    }
+    
+    
+    @Test
+    public void testOfWithProcessInfoCreatesInstance() {
         //arrange
         long id = 1l;
         ProcessInfo processInfo = new ProcessInfo(id,
