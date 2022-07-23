@@ -1,5 +1,5 @@
 /** *****************************************************************************
- * Copyright (C) 2020 Stefan Sedelmaier
+ * Copyright (C) 2022 Stefan Sedelmaier
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -17,34 +17,37 @@
  */
 package org.opensbpm.engine.api;
 
-import java.util.Collection;
-import java.util.Set;
-import org.opensbpm.engine.api.instance.AuditTrail;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import org.junit.Test;
+import org.opensbpm.engine.api.InstanceService.ProcessRequest;
 import org.opensbpm.engine.api.instance.ProcessInfo;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
+import org.opensbpm.engine.api.instance.UserToken;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
-public interface InstanceService {
+public class ProcessRequestTest {
 
-    //TODO add find-method with SearchFilter
-    Collection<ProcessInfo> findAllByStates(Set<ProcessInstanceState> states);
+    @Test
+    public void testOf() {
+        //arrange
+        long id = 1l;
+        ProcessInfo processInfo = new ProcessInfo(id,
+                new ProcessModelInfo(),
+                UserToken.of(id, "name", Collections.emptySet()),
+                ProcessInstanceState.ACTIVE,
+                LocalDateTime.MIN,
+                LocalDateTime.MIN,
+                Collections.emptyList()
+        );
 
-    ProcessInfo stopProcess(ProcessRequest processRequest) throws ProcessNotFoundException;
+        //act
+        ProcessRequest processRequest = ProcessRequest.of(processInfo);
 
-    Collection<AuditTrail> getAuditTrail(ProcessRequest processRequest) throws ProcessNotFoundException;
-
-    public static interface ProcessRequest {
-
-        /**
-         * Create an new instance of a {@link ProcessRequest} with the given {@link ProcessInfo}.
-         *
-         * @param processInfo must be a valid {@link ProcessInfo}
-         * @return a new instance
-         */
-        public static ProcessRequest of(ProcessInfo processInfo) {
-            return () -> processInfo.getId();
-        }
-
-        Long getId();
+        //assert
+        assertThat(processRequest.getId(), is(id));
     }
 
 }
