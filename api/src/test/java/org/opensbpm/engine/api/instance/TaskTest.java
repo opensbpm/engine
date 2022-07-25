@@ -62,7 +62,7 @@ public class TaskTest {
     }
 
     @Test
-    public void testGetObjectBeanWithExistingData() {
+    public void testGetObjectDataWithExistingData() {
         //given
         final long sId = 1l;
         NextState nextState = NextState.of(sId, "Next State");
@@ -85,12 +85,13 @@ public class TaskTest {
         Task task = new Task(new TaskInfo(), taskResponse);
 
         //when
-        ObjectBean objectBean = task.getObjectBean(objectSchema);
+        ObjectData objectData = task.getObjectData(objectSchema);
 
         //then
-        assertThat("Two calls of Task.getObjectBean must return the sam instance",
-                objectBean, is(sameInstance(task.getObjectBean(objectSchema))));
-        assertThat(objectBean.get("Attribute 1"), is("Data"));
+        assertThat("Two calls of Task.getObjectData must return the same instance",
+                objectData, is(sameInstance(task.getObjectData(objectSchema))));
+        
+        assertThat(objectData.getData().get(11l), is("Data"));
     }
 
     @Test
@@ -132,10 +133,67 @@ public class TaskTest {
         Task task = new Task(new TaskInfo(), taskResponse);
 
         //when
-        final TaskRequest result = task.createTaskRequest(new NextState());
+        TaskRequest result = task.createTaskRequest(new NextState());
 
         //then
         fail("createTaskRequest with unknown nextState must throw IllegalArgumentException but was " + result);
     }
 
+    @Test
+    public void testCreateTaskRequestWithObjectData() {
+        //given
+        long id = 0l;
+        NextState nextState = NextState.of(++id, "Next State");
+
+        ObjectSchema objectSchema = ObjectBeanHelper.createObjetSchema();
+
+        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
+                asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                Collections.emptyList());
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        task.getObjectData(objectSchema).getData().put(1l, "aString");
+
+        //then
+        TaskRequest taskRequest = task.createTaskRequest(nextState);
+        assertThat(taskRequest.getObjectData(), containsInAnyOrder(
+                isObjectData("root", containsFields(
+                        isValueElement(1l/*"Field simple"*/, "aString")
+                ))
+        ));
+        assertThat(taskRequest.getNextState(), is(nextState));
+
+    }
+    
+    @Test
+    public void testCreateTaskRequestWithObjectBean() {
+        //given
+        long id = 0l;
+        NextState nextState = NextState.of(++id, "Next State");
+
+        ObjectSchema objectSchema = ObjectBeanHelper.createObjetSchema();
+
+        TaskResponse taskResponse = TaskResponse.of(Long.MIN_VALUE,
+                asList(nextState),
+                LocalDateTime.MIN,
+                asList(objectSchema),
+                Collections.emptyList());
+        Task task = new Task(new TaskInfo(), taskResponse);
+
+        //when
+        task.getObjectBean(objectSchema).set("string", "aString");
+
+        //then
+        TaskRequest taskRequest = task.createTaskRequest(nextState);
+        assertThat(taskRequest.getObjectData(), containsInAnyOrder(
+                isObjectData("root", containsFields(
+                        isValueElement(0l/*"Field simple"*/, "aString")
+                ))
+        ));
+        assertThat(taskRequest.getNextState(), is(nextState));
+
+    }
 }

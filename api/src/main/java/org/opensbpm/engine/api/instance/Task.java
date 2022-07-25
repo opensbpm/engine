@@ -32,7 +32,7 @@ public class Task {
 
     private final TaskInfo taskInfo;
     protected final TaskResponse taskResponse;
-    private final Map<ObjectSchema, ObjectBean> objectCache = new HashMap<>();
+    private final Map<ObjectSchema, ObjectData> objectCache = new HashMap<>();
 
     public Task(TaskInfo taskInfo, TaskResponse taskResponse) {
         this.taskInfo = Objects.requireNonNull(taskInfo, "taskInfo must be non null");
@@ -68,12 +68,14 @@ public class Task {
     }
 
     public ObjectData getObjectData(ObjectSchema objectSchema) {
-        return taskResponse.getDatas().stream()
-                .filter(data -> data.getName().equals(objectSchema.getName()))
-                .reduce(toOne())
-                .orElse(ObjectData.of(objectSchema.getName())
-                        .withData(new HashMap<>())
-                        .build());
+        return objectCache.computeIfAbsent(objectSchema, schema -> {
+            return taskResponse.getDatas().stream()
+                    .filter(data -> data.getName().equals(objectSchema.getName()))
+                    .reduce(toOne())
+                    .orElse(ObjectData.of(objectSchema.getName())
+                            .withData(new HashMap<>())
+                            .build());
+        });
     }
 
     /**
@@ -84,15 +86,8 @@ public class Task {
      */
     public ObjectBean getObjectBean(ObjectSchema objectSchema) {
         //TODO validate given objectSchema against taskResponse.getSchemas()
-        return objectCache.computeIfAbsent(objectSchema, schema -> {
-            Map<Long, Serializable> data = taskResponse.getDatas().stream()
-                    .filter(objectData -> objectData.getName().equals(objectSchema.getName()))
-                    .map(objectData -> objectData.getData())
-                    .findFirst()
-                    .orElse(new HashMap<>());
-            return ObjectBean.from(schema, data);
-
-        });
+        return new ObjectBean(objectSchema, 
+                new AttributeStore(objectSchema, (HashMap<Long,Serializable>)getObjectData(objectSchema).getData() ));
     }
 
     /**
