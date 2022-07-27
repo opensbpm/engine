@@ -88,7 +88,7 @@ public class ObjectSchemaBuilder {
         abstract T build(AtomicLong id);
     }
 
-    public static class SimpleAttributeBuilder extends AttributeBuilder</*Simple*/AttributeSchema, SimpleAttributeBuilder> {
+    public static class SimpleAttributeBuilder extends AttributeBuilder<SimpleAttributeSchema, SimpleAttributeBuilder> {
 
         private final FieldType type;
 
@@ -103,7 +103,7 @@ public class ObjectSchemaBuilder {
         }
 
         @Override
-        public /*Simple*/ AttributeSchema build(AtomicLong id) {
+        public SimpleAttributeSchema build(AtomicLong id) {
             SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id.getAndIncrement(), name, type);
             attributeSchema.setRequired(required);
             return attributeSchema;
