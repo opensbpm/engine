@@ -17,6 +17,7 @@
  */
 package org.opensbpm.engine.api.junit;
 
+import java.io.Serializable;
 import org.opensbpm.engine.api.events.EngineEvent;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.events.ProcessInstanceChangedEvent;
@@ -59,7 +60,7 @@ public final class EngineEventMatcher {
      * @param type type of RoleChangedEvent (see {@link RoleChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isRoleChangedEvent(String roleName, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isRoleChangedEvent(String roleName, Type type) {
         return allOf(instanceOf(RoleChangedEvent.class),
                 isType(RoleChangedEvent.class, type),
                 value(RoleChangedEvent.class, RoleChangedEvent::getSource, value("name", RoleToken::getName, is(roleName)))
@@ -75,7 +76,7 @@ public final class EngineEventMatcher {
      * @param type type of RoleUserChangedEvent (see {@link RoleUserChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isRoleUserChangedEvent(Long userId, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isRoleUserChangedEvent(Long userId, Type type) {
         return allOf(instanceOf(RoleUserChangedEvent.class),
                 isType(RoleUserChangedEvent.class, type),
                 value(RoleUserChangedEvent.class, RoleUserChangedEvent::getSource, value(UserToken::getId, is(userId)))
@@ -91,7 +92,7 @@ public final class EngineEventMatcher {
      * @param type type of UserChangedEvent (see {@link UserChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isUserChangedEvent(String userName, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isUserChangedEvent(String userName, Type type) {
         return allOf(instanceOf(UserChangedEvent.class),
                 isType(UserChangedEvent.class, type),
                 value(UserChangedEvent.class, UserChangedEvent::getSource, value("name", UserToken::getName, is(userName)))
@@ -107,7 +108,7 @@ public final class EngineEventMatcher {
      * @param type type of UserChangedEvent (see {@link UserChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isUserChangedEvent(Long userId, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isUserChangedEvent(Long userId, Type type) {
         return allOf(instanceOf(UserChangedEvent.class),
                 isType(UserChangedEvent.class, type),
                 value(UserChangedEvent.class, UserChangedEvent::getSource, value(UserToken::getId, is(userId)))
@@ -123,7 +124,7 @@ public final class EngineEventMatcher {
      * @param type type of ProcessModelChangedEvent (see {@link ProcessModelChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isProcessModelChangedEvent(String modelName, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isProcessModelChangedEvent(String modelName, Type type) {
         return allOf(
                 instanceOf(ProcessModelChangedEvent.class),
                 isType(ProcessModelChangedEvent.class, type),
@@ -139,7 +140,7 @@ public final class EngineEventMatcher {
      * @param userId id of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#userId})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<T> isUserProcessModelChangedEvent(Long userId) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<T> isUserProcessModelChangedEvent(Long userId) {
         return allOf(
                 instanceOf(UserProcessModelChangedEvent.class),
                 value(UserProcessModelChangedEvent.class, UserProcessModelChangedEvent::getUserId, is(userId))
@@ -154,7 +155,7 @@ public final class EngineEventMatcher {
      * @param type type of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<T> isUserProcessModelChangedEvent(Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<T> isUserProcessModelChangedEvent(Type type) {
         return allOf(
                 instanceOf(UserProcessModelChangedEvent.class),
                 isType(UserProcessModelChangedEvent.class, type)
@@ -170,7 +171,7 @@ public final class EngineEventMatcher {
      * @param type type of UserProcessModelChangedEvent (see {@link UserProcessModelChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<T> isUserProcessModelChangedEvent(Long userId, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<T> isUserProcessModelChangedEvent(Long userId, Type type) {
         return allOf(
                 instanceOf(UserProcessModelChangedEvent.class),
                 value(UserProcessModelChangedEvent.class, UserProcessModelChangedEvent::getUserId, is(userId)),
@@ -186,7 +187,7 @@ public final class EngineEventMatcher {
      * @param type type of ProcessInstanceChangedEvent (see {@link ProcessInstanceChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isProcessInstanceChangedEvent(Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isProcessInstanceChangedEvent(Type type) {
         return allOf(
                 instanceOf(ProcessInstanceChangedEvent.class),
                 isType(ProcessInstanceChangedEvent.class, type)
@@ -201,7 +202,7 @@ public final class EngineEventMatcher {
      * @param type type of UserProcessInstanceChangedEvent (see {@link UserProcessInstanceChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isUserProcessInstanceChangedEvent(Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isUserProcessInstanceChangedEvent(Type type) {
         return allOf(
                 instanceOf(UserProcessInstanceChangedEvent.class),
                 isType(UserProcessInstanceChangedEvent.class, type)
@@ -217,7 +218,7 @@ public final class EngineEventMatcher {
      * @param type type of UserProcessInstanceChangedEvent (see {@link UserProcessInstanceChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isUserProcessInstanceChangedEvent(Long userId, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isUserProcessInstanceChangedEvent(Long userId, Type type) {
         return allOf(
                 instanceOf(UserProcessInstanceChangedEvent.class),
                 isType(UserProcessInstanceChangedEvent.class, type),
@@ -234,7 +235,7 @@ public final class EngineEventMatcher {
      * @param type type of UserTaskChangedEvent (see {@link UserTaskChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isUserTaskChangedEvent(Long userId, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isUserTaskChangedEvent(Long userId, Type type) {
         return allOf(
                 instanceOf(UserTaskChangedEvent.class),
                 isType(UserTaskChangedEvent.class, type),
@@ -252,7 +253,7 @@ public final class EngineEventMatcher {
      * @param type type of UserTaskChangedEvent (see {@link UserTaskChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<T> isUserTaskChangedEvent(Long userId, String stateName, Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<T> isUserTaskChangedEvent(Long userId, String stateName, Type type) {
         return allOf(instanceOf(UserTaskChangedEvent.class),
                 isType(UserTaskChangedEvent.class, type),
                 value(UserTaskChangedEvent.class, UserTaskChangedEvent::getUserId, is(userId)),
@@ -268,13 +269,13 @@ public final class EngineEventMatcher {
      * @param type type of ProviderTaskChangedEvent (see {@link ProviderTaskChangedEvent#getType()})
      * @return a {@link Matcher} with given parameters
      */
-    public static <T extends EngineEvent<?>> Matcher<? super T> isProviderTaskChangedEvent(Type type) {
+    public static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isProviderTaskChangedEvent(Type type) {
         return allOf(instanceOf(ProviderTaskChangedEvent.class),
                 isType(ProviderTaskChangedEvent.class, type)
         );
     }
 
-    private static <T extends EngineEvent<?>> Matcher<? super T> isType(Class<? extends EngineEvent<?>> eventClass, Type type) {
+    private static <T extends EngineEvent<?extends Serializable>> Matcher<? super T> isType(Class<? extends EngineEvent<?>> eventClass, Type type) {
         return value(eventClass, EngineEvent::getType, is(type));
     }
 
