@@ -43,8 +43,8 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionSt
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 /**
- * {@link RoleService} Integration-Test. Test the transactional-behaviour of the SeviceLayer against a real database.
- *
+ * {@link RoleService} integration test. Test the transactional behavior of the
+ * service layer against a real database.
  */
 public class RoleServiceIT extends ServiceITCase {
 
