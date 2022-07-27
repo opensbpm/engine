@@ -23,6 +23,7 @@ import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.indexed;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.nested;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.schema;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.simple;
+import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.referenced;
 
 public class ObjectBeanHelper {
 
@@ -39,7 +40,7 @@ public class ObjectBeanHelper {
                 .attribute(simple("time", FieldType.TIME))
                 .attribute(simple("boolean", FieldType.BOOLEAN))
                 .attribute(simple("binary", FieldType.BINARY))
-                //.attribute(new ReferenceAttributeSchema(id(), "reference", refObjectSchema)
+                .attribute(referenced("reference", refObjectSchema))
                 .attribute(nested("nested")
                         .attribute(simple("string", FieldType.STRING))
                         .attribute(simple("number", FieldType.NUMBER))
@@ -48,7 +49,7 @@ public class ObjectBeanHelper {
                         .attribute(simple("time", FieldType.TIME))
                         .attribute(simple("boolean", FieldType.BOOLEAN))
                         .attribute(simple("binary", FieldType.BINARY))
-                        //.attribute(new ReferenceAttributeSchema(id(), "reference", refObjectSchema))
+                        .attribute(referenced("reference", refObjectSchema))
                         .attribute(nested("nested")
                                 .attribute(simple("string", FieldType.STRING))
                         )
@@ -59,12 +60,12 @@ public class ObjectBeanHelper {
                 .attribute(indexed("indexed")
                         .attribute(simple("string", FieldType.STRING))
                         .attribute(simple("number", FieldType.NUMBER))
-                            .attribute(                        simple("decimal", FieldType.DECIMAL))
+                        .attribute(simple("decimal", FieldType.DECIMAL))
                         .attribute(simple("date", FieldType.DATE))
                         .attribute(simple("time", FieldType.TIME))
                         .attribute(simple("boolean", FieldType.BOOLEAN))
                         .attribute(simple("binary", FieldType.BINARY))
-                        //.attribute(new ReferenceAttributeSchema(id(), "reference", refObjectSchema))
+                        .attribute(referenced("reference", refObjectSchema))
                         .attribute(nested("nested")
                                 .attribute(simple("string", FieldType.STRING))
                         )

@@ -39,6 +39,10 @@ public class ObjectSchemaBuilder {
         return new SimpleAttributeBuilder(name, type);
     }
 
+    public static ReferencedAttributeBuilder referenced(String name, ObjectSchema objectSchema) {
+        return new ReferencedAttributeBuilder(name, objectSchema);
+    }
+
     public static NestedAttributeBuilder nested(String name) {
         return new NestedAttributeBuilder(name);
     }
@@ -72,7 +76,7 @@ public class ObjectSchemaBuilder {
     public static abstract class AttributeBuilder<T extends AttributeSchema, V extends AttributeBuilder<T, V>> {
 
         protected String name;
-        protected boolean required = true;
+        protected boolean required;
 
         protected AttributeBuilder(String name) {
             this.name = Objects.requireNonNull(name, "name must be non null");
@@ -105,6 +109,31 @@ public class ObjectSchemaBuilder {
         @Override
         public SimpleAttributeSchema build(AtomicLong id) {
             SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id.getAndIncrement(), name, type);
+            attributeSchema.setRequired(required);
+            return attributeSchema;
+        }
+
+    }
+
+    public static class ReferencedAttributeBuilder extends AttributeBuilder<SimpleAttributeSchema, ReferencedAttributeBuilder> {
+
+        private final ObjectSchema autocompleteReference;
+
+        public ReferencedAttributeBuilder(String name, ObjectSchema autocompleteReference) {
+            super(name);
+            this.autocompleteReference = autocompleteReference;
+        }
+
+        @Override
+        protected ReferencedAttributeBuilder self() {
+            return this;
+        }
+
+        @Override
+        public SimpleAttributeSchema build(AtomicLong id) {
+            SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id.getAndIncrement(), name, FieldType.REFERENCE);
+            attributeSchema.setAutocompleteReference(autocompleteReference);
+
             attributeSchema.setRequired(required);
             return attributeSchema;
         }
