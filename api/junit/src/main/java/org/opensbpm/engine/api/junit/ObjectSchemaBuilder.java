@@ -31,22 +31,54 @@ import org.opensbpm.engine.api.model.FieldType;
 
 public class ObjectSchemaBuilder {
 
+    /**
+     * create a new {@link ObjectSchemaBuilder}
+     *
+     * @param name name of the resulting {@link ObjectSchema}
+     * @return new created {@link ObjectSchemaBuilder} instance
+     */
     public static ObjectSchemaBuilder schema(String name) {
         return new ObjectSchemaBuilder(name);
     }
 
+    /**
+     * create a new {@link SimpleAttributeBuilder}
+     *
+     * @param name name of the resulting {@link SimpleAttribute}
+     * @param type type of the resulting {@link SimpleAttribute}
+     * @return new created {@link SimpleAttributeBuilder} instance
+     */
     public static SimpleAttributeBuilder simple(String name, FieldType type) {
         return new SimpleAttributeBuilder(name, type);
     }
 
+    /**
+     * create a new {@link ReferencedAttributeBuilder}
+     *
+     * @param name name of the resulting {@link SimpleAttribute}
+     * @param objectSchema schema of the resulting {@link SimpleAttribute}
+     * @return new created {@link ReferencedAttributeBuilder} instance
+     */
     public static ReferencedAttributeBuilder referenced(String name, ObjectSchema objectSchema) {
         return new ReferencedAttributeBuilder(name, objectSchema);
     }
 
+    /**
+     * create a new {@link NestedAttributeBuilder}
+     *
+     * @param name name of the resulting {@link NestedAttributeSchema}
+     * @return new created {@link NestedAttributeBuilder} instance
+     */
     public static NestedAttributeBuilder nested(String name) {
         return new NestedAttributeBuilder(name);
     }
 
+    /**
+     * create a new {@link IndexedAttributeBuilder}
+     *
+     * @param name name of the resulting {@link IndexedAttributeSchema}
+     * @return new created {@link IndexedAttributeBuilder} instance
+     */
     public static IndexedAttributeBuilder indexed(String name) {
         return new IndexedAttributeBuilder(name);
     }
@@ -60,11 +92,24 @@ public class ObjectSchemaBuilder {
         this.name = Objects.requireNonNull(name, "name must be non null");
     }
 
+    /**
+     * Adds a new {@link AttributeBuilder} to this schema builder.
+     *
+     * @param attributeBuilder {@link AttributeBuilder} to add.
+     * @return a reference to this object.
+     */
     public ObjectSchemaBuilder attribute(AttributeBuilder attributeBuilder) {
         attributeBuilders.add(attributeBuilder);
         return this;
     }
 
+    /**
+     * Creates the {@link ObjectSchema}. All previous added {@link AttributeBuilder}
+     * will be build and the resulting {@link AttributeSchema} are added to resulting
+     * schema.
+     *
+     * @return a new {@link ObjectSchema}
+     */
     public ObjectSchema build() {
         List<AttributeSchema> attributes = attributeBuilders.stream()
                 .map(builder -> builder.build(id))
