@@ -2,9 +2,8 @@
 
 /* set basic job configurations */
 properties([
-        buildDiscarder(logRotator(numToKeepStr: '10')), 
-        disableConcurrentBuilds(),
-        [$class: 'BeforeJobSnapshotJobProperty'], 
+        buildDiscarder(logRotator(numToKeepStr: '50', artifactDaysToKeepStr: '10')), 
+        disableConcurrentBuilds(), 
         pipelineTriggers([snapshotDependencies()])
     ])
 
