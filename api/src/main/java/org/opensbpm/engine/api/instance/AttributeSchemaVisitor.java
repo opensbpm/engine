@@ -4,11 +4,11 @@ import java.util.Optional;
 
 public interface AttributeSchemaVisitor<T> {
 
-    T visitSimple(SimpleAttributeSchema attributeSchema);
+    T visitSimple(SimpleAttributeSchema simpleAttributeSchema);
 
-    T visitNested(NestedAttributeSchema attributeSchema);
+    T visitNested(NestedAttributeSchema nestedAttributeSchema);
 
-    T visitIndexed(IndexedAttributeSchema attributeSchema);
+    T visitIndexed(IndexedAttributeSchema indexedAttributeSchema);
 
     static AttributeSchemaVisitor<Optional</*Simple*/AttributeSchema>> simple() {
         return new OptionalAttributeSchemaAdapter</*Simple*/AttributeSchema>() {
