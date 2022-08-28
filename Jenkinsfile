@@ -7,7 +7,7 @@ properties([
         pipelineTriggers([snapshotDependencies()])
     ])
 
-node{
+node('jdk8'){
     try{
         stage('Prepare'){        
             checkout scm
