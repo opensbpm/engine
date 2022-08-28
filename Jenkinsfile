@@ -15,7 +15,7 @@ node{
         
         stage('Assemble'){
             withMaven(
-                jdk: 'JDK 1.8',
+                jdk: 'jdk8',
                 maven: 'default', 
                 mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
             ) {
@@ -26,7 +26,7 @@ node{
         stage('Test'){
             try{
                 withMaven(
-                    jdk: 'JDK 1.8',
+                    jdk: 'jdk8',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
                     options: [junitPublisher(disabled:true),jacocoPublisher(disabled:true)]
@@ -43,7 +43,7 @@ node{
             try{
                 def model = readMavenPom(file: 'pom.xml')
                 withMaven(
-                    jdk: 'JDK 1.8',
+                    jdk: 'jdk8',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
                     options: [
@@ -77,7 +77,7 @@ node{
         
         stage('Deploy'){
             retry(3) {
-                withMaven(jdk: 'JDK 1.8',
+                withMaven(jdk: 'jdk8',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
                     sh "mvn -DskipTests deploy"
@@ -86,7 +86,7 @@ node{
         }
         
         //        stage('Site'){
-        //            withMaven(jdk: 'JDK 1.8',
+        //            withMaven(jdk: 'jdk8',
         //                maven: 'default', 
         //                mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
         //                sh "mvn site site:stage"
