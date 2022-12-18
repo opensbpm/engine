@@ -19,6 +19,7 @@ package org.opensbpm.engine.api.instance;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
 import org.opensbpm.engine.api.model.FieldType;
@@ -43,39 +44,39 @@ public class TaskCreateRequestTest {
         final long o1f2mId = 12l;
         final long o1f3mId = 13l;
         final long o1f4mId = 14l;
-        final ObjectSchema object1Definition = createSchema("Object 1", o1f1mId, o1f2mId, o1f3mId, o1f4mId);
-        ObjectData o1Response = createData(object1Definition, "1.2");
+        final ObjectSchema object1Schema = createSchema("Object 1", o1f1mId, o1f2mId, o1f3mId, o1f4mId);
+        ObjectData o1Response = createData(object1Schema, "1.2");
 
         //Child of Object 2
         final long o2sf1mId = 211l;
         final long o2sf2mId = 212l;
         final long o2sf3mId = 213l;
         final long o2sf4mId = 214l;
-        final ObjectSchema object2SubDefinition = createSchema("Object 2 Sub", o2sf1mId, o2sf2mId, o2sf3mId, o2sf4mId);
-        ObjectData o2sResponse = createData(object2SubDefinition, "2.1.2");
+        final ObjectSchema object2SubSchema = createSchema("Object 2 Sub", o2sf1mId, o2sf2mId, o2sf3mId, o2sf4mId);
+        ObjectData o2sResponse = createData(object2SubSchema, "2.1.2");
 
         final long o2f1mId = 21l;
         final long o2f2mId = 22l;
         final long o2f3mId = 23l;
         final long o2f4mId = 24l;
-        final ObjectSchema object2Definition = createSchema("Object 2", o2f1mId, o2f2mId, o2f3mId, o2f4mId, new ObjectData[]{o2sResponse});
-        ObjectData o2Response = createData(object2Definition, "2.2", o2sResponse);
+        final ObjectSchema object2Schema = createSchema("Object 2", o2f1mId, o2f2mId, o2f3mId, o2f4mId, new ObjectData[]{o2sResponse});
+        ObjectData o2Response = createData(object2Schema, "2.2", o2sResponse);
 
         final LocalDateTime lastChanged = LocalDateTime.MIN;
         TaskResponse taskResponse = TaskResponse.of(sId,
                 Arrays.asList(nextState),
                 lastChanged,
-                asList(object1Definition, object2Definition),
+                asList(object1Schema, object2Schema),
                 asList(o1Response, o2Response)
         );
-        Logger.getLogger(getClass().getName()).info("taskResponse:" + taskResponse);
+        Logger.getLogger(getClass().getName()).log(Level.INFO, "taskResponse:{0}", taskResponse);
 
         Task task = new Task(new TaskInfo(), taskResponse);
-        task.getObjectBean(object1Definition).set("Field 3", "1.3");
-        task.getObjectBean(object1Definition).set("Field 4", "1.4");
+        task.getObjectBean(object1Schema).set("Field 3", "1.3");
+        task.getObjectBean(object1Schema).set("Field 4", "1.4");
 
-        task.getObjectBean(object2Definition).set("Field 3", "2.3");
-        task.getObjectBean(object2Definition).set("Field 4", "2.4");
+        task.getObjectBean(object2Schema).set("Field 3", "2.3");
+        task.getObjectBean(object2Schema).set("Field 4", "2.4");
 
 //        getChildObject(task, "Object 2", "Object 2 Sub").getAttribute("Field 3").setValue("2.1.3");
 //        getChildObject(task, "Object 2", "Object 2 Sub").getAttribute("Field 4").setValue("2.1.4");
