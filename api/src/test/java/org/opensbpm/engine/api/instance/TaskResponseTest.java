@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.model.FieldType;
@@ -35,6 +36,7 @@ import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isIndexedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isNestedSchema;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectData;
 import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isObjectSchema;
+import static org.opensbpm.engine.api.junit.TaskResponseMatcher.isReferenceSchema;
 
 public class TaskResponseTest {
 
@@ -59,6 +61,7 @@ public class TaskResponseTest {
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
+                referenceSchema(27L, "Reference Field", FieldType.REFERENCE, true, false, object1Schema),
                 IndexedAttributeSchema.create(o2ToManyFieldId, "To Many", asList(
                         SimpleAttributeSchema.of(o2ManyNumberField, "Number Field", FieldType.NUMBER),
                         NestedAttributeSchema.createNested(o2ManyOneFieldId, "To One", asList(
@@ -93,14 +96,12 @@ public class TaskResponseTest {
         assertThat("wrong lastChanged", result.getLastChanged(), is(taskResponse.getLastChanged()));
 
         assertThat("wrong document-schemas", result, hasSchemas(
-                isObjectSchema("Object 1",
-                        isFieldSchema("String Field", FieldType.STRING, true, false),
-                        isNestedSchema("To One",
-                                isFieldSchema("Number Field", FieldType.NUMBER)
-                        )
-                ),
+                isObject1(),
                 isObjectSchema("Object 2",
                         isFieldSchema("String Field", FieldType.STRING, true, false),
+                        isReferenceSchema("Reference Field", true, false,
+                                isObject1()
+                        ),
                         isIndexedSchema("To Many",
                                 isFieldSchema("Number Field", FieldType.NUMBER),
                                 isNestedSchema("To One",
@@ -119,10 +120,25 @@ public class TaskResponseTest {
         ));
     }
 
+    private static Matcher<ObjectSchema> isObject1() {
+        return isObjectSchema("Object 1",
+                isFieldSchema("String Field", FieldType.STRING, true, false),
+                isNestedSchema("To One",
+                        isFieldSchema("Number Field", FieldType.NUMBER)
+                )
+        );
+    }
+
     private static SimpleAttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly) {
         SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id, name, type);
         attributeSchema.setRequired(required);
         attributeSchema.setReadonly(readOnly);
+        return attributeSchema;
+    }
+
+    private static SimpleAttributeSchema referenceSchema(Long id, String name, FieldType type, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
+        SimpleAttributeSchema attributeSchema = attributeSchema(id, name, type, required, readOnly);
+        attributeSchema.setAutocompleteReference(autocompleteReference);
         return attributeSchema;
     }
 
