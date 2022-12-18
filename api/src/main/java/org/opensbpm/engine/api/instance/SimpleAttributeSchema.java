@@ -34,8 +34,7 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
     public static final String ID_NAME = "Id";
 
     public static SimpleAttributeSchema of(long id, String name, FieldType fieldType) {
-        SimpleAttributeSchema attributeSchema = new SimpleAttributeSchema(id, name, fieldType);
-        return attributeSchema;
+        return new SimpleAttributeSchema(id, name, fieldType);
     }
 
     @XmlAttribute(required = true)
