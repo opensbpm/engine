@@ -51,14 +51,6 @@ public interface PermissionDefinition {
 
     }
 
-    public interface ToOnePermission extends NestedPermissionDefinition {
-
-    }
-
-    public interface ToManyPermission extends NestedPermissionDefinition {
-
-    }
-
     @XmlType
     public enum Permission {
         READ, WRITE
