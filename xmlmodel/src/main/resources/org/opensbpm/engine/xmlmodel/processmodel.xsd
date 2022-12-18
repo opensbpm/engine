@@ -77,7 +77,8 @@
             <xs:extension base="pm:stateType">
                 <xs:sequence>
                     <xs:element name="parameters" minOccurs="0" type="pm:parametersWrapper"/>
-                    <xs:element name="permission" minOccurs="0" maxOccurs="unbounded" type="pm:permissionType"/>
+                    <xs:element name="object" minOccurs="0" maxOccurs="unbounded" type="pm:objectPermissionType"/>
+                    <!--xs:element name="permission" minOccurs="0" maxOccurs="unbounded" type="pm:permissionType"/-->
                     <xs:element name="toState" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
                 </xs:sequence>
                 <xs:attribute name="provider" type="xs:string"/>
@@ -88,6 +89,24 @@
     <xs:complexType name="parametersWrapper">
         <xs:sequence>
             <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="objectPermissionType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="attribute" type="pm:attributeType"/>
+                <xs:element name="object" minOccurs="0" maxOccurs="unbounded" type="pm:objectPermissionType"/>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="attributeType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="permission" type="pm:permission"/>
+            <xs:element name="mandatory" type="xs:boolean"/>
         </xs:sequence>
     </xs:complexType>
 

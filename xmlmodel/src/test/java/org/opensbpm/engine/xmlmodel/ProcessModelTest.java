@@ -22,8 +22,7 @@ import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.cont
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFieldPermission;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFunctionState;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToManyPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToOnePermission;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isNestedPermission;
 import static org.opensbpm.engine.api.junit.ModelUtils.getState;
 import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isField;
@@ -98,7 +97,7 @@ public class ProcessModelTest {
                                 isFieldPermission("Reisebeginn", Permission.WRITE, true),
                                 isFieldPermission("Reiseende", Permission.WRITE, true),
                                 isFieldPermission("Reiseziel", Permission.WRITE, true),
-                                isToManyPermission("Mitreisende",
+                                isNestedPermission("Mitreisende",
                                         isFieldPermission("Antragsteller", Permission.WRITE, true),
                                         isFieldPermission("Bemerkung", Permission.WRITE, true)
                                 )
@@ -127,11 +126,11 @@ public class ProcessModelTest {
                                         isFieldPermission("Reisebeginn", Permission.WRITE, true),
                                         isFieldPermission("Reiseende", Permission.WRITE, true),
                                         isFieldPermission("Reiseziel", Permission.READ, false),
-                                        isToManyPermission("Mitreisende",
+                                        isNestedPermission("Mitreisende",
                                                 isFieldPermission("Antragsteller", Permission.READ, false),
                                                 isFieldPermission("Bemerkung", Permission.READ, false)
                                         ),
-                                        isToOnePermission("Kostenstelle",
+                                        isNestedPermission("Kostenstelle",
                                                 isFieldPermission("Nummer", Permission.WRITE, true),
                                                 isFieldPermission("Faktor", Permission.WRITE, true)
                                         )

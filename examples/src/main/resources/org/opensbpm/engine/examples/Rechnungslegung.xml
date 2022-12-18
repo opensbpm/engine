@@ -27,30 +27,63 @@
         <roles>Angestellte</roles>
         <functionState eventType="START">
             <name>Rechnung erfassen</name>
-            <permission>
-                <object>Rechnung</object>
-                <toOne permission="WRITE">
-                    <name>Empfänger</name>
-                    <field permission="WRITE" mandatory="true">Kunde</field>
-                </toOne>
-                <field permission="WRITE" mandatory="true">Datum</field>
-                <field permission="WRITE" mandatory="true">Nummer</field>
-                <toMany permission="WRITE">
+            <object>
+                <name>Rechnung</name>
+                <object>
+                    <name>Empfänger</name>                    
+                    <attribute>
+                        <name>Kunde</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                </object>
+                <attribute>
+                    <name>Datum</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Nummer</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                
+                <object>
                     <name>Position</name>
-                    <field permission="WRITE" mandatory="true">Text</field>
+                    <attribute>
+                        <name>Text</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                    
+                    <attribute>
+                        <name>Text</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>                
                     <!--toOne>
                         <name>Artikel</name>
                         <field type="STRING">Nummer</field>
                         <field type="STRING">Bezeichnung</field>
                     </toOne-->
-                    <field permission="WRITE" mandatory="true">Wert</field>
-                </toMany>
-            </permission>
-            <permission>
-                <object>Kunde</object>
-                <field permission="READ">Nummer</field>
-                <field permission="READ">Name</field>
-            </permission>
+                    <attribute>
+                        <name>Wert</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>                
+                </object>
+            </object>
+            <object>
+                <name>Kunde</name>
+                <attribute>
+                    <name>Nummer</name>
+                    <permission>READ</permission>
+                </attribute>
+                <attribute>
+                    <name>Name</name>
+                    <permission>READ</permission>
+                </attribute>
+            </object>
             <toState>Vorschau</toState>
         </functionState>
         <sendState>
@@ -68,10 +101,13 @@
         </receiveState>
         <functionState>
             <name>Vorschau kontrollieren</name>
-            <permission>
-                <object>Druck</object>
-                <field permission="READ">Report</field>
-            </permission>
+            <object>
+                <name>Druck</name>
+                <attribute>
+                    <name>Report</name>
+                    <permission>READ</permission>
+                </attribute>
+            </object>
             <toState>Speichern</toState>
             <toState>Verwerfen</toState>
         </functionState>        
@@ -128,26 +164,46 @@
                 <Rechnung.Nummer>HASH</Rechnung.Nummer>
             </parameters>
             
-            <permission>
-                <object>Rechnung</object>
-                <toOne permission="READ">
-                    <name>Empfänger</name>
-                    <field permission="READ">Kunde</field>
-                </toOne>
-                <field permission="READ">Datum</field>
-                <field permission="READ">Nummer</field>
-                <toMany permission="READ">
+            <object>
+                <name>Rechnung</name>
+                <object>
+                    <name>Empfänger</name>                    
+                    <attribute>
+                        <name>Kunde</name>
+                        <permission>READ</permission>
+                    </attribute>
+                </object>
+                <attribute>
+                    <name>Datum</name>
+                    <permission>READ</permission>
+                </attribute>
+                <attribute>
+                    <name>Nummer</name>
+                    <permission>READ</permission>
+                </attribute>
+                
+                <object>
                     <name>Position</name>
-                    <field permission="READ">Text</field>
+                    <attribute>
+                        <name>Text</name>
+                        <permission>READ</permission>
+                    </attribute>
+                    
+                    <attribute>
+                        <name>Text</name>
+                        <permission>READ</permission>
+                    </attribute>                
                     <!--toOne>
                         <name>Artikel</name>
                         <field type="STRING">Nummer</field>
                         <field type="STRING">Bezeichnung</field>
                     </toOne-->
-                    <field permission="READ">Wert</field>
-                </toMany>
-            </permission>
-            
+                    <attribute>
+                        <name>Wert</name>
+                        <permission>READ</permission>
+                    </attribute>                
+                </object>
+            </object>
             <toState>Druck erstellen</toState>
         </functionState>
         <functionState provider="JasperReports">
@@ -156,29 +212,50 @@
                 <layout>Rechnung</layout>
             </parameters>
             
-            <permission>
-                <object>Rechnung</object>
-                <toOne permission="READ">
-                    <name>Empfänger</name>
-                    <field permission="READ">Kunde</field>
-                </toOne>
-                <field permission="READ">Datum</field>
-                <field permission="READ">Nummer</field>
-                <toMany permission="READ">
+            <object>
+                <name>Rechnung</name>
+                <object>
+                    <name>Empfänger</name>                    
+                    <attribute>
+                        <name>Kunde</name>
+                        <permission>READ</permission>
+                    </attribute>
+                </object>
+                <attribute>
+                    <name>Datum</name>
+                    <permission>READ</permission>
+                </attribute>
+                <attribute>
+                    <name>Nummer</name>
+                    <permission>READ</permission>
+                </attribute>
+                
+                <object>
                     <name>Position</name>
-                    <field permission="READ">Text</field>
+                    <attribute>
+                        <name>Text</name>
+                        <permission>READ</permission>
+                    </attribute>                
                     <!--toOne>
                         <name>Artikel</name>
                         <field type="STRING">Nummer</field>
                         <field type="STRING">Bezeichnung</field>
                     </toOne-->
-                    <field permission="READ">Wert</field>
-                </toMany>
-            </permission>
-            <permission>
-                <object>Druck</object>
-                <field permission="WRITE" mandatory="true">Report</field>
-            </permission>
+                    <attribute>
+                        <name>Wert</name>
+                        <permission>READ</permission>
+                    </attribute>                
+                </object>
+            </object>
+
+            <object>
+                <name>Druck</name>
+                <attribute>
+                    <name>Report</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>                
+            </object>
             
             <toState>Rechnung senden</toState>
         </functionState>

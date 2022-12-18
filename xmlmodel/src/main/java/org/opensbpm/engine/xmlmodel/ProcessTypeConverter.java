@@ -35,9 +35,7 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.simplePermission;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toManyPermission;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOne;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toOnePermission;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
 
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder;
@@ -59,13 +57,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.utils.PairUtils;
-import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
+import org.opensbpm.engine.xmlmodel.processmodel.AttributeType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FunctionStateType;
+import org.opensbpm.engine.xmlmodel.processmodel.ObjectPermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ObjectType;
-import org.opensbpm.engine.xmlmodel.processmodel.PermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ProcessModelState;
 import org.opensbpm.engine.xmlmodel.processmodel.ProcessType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveStateType;
@@ -76,12 +75,11 @@ import org.opensbpm.engine.xmlmodel.processmodel.ServiceSubject;
 import org.opensbpm.engine.xmlmodel.processmodel.StateEventType;
 import org.opensbpm.engine.xmlmodel.processmodel.StateType;
 import org.opensbpm.engine.xmlmodel.processmodel.SubjectType;
-import org.opensbpm.engine.xmlmodel.processmodel.ToManyPermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ToManyType;
-import org.opensbpm.engine.xmlmodel.processmodel.ToOnePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ToOneType;
 import org.opensbpm.engine.xmlmodel.processmodel.UserSubject;
 import org.w3c.dom.Element;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.nestedPermission;
 
 public class ProcessTypeConverter {
 
@@ -198,15 +196,13 @@ public class ProcessTypeConverter {
                 }
             }
 
-            for (PermissionType permissionType : functionStateType.getPermission()) {
-                ObjectBuilder objectBuilder = processBuilder.getObject(permissionType.getObject());
-
+            for (ObjectPermissionType objectPermissionType : functionStateType.getObject()) {
+                ObjectBuilder objectBuilder = processBuilder.getObject(objectPermissionType.getName());
                 PermissionBuilder permissionBuilder = permission(objectBuilder)
-                        .addPermissions(createPermissions(objectBuilder, permissionType.getFieldOrToOneOrToMany()));
-
+                            .addPermissions(createAttributePermissions(objectBuilder, objectPermissionType.getAttributeOrObject()));
                 functionState.addPermission(permissionBuilder);
             }
-
+            
             stateBuilder = functionState;
         } else if (stateType instanceof ReceiveStateType) {
             stateBuilder = receiveState(stateType.getName());
@@ -260,35 +256,32 @@ public class ProcessTypeConverter {
         }
     }
 
-    private List<AbstractAttributePermissionBuilder<?, ?>> createPermissions(HasChildAttributes<?> parentAttributeBuilder, List<Object> permissionTypes) {
+    private List<AbstractAttributePermissionBuilder<?, ?>> createAttributePermissions(HasChildAttributes<?> parentAttributeBuilder, List attributeTypes) {
         List<AbstractAttributePermissionBuilder<?, ?>> permissions = new ArrayList<>();
-        for (Object permissionType : permissionTypes) {
-            permissions.add(createAttributePermission(parentAttributeBuilder, permissionType));
+        for (Object abstractAttributeType : attributeTypes) {
+            AbstractAttributePermissionBuilder<?, ?> permissionBuilder;
+            if (abstractAttributeType instanceof AttributeType) {
+                AttributeType attributeType = (AttributeType) abstractAttributeType;
+
+                AttributeBuilder<? extends AttributeDefinition, ?> attributeBuilder = parentAttributeBuilder.getAttribute(attributeType.getName());
+                permissionBuilder = simplePermission(attributeBuilder,
+                        Permission.valueOf(attributeType.getPermission().value()),
+                        attributeType.isMandatory());
+            } else if (abstractAttributeType instanceof ObjectPermissionType) {
+                ObjectPermissionType attributeType = (ObjectPermissionType) abstractAttributeType;
+
+                AbstractNestedBuilder<?, ?> attributeBuilder = (AbstractNestedBuilder<?, ?>) parentAttributeBuilder.getAttribute(attributeType.getName());
+                permissionBuilder = nestedPermission(attributeBuilder, Permission.WRITE, false)
+                    .addPermissions(createAttributePermissions(attributeBuilder, attributeType.getAttributeOrObject()));
+            } else {
+                throw new UnsupportedOperationException("AttributePermissionType " + abstractAttributeType + " not supported yet");
+            }
+
+            //attributeType.
+            permissions.add(permissionBuilder);
         }
         return permissions;
     }
 
-    private AbstractAttributePermissionBuilder<?, ?> createAttributePermission(HasChildAttributes<?> parentAttributeBuilder, Object permissionType) {
-        AbstractAttributePermissionBuilder<?, ?> permissionBuilder;
-        if (permissionType instanceof AttributePermissionType) {
-            AttributePermissionType attributePermissionType = (AttributePermissionType) permissionType;
-            AttributeBuilder<?, ?> attributeBuilder = parentAttributeBuilder.getAttribute(attributePermissionType.getValue());
-            Boolean mandatory = attributePermissionType.isMandatory() != null && attributePermissionType.isMandatory();
-            permissionBuilder = simplePermission(attributeBuilder, Permission.valueOf(attributePermissionType.getPermission().value()), mandatory);
-        } else if (permissionType instanceof ToOnePermissionType) {
-            AbstractNestedBuilder<?, ?> attributeBuilder = (AbstractNestedBuilder<?, ?>) parentAttributeBuilder.getAttribute(((ToOnePermissionType) permissionType).getName());
-            //TODO add permission and mandatory flag to xsd
-            permissionBuilder = toOnePermission(attributeBuilder, Permission.WRITE, false)
-                    .addPermissions(createPermissions(attributeBuilder, ((ToOnePermissionType) permissionType).getFieldOrToOneOrToMany()));
-        } else if (permissionType instanceof ToManyPermissionType) {
-            AbstractNestedBuilder<?, ?> attributeBuilder = (AbstractNestedBuilder<?, ?>) parentAttributeBuilder.getAttribute(((ToManyPermissionType) permissionType).getName());
-            //TODO add permission and mandatory flag to xsd
-            permissionBuilder = toManyPermission(attributeBuilder, Permission.WRITE, false)
-                    .addPermissions(createPermissions(attributeBuilder, ((ToManyPermissionType) permissionType).getFieldOrToOneOrToMany()));
-        } else {
-            throw new UnsupportedOperationException("AttributePermissionType " + permissionType + " not supported yet");
-        }
-        return permissionBuilder;
-    }
 
 }

@@ -34,8 +34,6 @@ import org.opensbpm.engine.api.model.definition.PermissionDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.AttributePermissionDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.NestedPermissionDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToManyPermission;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToOnePermission;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.FunctionStateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.StateEventType;
@@ -212,69 +210,35 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         }
     }
 
-    public abstract static class NestedAttributePermissionBuilder<
-            V extends NestedPermissionDefinition, T extends NestedAttributePermissionBuilder<V, T>> extends AbstractAttributePermissionBuilder<V, T> {
+    public static class NestedPermissionBuilder extends AbstractAttributePermissionBuilder<NestedPermissionDefinition, NestedPermissionBuilder> {
 
         protected final List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition, ?>> permissionBuilders = new ArrayList<>();
 
-        public NestedAttributePermissionBuilder(AttributeBuilder<?, ?> attributeBuilder,
+        public NestedPermissionBuilder(AttributeBuilder<?, ?> attributeBuilder,
                 Permission permission, boolean mandatory) {
             super(attributeBuilder, permission, mandatory);
         }
 
-        public T addPermission(AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition, ?> permission) {
+        protected NestedPermissionBuilder self() {
+            return this;
+        }
+
+        public NestedPermissionBuilder addPermission(AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition, ?> permission) {
             return addPermissions(Arrays.asList(permission));
         }
 
-        public T addPermissions(List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition, ?>> permissions) {
+        public NestedPermissionBuilder addPermissions(List<AbstractAttributePermissionBuilder<? extends AttributePermissionDefinition, ?>> permissions) {
             checkBuilt();
             this.permissionBuilders.addAll(permissions);
             return self();
         }
 
-    }
-
-    public static class ToOnePermissionBuilder extends NestedAttributePermissionBuilder<ToOnePermission, ToOnePermissionBuilder> {
-
-        public ToOnePermissionBuilder(AttributeBuilder<?, ?> attributeBuilder, Permission permission, boolean mandatory) {
-            super(attributeBuilder, permission, mandatory);
-        }
-
-        @Override
-        protected ToOnePermissionBuilder self() {
-            return this;
-        }
-
-        @Override
-        protected ToOnePermission createAttributePermissionDefinition(AttributeDefinition attribute,
+        protected NestedPermissionDefinition createAttributePermissionDefinition(AttributeDefinition attribute,
                 Permission permission, boolean mandatory) {
             List<AttributePermissionDefinition> permissions = permissionBuilders.stream()
                     .map(AbstractBuilder::build)
                     .collect(Collectors.toList());
-            return new ToOnePermissionImpl(attribute, permission, mandatory, permissions);
-        }
-
-    }
-
-    public static class ToManyPermissionBuilder extends NestedAttributePermissionBuilder<ToManyPermission, ToManyPermissionBuilder> {
-
-        public ToManyPermissionBuilder(AttributeBuilder<?, ?> attributeBuilder,
-                Permission permission, boolean mandatory) {
-            super(attributeBuilder, permission, mandatory);
-        }
-
-        @Override
-        protected ToManyPermissionBuilder self() {
-            return this;
-        }
-
-        @Override
-        protected ToManyPermission createAttributePermissionDefinition(AttributeDefinition attribute,
-                Permission permission, boolean mandatory) {
-            List<AttributePermissionDefinition> permissions = permissionBuilders.stream()
-                    .map(AbstractBuilder::build)
-                    .collect(Collectors.toList());
-            return new ToManyPermissionImpl(attribute, permission, mandatory, permissions);
+            return new NestedAttributePermissionDefinition(attribute, permission, mandatory, permissions);
         }
 
     }
@@ -365,12 +329,12 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         }
     }
 
-    private static abstract class AbstractNestedPermissionDefinition extends AbstractAttributePermissionDefinition
+    private static class NestedAttributePermissionDefinition extends AbstractAttributePermissionDefinition
             implements NestedPermissionDefinition {
 
         private final List<AttributePermissionDefinition> permissions;
 
-        public AbstractNestedPermissionDefinition(AttributeDefinition attribute, Permission permission, boolean mandatory, List<AttributePermissionDefinition> permissions) {
+        public NestedAttributePermissionDefinition(AttributeDefinition attribute, Permission permission, boolean mandatory, List<AttributePermissionDefinition> permissions) {
             super(attribute, permission, mandatory);
             this.permissions = emptyOrUnmodifiableList(permissions);
         }
@@ -383,26 +347,10 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         @Override
         public String toString() {
             return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                    .append("attribute", getAttribute().getName())
+                    .append("name", getAttribute().getName())
                     .append("attributes", getAttributePermissions())
                     .toString();
         }
-    }
-
-    private static class ToOnePermissionImpl extends AbstractNestedPermissionDefinition implements ToOnePermission {
-
-        public ToOnePermissionImpl(AttributeDefinition attribute, Permission permission, boolean mandatory, List<AttributePermissionDefinition> permissions) {
-            super(attribute, permission, mandatory, permissions);
-        }
-
-    }
-
-    private static class ToManyPermissionImpl extends AbstractNestedPermissionDefinition implements ToManyPermission {
-
-        public ToManyPermissionImpl(AttributeDefinition attribute, Permission permission, boolean mandatory, List<AttributePermissionDefinition> permissions) {
-            super(attribute, permission, mandatory, permissions);
-        }
-
     }
 
 }

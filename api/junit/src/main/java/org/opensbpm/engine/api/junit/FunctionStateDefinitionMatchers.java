@@ -33,8 +33,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isAttributeName;
 
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.AttributePermissionDefinition;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToManyPermission;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToOnePermission;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.NestedPermissionDefinition;
 
 import static org.hamcrest.Matchers.allOf;
 
@@ -106,19 +105,11 @@ public final class FunctionStateDefinitionMatchers {
         );
     }
 
-    public static Matcher<AttributePermissionDefinition> isToOnePermission(String attributename,
+    public static Matcher<AttributePermissionDefinition> isNestedPermission(String attributename,
             Matcher<? super AttributePermissionDefinition>... attributePermissions) {
         return allOf(
-                value(ToOnePermission.class, ToOnePermission::getAttribute, isAttributeName(attributename)),
-                value(ToOnePermission.class, ToOnePermission::getAttributePermissions, containsInAnyOrder(attributePermissions))
-        );
-    }
-
-    public static Matcher<AttributePermissionDefinition> isToManyPermission(String attributeName,
-            Matcher<? super AttributePermissionDefinition>... attributePermissions) {
-        return allOf(
-                value(ToManyPermission.class, ToManyPermission::getAttribute, isAttributeName(attributeName)),
-                value(ToManyPermission.class, ToManyPermission::getAttributePermissions, containsInAnyOrder(attributePermissions))
+                value(NestedPermissionDefinition.class, NestedPermissionDefinition::getAttribute, isAttributeName(attributename)),
+                value(NestedPermissionDefinition.class, NestedPermissionDefinition::getAttributePermissions, containsInAnyOrder(attributePermissions))
         );
     }
 

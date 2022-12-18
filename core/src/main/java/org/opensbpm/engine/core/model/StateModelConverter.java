@@ -21,9 +21,8 @@ import java.util.Map;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AbstractAttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
+import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.NestedPermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.PermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToOnePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.ReceiveStateBuilder;
 import org.opensbpm.engine.api.model.builder.SendStateBuilder;
 import org.opensbpm.engine.api.model.builder.StateBuilder;
@@ -123,8 +122,8 @@ public class StateModelConverter {
             }
 
             @Override
-            public ToOnePermissionBuilder visitNested(NestedAttributeModel attributeModel) {
-                ToOnePermissionBuilder toOnePermissionBuilder = new ToOnePermissionBuilder(
+            public NestedPermissionBuilder visitNested(NestedAttributeModel attributeModel) {
+                NestedPermissionBuilder toOnePermissionBuilder = new NestedPermissionBuilder(
                         objectModelCache.getAttributeBuilder(objectModel, statePermission.getAttributeModel()),
                         statePermission.getPermission(),
                         statePermission.isMandatory()
@@ -137,8 +136,8 @@ public class StateModelConverter {
             }
 
             @Override
-            public ToManyPermissionBuilder visitIndexed(IndexedAttributeModel attributeModel) {
-                ToManyPermissionBuilder toManyPermissionBuilder = new ToManyPermissionBuilder(
+            public NestedPermissionBuilder visitIndexed(IndexedAttributeModel attributeModel) {
+                NestedPermissionBuilder toManyPermissionBuilder = new NestedPermissionBuilder(
                         objectModelCache.getAttributeBuilder(objectModel, statePermission.getAttributeModel()),
                         statePermission.getPermission(),
                         statePermission.isMandatory()

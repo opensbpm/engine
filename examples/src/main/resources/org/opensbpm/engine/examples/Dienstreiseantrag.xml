@@ -35,18 +35,42 @@
         <roles>Angestellte</roles>
         <functionState eventType="START">>
             <name>DR-Antrag ausfüllen</name>
-            <permission>
-                <object>DR-Antrag</object>
-                <field permission="WRITE" mandatory="true">Name</field>
-                <field permission="WRITE" mandatory="true">Reisebeginn</field>
-                <field permission="WRITE" mandatory="true">Reiseende</field>
-                <field permission="WRITE" mandatory="true">Reiseziel</field>
-                <toMany permission="WRITE">
+            <object>
+                <name>DR-Antrag</name>
+                <attribute>
+                    <name>Name</name>                        
+                    <permission>WRITE</permission>                        
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reisebeginn</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reiseende</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reiseziel</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <object>
                     <name>Mitreisende</name>
-                    <field permission="WRITE" mandatory="true">Antragsteller</field>
-                    <field permission="WRITE" mandatory="true">Bemerkung</field>
-                </toMany>                
-            </permission>
+                    <attribute>
+                        <name>Antragsteller</name>                        
+                        <permission>WRITE</permission>                        
+                        <mandatory>true</mandatory>
+                    </attribute>
+                    <attribute>
+                        <name>Bemerkung</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>                    
+                </object>
+            </object>
             <toState>DR-Antrag an Vorgesetzer senden</toState>
         </functionState>
         <sendState>
@@ -75,26 +99,50 @@
         </receiveState>
         <functionState>
             <name>DR antreten</name>
-            <permission>
-                <object>DR-Antrag</object>
-                <field permission="READ">Name</field>
-                <field permission="READ">Reisebeginn</field>
-                <field permission="READ">Reiseende</field>
-                <field permission="READ">Reiseziel</field>
-                <toMany permission="READ">
+            <object>
+                <name>DR-Antrag</name>
+                <attribute>
+                    <name>Name</name>                        
+                    <permission>READ</permission>                        
+                </attribute>
+                <attribute>
+                    <name>Reisebeginn</name>
+                    <permission>READ</permission>
+                </attribute>
+                <attribute>
+                    <name>Reiseende</name>
+                    <permission>READ</permission>
+                </attribute>
+                <attribute>
+                    <name>Reiseziel</name>
+                    <permission>READ</permission>
+                </attribute>
+                <object>
                     <name>Mitreisende</name>
-                    <field permission="READ">Antragsteller</field>
-                    <field permission="READ">Bemerkung</field>
-                </toMany>                
-            </permission>
-            <permission>
-                <object>Genehmigung</object>
-                <field permission="READ">Bemerkung</field>
-            </permission>
-            <permission>
-                <object>Buchung</object>
-                <field permission="READ">Hotel</field>
-            </permission>
+                    <attribute>
+                        <name>Antragsteller</name>                        
+                        <permission>READ</permission>                        
+                    </attribute>
+                    <attribute>
+                        <name>Bemerkung</name>
+                        <permission>READ</permission>
+                    </attribute>                    
+                </object>
+            </object>            
+            <object>
+                <name>Genehmigung</name>
+                <attribute>
+                    <name>Bemerkung</name>
+                    <permission>READ</permission>
+                </attribute>
+            </object>
+            <object>
+                <name>Buchung</name>
+                <attribute>
+                    <name>Hotel</name>
+                    <permission>READ</permission>
+                </attribute>
+            </object>
             <toState>DR beendet</toState>
         </functionState>
         <functionState eventType="END">
@@ -102,22 +150,48 @@
         </functionState>
         <functionState>
             <name>DR-Antrag zurückziehen/ändern</name>
-            <permission>
-                <object>DR-Antrag</object>
-                <field permission="READ">Name</field>
-                <field permission="WRITE" mandatory="true">Reisebeginn</field>
-                <field permission="WRITE" mandatory="true">Reiseende</field>
-                <field permission="WRITE" mandatory="true">Reiseziel</field>
-                <toMany permission="WRITE">
+            <object>
+                <name>DR-Antrag</name>
+                <attribute>
+                    <name>Name</name>                        
+                    <permission>READ</permission>                        
+                </attribute>
+                <attribute>
+                    <name>Reisebeginn</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reiseende</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reiseziel</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <object>
                     <name>Mitreisende</name>
-                    <field permission="WRITE" mandatory="true">Antragsteller</field>   
-                    <field permission="WRITE" mandatory="true">Bemerkung</field>
-                </toMany>
-            </permission>
-            <permission>
-                <object>Ablehnung</object>
-                <field permission="READ">Begründung</field>
-            </permission>
+                    <attribute>
+                        <name>Antragsteller</name>                        
+                        <permission>WRITE</permission>                        
+                        <mandatory>true</mandatory>
+                    </attribute>
+                    <attribute>
+                        <name>Bemerkung</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>                    
+                </object>
+            </object>
+            <object>
+                <name>Ablehnung</name>
+                <attribute>
+                    <name>Begründung</name>
+                    <permission>READ</permission>
+                </attribute>
+            </object>
             <toState>DR-Antrag an Vorgesetzer senden</toState>
             <toState>DR-Antrag zurückziehen</toState>            
         </functionState>
@@ -137,31 +211,65 @@
         </receiveState>
         <functionState>
             <name>DR-Antrag prüfen</name>
-            <permission>
-                <object>DR-Antrag</object>
-                <field permission="READ">Name</field>
-                <field permission="WRITE" mandatory="true">Reisebeginn</field>
-                <field permission="WRITE" mandatory="true">Reiseende</field>
-                <field permission="READ">Reiseziel</field>
-                <toMany permission="READ">
+            <object>
+                <name>DR-Antrag</name>
+                <attribute>
+                    <name>Name</name>                        
+                    <permission>READ</permission>                        
+                </attribute>
+                <attribute>
+                    <name>Reisebeginn</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reiseende</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Reiseziel</name>
+                    <permission>READ</permission>
+                </attribute>
+                <object>
                     <name>Mitreisende</name>
-                    <field permission="READ">Antragsteller</field>
-                    <field permission="READ">Bemerkung</field>
-                </toMany>                
-                <toOne permission="WRITE" mandatory="true">
+                    <attribute>
+                        <name>Antragsteller</name>                        
+                        <permission>READ</permission>                        
+                    </attribute>
+                    <attribute>
+                        <name>Bemerkung</name>
+                        <permission>READ</permission>
+                    </attribute>                    
+                </object>
+                <object>
                     <name>Kostenstelle</name>
-                    <field permission="WRITE" mandatory="true">Nummer</field>
-                    <field permission="WRITE" mandatory="true">Faktor</field>
-                </toOne>
-            </permission>
-            <permission>
-                <object>Genehmigung</object>
-                <field permission="WRITE">Bemerkung</field>
-            </permission>
-            <permission>
-                <object>Ablehnung</object>
-                <field permission="WRITE">Begründung</field>
-            </permission>
+                    <attribute>
+                        <name>Nummer</name>                        
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>                        
+                    </attribute>
+                    <attribute>
+                        <name>Faktor</name>                        
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>                        
+                    </attribute>
+                </object>
+            </object>
+            <object>
+                <name>Genehmigung</name>
+                <attribute>
+                    <name>Bemerkung</name>                        
+                    <permission>WRITE</permission>
+                </attribute>
+            </object>
+            <object>
+                <name>Ablehnung</name>
+                <attribute>
+                    <name>Begründung</name>                        
+                    <permission>WRITE</permission>
+                </attribute>
+            </object>
             <toState>Genehmigen</toState>
             <toState>Ablehnen</toState>
         </functionState>
@@ -195,10 +303,14 @@
         </receiveState>
         <functionState>
             <name>Buchen</name>
-            <permission>
-                <object>Buchung</object>
-                <field permission="WRITE" mandatory="true">Hotel</field>
-            </permission>
+            <object>
+                <name>Buchung</name>
+                <attribute>
+                    <name>Hotel</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+            </object>
             <toState>Reise gebucht</toState>
         </functionState>
         <sendState eventType="END">
