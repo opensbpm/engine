@@ -53,7 +53,7 @@ node('jdk8'){
                     //'JDK 1.8' is need for sonarqube (Hostname not verified (no certificates))
                     withSonarQubeEnv('Sonarqube') {
                         sh "mvn -DskipTests \
-                                -Dsonar.projectKey=${model.getGroupId()}:${model.getArtifactId()}:${BRANCH_NAME} \
+                                -Dsonar.projectKey=${model.getGroupId()}:${model.getArtifactId()}:${BRANCH_NAME.replace('/',"-")} \
                                 -Dsonar.projectName=\"${model.getName()} ($BRANCH_NAME)\" \
                                 pmd:cpd pmd:pmd sonar:sonar"
                     }
