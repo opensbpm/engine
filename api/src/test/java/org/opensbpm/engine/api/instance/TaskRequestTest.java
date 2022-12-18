@@ -27,11 +27,13 @@ public class TaskRequestTest {
 
     @Test
     public void deserializeWithJaxb() throws Exception {
-        System.out.println("JAXB-Marshalling");
-
+        //arrange
         TaskRequest taskRequest = new TaskRequest(Long.MIN_VALUE, new NextState(), LocalDateTime.MIN);
+        
+        //act
         TaskRequest result = DeserializerUtil.deserializeJaxb(TaskRequest.class, taskRequest);
 
+        //assert
         assertThat(result.toString(), result.getId(), is(taskRequest.getId()));
         assertThat(result.toString(), result.getNextState(), is(taskRequest.getNextState()));
         assertThat(result.toString(), result.getLastChanged(), is(taskRequest.getLastChanged()));
