@@ -29,19 +29,36 @@
         <functionState eventType="START">
             <name>Start State</name>
             
-            <permission>
-                <object>My Object</object>
-                <field permission="WRITE" mandatory="true">Name</field>
-                <field permission="WRITE" mandatory="true">Referencing Object</field>
-                <toOne permission="WRITE">
+            <object>
+                <name>My Object</name>
+                <attribute>
+                    <name>Name</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Referencing Object</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                    
+                <object>
                     <name>Single Nested</name>
-                    <field permission="WRITE" mandatory="true">Name</field>
-                </toOne>
-                <toMany permission="WRITE">
+                    <attribute>
+                        <name>Name</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                </object>                
+                <object>
                     <name>Many Nested</name>
-                    <field permission="WRITE" mandatory="true">Name</field>
-                </toMany>
-            </permission>
+                    <attribute>
+                        <name>Name</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                </object>
+            </object>
 
             <toState>End State</toState>
         </functionState>        
