@@ -19,6 +19,7 @@ package org.opensbpm.engine.api.junit;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
@@ -63,6 +64,24 @@ public final class TaskResponseMatcher {
                 value(SimpleAttributeSchema.class, SimpleAttributeSchema::getFieldType, is(fieldType)),
                 value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
                 value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly))
+        );
+    }
+
+    /**
+     * {@link Matcher} to match referencing attributes.
+     * @param name name of the attribute schema
+     * @param required <code>true</code> is the required flag must be set
+     * @param readOnly <code>true</code> is the read only flag must be set
+     * @param referenceObjectMatcher Matcher to match the referencing {@link ObjectSchema}
+     * @return 
+     */
+    public static Matcher<AttributeSchema> isReferenceSchema(String name, boolean required, boolean readOnly, Matcher<ObjectSchema> referenceObjectMatcher) {
+        return allOf(
+                value(SimpleAttributeSchema.class, SimpleAttributeSchema::getName, is(name)),
+                value(SimpleAttributeSchema.class, SimpleAttributeSchema::getFieldType, is(FieldType.REFERENCE)),
+                value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
+                value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly)),
+                value(SimpleAttributeSchema.class, schema -> schema.getAutocompleteReference().get(), referenceObjectMatcher)
         );
     }
 
