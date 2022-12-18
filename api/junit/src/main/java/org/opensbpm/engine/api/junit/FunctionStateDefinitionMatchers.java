@@ -39,7 +39,7 @@ import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToOnePermis
 import static org.hamcrest.Matchers.allOf;
 
 /**
- * Factory for {@link FunctionStateDefinition} specfic {{@link Matcher}'s
+ * Factory for {@link FunctionStateDefinition} specific {{@link Matcher}'s
  */
 public final class FunctionStateDefinitionMatchers {
 
