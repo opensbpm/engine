@@ -60,7 +60,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.opensbpm.engine.utils.PairUtils;
-import org.opensbpm.engine.xmlmodel.processmodel.AttributeType;
+import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FunctionStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ObjectPermissionType;
@@ -260,8 +260,8 @@ public class ProcessTypeConverter {
         List<AbstractAttributePermissionBuilder<?, ?>> permissions = new ArrayList<>();
         for (Object abstractAttributeType : attributeTypes) {
             AbstractAttributePermissionBuilder<?, ?> permissionBuilder;
-            if (abstractAttributeType instanceof AttributeType) {
-                AttributeType attributeType = (AttributeType) abstractAttributeType;
+            if (abstractAttributeType instanceof AttributePermissionType) {
+                AttributePermissionType attributeType = (AttributePermissionType) abstractAttributeType;
 
                 AttributeBuilder<? extends AttributeDefinition, ?> attributeBuilder = parentAttributeBuilder.getAttribute(attributeType.getName());
                 permissionBuilder = simplePermission(attributeBuilder,
