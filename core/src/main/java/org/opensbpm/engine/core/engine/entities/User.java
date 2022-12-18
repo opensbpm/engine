@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.engine.entities;
 
 import java.io.Serializable;
@@ -40,7 +41,7 @@ public class User implements HasId, Serializable {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String username;
+    private String name;
 
     @ManyToMany(mappedBy = "users")
     private Set<Role> roles;
@@ -48,8 +49,8 @@ public class User implements HasId, Serializable {
     protected User() {
     }
 
-    public User(String username) {
-        this.username = username;
+    public User(String name) {
+        this.name = Objects.requireNonNull(name, "name must be non null");
     }
 
     @Override
@@ -57,12 +58,12 @@ public class User implements HasId, Serializable {
         return id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = Objects.requireNonNull(name, "name must be non null");
     }
 
     public Set<Role> getRoles() {
@@ -91,7 +92,7 @@ public class User implements HasId, Serializable {
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                 .append("uId", getId())
-                .append("username", getUsername())
+                .append("name", getName())
                 .toString();
     }
 }

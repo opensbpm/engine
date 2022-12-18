@@ -22,8 +22,8 @@ import org.opensbpm.engine.core.model.entities.Role;
 
 public class RbacBuilder {
 
-    public static RbacBuilder createUser(String username, String firstname, String lastname) {
-        return new RbacBuilder(new User(username));
+    public static RbacBuilder createUser(String name, String firstname, String lastname) {
+        return new RbacBuilder(new User(name));
     }
 
     private final User user;

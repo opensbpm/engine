@@ -59,7 +59,7 @@ public final class ExceptionFactory {
 
     public static TaskOutOfDateException newTaskOutOfDateException(Subject subject, LocalDateTime lastChanged) {
         String userMessage = subject.accept(userSubject())
-                .map(userSubject -> userSubject.getUser() == null ? "" : " of User " + userSubject.getUser().getUsername())
+                .map(userSubject -> userSubject.getUser() == null ? "" : " of User " + userSubject.getUser().getName())
                 .orElse("");
         String message = "Subject " + subject.getSubjectModel().getName() + userMessage + " changed since " + lastChanged;
         return new TaskOutOfDateException(message);

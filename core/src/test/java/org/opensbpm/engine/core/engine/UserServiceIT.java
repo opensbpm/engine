@@ -47,7 +47,7 @@ public class UserServiceIT extends ServiceITCase {
 
         //then
         assertThat(result.getId(), is(notNullValue()));
-        assertThat(result.getUsername(), is("username"));
+        assertThat(result.getName(), is("username"));
 
         assertThat(engineEventsCollector, contains(
                 isUserChangedEvent(result.getId(), Type.CREATE)

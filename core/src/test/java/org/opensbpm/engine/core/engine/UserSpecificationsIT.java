@@ -51,17 +51,17 @@ public class UserSpecificationsIT extends DataJpaTestCase {
     }
 
     @Test
-    public void withUsername() {
+    public void withName() {
         //given
         User user = new User("username");
         user = entityManager.persistFlushFind(user);
 
         //when
-        Optional<User> result = userRepository.findOne(UserSpecifications.withUsername(user.getUsername()));
+        Optional<User> result = userRepository.findOne(UserSpecifications.withName(user.getName()));
 
         //then
         assertTrue(result.isPresent());
-        assertThat(result.get().getUsername(), is(user.getUsername()));
+        assertThat(result.get().getName(), is(user.getName()));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class UserSpecificationsIT extends DataJpaTestCase {
                 .orElseThrow(() -> new IllegalStateException());
 
         //then
-        assertThat(result.getUsername(), is(user.getUsername()));
+        assertThat(result.getName(), is(user.getName()));
     }
 
 }

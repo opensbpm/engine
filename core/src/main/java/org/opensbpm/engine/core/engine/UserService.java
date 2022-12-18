@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.engine;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withIds;
-import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withUsername;
+import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withName;
 
 @Service
 @Transactional
@@ -55,7 +56,7 @@ public class UserService {
     }
 
     public Optional<User> findByName(String name) {
-        return userRepository.findOne(withUsername(name));
+        return userRepository.findOne(withName(name));
     }
 
     public Optional<User> findById(Long id) {
@@ -84,14 +85,14 @@ public class UserService {
 
     static class UserSpecifications {
 
-        public static Specification<User> withIds(final Collection<Long> ids) {
+        public static Specification<User> withIds(Collection<Long> ids) {
             return (Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb)
                     -> root.get(User_.id).in(ids);
         }
 
-        public static Specification<User> withUsername(final String username) {
+        public static Specification<User> withName(String name) {
             return (Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb)
-                    -> cb.equal(root.get(User_.username), username);
+                    -> cb.equal(root.get(User_.name), name);
         }
 
         public static Specification<User> withRole(Role role) {

@@ -43,8 +43,7 @@ public class UserTokenServiceBoundary implements UserTokenService {
     @Transactional
     @Override
     public UserToken registerUser(TokenRequest tokenRequest) {
-        String username = tokenRequest.getUsername();
-        User user = userService.findByName(username)
+        User user = userService.findByName(tokenRequest.getUsername())
                 .orElseGet(() -> createUser(tokenRequest));
         return convertUser(user);
     }

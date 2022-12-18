@@ -40,8 +40,8 @@ import static org.mockito.Mockito.when;
 
 public class MockData {
 
-    public static User spyUser(long id, String username, String firstname, String lastname) {
-        return spyWithId(id, new User(username));
+    public static User spyUser(long id, String name, String firstname, String lastname) {
+        return spyWithId(id, new User(name));
     }
 
     public static Role spyRole(long id, String name) {

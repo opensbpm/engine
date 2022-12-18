@@ -170,7 +170,7 @@ public class EngineConverter {
     }
 
     public static UserToken convertUser(User user) {
-        return UserToken.of(user.getId(), user.getUsername(), user.getRoles().stream()
+        return UserToken.of(user.getId(), user.getName(), user.getRoles().stream()
                 .map(role -> RoleToken.of(role.getId(), role.getName()))
                 .collect(Collectors.toSet())
         );

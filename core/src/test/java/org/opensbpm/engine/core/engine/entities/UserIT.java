@@ -74,7 +74,7 @@ public class UserIT extends EntityDataTestCase {
 
         //then
         assertThat(result.getId(), is(notNullValue()));
-        assertThat(result.getUsername(), is(user.getUsername()));
+        assertThat(result.getName(), is(user.getName()));
     }
 
     @Test
