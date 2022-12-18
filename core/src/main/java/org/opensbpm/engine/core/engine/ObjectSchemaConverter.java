@@ -72,7 +72,7 @@ class ObjectSchemaConverter {
                 .orElse(Boolean.TRUE);
     }
 
-    public ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
+    private ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
         return new SchemaCreator(state).apply(objectModel);
     }
 
