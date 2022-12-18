@@ -27,8 +27,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinitio
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.AttributePermissionDefinition;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToManyPermission;
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.ToOnePermission;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.FunctionStateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.ReceiveStateDefinition;
@@ -48,7 +46,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.NestedPermissionDefinition;
 import org.opensbpm.engine.utils.PairUtils;
-import org.opensbpm.engine.xmlmodel.processmodel.AttributeType;
+import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FieldType;
 import org.opensbpm.engine.xmlmodel.processmodel.FunctionStateType;
@@ -261,7 +259,7 @@ public class ProcessDefinitionConverter {
                 toOnePermissionType.getAttributeOrObject().addAll(createAtributePermission(((NestedPermissionDefinition) attributePermission).getAttributePermissions()));
                 permissionType = toOnePermissionType;
             } else {
-                AttributeType attributeType = new ObjectFactory().createAttributeType();
+                AttributePermissionType attributeType = new ObjectFactory().createAttributePermissionType();
                 attributeType.setName(attributePermission.getAttribute().getName());
                 attributeType.setPermission(Permission.fromValue(attributePermission.getPermission().name()));
                 attributeType.setMandatory(attributePermission.isMandatory());
