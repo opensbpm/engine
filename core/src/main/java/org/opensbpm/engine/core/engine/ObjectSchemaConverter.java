@@ -113,13 +113,15 @@ class ObjectSchemaConverter {
 
                 @Override
                 public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-                    SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(referenceAttribute.getId(), referenceAttribute.getName(), FieldType.REFERENCE);
+                    SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.ofReference(
+                            referenceAttribute.getId(), 
+                            referenceAttribute.getName(), 
+                            toObjectSchema(referenceAttribute.getReference())
+                    );
                     getState().ifPresent(functionState -> {
                         attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
                         attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
                     });
-
-                    attributeSchema.setAutocompleteReference(toObjectSchema(referenceAttribute.getReference()));
 
                     //PENDING add attributeSchema.getDefaultValue()
                     return attributeSchema;

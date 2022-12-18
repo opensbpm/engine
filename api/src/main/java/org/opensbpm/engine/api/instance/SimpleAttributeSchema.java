@@ -37,6 +37,12 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
         return new SimpleAttributeSchema(id, name, fieldType);
     }
 
+    public static SimpleAttributeSchema ofReference(long id, String name, ObjectSchema autocompleteReference) {
+        SimpleAttributeSchema simpleAttributeSchema = new SimpleAttributeSchema(id, name, FieldType.REFERENCE);
+        simpleAttributeSchema.setAutocompleteReference(autocompleteReference);
+        return simpleAttributeSchema;
+    }
+
     @XmlAttribute(required = true)
     private FieldType fieldType;
 

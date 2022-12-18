@@ -137,8 +137,9 @@ public class TaskResponseTest {
     }
 
     private static SimpleAttributeSchema referenceSchema(Long id, String name, FieldType type, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
-        SimpleAttributeSchema attributeSchema = attributeSchema(id, name, type, required, readOnly);
-        attributeSchema.setAutocompleteReference(autocompleteReference);
+        SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.ofReference(id, name, autocompleteReference);
+        attributeSchema.setRequired(required);
+        attributeSchema.setReadonly(readOnly);
         return attributeSchema;
     }
 
