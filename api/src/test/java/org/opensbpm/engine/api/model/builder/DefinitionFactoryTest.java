@@ -22,8 +22,6 @@ import org.junit.Test;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToOnePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
@@ -39,9 +37,8 @@ import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.cont
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.containsPermisssions;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFieldPermission;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isFunctionState;
+import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isNestedPermission;
 import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToManyPermission;
-import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isToOnePermission;
 import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isField;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isFieldWithIndex;
@@ -55,6 +52,7 @@ import static org.opensbpm.engine.api.junit.ReceiveStateDefinitionMatchers.isRec
 import static org.opensbpm.engine.api.junit.SendStateDefinitionMatchers.isSendState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.nestedPermission;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
@@ -98,10 +96,10 @@ public class DefinitionFactoryTest {
                                 .addParameter("MyParameter", "Value")
                                 .addPermission(permission(object1)
                                         .addWritePermission(field1, true)
-                                        .addPermission(new ToOnePermissionBuilder(toOneField, Permission.WRITE, true)
+                                        .addPermission(nestedPermission(toOneField, Permission.WRITE, true)
                                                 .addPermission(new AttributePermissionBuilder(toOneStringField, Permission.WRITE, true))
                                         )
-                                        .addPermission(new ToManyPermissionBuilder(toManyField, Permission.WRITE, true)
+                                        .addPermission(nestedPermission(toManyField, Permission.WRITE, true)
                                                 .addPermission(new AttributePermissionBuilder(toManyStringField, Permission.WRITE, true))
                                         )
                                 )
@@ -190,10 +188,10 @@ public class DefinitionFactoryTest {
                         isFunctionState("Execute", "Execute this Function", containsPermisssions(
                                 isPermission("Object 1",
                                         isFieldPermission("Object 1 - Field 1", Permission.WRITE, true),
-                                        isToOnePermission("To One",
+                                        isNestedPermission("To One",
                                                 isFieldPermission("String Field", Permission.WRITE, true)
                                         ),
-                                        isToManyPermission("To Many",
+                                        isNestedPermission("To Many",
                                                 isFieldPermission("String Field", Permission.WRITE, true)
                                         )
                                 ),

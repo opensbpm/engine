@@ -20,9 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
+import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.NestedPermissionBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.PermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToOnePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
@@ -117,14 +116,9 @@ public final class DefinitionFactory {
         return new AttributePermissionBuilder(attributeBuilder, permission, mandatory);
     }
     
-    public static ToOnePermissionBuilder toOnePermission(
+    public static NestedPermissionBuilder nestedPermission(
             AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory){
-        return new ToOnePermissionBuilder(attributeBuilder, permission, mandatory);
-    }
-    
-    public static ToManyPermissionBuilder toManyPermission(
-            AttributeBuilder<?,?> attributeBuilder, Permission permission, boolean mandatory){
-        return new ToManyPermissionBuilder(attributeBuilder, permission, mandatory);
+        return new NestedPermissionBuilder(attributeBuilder, permission, mandatory);
     }
     
     /**

@@ -27,34 +27,54 @@
         <roles>Angestellte</roles>
         <functionState eventType="START">
             <name>Rechnung erfassen</name>
-            <permission>
-                <object>Rechnung</object>
-                <field permission="WRITE" mandatory="true">Datum</field>
-                <field permission="WRITE" mandatory="true">Nummer</field>
-            </permission>
+            <object>
+                <name>Rechnung</name>
+                <attribute>
+                    <name>Datum</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+                <attribute>
+                    <name>Nummer</name>
+                    <permission>WRITE</permission>
+                    <mandatory>true</mandatory>
+                </attribute>
+            </object>
             <toState>Empfänger erfassen</toState>
         </functionState>
         <functionState>
             <name>Empfänger erfassen</name>
-            <permission>
-                <object>Rechnung</object>
-                <toOne permission="WRITE">
+            <object>
+                <name>Rechnung</name>
+                <object>
                     <name>Empfänger</name>
-                    <field permission="WRITE" mandatory="true">Name</field>
-                    <field permission="WRITE" mandatory="true">Adresse</field>
-                </toOne>
-            </permission>
+                    <attribute>
+                        <name>Name</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                    <attribute>
+                        <name>Adresse</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                </object>
+            </object>
             <toState>Position erfassen</toState>
         </functionState>
         <functionState>
             <name>Position erfassen</name>
-            <permission>
-                <object>Rechnung</object>
-                <toMany permission="WRITE">
+            <object>
+                <name>Rechnung</name>
+                <object>
                     <name>Position</name>
-                    <field permission="WRITE" mandatory="true">Text</field>
-                </toMany>
-            </permission>
+                    <attribute>
+                        <name>Text</name>
+                        <permission>WRITE</permission>
+                        <mandatory>true</mandatory>
+                    </attribute>
+                </object>
+            </object>
             <toState>Position erfassen</toState>
             <toState>Speichern</toState>
         </functionState>
@@ -62,7 +82,7 @@
             <name>Speichern</name>
         </functionState>
     </userSubject>
-    
+
 
     <object>
         <name>Rechnung</name>

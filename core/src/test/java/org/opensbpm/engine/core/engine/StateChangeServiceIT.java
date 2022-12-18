@@ -29,7 +29,7 @@ import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
-import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.ToManyPermissionBuilder;
+import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.NestedPermissionBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
@@ -128,7 +128,7 @@ public class StateChangeServiceIT extends ServiceITCase {
 
         FunctionStateBuilder startState = new FunctionStateBuilder("start").eventType(StateEventType.START)
                 .addPermission(permission(object1)
-                        .addPermission(new ToManyPermissionBuilder(o1field1, Permission.WRITE, true)
+                        .addPermission(new NestedPermissionBuilder(o1field1, Permission.WRITE, true)
                                 .addPermission(new AttributePermissionBuilder(o1field2, Permission.WRITE, true))
                         )
                 );

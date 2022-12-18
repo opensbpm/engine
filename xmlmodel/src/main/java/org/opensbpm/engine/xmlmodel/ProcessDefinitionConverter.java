@@ -46,17 +46,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang3.tuple.Pair;
+import org.opensbpm.engine.api.model.definition.PermissionDefinition.NestedPermissionDefinition;
 import org.opensbpm.engine.utils.PairUtils;
-import org.opensbpm.engine.utils.StreamUtils;
-import org.opensbpm.engine.xmlmodel.processmodel.AttributePermissionType;
+import org.opensbpm.engine.xmlmodel.processmodel.AttributeType;
 import org.opensbpm.engine.xmlmodel.processmodel.Field;
 import org.opensbpm.engine.xmlmodel.processmodel.FieldType;
 import org.opensbpm.engine.xmlmodel.processmodel.FunctionStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ObjectFactory;
+import org.opensbpm.engine.xmlmodel.processmodel.ObjectPermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ObjectType;
 import org.opensbpm.engine.xmlmodel.processmodel.ParametersWrapper;
 import org.opensbpm.engine.xmlmodel.processmodel.Permission;
-import org.opensbpm.engine.xmlmodel.processmodel.PermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ProcessType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveTransitionType;
@@ -66,15 +66,12 @@ import org.opensbpm.engine.xmlmodel.processmodel.ServiceSubject;
 import org.opensbpm.engine.xmlmodel.processmodel.StateEventType;
 import org.opensbpm.engine.xmlmodel.processmodel.StateType;
 import org.opensbpm.engine.xmlmodel.processmodel.SubjectType;
-import org.opensbpm.engine.xmlmodel.processmodel.ToManyPermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ToManyType;
-import org.opensbpm.engine.xmlmodel.processmodel.ToOnePermissionType;
 import org.opensbpm.engine.xmlmodel.processmodel.ToOneType;
 import org.opensbpm.engine.xmlmodel.processmodel.UserSubject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
-import static org.opensbpm.engine.utils.PairUtils.toMap;
 
 public class ProcessDefinitionConverter {
 
@@ -243,11 +240,12 @@ public class ProcessDefinitionConverter {
         functionStateType.setParameters(parametersWrapper);
 
         for (PermissionDefinition permission : stateDefinition.getPermissions()) {
-            PermissionType permissionType = new ObjectFactory().createPermissionType();
-            permissionType.setObject(permission.getObjectDefinition().getName());
+            ObjectPermissionType permissionType = new ObjectFactory().createObjectPermissionType();
+            permissionType.setName(permission.getObjectDefinition().getName());
+            
             List<Object> attributePermissionTypes = createAtributePermission(permission.getAttributePermissions());
-            permissionType.getFieldOrToOneOrToMany().addAll(attributePermissionTypes);
-            functionStateType.getPermission().add(permissionType);
+            permissionType.getAttributeOrObject().addAll(attributePermissionTypes);
+            functionStateType.getObject().add(permissionType);
         }
 
         return functionStateType;
@@ -257,23 +255,17 @@ public class ProcessDefinitionConverter {
         List<Object> attributePermissionTypes = new ArrayList<>();
         for (AttributePermissionDefinition attributePermission : attributePermissions) {
             Object permissionType;
-            if (attributePermission instanceof ToOnePermission) {
-                ToOnePermissionType toOnePermissionType = new ObjectFactory().createToOnePermissionType();
+            if (attributePermission instanceof NestedPermissionDefinition) {
+                ObjectPermissionType toOnePermissionType = new ObjectFactory().createObjectPermissionType();
                 toOnePermissionType.setName(attributePermission.getAttribute().getName());
-                toOnePermissionType.getFieldOrToOneOrToMany().addAll(createAtributePermission(((ToOnePermission) attributePermission).getAttributePermissions()));
+                toOnePermissionType.getAttributeOrObject().addAll(createAtributePermission(((NestedPermissionDefinition) attributePermission).getAttributePermissions()));
                 permissionType = toOnePermissionType;
-            } else if (attributePermission instanceof ToManyPermission) {
-                ToManyPermissionType toManyPermissionType = new ObjectFactory().createToManyPermissionType();
-                toManyPermissionType.setName(attributePermission.getAttribute().getName());
-                toManyPermissionType.getFieldOrToOneOrToMany().addAll(createAtributePermission(((ToManyPermission) attributePermission).getAttributePermissions()));
-                permissionType = toManyPermissionType;
             } else {
-                AttributePermissionType attributePermissionType = new ObjectFactory().createAttributePermissionType();
-                attributePermissionType.setValue(attributePermission.getAttribute().getName());
-                attributePermissionType.setPermission(Permission.fromValue(attributePermission.getPermission().name()));
-                attributePermissionType.setMandatory(attributePermission.isMandatory());
-
-                permissionType = attributePermissionType;
+                AttributeType attributeType = new ObjectFactory().createAttributeType();
+                attributeType.setName(attributePermission.getAttribute().getName());
+                attributeType.setPermission(Permission.fromValue(attributePermission.getPermission().name()));
+                attributeType.setMandatory(attributePermission.isMandatory());
+                permissionType = attributeType;
             }
             attributePermissionTypes.add(permissionType);
         }
