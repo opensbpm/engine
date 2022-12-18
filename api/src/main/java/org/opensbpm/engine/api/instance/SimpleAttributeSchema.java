@@ -23,6 +23,8 @@ import java.util.Optional;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -41,8 +43,7 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
     @XmlAttribute(required = true)
     private FieldType fieldType;
 
-    //TODO @XmlAttribute
-    @XmlTransient
+    @XmlElement
     private ObjectSchema autocompleteReference;
 
     protected SimpleAttributeSchema() {
