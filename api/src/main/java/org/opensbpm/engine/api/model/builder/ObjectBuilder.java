@@ -32,12 +32,12 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefini
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 
-public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilder> 
+public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuilder>
         implements HasChildAttributes<ObjectBuilder> {
 
     private final String name;
     private String displayName;
-    private final Map<String, AttributeBuilder<?,?>> attributeBuilders = new LinkedHashMap<>();
+    private final Map<String, AttributeBuilder<?, ?>> attributeBuilders = new LinkedHashMap<>();
 
     public ObjectBuilder(String name) {
         this.name = name;
@@ -47,7 +47,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
     protected ObjectBuilder self() {
         return this;
     }
-    
 
     @Override
     public String getName() {
@@ -60,14 +59,14 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
     }
 
     @Override
-    public ObjectBuilder addAttribute(AttributeBuilder<?,?> attributeBuilder) {
+    public ObjectBuilder addAttribute(AttributeBuilder<?, ?> attributeBuilder) {
         checkBuilt();
         attributeBuilders.put(attributeBuilder.getName(), attributeBuilder);
         return self();
     }
 
     @Override
-    public AttributeBuilder<?,?> getAttribute(String name) {
+    public AttributeBuilder<?, ?> getAttribute(String name) {
         if (!attributeBuilders.containsKey(name)) {
             throw new IllegalArgumentException("Attribute '" + name + "' not found");
         }
@@ -106,13 +105,13 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         };
     }
 
-    public abstract static class AttributeBuilder<V extends AttributeDefinition, T extends AttributeBuilder<V,T>> 
-            extends AbstractBuilder<V,T> {
+    public abstract static class AttributeBuilder<V extends AttributeDefinition, T extends AttributeBuilder<V, T>>
+            extends AbstractBuilder<V, T> {
 
         public abstract String getName();
     }
 
-    public static class FieldBuilder extends AttributeBuilder<FieldDefinition,FieldBuilder> {
+    public static class FieldBuilder extends AttributeBuilder<FieldDefinition, FieldBuilder> {
 
         private final FieldDefinition fieldDefinition;
         private boolean indexed;
@@ -156,7 +155,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
             return this;
         }
 
-        
         @Override
         public String getName() {
             return fieldDefinition.getName();
@@ -182,7 +180,7 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         }
     }
 
-    public static class ReferenceBuilder extends AttributeBuilder<ReferenceDefinition,ReferenceBuilder> {
+    public static class ReferenceBuilder extends AttributeBuilder<ReferenceDefinition, ReferenceBuilder> {
 
         private final ReferenceDefinition referenceDefinition;
 
@@ -212,7 +210,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         protected ReferenceBuilder self() {
             return this;
         }
-        
 
         @Override
         public String getName() {
@@ -225,11 +222,11 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         }
     }
 
-    public abstract static class AbstractNestedBuilder<T extends AbstractNestedBuilder<T, V>, V extends NestedAttribute> 
+    public abstract static class AbstractNestedBuilder<T extends AbstractNestedBuilder<T, V>, V extends NestedAttribute>
             extends AttributeBuilder<V, T> implements HasChildAttributes<T> {
 
         private final String name;
-        private final Map<String, AttributeBuilder<?,?>> attributeBuilders = new LinkedHashMap<>();
+        private final Map<String, AttributeBuilder<?, ?>> attributeBuilders = new LinkedHashMap<>();
 
         protected AbstractNestedBuilder(String name) {
             this.name = name;
@@ -241,14 +238,14 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         }
 
         @Override
-        public T addAttribute(AttributeBuilder<?,?> attributeBuilder) {
+        public T addAttribute(AttributeBuilder<?, ?> attributeBuilder) {
             checkBuilt();
             attributeBuilders.put(attributeBuilder.getName(), attributeBuilder);
             return self();
         }
 
         @Override
-        public AttributeBuilder<?,?> getAttribute(String name) {
+        public AttributeBuilder<?, ?> getAttribute(String name) {
             if (!attributeBuilders.containsKey(name)) {
                 throw new IllegalArgumentException("Attribute '" + name + "' not found");
             }
@@ -277,7 +274,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
         protected ToOneBuilder self() {
             return this;
         }
-        
 
         @Override
         protected ToOneDefinition create(String name, List<AttributeDefinition> attributes) {
@@ -308,7 +304,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition,ObjectBuilde
             return this;
         }
 
-        
         @Override
         protected ToManyDefinition create(String name, List<AttributeDefinition> attributes) {
             return new ToManyDefinition() {
