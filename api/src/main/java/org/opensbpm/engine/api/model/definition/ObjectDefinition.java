@@ -88,7 +88,7 @@ public interface ObjectDefinition {
     /**
      * Definition of an referencing attribute.
      */
-    interface ReferenceDefinition extends AttributeDefinition {
+    interface ReferenceDefinition extends NestedAttribute {
 
         ObjectDefinition getObjectDefinition();
 
