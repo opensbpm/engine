@@ -43,6 +43,7 @@ import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
@@ -148,6 +149,11 @@ public class TestTask extends Task {
                     }
 
                     @Override
+                    public DynaProperty visitReference(ReferenceAttributeSchema attributeSchema) {
+                        return new DynaProperty(attribute.getName(), LazyDynaBean.class);
+                    }
+
+                    @Override
                     public DynaProperty visitNested(NestedAttributeSchema attributeSchema) {
                         return new DynaProperty(attribute.getName(), LazyDynaBean.class);
                     }
@@ -175,7 +181,7 @@ public class TestTask extends Task {
             this.attributes = attributes;
             data.replaceAll((t, u) -> {
                 if (getAttribute(t) instanceof SimpleAttributeSchema
-                        && FieldType.REFERENCE == ((SimpleAttributeSchema)getAttribute(t)).getFieldType()) {
+                        && FieldType.REFERENCE == ((SimpleAttributeSchema) getAttribute(t)).getFieldType()) {
                     return u;
                 } else if (u instanceof Map) {
                     NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);

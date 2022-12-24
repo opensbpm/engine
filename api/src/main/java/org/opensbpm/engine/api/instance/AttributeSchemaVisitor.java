@@ -6,6 +6,8 @@ public interface AttributeSchemaVisitor<T> {
 
     T visitSimple(SimpleAttributeSchema simpleAttributeSchema);
 
+    T visitReference(ReferenceAttributeSchema referenceAttributeSchema);
+
     T visitNested(NestedAttributeSchema nestedAttributeSchema);
 
     T visitIndexed(IndexedAttributeSchema indexedAttributeSchema);
@@ -19,14 +21,15 @@ public interface AttributeSchemaVisitor<T> {
         };
     }
 
-//    static AttributeSchemaVisitor<Optional<ReferenceAttributeSchema>> reference() {
-//        return new OptionalAttributeSchemaAdapter<ReferenceAttributeSchema>() {
-//            @Override
-//            public Optional<ReferenceAttributeSchema> visitReference(ReferenceAttributeSchema referenceSchema) {
-//                return Optional.of(referenceSchema);
-//            }
-//        };
-//    }
+    static AttributeSchemaVisitor<Optional<ReferenceAttributeSchema>> reference() {
+        return new OptionalAttributeSchemaAdapter<ReferenceAttributeSchema>() {
+            @Override
+            public Optional<ReferenceAttributeSchema> visitReference(ReferenceAttributeSchema referenceSchema) {
+                return Optional.of(referenceSchema);
+            }
+        };
+    }
+
     static AttributeSchemaVisitor<Optional<NestedAttributeSchema>> nested() {
         return new OptionalAttributeSchemaAdapter<NestedAttributeSchema>() {
             @Override
@@ -52,10 +55,11 @@ public interface AttributeSchemaVisitor<T> {
             return Optional.empty();
         }
 
-//        @Override
-//        public Optional<T> visitReference(ReferenceAttributeSchema referenceSchema) {
-//            return Optional.empty();
-//        }
+        @Override
+        public Optional<T> visitReference(ReferenceAttributeSchema referenceSchema) {
+            return Optional.empty();
+        }
+
         @Override
         public Optional<T> visitNested(NestedAttributeSchema nestedSchema) {
             return Optional.empty();

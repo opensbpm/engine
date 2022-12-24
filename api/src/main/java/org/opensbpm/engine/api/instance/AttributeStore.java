@@ -87,9 +87,10 @@ public class AttributeStore {
         return computeIfAbsent(attributeSchema, id -> /*attributeSchema.getDefaultValue()*/ null);
     }
 
-//    public HashMap<String, String> getReference(ReferenceAttributeModel attributeModel) {
-//        return computeIfAbsent(attributeModel, id -> null);
-//    }
+    public HashMap<String, String> getReference(ReferenceAttributeSchema attributeSchema) {
+        return computeIfAbsent(attributeSchema, id -> null);
+    }
+
     public HashMap<Long, Serializable> getNested(NestedAttributeSchema attributeSchema) {
         return computeIfAbsent(attributeSchema, id -> new HashMap<>());
     }
@@ -107,9 +108,10 @@ public class AttributeStore {
         putValue(attributeSchema, value);
     }
 
-//    public void putReference(ReferenceAttributeModel attributeModel, HashMap<String,String> value) {
-//        putValue(attributeModel, value);
-//    }
+    public void putReference(ReferenceAttributeSchema attributeSchema, HashMap<String,String> value) {
+        putValue(attributeSchema, value);
+    }
+    
     public void putNested(NestedAttributeSchema attributeSchema, HashMap<Long, Serializable> value) {
         putValue(attributeSchema, value);
     }
@@ -133,6 +135,12 @@ public class AttributeStore {
 //                        .map(v -> (Serializable) attributeSchema.getFieldType().getType().cast(v))
 //                        .orElse(null);
 //                return checkedValue;
+                return value;
+            }
+
+            @Override
+            public Serializable visitReference(ReferenceAttributeSchema attributeSchema) {
+                validateRequiredValue(attributeSchema, () -> value == null);
                 return value;
             }
 
@@ -182,10 +190,11 @@ public class AttributeStore {
                             return getSimple(attributeSchema);
                         }
 
-//                        @Override
-//                        public Serializable visitReference(ReferenceAttributeSchema attributeSchema) {
-//                            return getReference(attributeSchema);
-//                        }
+                        @Override
+                        public Serializable visitReference(ReferenceAttributeSchema attributeSchema) {
+                            return getReference(attributeSchema);
+                        }
+
                         @Override
                         public Serializable visitNested(NestedAttributeSchema attributeSchema) {
                             return new AttributeStore(attributeSchema, getNested(attributeSchema)).toIdMap(filter);
@@ -319,13 +328,14 @@ public class AttributeStore {
 
             return Optional.ofNullable(value);
         }
-//            @Override
-//            public Void visitReference(ReferenceAttributeModel attributeModel) {
-//                HashMap<String, String> value = data.getReference(attributeModel);
-//                validateRequiredValue("Nestedattribute", attributeSchema, () -> value == null);          
-//                put(attributeModel, value);
-//                return null;
-//            }
+
+        @Override
+        public Optional<Serializable> visitReference(ReferenceAttributeSchema attributeSchema) {
+            HashMap<String, String> value = data.getReference(attributeSchema);
+            validateRequiredValue("Nestedattribute", attributeSchema, () -> value == null);
+
+            return Optional.ofNullable(value);
+        }
 
         @Override
         public Optional<Serializable> visitNested(NestedAttributeSchema attributeSchema) {
