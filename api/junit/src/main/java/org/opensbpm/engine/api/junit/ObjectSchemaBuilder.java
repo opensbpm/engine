@@ -26,6 +26,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.model.FieldType;
 
@@ -160,31 +161,6 @@ public class ObjectSchemaBuilder {
 
     }
 
-    public static class ReferencedAttributeBuilder extends AttributeBuilder<SimpleAttributeSchema, ReferencedAttributeBuilder> {
-
-        private final ObjectSchema autocompleteReference;
-
-        public ReferencedAttributeBuilder(String name, ObjectSchema autocompleteReference) {
-            super(name);
-            this.autocompleteReference = autocompleteReference;
-        }
-
-        @Override
-        protected ReferencedAttributeBuilder self() {
-            return this;
-        }
-
-        @Override
-        public SimpleAttributeSchema build(AtomicLong id) {
-            SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id.getAndIncrement(), name, FieldType.REFERENCE);
-            attributeSchema.setAutocompleteReference(autocompleteReference);
-
-            attributeSchema.setRequired(required);
-            return attributeSchema;
-        }
-
-    }
-
     public static abstract class ContainerAttributeBuilder<T extends AttributeSchema, V extends ContainerAttributeBuilder<T, V>>
             extends AttributeBuilder<T, V> {
 
@@ -204,6 +180,31 @@ public class ObjectSchemaBuilder {
                     .map(builder -> builder.build(id))
                     .collect(Collectors.toList());
         }
+    }
+
+    public static class ReferencedAttributeBuilder extends ContainerAttributeBuilder<ReferenceAttributeSchema, ReferencedAttributeBuilder> {
+
+        private final ObjectSchema autocompleteReference;
+
+        public ReferencedAttributeBuilder(String name, ObjectSchema autocompleteReference) {
+            super(name);
+            this.autocompleteReference = autocompleteReference;
+        }
+
+        @Override
+        protected ReferencedAttributeBuilder self() {
+            return this;
+        }
+
+        @Override
+        public ReferenceAttributeSchema build(AtomicLong id) {
+            ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id.getAndIncrement(), name, buildAttributes(id));
+            attributeSchema.setAutocompleteReference(autocompleteReference);
+
+            attributeSchema.setRequired(required);
+            return attributeSchema;
+        }
+
     }
 
     public static class NestedAttributeBuilder extends ContainerAttributeBuilder<NestedAttributeSchema, NestedAttributeBuilder> {
