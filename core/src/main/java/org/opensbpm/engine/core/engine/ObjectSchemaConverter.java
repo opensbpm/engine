@@ -28,7 +28,6 @@ import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
-import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
 import org.opensbpm.engine.core.model.entities.FunctionState;
@@ -111,11 +110,11 @@ class ObjectSchemaConverter {
                     getState().ifPresent(functionState -> {
                         attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
                         attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
-                        functionState.getDefaultValue(simpleAttribute)
-                            .map(valueScript -> scriptService.evaluateDefaultValueScript(valueScript, bindingContext))
-                            .ifPresent(defaultValue -> {
-                                attributeSchema.setDefaultValue(defaultValue);
-                            });
+                        functionState.findStatePermission(simpleAttribute)
+                                .map(statePermission -> scriptService.evaluateDefaultValueScript(statePermission, bindingContext))
+                                .ifPresent(defaultValue -> {
+                                    attributeSchema.setDefaultValue(defaultValue);
+                                });
                     });
                     attributeSchema.setIndexed(simpleAttribute.isIndexed());
 

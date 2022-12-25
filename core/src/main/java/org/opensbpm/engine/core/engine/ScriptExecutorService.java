@@ -35,6 +35,7 @@ import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.State;
+import org.opensbpm.engine.core.model.entities.StatePermission;
 import org.springframework.stereotype.Component;
 import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
 import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
@@ -70,8 +71,13 @@ public class ScriptExecutorService {
         );
     }
 
-    public Serializable evaluateDefaultValueScript(String script, BindingContext bindingContext) {
-        return eval(String.format("\"%s\"", script), bindings -> {
+    public Optional<Serializable> evaluateDefaultValueScript(StatePermission statePermission, BindingContext bindingContext) {
+        return statePermission.getDefaultValue()
+                .map(defaultValue -> evalDefaultValueScript(String.format("\"%s\"", defaultValue), bindingContext));
+    }
+
+    private Serializable evalDefaultValueScript(String script, BindingContext bindingContext) {
+        return eval(script, bindings -> {
             bindings.put("user", bindingContext);
         });
     }
