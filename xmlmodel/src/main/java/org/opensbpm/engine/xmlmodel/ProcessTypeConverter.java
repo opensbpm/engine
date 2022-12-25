@@ -56,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import org.apache.commons.lang3.tuple.Pair;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
@@ -267,6 +268,12 @@ public class ProcessTypeConverter {
                 permissionBuilder = simplePermission(attributeBuilder,
                         Permission.valueOf(attributeType.getPermission().value()),
                         attributeType.isMandatory());
+                Optional.ofNullable(attributeType.getDefaultValue()).ifPresent(new Consumer<String>() {
+                    @Override
+                    public void accept(String t) {
+                        permissionBuilder.addDefaultValue(t);
+                    }
+                });
             } else if (abstractAttributeType instanceof ObjectPermissionType) {
                 ObjectPermissionType attributeType = (ObjectPermissionType) abstractAttributeType;
 

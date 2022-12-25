@@ -106,6 +106,7 @@
             <xs:element name="name" type="xs:string"/>
             <xs:element name="permission" type="pm:permission"/>
             <xs:element name="mandatory" type="xs:boolean"/>
+            <xs:element name="defaultValue" type="xs:string"/>
         </xs:sequence>
     </xs:complexType>
 

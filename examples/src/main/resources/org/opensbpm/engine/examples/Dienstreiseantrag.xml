@@ -41,6 +41,7 @@
                     <name>Name</name>                        
                     <permission>WRITE</permission>                        
                     <mandatory>true</mandatory>
+                    <defaultValue>${user.name}</defaultValue>
                 </attribute>
                 <attribute>
                     <name>Reisebeginn</name>

@@ -231,7 +231,7 @@ public class ExampleModelsTest {
         assertThat("wrong states for 'Mitarbeiter' ", getSubject(result, "Mitarbeiter").getStates(),
                 containsInAnyOrder(isFunctionState("DR-Antrag ausfüllen",
                         containsPermisssions(isPermission("DR-Antrag",
-                                isFieldPermission("Name", Permission.WRITE, true),
+                                isFieldPermission("Name", Permission.WRITE, true, "${user.name}"),
                                 isFieldPermission("Reisebeginn", Permission.WRITE, true),
                                 isFieldPermission("Reiseende", Permission.WRITE, true),
                                 isFieldPermission("Reiseziel", Permission.WRITE, true),

@@ -22,7 +22,9 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -172,6 +174,7 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         private final AttributeBuilder<?, ?> attributeBuilder;
         private final Permission permission;
         private final boolean mandatory;
+        private String defaultValue;
 
         protected AbstractAttributePermissionBuilder(AttributeBuilder<?, ?> attributeBuilder,
                 Permission permission, boolean mandatory) {
@@ -179,15 +182,20 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
             this.permission = permission;
             this.mandatory = mandatory;
         }
+        
+        public T addDefaultValue(String defaultValue){
+            this.defaultValue = defaultValue;
+            return self();
+        }
 
         @Override
         protected V create() {
             AttributeDefinition attribute = attributeBuilder.build();
-            return createAttributePermissionDefinition(attribute, permission, mandatory);
+            return createAttributePermissionDefinition(attribute, permission, mandatory, Optional.ofNullable(defaultValue));
         }
 
-        protected abstract V createAttributePermissionDefinition(AttributeDefinition attribute,
-                Permission permission, boolean mandatory);
+        protected abstract V createAttributePermissionDefinition(AttributeDefinition attribute, 
+                Permission permission, boolean mandatory, Optional<String> ofNullable) ;
 
     }
 
@@ -204,9 +212,10 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         }
 
         @Override
-        protected AttributePermissionDefinition createAttributePermissionDefinition(AttributeDefinition attribute,
-                Permission permission, boolean mandatory) {
-            return new SimpleAttributePermissionDefinition(attribute, permission, mandatory);
+        protected AttributePermissionDefinition createAttributePermissionDefinition(AttributeDefinition attribute, Permission permission, boolean mandatory, Optional<String> defaultValue) {
+            SimpleAttributePermissionDefinition attributePermission = new SimpleAttributePermissionDefinition(attribute, permission, mandatory);
+            defaultValue.ifPresent(attributePermission::setDefaultValue);
+            return attributePermission;
         }
     }
 
@@ -234,11 +243,13 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         }
 
         protected NestedPermissionDefinition createAttributePermissionDefinition(AttributeDefinition attribute,
-                Permission permission, boolean mandatory) {
+                Permission permission, boolean mandatory, Optional<String> defaultValue) {
             List<AttributePermissionDefinition> permissions = permissionBuilders.stream()
                     .map(AbstractBuilder::build)
                     .collect(Collectors.toList());
-            return new NestedAttributePermissionDefinition(attribute, permission, mandatory, permissions);
+            NestedAttributePermissionDefinition attributePermission = new NestedAttributePermissionDefinition(attribute, permission, mandatory, permissions);
+            defaultValue.ifPresent(attributePermission::setDefaultValue);
+            return attributePermission;
         }
 
     }
@@ -293,6 +304,7 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
         private final AttributeDefinition attribute;
         private final Permission permission;
         private final boolean mandatory;
+        private String defaultValue;
 
         protected AbstractAttributePermissionDefinition(AttributeDefinition attribute, Permission permission, boolean mandatory) {
             this.attribute = attribute;
@@ -310,6 +322,14 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
 
         public boolean isMandatory() {
             return mandatory;
+        }
+
+        public void setDefaultValue(String defaultValue) {
+            this.defaultValue = defaultValue;
+        }
+
+        public Optional<String> getDefaultValue() {
+            return Optional.ofNullable(defaultValue);
         }
 
     }
