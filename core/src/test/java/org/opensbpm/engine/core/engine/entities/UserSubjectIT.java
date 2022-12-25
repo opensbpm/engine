@@ -18,9 +18,7 @@ package org.opensbpm.engine.core.engine.entities;
 
 import java.util.Arrays;
 import javax.persistence.PersistenceException;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.Role;

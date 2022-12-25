@@ -32,8 +32,6 @@ import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
-import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
-import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;

@@ -27,7 +27,6 @@ import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
-import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
 
 class TaskResponseConverter {
 

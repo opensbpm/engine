@@ -48,7 +48,6 @@ import org.opensbpm.engine.core.engine.UserSubjectService;
 import org.opensbpm.engine.core.engine.ValidationService;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
-import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
 import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.ProcessModelService;

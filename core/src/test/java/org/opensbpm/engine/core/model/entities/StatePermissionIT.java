@@ -25,7 +25,6 @@ import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
 import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;

@@ -19,7 +19,6 @@ package org.opensbpm.engine.core.model.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
