@@ -17,13 +17,17 @@
  */
 package org.opensbpm.engine.api.instance;
 
+import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.opensbpm.engine.api.adapters.SerializableAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractAttributeSchema implements AttributeSchema {
@@ -42,6 +46,10 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
 
     @XmlAttribute
     private boolean indexed;
+
+    @XmlJavaTypeAdapter(SerializableAdapter.class)
+    @XmlElement
+    private Serializable defaultValue;
 
     protected AbstractAttributeSchema() {
         //JAXB constructor
@@ -86,6 +94,14 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
 
     public void setIndexed(boolean indexed) {
         this.indexed = indexed;
+    }
+
+    public void setDefaultValue(Serializable defaultValue) {
+        this.defaultValue = defaultValue;
+    }
+
+    public Optional<Serializable> getDefaultValue() {
+        return Optional.ofNullable(defaultValue);
     }
 
     @Override

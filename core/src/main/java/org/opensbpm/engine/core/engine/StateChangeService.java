@@ -28,9 +28,12 @@ import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.AttributeStore;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.TaskRequest;
+import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
+import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
+import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
@@ -56,6 +59,9 @@ public class StateChangeService {
     @Autowired
     private ObjectInstanceService objectInstanceService;
 
+    @Autowired
+    private ScriptExecutorService scriptService;
+
     public boolean changeState(Subject subject, TaskRequest taskRequest) {
         Objects.requireNonNull(subject);
         Objects.requireNonNull(taskRequest);
@@ -71,7 +77,7 @@ public class StateChangeService {
         //TODO fix wrong behaviour: when state has mandatory fields and ObjectData is empty no error is thrown
         Optional.ofNullable(taskRequest.getObjectData())
                 .ifPresent(datas -> {
-                    List<ObjectInstance> objectInstances = updateObjectInstances(subject.getProcessInstance(), currentState, datas);
+                    List<ObjectInstance> objectInstances = updateObjectInstances(subject, currentState, datas);
                     objectInstanceService.saveAll(objectInstances);
                 });
 
@@ -86,12 +92,13 @@ public class StateChangeService {
         return true;
     }
 
-    private List<ObjectInstance> updateObjectInstances(ProcessInstance processInstance, FunctionState state, List<ObjectData> objectDatas) {
+    private List<ObjectInstance> updateObjectInstances(Subject subject, FunctionState state, List<ObjectData> objectDatas) {
         return objectDatas.stream()
                 .map(objectData -> {
-                    ObjectInstance objectInstance = findObjectModel(processInstance, state, objectData);
+                    ObjectInstance objectInstance = findObjectModel(subject.getProcessInstance(), state, objectData);
+                    BindingContext bindingContext = BindingContext.ofSubject(subject);
 
-                    ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectInstance.getObjectModel());
+                    ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(scriptService, state, objectInstance.getObjectModel(), bindingContext);
 
                     AttributeStore attributeStore = new AttributeStore(objectSchema, new HashMap<>(objectInstance.getValue()));
                     attributeStore.updateValues(objectData.getData());

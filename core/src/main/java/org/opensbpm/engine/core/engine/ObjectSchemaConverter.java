@@ -26,9 +26,9 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
-import org.opensbpm.engine.api.model.FieldType;
+import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
+import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.AttributeModelVisitor;
 import org.opensbpm.engine.core.model.entities.FunctionState;
@@ -44,16 +44,20 @@ import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState
 
 class ObjectSchemaConverter {
 
-    public static ObjectSchema toObjectSchema(State state, ObjectModel objectModel) {
-        ObjectSchema objectSchema = new ObjectSchemaConverter(state)
+    public static ObjectSchema toObjectSchema(ScriptExecutorService scriptExecutorService, State state, ObjectModel objectModel, BindingContext bindingContext) {
+        ObjectSchema objectSchema = new ObjectSchemaConverter(scriptExecutorService, state, bindingContext)
                 .convertToObjectSchema(objectModel);
         return objectSchema;
     }
 
+    private final ScriptExecutorService scriptService;
     private final State state;
+    private final BindingContext bindingContext;
 
-    public ObjectSchemaConverter(State state) {
+    public ObjectSchemaConverter(ScriptExecutorService scriptService, State state, BindingContext bindingContext) {
+        this.scriptService = Objects.requireNonNull(scriptService, "ScriptExecutorService must be non null");
         this.state = Objects.requireNonNull(state, "State must be non null");
+        this.bindingContext = Objects.requireNonNull(bindingContext, "BindingContext must be non null");
     }
 
     private Optional<FunctionState> getState() {
@@ -63,7 +67,7 @@ class ObjectSchemaConverter {
     public List<ObjectSchema> createObjectSchemas(ProcessModel processModel) {
         return processModel.getObjectModels().stream()
                 .filter(objectModel -> hasAnyStatePermission(objectModel))
-                .map(new SchemaCreator(state))
+                .map(new SchemaCreator(state, bindingContext))
                 .collect(toList());
     }
 
@@ -74,15 +78,17 @@ class ObjectSchemaConverter {
     }
 
     private ObjectSchema convertToObjectSchema(ObjectModel objectModel) {
-        return new SchemaCreator(state).apply(objectModel);
+        return new SchemaCreator(state, bindingContext).apply(objectModel);
     }
 
     private class SchemaCreator implements Function<ObjectModel, ObjectSchema> {
 
         private final State state;
+        private final BindingContext bindingContext;
 
-        private SchemaCreator(State state) {
+        private SchemaCreator(State state, BindingContext bindingContext) {
             this.state = Objects.requireNonNull(state, "State must be non null");
+            this.bindingContext = Objects.requireNonNull(bindingContext, "BindingContext must be non null");
         }
 
         @Override
@@ -108,15 +114,20 @@ class ObjectSchemaConverter {
                     });
                     attributeSchema.setIndexed(simpleAttribute.isIndexed());
 
-                    //PENDING add attributeSchema.getDefaultValue()
+                    simpleAttribute.getDefaultValue()
+                            .flatMap(valueScript -> scriptService.evaluteAttributeDefaultValue(simpleAttribute, bindingContext))
+                            .ifPresent(defaultValue -> {
+                                attributeSchema.setDefaultValue(defaultValue);
+                            });
+
                     return attributeSchema;
                 }
 
                 @Override
                 public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
                     SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.ofReference(
-                            referenceAttribute.getId(), 
-                            referenceAttribute.getName(), 
+                            referenceAttribute.getId(),
+                            referenceAttribute.getName(),
                             toObjectSchema(referenceAttribute.getReference())
                     );
                     getState().ifPresent(functionState -> {
@@ -127,7 +138,7 @@ class ObjectSchemaConverter {
                     //PENDING add attributeSchema.getDefaultValue()
                     return attributeSchema;
                 }
-                
+
 //                @Override
 //                public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
 //                    List<AttributeSchema> attributes = createAttributes(referenceAttribute.getAttributeModels());
@@ -145,7 +156,6 @@ class ObjectSchemaConverter {
 //                    //PENDING add attributeSchema.getDefaultValue()
 //                    return attributeSchema;
 //                }
-
                 @Override
                 public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {
                     List<AttributeSchema> attributes = createAttributes(nestedAttribute.getAttributeModels());

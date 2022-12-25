@@ -58,7 +58,7 @@ public class SimpleAttributeModelIT extends EntityDataTestCase {
         assertThat(result.getName(), is("fieldName"));
         assertThat(result.getFieldType(), is(FieldType.STRING));
         assertThat(result.getPosition(), is(1));
-        assertThat(result.getDefaultValue(), is(nullValue()));
+        assertThat(result.getDefaultValue().orElse(null), is(nullValue()));
     }
 
     @Test

@@ -17,6 +17,7 @@
  */
 package org.opensbpm.engine.core.engine;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -30,10 +31,15 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
+import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
+import org.opensbpm.engine.core.engine.entities.User;
+import org.opensbpm.engine.core.engine.entities.UserSubject;
+import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.stereotype.Component;
 import static org.opensbpm.engine.core.engine.ObjectSchemaConverter.toObjectSchema;
+import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
 
 @Component
 public class ScriptExecutorService {
@@ -45,25 +51,36 @@ public class ScriptExecutorService {
     }
 
     public String evaluteStateDisplayName(Subject subject, State state) {
+        BindingContext bindingContext = BindingContext.ofSubject(subject);
         return Optional.ofNullable(state.getDisplayName())
-                .map(displayName -> evalStateScript(String.format("\"%s\"", displayName), subject.getProcessInstance(), state))
+                .map(displayName -> evalStateScript(String.format("\"%s\"", displayName), subject.getProcessInstance(), state, bindingContext))
                 .orElse(state.getName());
     }
 
-    private String evalStateScript(String script, ProcessInstance processInstance, State state) {
+    private String evalStateScript(String script, ProcessInstance processInstance, State state, BindingContext bindingContext) {
         return eval(script, bindings -> {
             processInstance.getProcessModel().getObjectModels().stream().forEach(objectModel -> {
-                ObjectBean objectBean = createObjectBean(processInstance, state, objectModel);
+                ObjectBean objectBean = createObjectBean(processInstance, state, objectModel, bindingContext);
                 bindings.put(objectModel.getName(), objectBean);
             });
         });
     }
 
-    private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel) {
-        return ObjectBean.from(
-                toObjectSchema(state, objectModel),
+    private ObjectBean createObjectBean(ProcessInstance processInstance, State state, ObjectModel objectModel, BindingContext bindingContext) {
+        return ObjectBean.from(toObjectSchema(this, state, objectModel, bindingContext),
                 processInstance.getValues(objectModel)
         );
+    }
+
+    public Optional<Serializable> evaluteAttributeDefaultValue(AttributeModel attributeModel, BindingContext bindingContext) {
+        return attributeModel.getDefaultValue()
+                .map(defaultValue -> evalDefaultValueScript(String.format("\"%s\"", defaultValue), bindingContext));
+    }
+
+    private Serializable evalDefaultValueScript(String script, BindingContext bindingContext) {
+        return eval(script, bindings -> {
+            bindings.put("user", bindingContext);
+        });
     }
 
     public String evaluteObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
@@ -91,6 +108,22 @@ public class ScriptExecutorService {
             Logger.getLogger(EngineConverter.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return ex.getMessage();
         }
+    }
+
+    public interface BindingContext {
+
+        public static BindingContext ofSubject(Subject subject) {
+            Optional<UserSubject> userSubject = subject.accept(userSubject());
+            return new BindingContext() {
+                @Override
+                public User getUser() {
+                    return userSubject.map(UserSubject::getUser)
+                            .orElse(null);
+                }
+            };
+        }
+
+        User getUser();
     }
 
 }

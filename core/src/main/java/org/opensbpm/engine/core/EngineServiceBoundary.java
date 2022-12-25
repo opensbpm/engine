@@ -40,6 +40,7 @@ import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.core.engine.EngineConverter;
 import org.opensbpm.engine.core.engine.ProcessInstanceService;
+import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.StateChangeService;
 import org.opensbpm.engine.core.engine.SubjectService;
 import org.opensbpm.engine.core.engine.UserService;
@@ -47,6 +48,7 @@ import org.opensbpm.engine.core.engine.UserSubjectService;
 import org.opensbpm.engine.core.engine.ValidationService;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
+import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
 import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
 import org.opensbpm.engine.core.model.ProcessModelService;
@@ -176,6 +178,9 @@ public class EngineServiceBoundary implements EngineService {
     @Override
     public AutocompleteResponse getAutocompleteResponse(UserToken userToken, TaskInfo taskInfo, ObjectRequest objectRequest, String queryString) throws TaskNotFoundException, TaskOutOfDateException {
         Subject subject = validateTaskInfo(taskInfo);
+
+        BindingContext bindingContext = BindingContext.ofSubject(subject);
+        
         FunctionState currentState = subject.getVisibleCurrentState()
                 .orElseThrow(() -> {
                     String msg = MessageFormat.format("no current state for {0}", subject.toString());
@@ -191,7 +196,7 @@ public class EngineServiceBoundary implements EngineService {
                             objectRequest.getId(), currentState.getName());
                     return new IllegalStateException(msg);
                 });
-        return validationService.createAutocompleteResponse(currentState, objectModel, queryString);
+        return validationService.createAutocompleteResponse(currentState, objectModel, queryString, bindingContext);
     }
 
     private Subject validateTaskInfo(TaskInfo taskInfo) throws TaskNotFoundException, TaskOutOfDateException {
