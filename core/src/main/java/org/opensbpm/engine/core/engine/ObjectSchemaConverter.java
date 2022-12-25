@@ -111,7 +111,7 @@ class ObjectSchemaConverter {
                         attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
                         attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
                         functionState.findStatePermission(simpleAttribute)
-                                .map(statePermission -> scriptService.evaluateDefaultValueScript(statePermission, bindingContext))
+                                .flatMap(statePermission -> scriptService.evaluateDefaultValueScript(statePermission, bindingContext))
                                 .ifPresent(defaultValue -> {
                                     attributeSchema.setDefaultValue(defaultValue);
                                 });
