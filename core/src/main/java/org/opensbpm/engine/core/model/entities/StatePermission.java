@@ -18,6 +18,7 @@ package org.opensbpm.engine.core.model.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 import javax.persistence.CascadeType;
@@ -67,6 +68,12 @@ public class StatePermission implements HasId, Serializable {
     @Column
     private boolean mandatory = false;
 
+        /**
+     * Script for determine the default value of the attribute
+     */
+    @Column
+    private String defaultValue;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
     private Set<StatePermission> childPermissions;
 
@@ -112,6 +119,14 @@ public class StatePermission implements HasId, Serializable {
 
     public void setMandatory(boolean mandatory) {
         this.mandatory = mandatory;
+    }
+
+    public Optional<String> getDefaultValue() {
+        return Optional.ofNullable(defaultValue);
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     public Set<StatePermission> getChildPermissions() {

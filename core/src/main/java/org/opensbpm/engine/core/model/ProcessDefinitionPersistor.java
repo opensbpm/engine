@@ -208,9 +208,6 @@ public class ProcessDefinitionPersistor {
                 }
 
             });
-            attributeDefinition.getDefaultValue()
-                    .ifPresent(defaultValue -> attributeModel.setDefaultValue(defaultValue));
-                    
             objectCache.put(attributeDefinition, attributeModel);
             return attributeModel;
         }
@@ -305,6 +302,8 @@ public class ProcessDefinitionPersistor {
                     throw new UnsupportedOperationException(permissionParent + " not supported yet");
                 }
                 statePermission.setMandatory(attributePermissionDefinition.isMandatory());
+                attributePermissionDefinition.getDefaultValue()
+                        .ifPresent(defaultValue -> statePermission.setDefaultValue(defaultValue));
 
                 if (attributePermissionDefinition instanceof NestedPermissionDefinition) {
                     NestedPermissionDefinition nestedPermissionDefinition = (NestedPermissionDefinition) attributePermissionDefinition;

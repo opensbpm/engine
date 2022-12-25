@@ -31,10 +31,8 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
-import org.opensbpm.engine.core.engine.entities.SubjectVisitor;
 import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.entities.UserSubject;
-import org.opensbpm.engine.core.model.entities.AttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.State;
 import org.springframework.stereotype.Component;
@@ -72,18 +70,13 @@ public class ScriptExecutorService {
         );
     }
 
-    public Optional<Serializable> evaluteAttributeDefaultValue(AttributeModel attributeModel, BindingContext bindingContext) {
-        return attributeModel.getDefaultValue()
-                .map(defaultValue -> evalDefaultValueScript(String.format("\"%s\"", defaultValue), bindingContext));
-    }
-
-    private Serializable evalDefaultValueScript(String script, BindingContext bindingContext) {
-        return eval(script, bindings -> {
+    public Serializable evaluateDefaultValueScript(String script, BindingContext bindingContext) {
+        return eval(String.format("\"%s\"", script), bindings -> {
             bindings.put("user", bindingContext);
         });
     }
 
-    public String evaluteObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
+    public String evaluateObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
         return objectModel.getDisplayName()
                 .map(displayName -> evalDisplayNameScript(String.format("\"%s\"", displayName), objectBean))
                 .orElse(objectModel.getName());

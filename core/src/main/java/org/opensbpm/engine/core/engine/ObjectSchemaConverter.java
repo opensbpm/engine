@@ -111,14 +111,13 @@ class ObjectSchemaConverter {
                     getState().ifPresent(functionState -> {
                         attributeSchema.setRequired(functionState.isMandatory(simpleAttribute));
                         attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
-                    });
-                    attributeSchema.setIndexed(simpleAttribute.isIndexed());
-
-                    simpleAttribute.getDefaultValue()
-                            .flatMap(valueScript -> scriptService.evaluteAttributeDefaultValue(simpleAttribute, bindingContext))
+                        functionState.getDefaultValue(simpleAttribute)
+                            .map(valueScript -> scriptService.evaluateDefaultValueScript(valueScript, bindingContext))
                             .ifPresent(defaultValue -> {
                                 attributeSchema.setDefaultValue(defaultValue);
                             });
+                    });
+                    attributeSchema.setIndexed(simpleAttribute.isIndexed());
 
                     return attributeSchema;
                 }

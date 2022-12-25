@@ -70,11 +70,6 @@ public abstract class AttributeModel implements HasId, Serializable {
     @Min(0)
     private int position;
 
-    /**
-     * Script for determine the default value of the attribute
-     */
-    private String defaultValue;
-
     protected AttributeModel() {
         //JPA constructor
     }
@@ -112,14 +107,6 @@ public abstract class AttributeModel implements HasId, Serializable {
 
     public void setPosition(int position) {
         this.position = position;
-    }
-
-    public Optional<String> getDefaultValue() {
-        return Optional.ofNullable(defaultValue);
-    }
-
-    public void setDefaultValue(String defaultValue) {
-        this.defaultValue = defaultValue;
     }
 
     public abstract <T> T accept(AttributeModelVisitor<T> visitor);

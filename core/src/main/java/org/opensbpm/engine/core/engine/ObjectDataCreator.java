@@ -61,7 +61,7 @@ class ObjectDataCreator {
     }
 
     private String evalObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
-        return scriptService.evaluteObjectDisplayName(objectModel, objectBean);
+        return scriptService.evaluateObjectDisplayName(objectModel, objectBean);
     }
 
 }
