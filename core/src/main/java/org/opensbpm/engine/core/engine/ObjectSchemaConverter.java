@@ -26,6 +26,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.core.model.entities.AttributeModel;
@@ -126,6 +127,24 @@ class ObjectSchemaConverter {
                     //PENDING add attributeSchema.getDefaultValue()
                     return attributeSchema;
                 }
+                
+//                @Override
+//                public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
+//                    List<AttributeSchema> attributes = createAttributes(referenceAttribute.getAttributeModels());
+//                    ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(
+//                            referenceAttribute.getId(), 
+//                            referenceAttribute.getName(), 
+//                            attributes
+//                    );
+//                    attributeSchema.setAutocompleteReference(toObjectSchema(referenceAttribute.getReference()));
+//                    getState().ifPresent(functionState -> {
+//                        attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
+//                        attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
+//                    });
+//
+//                    //PENDING add attributeSchema.getDefaultValue()
+//                    return attributeSchema;
+//                }
 
                 @Override
                 public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {

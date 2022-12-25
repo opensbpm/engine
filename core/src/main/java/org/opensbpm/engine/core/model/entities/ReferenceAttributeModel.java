@@ -30,7 +30,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.core.utils.entities.HasId;
 
 @Entity
-public class ReferenceAttributeModel extends AttributeModel implements HasId, Serializable {
+public class ReferenceAttributeModel extends AbstractContainerAttributeModel implements HasId, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

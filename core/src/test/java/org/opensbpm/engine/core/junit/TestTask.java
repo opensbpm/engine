@@ -150,7 +150,7 @@ public class TestTask extends Task {
 
                     @Override
                     public DynaProperty visitReference(ReferenceAttributeSchema attributeSchema) {
-                        return new DynaProperty(attribute.getName(), LazyDynaBean.class);
+                        return new DynaProperty(attribute.getName(), Map.class);
                     }
 
                     @Override
@@ -183,6 +183,9 @@ public class TestTask extends Task {
                 if (getAttribute(t) instanceof SimpleAttributeSchema
                         && FieldType.REFERENCE == ((SimpleAttributeSchema) getAttribute(t)).getFieldType()) {
                     return u;
+                } else if (getAttribute(t) instanceof ReferenceAttributeSchema) {
+                    ReferenceAttributeSchema attribute = (ReferenceAttributeSchema) getAttribute(t);
+                    return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) u);
                 } else if (u instanceof Map) {
                     NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);
                     return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) u);
