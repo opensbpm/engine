@@ -24,6 +24,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.FieldType;
@@ -76,11 +77,11 @@ public final class TaskResponseMatcher {
      */
     public static Matcher<AttributeSchema> isReferenceSchema(String name, boolean required, boolean readOnly, Matcher<ObjectSchema> referenceObjectMatcher) {
         return allOf(
-                value(SimpleAttributeSchema.class, SimpleAttributeSchema::getName, is(name)),
-                value(SimpleAttributeSchema.class, SimpleAttributeSchema::getFieldType, is(FieldType.REFERENCE)),
+                value(ReferenceAttributeSchema.class, ReferenceAttributeSchema::getName, is(name)),
+                //value(ReferenceAttributeSchema.class, ReferenceAttributeSchema::getFieldType, is(FieldType.REFERENCE)),
                 value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
                 value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly)),
-                value(SimpleAttributeSchema.class, schema -> schema.getAutocompleteReference().get(), referenceObjectMatcher)
+                value(ReferenceAttributeSchema.class, schema -> schema.getAutocompleteReference().get(), referenceObjectMatcher)
         );
     }
 
