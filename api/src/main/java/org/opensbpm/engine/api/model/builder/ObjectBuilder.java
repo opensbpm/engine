@@ -20,6 +20,7 @@ package org.opensbpm.engine.api.model.builder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -107,8 +108,19 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
 
     public abstract static class AttributeBuilder<V extends AttributeDefinition, T extends AttributeBuilder<V, T>>
             extends AbstractBuilder<V, T> {
-
+        private String defaultValue;
+        
         public abstract String getName();
+        
+        protected final String getDefaultValue() {
+            return defaultValue;
+        }
+
+        public T withDefaultValue(String defaultValue) {
+            this.defaultValue = defaultValue;
+            return self();
+        }
+        
     }
 
     public static class FieldBuilder extends AttributeBuilder<FieldDefinition, FieldBuilder> {
@@ -116,7 +128,7 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
         private final FieldDefinition fieldDefinition;
         private boolean indexed;
         private ObjectBuilder autocompleteObject;
-
+        
         public FieldBuilder(String name, FieldType fieldType) {
             this.fieldDefinition = new FieldDefinition() {
                 @Override
@@ -139,6 +151,12 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                     return autocompleteObject == null ? null : autocompleteObject.build();
                 }
 
+                @Override
+                public Optional<String> getDefaultValue() {
+                    return Optional.ofNullable(FieldBuilder.this.getDefaultValue());
+                }
+
+                
                 @Override
                 public String toString() {
                     return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -255,6 +273,11 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                 }
 
                 @Override
+                public Optional<String> getDefaultValue() {
+                    return Optional.ofNullable(ReferenceBuilder.this.getDefaultValue());
+                }
+
+                @Override
                 public String toString() {
                     return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                             .append("name", name)
@@ -290,6 +313,11 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                     return attributes;
                 }
 
+                                @Override
+                public Optional<String> getDefaultValue() {
+                    return Optional.ofNullable(ToOneBuilder.this.getDefaultValue());
+                }
+
             };
         }
 
@@ -317,6 +345,10 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                 @Override
                 public List<AttributeDefinition> getAttributes() {
                     return attributes;
+                }
+                @Override
+                public Optional<String> getDefaultValue() {
+                    return Optional.ofNullable(ToManyBuilder.this.getDefaultValue());
                 }
             };
         }

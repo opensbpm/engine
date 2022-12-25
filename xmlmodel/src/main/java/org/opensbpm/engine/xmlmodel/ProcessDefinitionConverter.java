@@ -263,6 +263,7 @@ public class ProcessDefinitionConverter {
                 attributeType.setName(attributePermission.getAttribute().getName());
                 attributeType.setPermission(Permission.fromValue(attributePermission.getPermission().name()));
                 attributeType.setMandatory(attributePermission.isMandatory());
+                attributePermission.getDefaultValue().ifPresent(defaultvalue -> attributeType.setDefaultValue(defaultvalue));
                 permissionType = attributeType;
             }
             attributePermissionTypes.add(permissionType);

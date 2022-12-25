@@ -208,6 +208,9 @@ public class ProcessDefinitionPersistor {
                 }
 
             });
+            attributeDefinition.getDefaultValue()
+                    .ifPresent(defaultValue -> attributeModel.setDefaultValue(defaultValue));
+                    
             objectCache.put(attributeDefinition, attributeModel);
             return attributeModel;
         }

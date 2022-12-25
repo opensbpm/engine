@@ -18,6 +18,7 @@
 package org.opensbpm.engine.api.model.definition;
 
 import java.util.List;
+import java.util.Optional;
 import org.opensbpm.engine.api.model.FieldType;
 
 /**
@@ -51,6 +52,12 @@ public interface ObjectDefinition {
          * Name of an attribute as valid Java identifier.
          */
         String getName();
+        
+        /**
+         * Script to determine the default value of the attribute
+         * @return 
+         */
+        Optional<String> getDefaultValue();
 
         <T> T accept(AttributeDefinitionVisitor<T> visitor);
     }
