@@ -228,6 +228,7 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
             super(attributeBuilder, permission, mandatory);
         }
 
+        @Override
         protected NestedPermissionBuilder self() {
             return this;
         }
@@ -242,6 +243,7 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
             return self();
         }
 
+        @Override
         protected NestedPermissionDefinition createAttributePermissionDefinition(AttributeDefinition attribute,
                 Permission permission, boolean mandatory, Optional<String> defaultValue) {
             List<AttributePermissionDefinition> permissions = permissionBuilders.stream()
