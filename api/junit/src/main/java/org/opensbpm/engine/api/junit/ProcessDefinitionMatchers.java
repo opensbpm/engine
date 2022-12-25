@@ -29,7 +29,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.hamcrest.Matcher;
 
-import org.opensbpm.engine.api.model.definition.PermissionDefinition.AttributePermissionDefinition;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
