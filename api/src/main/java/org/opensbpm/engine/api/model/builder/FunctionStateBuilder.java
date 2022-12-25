@@ -129,9 +129,20 @@ public class FunctionStateBuilder extends StateBuilder<FunctionStateBuilder, Fun
             return addPermission(attributeBuilder, Permission.WRITE, mandatory);
         }
 
+        public PermissionBuilder addWritePermission(AttributeBuilder<?, ?> attributeBuilder, boolean mandatory,String defaultValue) {
+            return addPermission(attributeBuilder, Permission.WRITE, mandatory,defaultValue);
+        }
+
         public PermissionBuilder addPermission(AttributeBuilder<?, ?> attributeBuilder,
                 Permission permission, boolean mandatory) {
             return addPermission(new AttributePermissionBuilder(attributeBuilder, permission, mandatory));
+        }
+
+        public PermissionBuilder addPermission(AttributeBuilder<?, ?> attributeBuilder,
+                Permission permission, boolean mandatory,String defaultValue) {
+            AttributePermissionBuilder permissionBuilder = new AttributePermissionBuilder(attributeBuilder, permission, mandatory)
+                    .addDefaultValue(defaultValue);
+            return addPermission(permissionBuilder);
         }
 
         public PermissionBuilder addPermission(

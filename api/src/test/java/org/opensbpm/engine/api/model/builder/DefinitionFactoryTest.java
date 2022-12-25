@@ -95,7 +95,7 @@ public class DefinitionFactoryTest {
                                 .withProvider("Provider")
                                 .addParameter("MyParameter", "Value")
                                 .addPermission(permission(object1)
-                                        .addWritePermission(field1, true)
+                                        .addWritePermission(field1, true, "defaultValue")
                                         .addPermission(nestedPermission(toOneField, Permission.WRITE, true)
                                                 .addPermission(new AttributePermissionBuilder(toOneStringField, Permission.WRITE, true))
                                         )
@@ -187,7 +187,7 @@ public class DefinitionFactoryTest {
                         isReceiveState("Receive"),
                         isFunctionState("Execute", "Execute this Function", containsPermisssions(
                                 isPermission("Object 1",
-                                        isFieldPermission("Object 1 - Field 1", Permission.WRITE, true),
+                                        isFieldPermission("Object 1 - Field 1", Permission.WRITE, true,"defaultValue"),
                                         isNestedPermission("To One",
                                                 isFieldPermission("String Field", Permission.WRITE, true)
                                         ),

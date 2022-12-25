@@ -53,12 +53,6 @@ public interface ObjectDefinition {
          */
         String getName();
         
-        /**
-         * Script to determine the default value of the attribute
-         * @return 
-         */
-        Optional<String> getDefaultValue();
-
         <T> T accept(AttributeDefinitionVisitor<T> visitor);
     }
 

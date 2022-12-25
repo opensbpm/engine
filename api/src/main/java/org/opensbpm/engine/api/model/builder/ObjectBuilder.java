@@ -108,18 +108,8 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
 
     public abstract static class AttributeBuilder<V extends AttributeDefinition, T extends AttributeBuilder<V, T>>
             extends AbstractBuilder<V, T> {
-        private String defaultValue;
         
         public abstract String getName();
-        
-        protected final String getDefaultValue() {
-            return defaultValue;
-        }
-
-        public T withDefaultValue(String defaultValue) {
-            this.defaultValue = defaultValue;
-            return self();
-        }
         
     }
 
@@ -151,12 +141,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                     return autocompleteObject == null ? null : autocompleteObject.build();
                 }
 
-                @Override
-                public Optional<String> getDefaultValue() {
-                    return Optional.ofNullable(FieldBuilder.this.getDefaultValue());
-                }
-
-                
                 @Override
                 public String toString() {
                     return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
@@ -273,11 +257,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                 }
 
                 @Override
-                public Optional<String> getDefaultValue() {
-                    return Optional.ofNullable(ReferenceBuilder.this.getDefaultValue());
-                }
-
-                @Override
                 public String toString() {
                     return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
                             .append("name", name)
@@ -312,12 +291,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                 public List<AttributeDefinition> getAttributes() {
                     return attributes;
                 }
-
-                                @Override
-                public Optional<String> getDefaultValue() {
-                    return Optional.ofNullable(ToOneBuilder.this.getDefaultValue());
-                }
-
             };
         }
 
@@ -345,10 +318,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                 @Override
                 public List<AttributeDefinition> getAttributes() {
                     return attributes;
-                }
-                @Override
-                public Optional<String> getDefaultValue() {
-                    return Optional.ofNullable(ToManyBuilder.this.getDefaultValue());
                 }
             };
         }
