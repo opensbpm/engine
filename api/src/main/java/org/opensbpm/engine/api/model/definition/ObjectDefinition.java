@@ -18,7 +18,6 @@
 package org.opensbpm.engine.api.model.definition;
 
 import java.util.List;
-import java.util.Optional;
 import org.opensbpm.engine.api.model.FieldType;
 
 /**
