@@ -61,6 +61,8 @@ node('jdk8'){
             }finally{
                 recordIssues (enabledForFailure: true, 
                     tools: [
+                        java(),
+                        javaDoc(),
                         cpd(pattern: '**/target/cpd.xml'), 
                         pmdParser(pattern: '**/target/pmd.xml')
                     ])
@@ -101,20 +103,16 @@ node('jdk8'){
         }
         throw ex
     }finally{
-        stage("Inform"){
-            recordIssues enabledForFailure: true, tools: [
-                mavenConsole(),
-                java(),
-                javaDoc()
-            ]        
-            emailext (recipientProviders: [culprits()], 
-                subject: "OpenSBPM Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' ${currentBuild.result}",
-                body: """
+        recordIssues enabledForFailure: true, tools: [
+            mavenConsole()
+        ]        
+        emailext (recipientProviders: [culprits()], 
+            subject: "OpenSBPM Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' ${currentBuild.result}",
+            body: """
                 <p>${currentBuild.result}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':</p>
                 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.BUILD_NUMBER}]</a>"</p>\n\
             """,
-                attachLog: true
-            )
-        }
+            attachLog: true
+        )
     }
 }
