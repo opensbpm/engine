@@ -89,8 +89,7 @@ public class ScriptExecutorService {
     }
 
     private String evalDisplayNameScript(String script, ObjectBean objectBean) {
-        String escapedScript = String.format("\"%s\"", script);
-        return eval(escapedScript, bindings -> {
+        return eval(script, bindings -> {
             for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
                 bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));
             }
@@ -103,7 +102,8 @@ public class ScriptExecutorService {
             bindingsConsumer.accept(bindings);
 
             //eval returns GString; convert it with toString()
-            return scriptEngine.eval(script, bindings).toString();
+            String escapedScript = String.format("\"%s\"", script);
+            return scriptEngine.eval(escapedScript, bindings).toString();
         } catch (ScriptException ex) {
             Logger.getLogger(EngineConverter.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return ex.getMessage();
