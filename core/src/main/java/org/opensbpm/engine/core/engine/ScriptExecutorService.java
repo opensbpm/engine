@@ -52,7 +52,7 @@ public class ScriptExecutorService {
     public String evaluteStateDisplayName(Subject subject, State state) {
         BindingContext bindingContext = BindingContext.ofSubject(subject);
         return Optional.ofNullable(state.getDisplayName())
-                .map(displayName -> evalStateScript(String.format("\"%s\"", displayName), subject.getProcessInstance(), state, bindingContext))
+                .map(displayName -> evalStateScript(displayName, subject.getProcessInstance(), state, bindingContext))
                 .orElse(state.getName());
     }
 
@@ -73,7 +73,7 @@ public class ScriptExecutorService {
 
     public Optional<Serializable> evaluateDefaultValueScript(StatePermission statePermission, BindingContext bindingContext) {
         return statePermission.getDefaultValue()
-                .map(defaultValue -> evalDefaultValueScript(String.format("\"%s\"", defaultValue), bindingContext));
+                .map(defaultValue -> evalDefaultValueScript(defaultValue, bindingContext));
     }
 
     private Serializable evalDefaultValueScript(String script, BindingContext bindingContext) {
@@ -84,12 +84,13 @@ public class ScriptExecutorService {
 
     public String evaluateObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
         return objectModel.getDisplayName()
-                .map(displayName -> evalDisplayNameScript(String.format("\"%s\"", displayName), objectBean))
+                .map(displayName -> evalDisplayNameScript(displayName, objectBean))
                 .orElse(objectModel.getName());
     }
 
     private String evalDisplayNameScript(String script, ObjectBean objectBean) {
-        return eval(script, bindings -> {
+        String escapedScript = String.format("\"%s\"", script);
+        return eval(escapedScript, bindings -> {
             for (AttributeSchema attributeSchema : objectBean.getAttributeModels()) {
                 bindings.put(attributeSchema.getName(), objectBean.get(attributeSchema.getName()));
             }
