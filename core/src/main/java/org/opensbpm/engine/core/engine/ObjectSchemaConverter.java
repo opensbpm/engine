@@ -112,9 +112,7 @@ class ObjectSchemaConverter {
                         attributeSchema.setReadonly(functionState.hasReadPermission(simpleAttribute));
                         functionState.findStatePermission(simpleAttribute)
                                 .flatMap(statePermission -> scriptService.evaluateDefaultValueScript(statePermission, bindingContext))
-                                .ifPresent(defaultValue -> {
-                                    attributeSchema.setDefaultValue(defaultValue);
-                                });
+                                .ifPresent(attributeSchema::setDefaultValue);
                     });
                     attributeSchema.setIndexed(simpleAttribute.isIndexed());
 
