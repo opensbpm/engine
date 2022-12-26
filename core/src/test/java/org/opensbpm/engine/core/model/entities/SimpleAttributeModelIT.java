@@ -25,7 +25,6 @@ import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
@@ -58,7 +57,6 @@ public class SimpleAttributeModelIT extends EntityDataTestCase {
         assertThat(result.getName(), is("fieldName"));
         assertThat(result.getFieldType(), is(FieldType.STRING));
         assertThat(result.getPosition(), is(1));
-        assertThat(result.getDefaultValue(), is(nullValue()));
     }
 
     @Test

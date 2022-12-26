@@ -18,6 +18,7 @@
 package org.opensbpm.engine.api.model.definition;
 
 import java.util.List;
+import java.util.Optional;
 import javax.xml.bind.annotation.XmlType;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
@@ -41,6 +42,13 @@ public interface PermissionDefinition {
         Permission getPermission();
 
         boolean isMandatory();
+
+        /**
+         * Script for determine the default value for the attribute
+         *
+         * @return the executable Script
+         */
+        Optional<String> getDefaultValue();
 
     }
 

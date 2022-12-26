@@ -107,8 +107,9 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
 
     public abstract static class AttributeBuilder<V extends AttributeDefinition, T extends AttributeBuilder<V, T>>
             extends AbstractBuilder<V, T> {
-
+        
         public abstract String getName();
+        
     }
 
     public static class FieldBuilder extends AttributeBuilder<FieldDefinition, FieldBuilder> {
@@ -116,7 +117,7 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
         private final FieldDefinition fieldDefinition;
         private boolean indexed;
         private ObjectBuilder autocompleteObject;
-
+        
         public FieldBuilder(String name, FieldType fieldType) {
             this.fieldDefinition = new FieldDefinition() {
                 @Override
@@ -289,7 +290,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
                 public List<AttributeDefinition> getAttributes() {
                     return attributes;
                 }
-
             };
         }
 

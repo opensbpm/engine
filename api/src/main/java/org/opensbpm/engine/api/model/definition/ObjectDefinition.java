@@ -51,7 +51,7 @@ public interface ObjectDefinition {
          * Name of an attribute as valid Java identifier.
          */
         String getName();
-
+        
         <T> T accept(AttributeDefinitionVisitor<T> visitor);
     }
 

@@ -27,7 +27,6 @@ import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;

@@ -21,6 +21,7 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectBean;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
@@ -36,16 +37,16 @@ class ObjectDataCreator {
     }
 
     
-    private final ScriptExecutorService scriptExecutorService;
+    private final ScriptExecutorService scriptService;
 
-    public ObjectDataCreator(ScriptExecutorService scriptExecutorService) {
-        this.scriptExecutorService = scriptExecutorService;
+    public ObjectDataCreator(ScriptExecutorService scriptService) {
+        this.scriptService = scriptService;
     }
 
-    public ObjectData createObjectData(ObjectInstance objectInstance, FunctionState state) {
+    public ObjectData createObjectData(ObjectInstance objectInstance, FunctionState state, BindingContext bindingContext) {
         ObjectModel objectModel = objectInstance.getObjectModel();
 
-        ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(state, objectModel);
+        ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(scriptService, state, objectModel, bindingContext);
         ObjectBean objectBean = ObjectBean.from(objectSchema, objectInstance.getValue());
 
         return createObjectData(objectModel, objectBean);
@@ -60,7 +61,7 @@ class ObjectDataCreator {
     }
 
     private String evalObjectDisplayName(ObjectModel objectModel, ObjectBean objectBean) {
-        return scriptExecutorService.evaluteObjectDisplayName(objectModel, objectBean);
+        return scriptService.evaluateObjectDisplayName(objectModel, objectBean);
     }
 
 }

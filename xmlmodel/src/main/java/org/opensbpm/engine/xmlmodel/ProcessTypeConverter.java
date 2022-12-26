@@ -267,6 +267,10 @@ public class ProcessTypeConverter {
                 permissionBuilder = simplePermission(attributeBuilder,
                         Permission.valueOf(attributeType.getPermission().value()),
                         attributeType.isMandatory());
+                
+                Optional.ofNullable(attributeType.getDefaultValue())
+                        .ifPresent(permissionBuilder::addDefaultValue);
+                
             } else if (abstractAttributeType instanceof ObjectPermissionType) {
                 ObjectPermissionType attributeType = (ObjectPermissionType) abstractAttributeType;
 

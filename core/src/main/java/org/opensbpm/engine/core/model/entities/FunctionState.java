@@ -148,7 +148,7 @@ public class FunctionState extends State implements Serializable {
                 .orElse(false);
     }
 
-    private Optional<StatePermission> findStatePermission(AttributeModel attributeModel) {
+    public Optional<StatePermission> findStatePermission(AttributeModel attributeModel) {
         Stream<StatePermission> statePermissions = Stream.concat(getStatePermissions().stream(),
                 getStatePermissions().stream()
                         .flatMap(statePermission -> statePermission.getAllPermissions()));

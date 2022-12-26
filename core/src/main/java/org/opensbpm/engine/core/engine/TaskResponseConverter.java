@@ -23,26 +23,28 @@ import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
+import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.model.entities.FunctionState;
 
 class TaskResponseConverter {
 
-    private final ScriptExecutorService scriptExecutorService;
+    private final ScriptExecutorService scriptService;
 
-    public TaskResponseConverter(ScriptExecutorService scriptExecutorService) {
-        this.scriptExecutorService = scriptExecutorService;
+    public TaskResponseConverter(ScriptExecutorService scriptService) {
+        this.scriptService = scriptService;
     }
 
     public TaskResponse convert(Subject subject, FunctionState state, List<NextState> nextStates) {
         ProcessInstance processInstance = subject.getProcessInstance();
+        BindingContext bindingContext = BindingContext.ofSubject(subject);
 
-        List<ObjectSchema> objectSchemas = new ObjectSchemaConverter(state)
+        List<ObjectSchema> objectSchemas = new ObjectSchemaConverter(scriptService, state, bindingContext)
                 .createObjectSchemas(processInstance.getProcessModel());
 
         List<ObjectData> datas = processInstance.getObjectInstances().stream()
-                .map(objectInstance -> new ObjectDataCreator(scriptExecutorService).createObjectData(objectInstance, state))
+                .map(objectInstance -> new ObjectDataCreator(scriptService).createObjectData(objectInstance, state, bindingContext))
                 .collect(Collectors.toList());
 
         return TaskResponse.of(subject.getId(), nextStates, subject.getLastChanged(), objectSchemas, datas);

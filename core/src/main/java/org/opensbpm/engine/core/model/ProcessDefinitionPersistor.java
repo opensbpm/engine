@@ -302,6 +302,8 @@ public class ProcessDefinitionPersistor {
                     throw new UnsupportedOperationException(permissionParent + " not supported yet");
                 }
                 statePermission.setMandatory(attributePermissionDefinition.isMandatory());
+                attributePermissionDefinition.getDefaultValue()
+                        .ifPresent(defaultValue -> statePermission.setDefaultValue(defaultValue));
 
                 if (attributePermissionDefinition instanceof NestedPermissionDefinition) {
                     NestedPermissionDefinition nestedPermissionDefinition = (NestedPermissionDefinition) attributePermissionDefinition;

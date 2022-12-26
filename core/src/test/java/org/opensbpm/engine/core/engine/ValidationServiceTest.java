@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
 import org.opensbpm.engine.api.spi.AutocompleteProvider;
+import org.opensbpm.engine.core.engine.ScriptExecutorService.BindingContext;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.engine.taskprovider.DummyAutocompleteProvider;
@@ -38,6 +39,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.opensbpm.engine.core.junit.MockData.spyFunctionState;
 import static org.opensbpm.engine.core.junit.MockData.spyObjectModel;
 import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
@@ -76,9 +78,10 @@ public class ValidationServiceTest {
         ObjectModel objectModel = spyObjectModel(1l, processModel, "Object Model");
 
         String queryString = null;
+        BindingContext bindingContext = mock(BindingContext.class);
 
         //when
-        AutocompleteResponse response = validationService.createAutocompleteResponse(state, objectModel, queryString);
+        AutocompleteResponse response = validationService.createAutocompleteResponse(state, objectModel, queryString, bindingContext);
 
         //then        
         assertThat(response, is(notNullValue()));

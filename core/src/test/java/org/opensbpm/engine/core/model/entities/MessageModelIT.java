@@ -20,7 +20,6 @@ package org.opensbpm.engine.core.model.entities;
 import javax.persistence.PersistenceException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;

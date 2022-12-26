@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
-import org.opensbpm.engine.utils.StreamUtils;
 
 public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends SubjectDefinition> extends AbstractBuilder<V, T> {
 

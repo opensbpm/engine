@@ -86,6 +86,8 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         task.assertNextStates(
                 isNextState("DR-Antrag an Vorgesetzer senden", true)
         );
+        //TODO assertThat(task.getValue("DR-Antrag", "Name"), is("Max Mitarbeiter"));
+
         task.setValue("DR-Antrag", "Name", "Test");
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 10));

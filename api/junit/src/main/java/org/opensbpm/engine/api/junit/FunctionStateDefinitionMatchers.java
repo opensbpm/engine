@@ -97,11 +97,20 @@ public final class FunctionStateDefinitionMatchers {
         );
     }
 
-    public static Matcher<AttributePermissionDefinition> isFieldPermission(String fieldName, Permission permission,
-            boolean mandatory) {
-        return allOf(value(AttributePermissionDefinition.class, AttributePermissionDefinition::getAttribute, isAttributeName(fieldName)),
-                value(AttributePermissionDefinition.class, AttributePermissionDefinition::getPermission, is(permission)),
-                value(AttributePermissionDefinition.class, AttributePermissionDefinition::isMandatory, is(mandatory))
+    public static Matcher<AttributePermissionDefinition> isFieldPermission(String fieldName, Permission permission,boolean mandatory) {
+        return allOf(
+                value(AttributePermissionDefinition::getAttribute, isAttributeName(fieldName)),
+                value(AttributePermissionDefinition::getPermission, is(permission)),
+                value(AttributePermissionDefinition::isMandatory, is(mandatory))
+        );
+        
+    }
+    public static Matcher<AttributePermissionDefinition> isFieldPermission(String fieldName, Permission permission,boolean mandatory,String defaultValue) {
+        return allOf(
+                value(AttributePermissionDefinition::getAttribute, isAttributeName(fieldName)),
+                value(AttributePermissionDefinition::getPermission, is(permission)),
+                value(AttributePermissionDefinition::isMandatory, is(mandatory)),
+                value(attributePermission -> attributePermission.getDefaultValue().orElse(null), is(defaultValue))
         );
     }
 
