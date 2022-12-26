@@ -83,20 +83,20 @@ public class AttributeStore {
     }
 
     public Serializable getSimple(/*Simple*/AttributeSchema attributeSchema) {
-        return computeIfAbsent(attributeSchema, id -> attributeSchema.getDefaultValue()
+        return computeIfAbsent(attributeSchema, attrId -> attributeSchema.getDefaultValue()
                 .orElse(null));
     }
 
     public HashMap<String, String> getReference(ReferenceAttributeSchema attributeSchema) {
-        return computeIfAbsent(attributeSchema, id -> null);
+        return computeIfAbsent(attributeSchema, attrId -> null);
     }
 
     public HashMap<Long, Serializable> getNested(NestedAttributeSchema attributeSchema) {
-        return computeIfAbsent(attributeSchema, id -> new HashMap<>());
+        return computeIfAbsent(attributeSchema, attrId -> new HashMap<>());
     }
 
     public ArrayList<HashMap<Long, Serializable>> getIndexed(IndexedAttributeSchema attributeSchema) {
-        return computeIfAbsent(attributeSchema, id -> new ArrayList<>());
+        return computeIfAbsent(attributeSchema, attrId -> new ArrayList<>());
     }
 
     @SuppressWarnings("unchecked")
