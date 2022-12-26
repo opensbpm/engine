@@ -83,8 +83,8 @@ public class AttributeStore {
     }
 
     public Serializable getSimple(/*Simple*/AttributeSchema attributeSchema) {
-        //PENDING not sure what to do with default-value?
-        return computeIfAbsent(attributeSchema, id -> /*attributeSchema.getDefaultValue()*/ null);
+        return computeIfAbsent(attributeSchema, id -> attributeSchema.getDefaultValue()
+                .orElse(null));
     }
 
     public HashMap<String, String> getReference(ReferenceAttributeSchema attributeSchema) {
@@ -108,10 +108,10 @@ public class AttributeStore {
         putValue(attributeSchema, value);
     }
 
-    public void putReference(ReferenceAttributeSchema attributeSchema, HashMap<String,String> value) {
+    public void putReference(ReferenceAttributeSchema attributeSchema, HashMap<String, String> value) {
         putValue(attributeSchema, value);
     }
-    
+
     public void putNested(NestedAttributeSchema attributeSchema, HashMap<Long, Serializable> value) {
         putValue(attributeSchema, value);
     }

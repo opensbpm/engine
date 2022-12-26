@@ -17,6 +17,9 @@
  */
 package org.opensbpm.engine.api.instance;
 
+import java.io.Serializable;
+import java.util.Optional;
+
 public interface AttributeSchema {
 
     Long getId();
@@ -29,6 +32,9 @@ public interface AttributeSchema {
     
     boolean isIndexed();
 
+    Optional<Serializable> getDefaultValue();
+
     <T> T accept(AttributeSchemaVisitor<T> visitor);
+
 
 }

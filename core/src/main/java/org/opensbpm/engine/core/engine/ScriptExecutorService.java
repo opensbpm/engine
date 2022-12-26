@@ -78,7 +78,7 @@ public class ScriptExecutorService {
 
     private Serializable evalDefaultValueScript(String script, BindingContext bindingContext) {
         return eval(script, bindings -> {
-            bindings.put("user", bindingContext);
+            bindings.put("user", bindingContext.getUser());
         });
     }
 
