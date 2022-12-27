@@ -51,6 +51,9 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
     @XmlElement
     private Serializable defaultValue;
 
+    @XmlElement
+    private Options options;
+
     protected AbstractAttributeSchema() {
         //JAXB constructor
     }
@@ -88,6 +91,7 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
         this.readonly = readonly;
     }
 
+    @Override
     public boolean isIndexed() {
         return indexed;
     }
@@ -96,12 +100,22 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
         this.indexed = indexed;
     }
 
+    @Override
+    public Optional<Serializable> getDefaultValue() {
+        return Optional.ofNullable(defaultValue);
+    }
+
     public void setDefaultValue(Serializable defaultValue) {
         this.defaultValue = defaultValue;
     }
 
-    public Optional<Serializable> getDefaultValue() {
-        return Optional.ofNullable(defaultValue);
+    @Override
+    public Optional<Options> getOptions() {
+        return Optional.ofNullable(options);
+    }
+
+    public void setOptions(Options options) {
+        this.options = options;
     }
 
     @Override
