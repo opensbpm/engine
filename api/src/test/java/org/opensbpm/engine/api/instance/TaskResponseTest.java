@@ -25,6 +25,7 @@ import java.util.Map;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
+import org.opensbpm.engine.api.instance.Options;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -55,13 +56,13 @@ public class TaskResponseTest {
         Long o2ManyOneNumber = 8L;
 
         ObjectSchema object1Schema = ObjectSchema.of(1l, "Object 1", asList(
-                attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false),
+                attributeSchema(o1StringFieldId, "String Field", FieldType.STRING, true, false, asList("1", "2")),
                 NestedAttributeSchema.createNested(o1ToOneFieldId, "To One", asList(
                         SimpleAttributeSchema.of(o1NumberFieldId, "Number Field", FieldType.NUMBER)
                 ))
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
-                attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
+                attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false, asList("1", "2")),
                 referenceSchema(27L, "Reference Field", true, false, object1Schema, asList(
                         SimpleAttributeSchema.of(o1NumberFieldId, "Number Field", FieldType.NUMBER)
                 )),
@@ -101,7 +102,7 @@ public class TaskResponseTest {
         assertThat("wrong document-schemas", result, hasSchemas(
                 isObject1(),
                 isObjectSchema("Object 2",
-                        isFieldSchema("String Field", FieldType.STRING, true, false),
+                        isFieldSchema("String Field", FieldType.STRING, true, false, "1","2"),
                         isReferenceSchema("Reference Field", true, false,
                                 isObject1()
                         ),
@@ -132,10 +133,11 @@ public class TaskResponseTest {
         );
     }
 
-    private static SimpleAttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly) {
+    private static SimpleAttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly, List<Serializable> optionValues) {
         SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id, name, type);
         attributeSchema.setRequired(required);
         attributeSchema.setReadonly(readOnly);
+        attributeSchema.setOptions(Options.of(optionValues));
         return attributeSchema;
     }
 
@@ -145,7 +147,7 @@ public class TaskResponseTest {
         attributeSchema.setReadonly(readOnly);
         return attributeSchema;
     }
-    
+
     private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference, List<AttributeSchema> attributes) {
         ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id, name, attributes);
         attributeSchema.setAutocompleteReference(autocompleteReference);

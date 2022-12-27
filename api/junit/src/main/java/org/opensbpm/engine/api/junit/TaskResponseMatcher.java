@@ -17,13 +17,16 @@
  */
 package org.opensbpm.engine.api.junit;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.Options;
 import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
@@ -67,13 +70,27 @@ public final class TaskResponseMatcher {
         );
     }
 
+    public static Matcher<AttributeSchema> isFieldSchema(String name, FieldType fieldType, boolean required, boolean readOnly,Serializable... variables) {
+        return allOf(value(AttributeSchema.class, AttributeSchema::getName, is(name)),
+                value(SimpleAttributeSchema.class, SimpleAttributeSchema::getFieldType, is(fieldType)),
+                value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
+                value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly)),
+                value(AttributeSchema.class, schema -> schema.getOptions().orElse(null), hasValues(variables))
+        );
+    }
+
+    public static Matcher<Options> hasValues(Serializable... variables) {
+        return value(Options::getValues, contains(variables));
+    }
+
     /**
      * {@link Matcher} to match referencing attributes.
+     *
      * @param name name of the attribute schema
      * @param required <code>true</code> is the required flag must be set
      * @param readOnly <code>true</code> is the read only flag must be set
      * @param referenceObjectMatcher Matcher to match the referencing {@link ObjectSchema}
-     * @return 
+     * @return
      */
     public static Matcher<AttributeSchema> isReferenceSchema(String name, boolean required, boolean readOnly, Matcher<ObjectSchema> referenceObjectMatcher) {
         return allOf(
@@ -81,7 +98,7 @@ public final class TaskResponseMatcher {
                 //value(ReferenceAttributeSchema.class, ReferenceAttributeSchema::getFieldType, is(FieldType.REFERENCE)),
                 value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
                 value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly)),
-                value(ReferenceAttributeSchema.class, schema -> schema.getAutocompleteReference().get(), referenceObjectMatcher)
+                value(ReferenceAttributeSchema.class, schema -> schema.getAutocompleteReference().orElse(null), referenceObjectMatcher)
         );
     }
 

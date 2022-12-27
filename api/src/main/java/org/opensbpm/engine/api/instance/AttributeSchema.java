@@ -34,6 +34,8 @@ public interface AttributeSchema {
 
     Optional<Serializable> getDefaultValue();
 
+    Optional<Options> getOptions();
+    
     <T> T accept(AttributeSchemaVisitor<T> visitor);
 
 
