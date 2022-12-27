@@ -20,7 +20,6 @@ package org.opensbpm.engine.api.junit;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import org.hamcrest.Matcher;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
