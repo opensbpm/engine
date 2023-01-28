@@ -61,7 +61,8 @@ public final class SourceMap {
 
                         @Override
                         public Serializable visitReference(ReferenceAttributeSchema attributeSchema) {
-                            return new SourceMap(attributeSchema, (Map<String, Object>) entry.getValue(), null).toIdMap();
+                            //return new SourceMap(attributeSchema, (Map<String, Object>) entry.getValue(), null).toIdMap();
+                            return (Serializable) entry.getValue();
                         }
 
                         @Override

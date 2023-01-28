@@ -13,21 +13,23 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************
+ * ****************************************************************************
  */
 package org.opensbpm.engine.api.instance;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.Optional;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReferenceAttributeSchema extends AbstractContainerAttributeSchema {
+public class ReferenceAttributeSchema extends AbstractAttributeSchema implements Serializable {
 
-    public static ReferenceAttributeSchema create(Long id, String name, List<AttributeSchema> attributes) {
-        return new ReferenceAttributeSchema(id, name, attributes);
+    public static ReferenceAttributeSchema create(Long id, String name, ObjectSchema autocompleteReference) {
+        final ReferenceAttributeSchema attributeSchema = new ReferenceAttributeSchema(id, name);
+        attributeSchema.autocompleteReference = autocompleteReference;
+        return attributeSchema;
     }
 
     @XmlElement
@@ -37,18 +39,15 @@ public class ReferenceAttributeSchema extends AbstractContainerAttributeSchema {
         //JAXB constructor
     }
 
-    private ReferenceAttributeSchema(Long id, String name, List<AttributeSchema> attributes) {
-        super(id, name, attributes);
+    private ReferenceAttributeSchema(Long id, String name) {
+        super(id, name);
     }
 
     public Optional<ObjectSchema> getAutocompleteReference() {
         return Optional.ofNullable(autocompleteReference);
     }
 
-    public void setAutocompleteReference(ObjectSchema autocompleteReference) {
-        this.autocompleteReference = autocompleteReference;
-    }
-
+    @Override
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
         return visitor.visitReference(this);
     }
