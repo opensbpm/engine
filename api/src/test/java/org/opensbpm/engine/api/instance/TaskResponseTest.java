@@ -24,7 +24,6 @@ import java.util.Map;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
-import org.opensbpm.engine.api.instance.Options;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
 import java.util.List;
@@ -131,18 +130,6 @@ public class TaskResponseTest {
         );
     }
 
-    private static SimpleAttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly, List<Serializable> optionValues) {
-        SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id, name, type);
-        attributeSchema.setRequired(required);
-        attributeSchema.setReadonly(readOnly);
-        attributeSchema.setOptions(Options.of(optionValues));
-        return attributeSchema;
-    }
-
-    private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
-        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id, name, autocompleteReference);
-    private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
-        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id, name, autocompleteReference);
     private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
         ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id, name, autocompleteReference);
         attributeSchema.setRequired(required);
