@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************
+ * ****************************************************************************
  */
 package org.opensbpm.engine.core.engine;
 
@@ -39,6 +39,7 @@ import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.core.model.entities.State;
 import static java.util.stream.Collectors.toList;
+import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
 
 class ObjectSchemaConverter {
@@ -121,7 +122,7 @@ class ObjectSchemaConverter {
 
                 @Override
                 public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-                    SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.ofReference(
+                    ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(
                             referenceAttribute.getId(),
                             referenceAttribute.getName(),
                             toObjectSchema(referenceAttribute.getReference())
@@ -135,23 +136,6 @@ class ObjectSchemaConverter {
                     return attributeSchema;
                 }
 
-//                @Override
-//                public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-//                    List<AttributeSchema> attributes = createAttributes(referenceAttribute.getAttributeModels());
-//                    ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(
-//                            referenceAttribute.getId(), 
-//                            referenceAttribute.getName(), 
-//                            attributes
-//                    );
-//                    attributeSchema.setAutocompleteReference(toObjectSchema(referenceAttribute.getReference()));
-//                    getState().ifPresent(functionState -> {
-//                        attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
-//                        attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
-//                    });
-//
-//                    //PENDING add attributeSchema.getDefaultValue()
-//                    return attributeSchema;
-//                }
                 @Override
                 public AttributeSchema visitNested(NestedAttributeModel nestedAttribute) {
                     List<AttributeSchema> attributes = createAttributes(nestedAttribute.getAttributeModels());

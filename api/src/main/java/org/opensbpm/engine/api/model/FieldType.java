@@ -30,8 +30,7 @@ public enum FieldType {
     DATE(LocalDate.class),
     TIME(LocalTime.class),
     BOOLEAN(Boolean.class),
-    BINARY(Binary.class),
-    REFERENCE(ObjectReference.class);
+    BINARY(Binary.class);
 
     private final Class<?> type;
 
