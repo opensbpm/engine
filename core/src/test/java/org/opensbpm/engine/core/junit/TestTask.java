@@ -141,11 +141,7 @@ public class TestTask extends Task {
                         -> attribute.accept(new AttributeSchemaVisitor<DynaProperty>() {
                     @Override
                     public DynaProperty visitSimple(SimpleAttributeSchema attributeSchema) {
-                        if (FieldType.REFERENCE == attributeSchema.getFieldType()) {
-                            return new DynaProperty(attributeSchema.getName(), Map.class);
-                        } else {
-                            return new DynaProperty(attributeSchema.getName(), attributeSchema.getType());
-                        }
+                        return new DynaProperty(attributeSchema.getName(), attributeSchema.getType());
                     }
 
                     @Override
@@ -180,12 +176,8 @@ public class TestTask extends Task {
             super(dynaClass);
             this.attributes = attributes;
             data.replaceAll((t, u) -> {
-                if (getAttribute(t) instanceof SimpleAttributeSchema
-                        && FieldType.REFERENCE == ((SimpleAttributeSchema) getAttribute(t)).getFieldType()) {
+                if (getAttribute(t) instanceof ReferenceAttributeSchema) {
                     return u;
-                } else if (getAttribute(t) instanceof ReferenceAttributeSchema) {
-                    ReferenceAttributeSchema attribute = (ReferenceAttributeSchema) getAttribute(t);
-                    return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) u);
                 } else if (u instanceof Map) {
                     NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);
                     return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) u);
