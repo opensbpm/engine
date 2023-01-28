@@ -78,5 +78,4 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
                 .append("type", fieldType)
                 .toString();
     }
-
 }
