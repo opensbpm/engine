@@ -19,7 +19,6 @@ package org.opensbpm.engine.api.instance;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -35,12 +34,6 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
 
     public static SimpleAttributeSchema of(long id, String name, FieldType fieldType) {
         return new SimpleAttributeSchema(id, name, fieldType);
-    }
-
-    public static SimpleAttributeSchema ofReference(long id, String name, ObjectSchema autocompleteReference) {
-        SimpleAttributeSchema simpleAttributeSchema = new SimpleAttributeSchema(id, name, FieldType.REFERENCE);
-        simpleAttributeSchema.autocompleteReference = autocompleteReference;
-        return simpleAttributeSchema;
     }
 
     @XmlAttribute(required = true)
@@ -70,10 +63,6 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
      */
     public Class<?> getType() {
         return fieldType.getType();
-    }
-
-    public Optional<ObjectSchema> getAutocompleteReference() {
-        return Optional.ofNullable(autocompleteReference);
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {

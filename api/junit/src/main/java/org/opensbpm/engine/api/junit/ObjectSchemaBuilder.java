@@ -198,9 +198,7 @@ public class ObjectSchemaBuilder {
 
         @Override
         public ReferenceAttributeSchema build(AtomicLong id) {
-            ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id.getAndIncrement(), name, buildAttributes(id));
-            attributeSchema.setAutocompleteReference(autocompleteReference);
-
+            ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id.getAndIncrement(), name, autocompleteReference);
             attributeSchema.setRequired(required);
             return attributeSchema;
         }

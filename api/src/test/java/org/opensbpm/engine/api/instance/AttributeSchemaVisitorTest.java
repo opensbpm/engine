@@ -24,7 +24,7 @@ public class AttributeSchemaVisitorTest {
     @Test
     public void testReference() {
         //arrange
-        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(0L, "name", Collections.emptyList());
+        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(0L, "name", null);
 
         //act
         Optional<ReferenceAttributeSchema> optional = attributeSchema.accept(AttributeSchemaVisitor.reference());
