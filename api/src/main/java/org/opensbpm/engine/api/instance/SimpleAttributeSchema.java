@@ -61,6 +61,7 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
         return fieldType.getType();
     }
 
+    @Override
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
         return visitor.visitSimple(this);
     }
