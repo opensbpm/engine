@@ -26,6 +26,7 @@ import org.junit.Test;
 import org.opensbpm.engine.api.DeserializerUtil;
 import org.opensbpm.engine.api.model.FieldType;
 import static java.util.Arrays.asList;
+import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
@@ -127,6 +128,14 @@ public class TaskResponseTest {
                         isFieldSchema("Number Field", FieldType.NUMBER)
                 )
         );
+    }
+
+    private static SimpleAttributeSchema attributeSchema(Long id, String name, FieldType type, boolean required, boolean readOnly, List<Serializable> optionValues) {
+        SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id, name, type);
+        attributeSchema.setRequired(required);
+        attributeSchema.setReadonly(readOnly);
+        attributeSchema.setOptions(Options.of(optionValues));
+        return attributeSchema;
     }
 
     private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
