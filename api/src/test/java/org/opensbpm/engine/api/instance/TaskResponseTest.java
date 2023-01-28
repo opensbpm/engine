@@ -63,9 +63,7 @@ public class TaskResponseTest {
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
                 attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false, asList("1", "2")),
-                referenceSchema(27L, "Reference Field", true, false, object1Schema, asList(
-                        SimpleAttributeSchema.of(o1NumberFieldId, "Number Field", FieldType.NUMBER)
-                )),
+                referenceSchema(27L, "Reference Field", true, false, object1Schema),
                 IndexedAttributeSchema.create(o2ToManyFieldId, "To Many", asList(
                         SimpleAttributeSchema.of(o2ManyNumberField, "Number Field", FieldType.NUMBER),
                         NestedAttributeSchema.createNested(o2ManyOneFieldId, "To One", asList(
@@ -141,16 +139,8 @@ public class TaskResponseTest {
         return attributeSchema;
     }
 
-    private static SimpleAttributeSchema referenceSchema(Long id, String name, FieldType type, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
-        SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.ofReference(id, name, autocompleteReference);
-        attributeSchema.setRequired(required);
-        attributeSchema.setReadonly(readOnly);
-        return attributeSchema;
-    }
-
-    private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference, List<AttributeSchema> attributes) {
-        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id, name, attributes);
-        attributeSchema.setAutocompleteReference(autocompleteReference);
+    private static ReferenceAttributeSchema referenceSchema(Long id, String name, boolean required, boolean readOnly, ObjectSchema autocompleteReference) {
+        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(id, name, autocompleteReference);
         attributeSchema.setRequired(required);
         attributeSchema.setReadonly(readOnly);
         return attributeSchema;
