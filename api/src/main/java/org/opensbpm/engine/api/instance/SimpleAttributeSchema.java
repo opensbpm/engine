@@ -65,19 +65,7 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
         return fieldType.getType();
     }
 
-<<<<<<< HEAD
-
-    public Optional<ObjectSchema> getAutocompleteReference() {
-        return Optional.ofNullable(autocompleteReference);
-    }
-
-    public void setAutocompleteReference(ObjectSchema autocompleteReference) {
-        this.autocompleteReference = autocompleteReference;
-    }
-
-=======
-
->>>>>>> 3664284 (FieldType REFERENCE removed; it's a duplicate of ReferenceAttribute)
+    @Override
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
         return visitor.visitSimple(this);
     }
