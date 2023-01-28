@@ -39,7 +39,7 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
 
     public static SimpleAttributeSchema ofReference(long id, String name, ObjectSchema autocompleteReference) {
         SimpleAttributeSchema simpleAttributeSchema = new SimpleAttributeSchema(id, name, FieldType.REFERENCE);
-        simpleAttributeSchema.setAutocompleteReference(autocompleteReference);
+        simpleAttributeSchema.autocompleteReference = autocompleteReference;
         return simpleAttributeSchema;
     }
 
@@ -72,13 +72,8 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
         return fieldType.getType();
     }
 
-
     public Optional<ObjectSchema> getAutocompleteReference() {
         return Optional.ofNullable(autocompleteReference);
-    }
-
-    public void setAutocompleteReference(ObjectSchema autocompleteReference) {
-        this.autocompleteReference = autocompleteReference;
     }
 
     public <T> T accept(AttributeSchemaVisitor<T> visitor) {
