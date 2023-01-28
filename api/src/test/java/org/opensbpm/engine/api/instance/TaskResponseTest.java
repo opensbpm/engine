@@ -62,7 +62,7 @@ public class TaskResponseTest {
                 ))
         ));
         ObjectSchema object2Schema = ObjectSchema.of(2l, "Object 2", asList(
-                attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false, asList("1", "2")),
+                attributeSchema(o2StringFieldId, "String Field", FieldType.STRING, true, false),
                 referenceSchema(27L, "Reference Field", true, false, object1Schema),
                 IndexedAttributeSchema.create(o2ToManyFieldId, "To Many", asList(
                         SimpleAttributeSchema.of(o2ManyNumberField, "Number Field", FieldType.NUMBER),
