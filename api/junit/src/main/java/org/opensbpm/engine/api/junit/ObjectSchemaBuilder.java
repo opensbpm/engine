@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
@@ -129,7 +131,8 @@ public class ObjectSchemaBuilder {
         List<AttributeSchema> attributes = attributeBuilders.stream()
                 .map(builder -> builder.build(id))
                 .collect(Collectors.toList());
-
+        String atrs = attributes.stream().collect(Collectors.joining(","));
+        Logger.getLogger(ObjectSchemaBuilder.class.getName()).log(Level.INFO, "attributes {0}", atrs);
         return ObjectSchema.of(id.incrementAndGet(), name, attributes);
     }
 
