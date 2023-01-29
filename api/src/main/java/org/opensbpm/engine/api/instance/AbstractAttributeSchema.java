@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************
+ * ****************************************************************************
  */
 package org.opensbpm.engine.api.instance;
 
@@ -107,6 +107,10 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
 
     public void setDefaultValue(Serializable defaultValue) {
         this.defaultValue = defaultValue;
+    }
+
+    public boolean hasOptions() {
+        return getOptions().isPresent();
     }
 
     @Override
