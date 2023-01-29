@@ -17,6 +17,7 @@
  */
 package org.opensbpm.engine.api.junit;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,9 +27,11 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.IndexedAttributeSchema;
 import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectSchema;
+import org.opensbpm.engine.api.instance.Options;
 import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.model.FieldType;
+import static org.opensbpm.engine.utils.StreamUtils.oneOrMoreAsList;
 
 public class ObjectSchemaBuilder {
 
@@ -51,6 +54,17 @@ public class ObjectSchemaBuilder {
      */
     public static SimpleAttributeBuilder simple(String name, FieldType type) {
         return new SimpleAttributeBuilder(name, type);
+    }
+
+    /**
+     * create a new {@link SimpleAttributeBuilder}
+     *
+     * @param name name of the resulting {@link SimpleAttribute}
+     * @param type type of the resulting {@link SimpleAttribute}
+     * @return new created {@link SimpleAttributeBuilder} instance
+     */
+    public static SimpleAttributeBuilder simple(String name, FieldType type, Serializable option, Serializable... options) {
+        return simple(name, type).withOptions(option, options);
     }
 
     /**
@@ -105,9 +119,9 @@ public class ObjectSchemaBuilder {
     }
 
     /**
-     * Creates the {@link ObjectSchema}. All previous added {@link AttributeBuilder}
-     * will be build and the resulting {@link AttributeSchema} are added to resulting
-     * schema.
+     * Creates the {@link ObjectSchema}. All previous added
+     * {@link AttributeBuilder} will be build and the resulting
+     * {@link AttributeSchema} are added to resulting schema.
      *
      * @return a new {@link ObjectSchema}
      */
@@ -141,6 +155,7 @@ public class ObjectSchemaBuilder {
     public static class SimpleAttributeBuilder extends AttributeBuilder<SimpleAttributeSchema, SimpleAttributeBuilder> {
 
         private final FieldType type;
+        private Options options;
 
         public SimpleAttributeBuilder(String name, FieldType type) {
             super(name);
@@ -152,10 +167,18 @@ public class ObjectSchemaBuilder {
             return this;
         }
 
+        public SimpleAttributeBuilder withOptions(Serializable option, Serializable... options) {
+            this.options = Options.of(oneOrMoreAsList(option, options));
+            return self();
+        }
+
         @Override
         public SimpleAttributeSchema build(AtomicLong id) {
             SimpleAttributeSchema attributeSchema = SimpleAttributeSchema.of(id.getAndIncrement(), name, type);
             attributeSchema.setRequired(required);
+            if (options != null) {
+                attributeSchema.setOptions(options);
+            }
             return attributeSchema;
         }
 

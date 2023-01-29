@@ -40,6 +40,7 @@ public class ObjectBeanHelper {
                 .attribute(simple("time", FieldType.TIME))
                 .attribute(simple("boolean", FieldType.BOOLEAN))
                 .attribute(simple("binary", FieldType.BINARY))
+                .attribute(simple("options", FieldType.STRING,"1","2"))
                 .attribute(referenced("reference", refObjectSchema))
                 .attribute(nested("nested")
                         .attribute(simple("string", FieldType.STRING))
