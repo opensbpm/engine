@@ -7,7 +7,7 @@ properties([
         pipelineTriggers([snapshotDependencies()])
     ])
 
-node('jdk8'){
+node('jdk11'){
     try{
         stage('Prepare'){        
             checkout scm
@@ -15,7 +15,7 @@ node('jdk8'){
         
         stage('Assemble'){
             withMaven(
-                jdk: 'jdk8',
+                jdk: 'jdk11',
                 maven: 'default', 
                 mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
             ) {
@@ -26,7 +26,7 @@ node('jdk8'){
         stage('Test'){
             try{
                 withMaven(
-                    jdk: 'jdk8',
+                    jdk: 'jdk11',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
                     options: [junitPublisher(disabled:false),jacocoPublisher(disabled:false)]
@@ -43,7 +43,7 @@ node('jdk8'){
             try{
                 def model = readMavenPom(file: 'pom.xml')
                 withMaven(
-                    jdk: 'jdk8',
+                    jdk: 'jdk11',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
                     options: [
@@ -79,7 +79,7 @@ node('jdk8'){
         
         stage('Deploy'){
             retry(3) {
-                withMaven(jdk: 'jdk8',
+                withMaven(jdk: 'jdk11',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
                     sh "mvn -DskipTests deploy"
@@ -88,7 +88,7 @@ node('jdk8'){
         }
         
         //        stage('Site'){
-        //            withMaven(jdk: 'jdk8',
+        //            withMaven(jdk: 'jdk11',
         //                maven: 'default', 
         //                mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
         //                sh "mvn site site:stage"
