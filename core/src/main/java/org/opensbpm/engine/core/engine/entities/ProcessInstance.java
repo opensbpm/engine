@@ -124,17 +124,17 @@ public class ProcessInstance implements HasId, Serializable {
         Objects.requireNonNull(state);
         this.state = state;
 
-        if (state.equals(ProcessInstanceState.CANCELLED_BY_SYSTEM)
-                || state.equals(ProcessInstanceState.CANCELLED_BY_USER)
-                || state.equals(ProcessInstanceState.FINISHED)) {
+        if (ProcessInstanceState.CANCELLED_BY_SYSTEM == state
+                || ProcessInstanceState.CANCELLED_BY_USER == state
+                || ProcessInstanceState.FINISHED == state) {
             endTime = LocalDateTime.now();
         }
     }
 
     public boolean isStopped() {
-        return ProcessInstanceState.FINISHED.equals(state)
-                || ProcessInstanceState.CANCELLED_BY_SYSTEM.equals(state)
-                || ProcessInstanceState.CANCELLED_BY_USER.equals(state);
+        return ProcessInstanceState.FINISHED == state
+                || ProcessInstanceState.CANCELLED_BY_SYSTEM == state
+                || ProcessInstanceState.CANCELLED_BY_USER == state;
     }
 
     public boolean isActive() {
