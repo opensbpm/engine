@@ -43,7 +43,7 @@ public final class CollectionUtils {
      * @return a new list containing the given element
      */
     public static <T> List<T> add(List<T> list, T element) {
-        Objects.requireNonNull(element, "element must be nono null");
+        Objects.requireNonNull(element, "element must not be null");
         list = Optional.ofNullable(list)
                 .orElse(new ArrayList<>());
         list.add(element);
