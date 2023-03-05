@@ -33,16 +33,21 @@ public class SourceMapTest {
     public void test() {
         Map<String, Object> source = createSource();
 
+        ObjectSchema object1Schema = ObjectSchema.of(1l, "Referenced", asList(
+                SimpleAttributeSchema.of(1L, "Name", FieldType.STRING)
+        ));
+        
         ObjectSchema objectSchema = ObjectSchema.of(1l, "Test", asList(
                 SimpleAttributeSchema.of(1L, "Name", FieldType.STRING),
-                NestedAttributeSchema.createNested(2L, "Adresse", asList(
-                        SimpleAttributeSchema.of(3L, "PLZ", FieldType.STRING),
-                        SimpleAttributeSchema.of(4L, "Ort", FieldType.STRING)
+                NestedAttributeSchema.createNested(3L, "Adresse", asList(
+                        SimpleAttributeSchema.of(4L, "PLZ", FieldType.STRING),
+                        SimpleAttributeSchema.of(5L, "Ort", FieldType.STRING)
                 )),
-                IndexedAttributeSchema.create(5L, "Kontakte", asList(
-                        SimpleAttributeSchema.of(6L, "Name", FieldType.STRING),
-                        SimpleAttributeSchema.of(7L, "EMail", FieldType.STRING)
-                ))
+                IndexedAttributeSchema.create(6L, "Kontakte", asList(
+                        SimpleAttributeSchema.of(7L, "Name", FieldType.STRING),
+                        SimpleAttributeSchema.of(8L, "EMail", FieldType.STRING)
+                )),
+                ReferenceAttributeSchema.create(2L, "Reference", object1Schema)
         ));
 
         Map<Long, Serializable> toIdMap = new SourceMap(objectSchema, source,null).toIdMap();
@@ -59,6 +64,10 @@ public class SourceMapTest {
         source.put("Adresse", address);
         
         source.put("Kontakte", asList(
+                createContact("Kontakt1", "mail@irgendwo.at"),
+                createContact("Kontakt2", "mail@daham.at")
+        ));
+        source.put("Reference", asList(
                 createContact("Kontakt1", "mail@irgendwo.at"),
                 createContact("Kontakt2", "mail@daham.at")
         ));
