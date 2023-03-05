@@ -11,6 +11,16 @@ node('jdk11'){
     try{
         stage('Prepare'){        
             checkout scm
+            
+            if('master' != env.BRANCH_NAME){
+                withMaven(
+                    jdk: 'jdk11',
+                    maven: 'default', 
+                    mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
+                ) {
+                    updateQualifier()
+                }
+            }
         }
         
         stage('Assemble'){
@@ -115,4 +125,19 @@ node('jdk11'){
             attachLog: true
         )
     }
+}
+
+@NonCPS
+def updateQualifier(){
+    def qualifier
+    def matcher= (env.BRANCH_NAME =~ /^feature\/(.*)/)
+    if(!matcher){
+        qualifier = "SNAPSHOT"
+    }else {
+        qualifier = "${matcher[0][1]}-SNAPSHOT"
+    }
+    println "update pom-versions with qualifier ${qualifier}"
+    sh "mvn build-helper:parse-version versions:set \
+            -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.incrementalVersion}-${qualifier} \
+            -DoldVersion='*' -DprocessAllModules=true -DgenerateBackupPoms=false "
 }
