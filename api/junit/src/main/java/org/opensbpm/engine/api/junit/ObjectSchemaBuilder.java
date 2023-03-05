@@ -131,8 +131,6 @@ public class ObjectSchemaBuilder {
         List<AttributeSchema> attributes = attributeBuilders.stream()
                 .map(builder -> builder.build(id))
                 .collect(Collectors.toList());
-        String atrs = attributes.stream().collect(Collectors.joining(","));
-        Logger.getLogger(ObjectSchemaBuilder.class.getName()).log(Level.INFO, "attributes {0}", atrs);
         return ObjectSchema.of(id.incrementAndGet(), name, attributes);
     }
 
