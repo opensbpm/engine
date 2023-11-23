@@ -55,8 +55,8 @@
     </scm>
     <distributionManagement>
         <snapshotRepository>
-            <id>opensbpm</id>
-            <url>https://repo.repsy.io/mvn/sedstef/opensbpm</url>
+            <id>opensbpm-snapshots</id>
+            <url>http://team.sedelmaier.at/archiva/repository/opensbpm-snapshots/</url>
         </snapshotRepository>
         <site>
             <id>website</id>
