@@ -138,6 +138,6 @@ def updateQualifier(){
     }
     println "update pom-versions with qualifier ${qualifier}"
     sh "mvn build-helper:parse-version versions:set \
-            -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.incrementalVersion}-${qualifier} \
+            -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}-${qualifier} \
             -DoldVersion='*' -DprocessAllModules=true -DgenerateBackupPoms=false "
 }
