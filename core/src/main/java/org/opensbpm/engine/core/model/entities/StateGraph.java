@@ -23,10 +23,10 @@ import java.util.stream.Collectors;
 
 public class StateGraph {
 
-    private final Map<State, Collection<State>> verteces;
+    private final Map<State, Collection<State>> vertices;
 
     public StateGraph(SubjectModel subjectModel) {
-        verteces = subjectModel.getStates().stream()
+        vertices = subjectModel.getStates().stream()
                 .filter(state -> !state.getHeads().isEmpty())
                 .collect(Collectors.toMap(tail -> tail, State::getHeads));
     }
@@ -44,13 +44,13 @@ public class StateGraph {
     }
 
     public Collection<State> getHeads() {
-        return verteces.values().stream()
+        return vertices.values().stream()
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
 
     public Collection<State> getTails() {
-        return verteces.keySet().stream()
+        return vertices.keySet().stream()
                 .collect(Collectors.toList());
     }
 }
