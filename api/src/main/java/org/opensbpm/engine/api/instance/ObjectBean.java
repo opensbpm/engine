@@ -45,6 +45,7 @@ public class ObjectBean implements DynaBean {
      *
      * @param objectSchema to create the {@link ObjectBean}
      * @param sourceMap id-based Map, must match the attributesContainer
+     * @return ready to use {@link ObjectBean} instance
      */
     public static ObjectBean from(ObjectSchema objectSchema, SourceMap sourceMap) {
         //TODO validate values
@@ -56,6 +57,7 @@ public class ObjectBean implements DynaBean {
      *
      * @param attributesContainer to create the {@link ObjectBean}
      * @param values id-based Map, must match the attributesContainer
+     * @return ready to use {@link ObjectBean} instance
      */
     public static ObjectBean from(IsAttributesContainer attributesContainer, Map<Long, Serializable> values) {
         //TODO validate values
@@ -68,8 +70,8 @@ public class ObjectBean implements DynaBean {
     /**
      * instantiate a {@link ObjectBean} with the given attribute and store.
      *
-     * @param attributesContainer
-     * @param attributeStore
+     * @param attributesContainer container for bean
+     * @param attributeStore store for attributes
      * @deprecated
      */
     public ObjectBean(IsAttributesContainer attributesContainer, AttributeStore attributeStore) {

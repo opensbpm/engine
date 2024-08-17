@@ -82,7 +82,7 @@ public class Task {
      * retrieve a {@link ObjectBean} for a {@link ObjectSchema}
      *
      * @param objectSchema objectSchema to retrieve a ObjectBean
-     * @return an newly created or already instantiated ObjectBean
+     * @return a newly created or already instantiated ObjectBean
      */
     public ObjectBean getObjectBean(ObjectSchema objectSchema) {
         //TODO validate given objectSchema against taskResponse.getSchemas()
@@ -92,6 +92,8 @@ public class Task {
 
     /**
      * create a TaskRequest for a given state
+     * @param nextState switch to this state
+     * @return TaskRequest of the desired NextState
      */
     public TaskRequest createTaskRequest(NextState nextState) {
         Objects.requireNonNull(nextState, "nextState must be non null");

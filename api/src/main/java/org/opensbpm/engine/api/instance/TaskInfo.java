@@ -70,9 +70,9 @@ public class TaskInfo implements Serializable {
     }
 
     /**
-     * id of process, see {@link ProcessInfo#id}
+     * id of process, see {@link ProcessInfo#getId()}
      *
-     * @return
+     * @return id of the process
      */
     public Long getProcessId() {
         return processId;

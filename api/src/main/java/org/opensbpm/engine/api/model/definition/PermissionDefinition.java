@@ -26,7 +26,7 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition
 /**
  * Definition of a Permission for a {@link FieldDefinition} in a
  * {@link StateDefinition}. A Permission can be one of {@link Permission#READ}
- * or {@link Permission#WRITE} and can be {@link #mandatory}.
+ * or {@link Permission#WRITE} and can be {@link AttributePermissionDefinition#isMandatory()} or not.
  *
  */
 public interface PermissionDefinition {

@@ -42,6 +42,7 @@ public class ObjectData implements Serializable {
     /**
      * create a new {@link ObjectDataBuilder} with name.
      *
+     * @param name Name of the object
      * @return a new {@link ObjectDataBuilder} instance
      */
     public static ObjectDataBuilder of(String name) {

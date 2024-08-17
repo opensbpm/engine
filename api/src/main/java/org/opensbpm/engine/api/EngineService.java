@@ -37,17 +37,17 @@ import org.opensbpm.engine.api.model.ProcessModelInfo;
 public interface EngineService {
 
     /**
-     * find all startable Processmodels for the given {@link UserToken}.A ProcessModel is startable when the
-     * processmodel is in active state and the user is in the role of start subject
+     * Find all startable process models for the given {@link UserToken}.A process model is startable when the
+     * process model is in active state and the user is in the role of start subject.
      *
-     * @param userToken
+     * @param userToken is a token representing the user
      * @return
      * @throws UserNotFoundException
      */
     Collection<ProcessModelInfo> findStartableProcessModels(UserToken userToken) throws UserNotFoundException;
 
     /**
-     * start the given processmodel
+     * Start the given process model.
      *
      * @param userToken
      * @param modelRequest
@@ -59,7 +59,7 @@ public interface EngineService {
             throws UserNotFoundException, ModelNotFoundException;
 
     /**
-     * find all processes with the given state from given user.
+     * Find all processes with the given state from given user.
      *
      * @param userToken
      * @param state
@@ -71,7 +71,7 @@ public interface EngineService {
     //TODO add find-method with SearchFilter
 
     /**
-     * retrieve a overview of all executable tasks
+     * Retrieve an overview of all executable tasks.
      *
      * @param userToken
      * @return
@@ -80,7 +80,7 @@ public interface EngineService {
     Collection<TaskInfo> getTasks(UserToken userToken) throws UserNotFoundException;
 
     /**
-     * retrieve all necersary data to execute the task
+     * Retrieve all necessary data to execute the task.
      *
      * @param userToken
      * @param taskInfo
@@ -92,7 +92,7 @@ public interface EngineService {
             throws TaskNotFoundException, TaskOutOfDateException;
 
     /**
-     * retrieve autocomplete data
+     * Retrieve autocomplete data.
      *
      * @param userToken
      * @param taskInfo
@@ -104,7 +104,7 @@ public interface EngineService {
             throws TaskNotFoundException, TaskOutOfDateException;
 
     /**
-     * executes the task and change the state of the process to the next state
+     * Executes the task and change the state of the process to the next state.
      *
      * @param userToken
      * @param taskRequest
@@ -130,7 +130,7 @@ public interface EngineService {
         }
 
         /**
-         * Create an new instance of a {@link ObjectRequest} with the given {@link ObjectSchema}.
+         * Create a new instance of a {@link ObjectRequest} with the given {@link ObjectSchema}.
          *
          * @param objectSchema  must be a valid {@link ObjectSchema}
          * @return a new instance

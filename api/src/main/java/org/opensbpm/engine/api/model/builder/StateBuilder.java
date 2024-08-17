@@ -39,9 +39,9 @@ public abstract class StateBuilder<T extends StateBuilder<T, V>, V extends State
     }
 
     /**
-     * add {@link StateDefinition#displayName} to this {@link StateDefinition}
+     * add {@link StateDefinition#getDisplayName()} to this {@link StateDefinition}
      *
-     * @param displayName {@link StateDefinition#displayName}
+     * @param displayName {@link StateDefinition#getDisplayName()}
      * @return
      */
     public T withDisplayName(String displayName) {

@@ -54,7 +54,7 @@ public class SimpleAttributeSchema extends AbstractAttributeSchema implements Se
     /**
      * returns the java-type of the field.
      *
-     * @return
+     * @return Java class for the field
      * @see FieldType
      */
     public Class<?> getType() {

@@ -35,9 +35,9 @@ public interface InstanceService {
     public static interface ProcessRequest {
 
         /**
-         * Create an new instance of a {@link ProcessRequest} with the given id.
+         * Create a new instance of a {@link ProcessRequest} with the given id.
          *
-         * @param id must be a valid {@link ProcessRequest#id}
+         * @param id must be a valid {@link ProcessRequest#getId()}
          * @return a new instance
          */
         public static ProcessRequest of(Long id) {
@@ -45,7 +45,7 @@ public interface InstanceService {
         }
 
         /**
-         * Create an new instance of a {@link ProcessRequest} with the given {@link ProcessInfo}.
+         * Create a new instance of a {@link ProcessRequest} with the given {@link ProcessInfo}.
          *
          * @param processInfo must be a valid {@link ProcessInfo}
          * @return a new instance
