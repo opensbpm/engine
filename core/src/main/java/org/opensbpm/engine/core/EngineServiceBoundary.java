@@ -200,9 +200,9 @@ public class EngineServiceBoundary implements EngineService {
 
     private Subject validateTaskInfo(TaskInfo taskInfo) throws TaskNotFoundException, TaskOutOfDateException {
         //TODO activate //User user = getUser(userToken);
-        //TODO lock subject and and throw Exception
+        //TODO lock subject and throw Exception
 
-        //There is no direct database representation for a task; basicly a Subject with a State represents a task
+        //There is no direct database representation for a task; basically a Subject with a State represents a task
         Subject subject = subjectService.findById(taskInfo.getId())
                 .orElseThrow(newTaskNotFoundException(taskInfo.getId()));
         if (subject.getLastChanged().isAfter(taskInfo.getLastChanged())) {
