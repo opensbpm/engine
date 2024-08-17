@@ -45,9 +45,8 @@ import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState
 class ObjectSchemaConverter {
 
     public static ObjectSchema toObjectSchema(ScriptExecutorService scriptExecutorService, State state, ObjectModel objectModel, BindingContext bindingContext) {
-        ObjectSchema objectSchema = new ObjectSchemaConverter(scriptExecutorService, state, bindingContext)
+        return new ObjectSchemaConverter(scriptExecutorService, state, bindingContext)
                 .convertToObjectSchema(objectModel);
-        return objectSchema;
     }
 
     private final ScriptExecutorService scriptService;
