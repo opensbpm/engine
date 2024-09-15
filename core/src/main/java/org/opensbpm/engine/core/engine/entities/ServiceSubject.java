@@ -16,7 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine.entities;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.SubjectModel;
 import static org.opensbpm.engine.core.model.entities.SubjectModelVisitor.serviceSubjectModel;

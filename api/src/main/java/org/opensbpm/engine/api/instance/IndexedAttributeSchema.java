@@ -18,8 +18,8 @@
 package org.opensbpm.engine.api.instance;
 
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
 
 @XmlAccessorType(value = XmlAccessType.FIELD)
 public class IndexedAttributeSchema extends AbstractContainerAttributeSchema {

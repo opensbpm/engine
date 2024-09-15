@@ -17,7 +17,7 @@
  */
 package org.opensbpm.engine.core.model.entities;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 

@@ -16,7 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.model.entities;
 
-import javax.persistence.Entity;
+import jakarta.persistence.Entity;
 
 @Entity
 public class ServiceSubjectModel extends SubjectModel {

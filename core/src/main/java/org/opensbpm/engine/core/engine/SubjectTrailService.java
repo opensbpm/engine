@@ -17,7 +17,7 @@
 package org.opensbpm.engine.core.engine;
 
 import java.util.List;
-import javax.persistence.criteria.Join;
+import jakarta.persistence.criteria.Join;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance_;
 import org.opensbpm.engine.core.engine.entities.Subject;

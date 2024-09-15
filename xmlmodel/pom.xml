@@ -122,7 +122,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>2.5.0</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>xjc</id>
@@ -134,6 +134,7 @@
                                 <source>src/main/resources/org/opensbpm/engine/xmlmodel/processmodel.xsd</source>
                             </sources>                            
                             <packageName>org.opensbpm.engine.xmlmodel.processmodel</packageName>
+                            <target>3.0</target>
                             <!--addGeneratedAnnotation>true</addGeneratedAnnotation-->
                         </configuration>
                     </execution>

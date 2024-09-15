@@ -19,7 +19,7 @@ package org.opensbpm.engine.api.model;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlType;
 
 @XmlType
 public enum FieldType {

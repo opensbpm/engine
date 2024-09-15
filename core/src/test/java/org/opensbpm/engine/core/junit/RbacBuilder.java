@@ -16,7 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.junit;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.opensbpm.engine.core.engine.entities.User;
 import org.opensbpm.engine.core.model.entities.Role;
 

@@ -17,7 +17,7 @@
 package org.opensbpm.engine.api.adapters;
 
 import java.time.LocalDateTime;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 public class LocalDateTimeAdapter extends XmlAdapter<String, LocalDateTime> {
 

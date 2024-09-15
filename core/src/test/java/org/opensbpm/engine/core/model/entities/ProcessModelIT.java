@@ -19,7 +19,7 @@ package org.opensbpm.engine.core.model.entities;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 import org.hamcrest.Matcher;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Ignore;

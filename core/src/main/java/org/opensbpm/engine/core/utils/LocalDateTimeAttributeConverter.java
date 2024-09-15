@@ -8,8 +8,8 @@ package org.opensbpm.engine.core.utils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * {@link AttributeConverter} to convert a {@link LocalDateTime} to a {@link Timestamp} and vice versa.

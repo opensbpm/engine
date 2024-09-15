@@ -17,7 +17,7 @@
  */
 package org.opensbpm.engine.core.engine.entities;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 import org.junit.Test;
 import org.opensbpm.engine.core.junit.EntityDataTestCase;
 import org.opensbpm.engine.core.model.entities.ProcessModel;

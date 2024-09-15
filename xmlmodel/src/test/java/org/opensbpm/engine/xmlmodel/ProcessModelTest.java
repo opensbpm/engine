@@ -44,7 +44,7 @@ import org.opensbpm.engine.api.model.definition.StateDefinition.FunctionStateDef
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import static net.bytebuddy.implementation.FixedValue.nullValue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
