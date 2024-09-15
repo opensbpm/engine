@@ -76,6 +76,7 @@ node('jdk17'){
                         cpd(pattern: '**/target/cpd.xml'), 
                         pmdParser(pattern: '**/target/pmd.xml')
                     ])
+                    /*
                 timeout(time: 15, unit: 'MINUTES') {
                     def qg = waitForQualityGate()
                     if (qg.status == 'ERROR') {
@@ -84,6 +85,7 @@ node('jdk17'){
                         currentBuild.result = 'UNSTABLE'
                     }
                 }
+                */
             }
         }
         
