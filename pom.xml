@@ -15,7 +15,7 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.opensbpm.engine</groupId>
@@ -34,7 +34,7 @@
     <developers>
         <developer>
             <name>Stefan Sedelmaier</name>
-            <email>stefan@sedelmaier.at</email>                       
+            <email>stefan@sedelmaier.at</email>
         </developer>
     </developers>
 
@@ -42,10 +42,10 @@
         <module>api</module>
         <module>api/junit</module>
         <module>xmlmodel</module>
-        <module>core</module>        
+        <module>core</module>
         <module>utils</module>
-        
-        <module>examples</module>        
+
+        <module>examples</module>
     </modules>
 
     <scm>
@@ -72,16 +72,18 @@
 
         <surefire.reportsDirectory>${project.build.directory}/surefire-reports</surefire.reportsDirectory>
         <failsafe.reportsDirectory>${project.build.directory}/failsafe-reports</failsafe.reportsDirectory>
-        
+
         <jacoco.surefire.destFile>${project.build.directory}/jacoco.exec</jacoco.surefire.destFile>
         <jacoco.failsafe.destFile>${project.build.directory}/jacoco-it.exec</jacoco.failsafe.destFile>
-        
+
         <!-- surefire + failsafe -->
         <sonar.junit.reportPaths>
             ${project.build.directory}/surefire-reports,
             ${project.build.directory}/failsafe-reports
-        </sonar.junit.reportPaths>  
-        <sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        </sonar.junit.reportPaths>
+        <sonar.coverage.jacoco.xmlReportPaths>
+            ${project.build.directory}/site/jacoco/jacoco.xml,${project.build.directory}/site/jacoco-it/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
 
 
         <!-- dependency versions -->
@@ -95,7 +97,7 @@
             ===================
             Import Dependencies 
             ===================
-            -->             
+            -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -103,7 +105,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            
+
             <!-- 
             =======================
               Compile Dependencies 
@@ -143,7 +145,7 @@
                 <artifactId>api-junit</artifactId>
                 <version>${project.version}</version>
             </dependency>
-            
+
         </dependencies>
     </dependencyManagement>
 
@@ -209,8 +211,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
                     <version>3.0.0</version>
-                </plugin>                
-            </plugins>            
+                </plugin>
+            </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
@@ -226,8 +228,8 @@
                         -->
                     </compilerArgs>
                 </configuration>
-            </plugin>            
-            
+            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -289,7 +291,7 @@
                             </fileSets>
                         </configuration>
                     </execution>
-                    -->                    
+                    -->
                     <execution>
                         <id>default-report</id>
                         <goals>
@@ -363,7 +365,7 @@
                     <subDirectory>engine</subDirectory>
                 </configuration>
             </plugin>
-        
+
         </plugins>
     </build>
 </project>
