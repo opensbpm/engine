@@ -75,7 +75,7 @@ public abstract class Subject implements HasId, Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "subject")
     @MapKey(name = "lastModified")
-    @OrderBy("lastModified,id")
+    //@OrderBy("lastModified,id")
     private final SortedMap<Long, SubjectTrail> subjectTrail = new TreeMap<>();
     //
     private transient SubjectTrail currentTrail;

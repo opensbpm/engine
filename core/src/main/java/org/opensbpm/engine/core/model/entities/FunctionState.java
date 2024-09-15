@@ -54,9 +54,11 @@ public class FunctionState extends State implements Serializable {
     @ElementCollection
     @MapKeyColumn(name = "parameter")
     @Lob
-    @Column(name = "value")
+    @Column(name = "virtue")
     @CollectionTable(name = "statefunction_parameters",
-            joinColumns = @JoinColumn(name = "id", updatable = false))
+            joinColumns = @JoinColumn(name = "id",
+                        nullable = false)
+    )
     private Map<String, String> parameters = new HashMap<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "functionState")
@@ -68,14 +70,12 @@ public class FunctionState extends State implements Serializable {
             joinColumns = {
                 @JoinColumn(name = "function",
                         referencedColumnName = "id",
-                        nullable = false,
-                        updatable = false)
+                        nullable = false)
             },
             inverseJoinColumns = {
                 @JoinColumn(name = "head",
                         referencedColumnName = "id",
-                        nullable = false,
-                        updatable = false)
+                        nullable = false)
             },
             uniqueConstraints = @UniqueConstraint(
                     columnNames = {"function", "head"})

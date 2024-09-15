@@ -55,7 +55,7 @@ public class ObjectInstance implements HasId, Serializable {
 
     @Lob
 //    @Basic(fetch = LAZY)
-    @Column
+    @Column(name = "virtue")
     private HashMap<Long, Serializable> value = new HashMap<Long, Serializable>();
 
     protected ObjectInstance() {

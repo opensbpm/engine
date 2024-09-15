@@ -77,7 +77,7 @@ public class SimpleAttributeModelIT extends EntityDataTestCase {
         });
 
         //then
-        assertThat("UniqueKey doesn't work", persistenceException.getCause(),
+        assertThat("UniqueKey doesn't work", persistenceException,
                 is(instanceOf(ConstraintViolationException.class)));
     }
 
