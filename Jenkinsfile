@@ -7,14 +7,14 @@ properties([
         pipelineTriggers([snapshotDependencies()])
     ])
 
-node('jdk11'){
+node('jdk17'){
     try{
         stage('Prepare'){        
             checkout scm
             
             if('master' != env.BRANCH_NAME){
                 withMaven(
-                    jdk: 'jdk11',
+                    jdk: 'jdk17',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
                 ) {
@@ -25,7 +25,7 @@ node('jdk11'){
         
         stage('Assemble'){
             withMaven(
-                jdk: 'jdk11',
+                jdk: 'jdk17',
                 maven: 'default', 
                 mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
             ) {
@@ -36,7 +36,7 @@ node('jdk11'){
         stage('Test'){
             try{
                 withMaven(
-                    jdk: 'jdk11',
+                    jdk: 'jdk17',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
                     options: [junitPublisher(disabled:false),jacocoPublisher(disabled:false)]
@@ -53,7 +53,7 @@ node('jdk11'){
             try{
                 def model = readMavenPom(file: 'pom.xml')
                 withMaven(
-                    jdk: 'jdk11',
+                    jdk: 'jdk17',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3',
                     options: [
@@ -89,7 +89,7 @@ node('jdk11'){
         
         stage('Deploy'){
             retry(3) {
-                withMaven(jdk: 'jdk11',
+                withMaven(jdk: 'jdk17',
                     maven: 'default', 
                     mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
                     sh "mvn -DskipTests deploy"
@@ -98,7 +98,7 @@ node('jdk11'){
         }
         
         //        stage('Site'){
-        //            withMaven(jdk: 'jdk11',
+        //            withMaven(jdk: 'jdk17',
         //                maven: 'default', 
         //                mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3') {
         //                sh "mvn site site:stage"
