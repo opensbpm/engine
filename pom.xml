@@ -49,6 +49,8 @@
         <module>server/service</module>
 
         <module>examples</module>
+        <module>client</module>
+        <module>e2e</module>
     </modules>
 
     <scm>
