@@ -1,25 +1,25 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2024 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 package org.opensbpm.engine.service.services;
 
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response.Status;
-import org.opensbpm.authentication.SpringAuthentication;
 import org.opensbpm.engine.api.EngineService;
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ModelService.ModelRequest;
@@ -43,6 +43,7 @@ import org.opensbpm.engine.server.api.EngineResource;
 import org.opensbpm.engine.server.api.dto.instance.Processes;
 import org.opensbpm.engine.server.api.dto.instance.Tasks;
 import org.opensbpm.engine.server.api.dto.model.ProcessModels;
+import org.opensbpm.engine.service.authentication.SpringAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,7 +61,11 @@ public class EngineResourceService implements EngineResource {
 
     @Override
     public ProcessModelResource getProcessModelResource(Long userId) {
-        return new ProcessModelResourceService();
+        UserToken userToken = retrieveToken(SecurityContextHolder.getContext().getAuthentication());
+        if (userId.compareTo(userToken.getId()) != 0) {
+            throw new ClientErrorException("User mismatch", Status.FORBIDDEN);
+        }
+        return new ProcessModelResourceService(userToken);
     }
 
     @Override
@@ -73,16 +78,25 @@ public class EngineResourceService implements EngineResource {
         return new TaskResourceService();
     }
 
-    private UserToken retrieveToken(Authentication authentication) throws UserNotFoundException {
-        return userTokenService.retrieveToken(SpringAuthentication.of(authentication));
+    private UserToken retrieveToken(Authentication authentication) {
+        try {
+            return userTokenService.retrieveToken(SpringAuthentication.of(authentication));
+        } catch (UserNotFoundException ex) {
+            throw new ClientErrorException(ex.getMessage(), Status.FORBIDDEN);
+        }
     }
 
     public class ProcessModelResourceService implements ProcessModelResource {
 
+        private final UserToken userToken;
+
+        public ProcessModelResourceService(UserToken userToken) {
+            this.userToken = userToken;
+        }
+
         @Override
         public ProcessModels index() {
             try {
-                UserToken userToken = retrieveToken(SecurityContextHolder.getContext().getAuthentication());
                 return ProcessModels.of(findProcessModels(userToken));
             } catch (UserNotFoundException ex) {
                 throw new NotFoundException(ex.getMessage(), ex);

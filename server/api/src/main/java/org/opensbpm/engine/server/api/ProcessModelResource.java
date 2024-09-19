@@ -17,6 +17,7 @@
  */
 package org.opensbpm.engine.server.api;
 
+import jakarta.annotation.security.PermitAll;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.server.api.dto.model.ProcessModels;
@@ -35,6 +36,7 @@ import java.io.InputStream;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 //Api(value = "Process Model")
+@PermitAll
 @Path(value = "engine/models")
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

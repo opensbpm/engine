@@ -17,6 +17,7 @@
 package org.opensbpm.engine.server.api;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.annotation.security.PermitAll;
 import org.opensbpm.engine.server.api.dto.instance.Audits;
 import org.opensbpm.engine.server.api.dto.instance.Processes;
 import org.opensbpm.engine.api.SearchFilter;
@@ -28,6 +29,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.QueryParam;
 
 //@Api(value = "Process Instance")
+@PermitAll
 @Path("engine/instances")
 public interface ProcessInstanceResource {
 

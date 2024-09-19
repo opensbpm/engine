@@ -16,6 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.server.api;
 
+import jakarta.annotation.security.PermitAll;
 import org.opensbpm.engine.api.taskprovider.TaskProviderInfo.ProviderResource;
 import org.opensbpm.engine.server.api.dto.taskprovider.TaskProviderInfos;
 import org.opensbpm.engine.server.api.dto.taskprovider.TaskProviderInfos.ProviderResources;
@@ -28,6 +29,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 //@Api(value = "TaskProvider")
+@PermitAll
 @Path(value = "engine/providers")
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

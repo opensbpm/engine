@@ -29,7 +29,10 @@
             <artifactId>jakarta.xml.bind-api</artifactId>
         </dependency>
 
-
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+        </dependency>
         <dependency>
             <groupId>jakarta.ws.rs</groupId>
             <artifactId>jakarta.ws.rs-api</artifactId>
@@ -47,7 +50,6 @@
               Test Dependencies
             =======================
         -->
-
     </dependencies>
 
 </project>

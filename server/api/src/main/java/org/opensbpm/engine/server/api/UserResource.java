@@ -16,19 +16,25 @@
  ******************************************************************************/
 package org.opensbpm.engine.server.api;
 
-import org.opensbpm.engine.api.instance.UserTokenRequest;
-import org.opensbpm.engine.api.instance.UserToken;
+import jakarta.annotation.security.PermitAll;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
+import org.opensbpm.engine.api.instance.UserTokenRequest;
+import org.opensbpm.engine.api.instance.UserToken;
 import jakarta.ws.rs.core.MediaType;
 
 //@Api(value = "Users")
+@PermitAll
 @Path(value = "engine/users")
 @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public interface UserResource {
+
+    @GET
+    UserToken info();
 
     @POST
     UserToken registerUser(UserTokenRequest userTokenRequest);

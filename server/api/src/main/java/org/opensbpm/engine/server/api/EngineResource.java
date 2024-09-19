@@ -24,16 +24,22 @@ import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.server.api.dto.instance.Processes;
 import org.opensbpm.engine.server.api.dto.instance.Tasks;
-import org.opensbpm.engine.server.api.dto.model.ProcessModels;
+import jakarta.annotation.security.PermitAll;
+import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 import org.opensbpm.engine.server.api.dto.model.ProcessModels;
 
 //@Api(value = "Engine", authorizations = {
 //    @Authorization(value = "basicAuth")})
+@PermitAll
 @Path("engine")
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public interface EngineResource {
 
     @Path("/{userId}/models")
