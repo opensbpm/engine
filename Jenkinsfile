@@ -30,6 +30,7 @@ node('jdk17'){
                 mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
             ) {
                 sh "mvn -U -DskipTests clean install"
+                stash(name: 'service-exec-jar', includes: 'server/service/target/*-exec.jar')
             }
         }
         
@@ -88,7 +89,21 @@ node('jdk17'){
                 */
             }
         }
-        
+
+        stage('Build OCI Image'){
+            node('docker'){
+                checkout scm
+                unstash('service-exec-jar')
+                dir('server/service'){
+                    docker.withRegistry('', 'sedstef@hub.docker.com') {
+                        def image = docker.build("sedstef/opensbpm-engine:${env.BUILD_ID}")
+                        image.push("${env.BUILD_ID}")
+                        image.push("latest")
+                    }
+                }
+            }
+        }
+
         stage('Deploy'){
             retry(3) {
                 withMaven(jdk: 'jdk17',

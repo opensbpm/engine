@@ -45,6 +45,9 @@
         <module>core</module>
         <module>utils</module>
 
+        <module>server/api</module>
+        <module>server/service</module>
+
         <module>examples</module>
     </modules>
 
@@ -89,6 +92,8 @@
         <!-- dependency versions -->
         <spring.boot.version>3.3.3</spring.boot.version>
         <hibernate.version>6.5.2.Final</hibernate.version>
+
+        <apache.cxf.version>4.0.4</apache.cxf.version>
     </properties>
 
     <dependencyManagement>
@@ -102,6 +107,14 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>apache-cxf</artifactId>
+                <version>${apache.cxf.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
