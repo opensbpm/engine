@@ -90,7 +90,7 @@ public interface EngineResource {
         //TODO create useful response-object
         @POST
         @Path(value = "/{taskId}")
-        Boolean submit(@PathParam(value = "taskId") Long taskId, TaskRequest taskRequest);
+        void submit(@PathParam(value = "taskId") Long taskId, TaskRequest taskRequest);
     }
 
 }

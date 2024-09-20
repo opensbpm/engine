@@ -19,23 +19,21 @@
 package org.opensbpm.engine.e2e;
 
 import java.security.GeneralSecurityException;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.LogManager;
 
 import org.apache.commons.cli.ParseException;
 import org.opensbpm.engine.api.ProcessNotFoundException;
 import org.opensbpm.engine.api.UserNotFoundException;
-import org.opensbpm.engine.api.instance.TaskInfo;
-import org.opensbpm.engine.api.instance.UserToken;
-import org.opensbpm.engine.api.model.ProcessModelInfo;
-import org.opensbpm.engine.client.Credentials;
-import org.opensbpm.engine.client.EngineServiceClient;
-import org.opensbpm.engine.server.api.dto.instance.Tasks;
-import org.opensbpm.engine.server.api.dto.model.ProcessModels;
+import org.opensbpm.engine.api.instance.*;
 
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
 
 
 public class Main {
@@ -72,22 +70,47 @@ public class Main {
     public void execute() throws UserNotFoundException, ProcessNotFoundException,
             IOException, InterruptedException, ExecutionException, GeneralSecurityException {
 
-        EngineServiceClient engineServiceClient = EngineServiceClient.create(configuration.getUrl(), Credentials.of("alice", "alice".toCharArray()));
+        List<UserClient> userClients = asList(
+                UserClient.of(configuration, "alice", "alice"),
+                UserClient.of(configuration, "jdoe", "jdoe"),
+                UserClient.of(configuration, "miriam", "miriam")
+        );
+        userClients.forEach(client -> client.start());
 
-        UserToken userToken = engineServiceClient.getUserResource().info();
-        System.out.println("User: "+ userToken.getName());
+        ExecutorService singleExecutor = Executors.newWorkStealingPool(1);
+        singleExecutor.submit(() -> {
+            boolean allFinished = false;
+            while (!allFinished) {
+                allFinished = userClients.stream()
+                        .mapToLong(userClient -> userClient.getActiveProcesses().size())
+                        .sum() == 0;
 
-        Tasks tasks = engineServiceClient.getEngineResource().getTaskResource(userToken.getId()).index();
-        for (TaskInfo taskInfo: tasks.getTaskInfos()){
-            System.out.println("Task: "+ taskInfo);
+                for (UserClient userClient : userClients) {
+                    List<ProcessInfo> activeProcesses = userClient.getActiveProcesses();
+                    LOGGER.info(userClient.getUserToken().getName() + " has active processes " +
+                            activeProcesses.stream()
+                                    .map(processInfo -> processInfo.toString())
+                                    .collect(Collectors.joining(","))
+                    );
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                    // Restore interrupted state...
+                    Thread.currentThread().interrupt();
+                    System.exit(1);
+                }
+            }
+            LOGGER.info("All processes finished");
+        });
+        singleExecutor.awaitTermination(10, TimeUnit.MINUTES);
+
+        LOGGER.info("All started processes finished");
+        for (UserClient client : userClients) {
+            client.stop();
         }
-
-        ProcessModels processModels = engineServiceClient.getEngineResource().getProcessModelResource(userToken.getId()).index();
-        for (ProcessModelInfo modelInfo : processModels.getProcessModelInfos()){
-            System.out.println("ProcessModel:"+ modelInfo.getName());
-        }
-
-
+        LOGGER.info("Everything done");
     }
 
 }

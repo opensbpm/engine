@@ -184,13 +184,13 @@ public class EngineResourceService implements EngineResource {
         }
 
         @Override
-        public Boolean submit(Long taskId, TaskRequest taskRequest) {
+        public void submit(Long taskId, TaskRequest taskRequest) {
             try {
                 UserToken userToken = retrieveToken(SecurityContextHolder.getContext().getAuthentication());
                 if (!taskId.equals(taskRequest.getId())) {
                     throw new ClientErrorException("Task id " + taskId + " doesnt match TaskRequest " + taskRequest.getId(), Status.BAD_REQUEST);
                 }
-                return engineService.executeTask(userToken, taskRequest);
+                engineService.executeTask(userToken, taskRequest);
             } catch (UserNotFoundException | TaskNotFoundException ex) {
                 throw new NotFoundException(ex.getMessage(), ex);
             } catch (TaskOutOfDateException ex) {

@@ -12,12 +12,12 @@ spring:
         jwt:
           issuer-uri: https://opensbpm.local/auth/realms/quickstart
 
-debug: true
+#debug: true
 
-logging:
-  level:
-    root: INFO
+#logging:
+#  level:
+#    root: INFO
 #    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
+#    org.springframework.security: DEBUG
 #    org.springframework.security.oauth2: INFO
-#    org.apache.cxf: DEBUG
+#    org.apache.cxf: INFO
