@@ -1,27 +1,27 @@
-/** *****************************************************************************
+/**
+ * ****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************
+ * ****************************************************************************
  */
 package org.opensbpm.engine.core.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinitionVisitor;
@@ -70,7 +70,7 @@ public class ProcessDefinitionPersistor {
     private final RoleService roleService;
 
     public ProcessDefinitionPersistor(ProcessModelService processModelService,
-            RoleService roleService) {
+                                      RoleService roleService) {
         this.processModelService = processModelService;
         this.roleService = roleService;
     }
@@ -81,6 +81,11 @@ public class ProcessDefinitionPersistor {
 
         int major = definition.getVersion();
         ModelVersion version = processModelService.findNewestVersion(definition.getName(), major)
+                .map(processModel -> {
+                            processModel.setState(ProcessModelState.INACTIVE);
+                            return processModelService.save(processModel);
+                        }
+                )
                 .map(model -> model.getVersion().incrementMinor())
                 .orElse(new ModelVersion(major, 0));
 
@@ -143,7 +148,7 @@ public class ProcessDefinitionPersistor {
         }
 
         private AttributeModel createAttribute(ObjectCache objectCache, IsAttributeParent attributeParent,
-                AttributeDefinition attributeDefinition) {
+                                               AttributeDefinition attributeDefinition) {
             AttributeModel attributeModel = attributeDefinition.accept(new AttributeDefinitionVisitor<AttributeModel>() {
                 @Override
                 public AttributeModel visitField(FieldDefinition fieldDefinition) {
@@ -287,7 +292,7 @@ public class ProcessDefinitionPersistor {
         }
 
         private void createStatePermissions(ObjectCache objectCache, Object permissionParent,
-                List<AttributePermissionDefinition> attributePermissions) {
+                                            List<AttributePermissionDefinition> attributePermissions) {
             attributePermissions.forEach(attributePermissionDefinition -> {
                 AttributeModel attributeModel = objectCache.get(attributePermissionDefinition.getAttribute());
 

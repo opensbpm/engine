@@ -17,8 +17,10 @@
 package org.opensbpm.engine.core.model;
 
 import org.junit.Test;
+import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.junit.ServiceITCase;
+import org.opensbpm.engine.core.model.entities.ModelVersion;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.examples.ExampleModels;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,31 @@ public class ProcessModelServiceIT extends ServiceITCase {
 
     @Autowired
     private ProcessModelService processModelService;
+
+    @Test
+    public void testSaveNewVersion() {
+        //given
+        Long oldModelId = doInTransaction(() -> {
+            ProcessDefinition processDefinition = new org.opensbpm.engine.xmlmodel.ProcessModel().unmarshal(ExampleModels.getDienstreiseantrag());
+            ProcessModel processModel = definitionPersistor.saveDefinition(processDefinition);
+            return processModelService.save(processModel).getId();
+        });
+
+        //when
+        ProcessModel newModel = doInTransaction(() -> {
+            ProcessDefinition processDefinition = new org.opensbpm.engine.xmlmodel.ProcessModel().unmarshal(ExampleModels.getDienstreiseantrag());
+            ProcessModel processModel = definitionPersistor.saveDefinition(processDefinition);
+            return processModelService.save(processModel);
+        });
+
+        //then
+        ProcessModel oldModel = entityManager.find(ProcessModel.class, oldModelId);
+        assertThat(oldModel.getState(), is(ProcessModelState.INACTIVE));
+        assertThat(oldModel.getVersion().getMinor(), is(0));
+
+        assertThat(newModel.getState(), is(ProcessModelState.ACTIVE));
+        assertThat(newModel.getVersion().getMinor(), is(1));
+    }
 
     @Test
     public void testDelete() {
