@@ -24,7 +24,6 @@ import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.NestedPermissi
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.PermissionBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToOneBuilder;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
@@ -159,16 +158,6 @@ public final class DefinitionFactory {
      */
     public static FieldBuilder field(String name, FieldType fieldType) {
         return new FieldBuilder(name, fieldType);
-    }
-
-    /**
-     * create a new {@link ToOneBuilder}
-     *
-     * @param name name of the {@link ToOneDefinition}
-     * @return a new instance of {@link ToOneBuilder}
-     */
-    public static ReferenceBuilder reference(String name,ObjectBuilder objectBuilder) {
-        return new ReferenceBuilder(name,objectBuilder);
     }
 
     /**

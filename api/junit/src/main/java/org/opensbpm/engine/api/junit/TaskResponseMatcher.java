@@ -24,7 +24,6 @@ import org.opensbpm.engine.api.instance.AttributeSchema;
 import org.opensbpm.engine.api.instance.AbstractContainerAttributeSchema;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.model.FieldType;
@@ -64,24 +63,6 @@ public final class TaskResponseMatcher {
                 value(SimpleAttributeSchema.class, SimpleAttributeSchema::getFieldType, is(fieldType)),
                 value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
                 value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly))
-        );
-    }
-
-    /**
-     * {@link Matcher} to match referencing attributes.
-     * @param name name of the attribute schema
-     * @param required <code>true</code> is the required flag must be set
-     * @param readOnly <code>true</code> is the read only flag must be set
-     * @param referenceObjectMatcher Matcher to match the referencing {@link ObjectSchema}
-     * @return 
-     */
-    public static Matcher<AttributeSchema> isReferenceSchema(String name, boolean required, boolean readOnly, Matcher<ObjectSchema> referenceObjectMatcher) {
-        return allOf(
-                value(ReferenceAttributeSchema.class, ReferenceAttributeSchema::getName, is(name)),
-                //value(ReferenceAttributeSchema.class, ReferenceAttributeSchema::getFieldType, is(FieldType.REFERENCE)),
-                value(AttributeSchema.class, AttributeSchema::isRequired, is(required)),
-                value(AttributeSchema.class, AttributeSchema::isReadonly, is(readOnly)),
-                value(ReferenceAttributeSchema.class, schema -> schema.getAutocompleteReference().get(), referenceObjectMatcher)
         );
     }
 

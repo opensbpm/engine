@@ -35,7 +35,6 @@ import org.opensbpm.engine.core.model.entities.MessageModel;
 import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.core.model.entities.State;
@@ -105,15 +104,6 @@ public class StateModelConverter {
         return statePermission.getAttributeModel().accept(new AttributeModelVisitor<AbstractAttributePermissionBuilder<?, ?>>() {
             @Override
             public AttributePermissionBuilder visitSimple(SimpleAttributeModel attributeModel) {
-                return new AttributePermissionBuilder(
-                        objectModelCache.getAttributeBuilder(objectModel, statePermission.getAttributeModel()),
-                        statePermission.getPermission(),
-                        statePermission.isMandatory()
-                );
-            }
-
-            @Override
-            public AttributePermissionBuilder visitReference(ReferenceAttributeModel attributeModel) {
                 return new AttributePermissionBuilder(
                         objectModelCache.getAttributeBuilder(objectModel, statePermission.getAttributeModel()),
                         statePermission.getPermission(),

@@ -330,7 +330,7 @@
         <field type="STRING">Reiseziel</field>
         <toMany>
             <name>Mitreisende</name>
-            <reference object="Angestellter">Antragsteller</reference>
+            <field type="STRING">Antragsteller</field>
             <field type="STRING">Bemerkung</field>
         </toMany>                
         <toOne>

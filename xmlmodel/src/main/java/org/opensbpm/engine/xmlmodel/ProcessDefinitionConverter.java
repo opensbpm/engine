@@ -22,7 +22,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinitionVisitor;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
-import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition;
@@ -58,7 +57,6 @@ import org.opensbpm.engine.xmlmodel.processmodel.Permission;
 import org.opensbpm.engine.xmlmodel.processmodel.ProcessType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveTransitionType;
-import org.opensbpm.engine.xmlmodel.processmodel.ReferenceType;
 import org.opensbpm.engine.xmlmodel.processmodel.SendStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ServiceSubject;
 import org.opensbpm.engine.xmlmodel.processmodel.StateEventType;
@@ -109,7 +107,7 @@ public class ProcessDefinitionConverter {
         objectType.setDisplayName(objectDefinition.getDisplayName());
 
         objectDefinition.getAttributes().forEach(attributeDefinition
-                -> objectType.getFieldOrReferenceOrToOne().add(createAttribute(objectType, attributeDefinition)));
+                -> objectType.getFieldOrToOneOrToMany().add(createAttribute(objectType, attributeDefinition)));
         return Pair.of(objectDefinition, objectType);
     }
 
@@ -118,11 +116,6 @@ public class ProcessDefinitionConverter {
             @Override
             public Object visitField(FieldDefinition fieldDefinition) {
                 return createFieldAttribute(fieldDefinition);
-            }
-
-            @Override
-            public Object visitReference(ReferenceDefinition referenceDefinition) {
-                return createReferenceAttribute(referenceDefinition);
             }
 
             @Override
@@ -145,18 +138,11 @@ public class ProcessDefinitionConverter {
         return field;
     }
 
-    private ReferenceType createReferenceAttribute(ReferenceDefinition referenceDefinition) {
-        ReferenceType referenceType = new ObjectFactory().createReferenceType();
-        referenceType.setValue(referenceDefinition.getName());
-        referenceType.setObject(referenceDefinition.getObjectDefinition().getName());
-        return referenceType;
-    }
-
     private ToOneType createToOneAttribute(ObjectType objectCache, ToOneDefinition toOneDefinition) {
         ToOneType toOneType = new ObjectFactory().createToOneType();
         toOneType.setName(toOneDefinition.getName());
         for (AttributeDefinition attributeDefinition : toOneDefinition.getAttributes()) {
-            toOneType.getFieldOrReferenceOrToOne().add(createAttribute(objectCache, attributeDefinition));
+            toOneType.getFieldOrToOneOrToMany().add(createAttribute(objectCache, attributeDefinition));
         }
         return toOneType;
     }
@@ -165,7 +151,7 @@ public class ProcessDefinitionConverter {
         ToManyType toManyType = new ObjectFactory().createToManyType();
         toManyType.setName(toManyDefinition.getName());
         for (AttributeDefinition attributeDefinition : toManyDefinition.getAttributes()) {
-            toManyType.getFieldOrReferenceOrToOne().add(createAttribute(objectCache, attributeDefinition));
+            toManyType.getFieldOrToOneOrToMany().add(createAttribute(objectCache, attributeDefinition));
         }
         return toManyType;
     }

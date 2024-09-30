@@ -23,7 +23,6 @@ import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
-import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
@@ -81,13 +80,6 @@ public final class ProcessDefinitionMatchers {
                 value(AttributeDefinition::getName, is(name)),
                 value(FieldDefinition.class, FieldDefinition::getFieldType, is(type)),
                 value(FieldDefinition.class, FieldDefinition::isIndexed, is(true))
-        );
-    }
-
-    public static Matcher<AttributeDefinition> isReference(String name, String referenceObjectName) {
-        return allOf(
-                value(AttributeDefinition::getName, is(name)),
-                value(ReferenceDefinition.class, ReferenceDefinition::getObjectDefinition, isObjectName(referenceObjectName))
         );
     }
 

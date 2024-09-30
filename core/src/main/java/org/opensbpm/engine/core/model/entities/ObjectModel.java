@@ -103,12 +103,6 @@ public class ObjectModel implements IsAttributeParent, HasId, Serializable {
                     }
 
                     @Override
-                    public IsAttributeParent visitReference(ReferenceAttributeModel attributeModel) {
-                        throw new UnsupportedOperationException("Not supported yet.");
-                    }
-                    
-
-                    @Override
                     public IsAttributeParent visitNested(NestedAttributeModel attributeModel) {
                         return attributeModel;
                     }

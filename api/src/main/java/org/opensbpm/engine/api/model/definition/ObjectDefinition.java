@@ -59,8 +59,6 @@ public interface ObjectDefinition {
 
         T visitField(FieldDefinition fieldDefinition);
 
-        T visitReference(ReferenceDefinition referenceDefinition);
-
         T visitToOne(ToOneDefinition toOneDefinition);
 
         T visitToMany(ToManyDefinition toManyDefinition);
@@ -81,20 +79,6 @@ public interface ObjectDefinition {
         @Override
         default <T> T accept(AttributeDefinitionVisitor<T> visitor) {
             return visitor.visitField(this);
-        }
-
-    }
-
-    /**
-     * Definition of a referencing attribute.
-     */
-    interface ReferenceDefinition extends NestedAttribute {
-
-        ObjectDefinition getObjectDefinition();
-
-        @Override
-        default <T> T accept(AttributeDefinitionVisitor<T> visitor) {
-            return visitor.visitReference(this);
         }
 
     }

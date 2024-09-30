@@ -28,7 +28,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.NestedAttribute;
-import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 
@@ -220,50 +219,6 @@ public class ObjectBuilder extends AbstractBuilder<ObjectDefinition, ObjectBuild
         }
 
         protected abstract V create(String name, List<AttributeDefinition> attributes);
-
-    }
-
-    public static class ReferenceBuilder extends AbstractNestedBuilder<ReferenceBuilder, ReferenceDefinition> {
-
-        private final ObjectBuilder objectBuilder;
-
-        public ReferenceBuilder(String name, ObjectBuilder objectBuilder) {
-            super(name);
-            this.objectBuilder = objectBuilder;
-        }
-
-        @Override
-        protected ReferenceBuilder self() {
-            return this;
-        }
-
-        @Override
-        protected ReferenceDefinition create(String name, List<AttributeDefinition> attributes) {
-            return new ReferenceDefinition() {
-                @Override
-                public String getName() {
-                    return name;
-                }
-
-                @Override
-                public ObjectDefinition getObjectDefinition() {
-                    return objectBuilder.build();
-                }
-
-                @Override
-                public List<AttributeDefinition> getAttributes() {
-                    return attributes;
-                }
-
-                @Override
-                public String toString() {
-                    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-                            .append("name", name)
-                            .append("reference", objectBuilder.getName())
-                            .toString();
-                }
-            };
-        }
 
     }
 

@@ -270,7 +270,7 @@
         <name>Rechnung</name>
         <toOne>
             <name>Empfänger</name>
-            <reference object="Kunde">Kunde</reference>
+            <field type="STRING">Kunde</field>
             <!--field type="STRING">Adresse</field-->
         </toOne>
         <field type="DATE">Datum</field>        

@@ -34,7 +34,6 @@ public class ObjectSchema implements Serializable, IsAttributesContainer {
 
     @XmlElements({
         @XmlElement(name = "field", type = SimpleAttributeSchema.class),
-        @XmlElement(name = "referenced", type = ReferenceAttributeSchema.class),
         @XmlElement(name = "nested", type = NestedAttributeSchema.class),
         @XmlElement(name = "indexed", type = IndexedAttributeSchema.class)
     })

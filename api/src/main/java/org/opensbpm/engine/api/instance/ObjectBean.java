@@ -29,7 +29,6 @@ import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.beanutils.DynaProperty;
-import org.opensbpm.engine.api.model.ObjectReference;
 import static org.opensbpm.engine.api.instance.AttributeSchemaVisitor.indexed;
 
 /**
@@ -109,10 +108,6 @@ public class ObjectBean implements DynaBean {
             }
 
             @Override
-            public DynaProperty visitReference(ReferenceAttributeSchema attributeSchema) {
-                return new DynaProperty(attributeSchema.getName(), ObjectReference.class);
-            }
-            @Override
             public DynaProperty visitNested(NestedAttributeSchema nestedAttributeSchema) {
                 return new DynaProperty(attributeSchema.getName(), ObjectBean.class);
             }
@@ -149,12 +144,6 @@ public class ObjectBean implements DynaBean {
                 return attributeStore.getSimple(attributeSchema);
             }
 
-            @Override
-            public Object visitReference(ReferenceAttributeSchema attributeSchema) {
-                HashMap<String, String> value = attributeStore.getReference(attributeSchema);
-                return ObjectReference.of(value.get("id"), value.get("displayName"));
-
-            }
             @Override
             public Object visitNested(NestedAttributeSchema attributeSchema) {
                 return new ObjectBean(attributeSchema, new AttributeStore(attributeSchema, attributeStore.getNested(attributeSchema)));
@@ -214,11 +203,6 @@ public class ObjectBean implements DynaBean {
                 return null;
             }
 
-            @Override
-            public Void visitReference(ReferenceAttributeSchema attributeSchema) {
-                attributeStore.putReference(attributeSchema, ((ObjectReference) value).toMap());
-                return null;
-            }
             @Override
             public Void visitNested(NestedAttributeSchema attributeSchema) {
                 attributeStore.putNested(attributeSchema, ((ObjectBean) value).attributeStore.getValues());

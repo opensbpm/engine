@@ -44,7 +44,6 @@ import static org.opensbpm.engine.api.junit.ModelUtils.getState;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToMany;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToOne;
 import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isReference;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.FunctionStateDefinition;
 import java.io.InputStream;
@@ -304,7 +303,7 @@ public class ExampleModelsTest {
                                 isField("Reiseende", FieldType.DATE),
                                 isField("Reiseziel", FieldType.STRING),
                                 isToMany("Mitreisende",
-                                        isReference("Antragsteller", "Angestellter"),
+                                        isField("Antragsteller", FieldType.STRING),
                                         isField("Bemerkung", FieldType.STRING)
                                 ),
                                 isToOne("Kostenstelle",

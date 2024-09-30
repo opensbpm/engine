@@ -45,7 +45,6 @@ import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isField;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObjectName;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isReference;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isStarterSubjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isSubjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToMany;
@@ -168,7 +167,7 @@ public class ExampleModelDienstreiseantragIT extends ServiceITCase {
                                 isField("Reiseende", FieldType.DATE),
                                 isField("Reiseziel", FieldType.STRING),
                                 isToMany("Mitreisende",
-                                        isReference("Antragsteller", "Angestellter"),
+                                        isField("Antragsteller", FieldType.STRING),
                                         isField("Bemerkung", FieldType.STRING)
                                 ),
                                 isToOne("Kostenstelle",

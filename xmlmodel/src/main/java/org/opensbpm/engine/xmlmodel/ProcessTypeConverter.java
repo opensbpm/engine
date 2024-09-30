@@ -30,7 +30,6 @@ import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.receiveState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.reference;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.simplePermission;
@@ -69,7 +68,6 @@ import org.opensbpm.engine.xmlmodel.processmodel.ProcessModelState;
 import org.opensbpm.engine.xmlmodel.processmodel.ProcessType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ReceiveTransitionType;
-import org.opensbpm.engine.xmlmodel.processmodel.ReferenceType;
 import org.opensbpm.engine.xmlmodel.processmodel.SendStateType;
 import org.opensbpm.engine.xmlmodel.processmodel.ServiceSubject;
 import org.opensbpm.engine.xmlmodel.processmodel.StateEventType;
@@ -102,7 +100,7 @@ public class ProcessTypeConverter {
                 .collect(PairUtils.toMap());
 
         for (Map.Entry<ObjectBuilder, ObjectType> entry : objectsCache.entrySet()) {
-            for (AttributeBuilder<?, ?> attributeBuilder : createAttributes(processBuilder, entry.getValue().getFieldOrReferenceOrToOne())) {
+            for (AttributeBuilder<?, ?> attributeBuilder : createAttributes(processBuilder, entry.getValue().getFieldOrToOneOrToMany())) {
                 entry.getKey().addAttribute(attributeBuilder);
             }
         }
@@ -142,20 +140,17 @@ public class ProcessTypeConverter {
                         .ifPresent(autocomplete
                                 -> fieldBuilder.withAutocompleteObject(processBuilder.getObject(autocomplete)));
                 attributeBuilder = fieldBuilder;
-            } else if (attributeType instanceof ReferenceType) {
-                ReferenceType referenceType = (ReferenceType) attributeType;
-                attributeBuilder = reference(referenceType.getValue(), processBuilder.getObject(referenceType.getObject()));
             } else if (attributeType instanceof ToOneType) {
                 ToOneType toOneType = (ToOneType) attributeType;
                 ToOneBuilder toOneBuilder = toOne(toOneType.getName());
-                for (AttributeBuilder<?, ?> childBuilder : createAttributes(processBuilder, toOneType.getFieldOrReferenceOrToOne())) {
+                for (AttributeBuilder<?, ?> childBuilder : createAttributes(processBuilder, toOneType.getFieldOrToOneOrToMany())) {
                     toOneBuilder.addAttribute(childBuilder);
                 }
                 attributeBuilder = toOneBuilder;
             } else if (attributeType instanceof ToManyType) {
                 ToManyType toManyType = (ToManyType) attributeType;
                 ToManyBuilder toManyBuilder = toMany(toManyType.getName());
-                for (AttributeBuilder<?, ?> childBuilder : createAttributes(processBuilder, toManyType.getFieldOrReferenceOrToOne())) {
+                for (AttributeBuilder<?, ?> childBuilder : createAttributes(processBuilder, toManyType.getFieldOrToOneOrToMany())) {
                     toManyBuilder.addAttribute(childBuilder);
                 }
                 attributeBuilder = toManyBuilder;

@@ -35,11 +35,9 @@ import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
 import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.opensbpm.engine.core.model.entities.State;
 import static java.util.stream.Collectors.toList;
-import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import static org.opensbpm.engine.core.model.entities.StateVisitor.functionState;
 
 class ObjectSchemaConverter {
@@ -116,22 +114,6 @@ class ObjectSchemaConverter {
                     });
                     attributeSchema.setIndexed(simpleAttribute.isIndexed());
 
-                    return attributeSchema;
-                }
-
-                @Override
-                public AttributeSchema visitReference(ReferenceAttributeModel referenceAttribute) {
-                    ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(
-                            referenceAttribute.getId(),
-                            referenceAttribute.getName(),
-                            toObjectSchema(referenceAttribute.getReference())
-                    );
-                    getState().ifPresent(functionState -> {
-                        attributeSchema.setRequired(functionState.isMandatory(referenceAttribute));
-                        attributeSchema.setReadonly(functionState.hasReadPermission(referenceAttribute));
-                    });
-
-                    //PENDING add attributeSchema.getDefaultValue()
                     return attributeSchema;
                 }
 
