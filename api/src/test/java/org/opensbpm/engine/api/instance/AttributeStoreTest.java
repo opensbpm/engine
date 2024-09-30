@@ -25,7 +25,6 @@ import java.time.Month;
 import java.util.Map;
 import org.junit.Test;
 import org.opensbpm.engine.api.model.Binary;
-import org.opensbpm.engine.api.model.ObjectReference;
 import static org.apache.commons.beanutils.PropertyUtils.getProperty;
 import static org.apache.commons.beanutils.PropertyUtils.setProperty;
 import static org.hamcrest.CoreMatchers.is;
@@ -55,7 +54,6 @@ public class AttributeStoreTest {
         setProperty(sourceBean, "time", now());
         setProperty(sourceBean, "boolean", Boolean.TRUE);
         setProperty(sourceBean, "binary", new Binary());
-        setProperty(sourceBean, "reference", ObjectReference.of("1", "Reference"));
 
         setProperty(sourceBean, "nested.string", "a");
         setProperty(sourceBean, "nested.number", 10);
@@ -64,7 +62,6 @@ public class AttributeStoreTest {
         setProperty(sourceBean, "nested.time", now());
         setProperty(sourceBean, "nested.boolean", Boolean.TRUE);
         setProperty(sourceBean, "nested.binary", new Binary());
-        setProperty(sourceBean, "nested.reference", ObjectReference.of("1", "Reference"));
         setProperty(sourceBean, "nested.nested.string", "a");
         setProperty(sourceBean, "nested.indexed[0].string", "a");
 
@@ -75,7 +72,6 @@ public class AttributeStoreTest {
         setProperty(sourceBean, "indexed[0].time", now());
         setProperty(sourceBean, "indexed[0].boolean", Boolean.TRUE);
         setProperty(sourceBean, "indexed[0].binary", new Binary());
-        setProperty(sourceBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
         setProperty(sourceBean, "indexed[0].nested.string", "a");
         setProperty(sourceBean, "indexed[0].indexed[0].string", "a");
 
@@ -96,7 +92,6 @@ public class AttributeStoreTest {
         assertThat(getProperty(resultBean, "time"), is(now()));
         assertThat(getProperty(resultBean, "boolean"), is(Boolean.TRUE));
         assertThat(getProperty(resultBean, "binary"), is(notNullValue()));
-        assertThat(getProperty(resultBean, "reference"), is(ObjectReference.of("1", "Reference")));
 
         assertThat(getProperty(resultBean, "nested.string"), is("a"));
         assertThat(getProperty(resultBean, "nested.number"), is(10));
@@ -105,7 +100,6 @@ public class AttributeStoreTest {
         assertThat(getProperty(resultBean, "nested.time"), is(now()));
         assertThat(getProperty(resultBean, "nested.boolean"), is(Boolean.TRUE));
         assertThat(getProperty(resultBean, "nested.binary"), is(notNullValue()));
-        assertThat(getProperty(resultBean, "nested.reference"), is(ObjectReference.of("1", "Reference")));
         assertThat(getProperty(resultBean, "nested.nested.string"), is("a"));
         assertThat(getProperty(resultBean, "nested.indexed[0].string"), is("a"));
 
@@ -116,7 +110,6 @@ public class AttributeStoreTest {
         assertThat(getProperty(resultBean, "indexed[0].time"), is(now()));
         assertThat(getProperty(resultBean, "indexed[0].boolean"), is(Boolean.TRUE));
         assertThat(getProperty(resultBean, "indexed[0].binary"), is(notNullValue()));
-        assertThat(getProperty(resultBean, "indexed[0].reference"),is(ObjectReference.of("1", "Reference")));
         assertThat(getProperty(resultBean, "indexed[0].nested.string"), is("a"));
         assertThat(getProperty(resultBean, "indexed[0].indexed[0].string"), is("a"));
 

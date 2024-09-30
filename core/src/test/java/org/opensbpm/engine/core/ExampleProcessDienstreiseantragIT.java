@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.api.instance.ProcessInfo.SubjectStateInfo.StateFunctionType;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
-import org.opensbpm.engine.api.model.ObjectReference;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.core.junit.TestTask;
@@ -250,9 +249,9 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 10));
         task.setValue("DR-Antrag", "Reiseziel", "Test");
-        task.setValue("DR-Antrag", "Mitreisende[0].Antragsteller", ObjectReference.of("1", "Test").toMap());
+        task.setValue("DR-Antrag", "Mitreisende[0].Antragsteller", "Test");
         task.setValue("DR-Antrag", "Mitreisende[0].Bemerkung", "Test 1");
-        task.setValue("DR-Antrag", "Mitreisende[1].Antragsteller",ObjectReference.of("1", "Test").toMap());
+        task.setValue("DR-Antrag", "Mitreisende[1].Antragsteller", "Test");
         task.setValue("DR-Antrag", "Mitreisende[1].Bemerkung", "Test 2");
         employee.execute(task, "DR-Antrag an Vorgesetzer senden");
         //synchronized Message, send-state must be current state for user employee
@@ -279,9 +278,9 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         assertThat(task.getValue("DR-Antrag", "Reisebeginn"), is(LocalDate.of(2018, Month.SEPTEMBER, 1)));
         assertThat(task.getValue("DR-Antrag", "Reiseende"), is(LocalDate.of(2018, Month.SEPTEMBER, 10)));
         assertThat(task.getValue("DR-Antrag", "Reiseziel"), is("Test"));
-        assertThat(task.getValue("DR-Antrag", "Mitreisende[0].Antragsteller"), is(ObjectReference.of("1", "Test").toMap()));
+        assertThat(task.getValue("DR-Antrag", "Mitreisende[0].Antragsteller"), is("Test"));
         assertThat(task.getValue("DR-Antrag", "Mitreisende[0].Bemerkung"), is("Test 1"));
-        assertThat(task.getValue("DR-Antrag", "Mitreisende[1].Antragsteller"), is(ObjectReference.of("1", "Test").toMap()));
+        assertThat(task.getValue("DR-Antrag", "Mitreisende[1].Antragsteller"), is("Test"));
         assertThat(task.getValue("DR-Antrag", "Mitreisende[1].Bemerkung"), is("Test 2"));
 
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 2));

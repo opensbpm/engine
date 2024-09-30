@@ -156,7 +156,6 @@
             <xs:element name="displayName" type="xs:string"/>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element name="field" type="pm:field"/>
-                <xs:element name="reference" type="pm:referenceType"/>
                 <xs:element name="toOne" type="pm:toOneType"/>
                 <xs:element name="toMany" type="pm:toManyType"/>
             </xs:choice>
@@ -169,14 +168,6 @@
                 <xs:attribute name="type" type="pm:fieldType" use="required"/>
                 <xs:attribute name="indexed" type="xs:boolean" />
                 <xs:attribute name="autocomplete" type="xs:string" />
-            </xs:extension>
-        </xs:simpleContent>
-    </xs:complexType>
-
-    <xs:complexType name="referenceType">
-        <xs:simpleContent>
-            <xs:extension base="xs:string">
-                <xs:attribute name="object" type="xs:string" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
@@ -202,7 +193,6 @@
             <xs:element minOccurs="0" name="name" type="xs:string"/>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
                 <xs:element name="field" type="pm:field"/>
-                <xs:element name="reference" type="pm:referenceType"/>
                 <xs:element name="toOne" type="pm:toOneType"/>
                 <xs:element name="toMany" type="pm:toManyType"/>
             </xs:choice>

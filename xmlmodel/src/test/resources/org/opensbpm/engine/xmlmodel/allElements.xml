@@ -36,12 +36,7 @@
                     <permission>WRITE</permission>
                     <mandatory>true</mandatory>
                 </attribute>
-                <attribute>
-                    <name>Referencing Object</name>
-                    <permission>WRITE</permission>
-                    <mandatory>true</mandatory>
-                </attribute>
-                    
+
                 <object>
                     <name>Single Nested</name>
                     <attribute>
@@ -70,7 +65,6 @@
     <object>
         <name>My Object</name>
         <field type="STRING">Name</field>
-        <reference object="Referenced Object">Referencing Object</reference>
         <toOne>
             <name>Single Nested</name>
             <field type="STRING">Name</field>

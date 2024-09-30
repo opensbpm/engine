@@ -23,7 +23,6 @@ import org.opensbpm.engine.api.model.FieldType;
 import org.opensbpm.engine.api.model.ProcessModelState;
 import org.opensbpm.engine.api.model.builder.FunctionStateBuilder.AttributePermissionBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToOneBuilder;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.Permission;
@@ -43,7 +42,6 @@ import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isField;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isFieldWithIndex;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObject;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isReference;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isStarterSubjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isSubjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isToMany;
@@ -57,7 +55,6 @@ import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.permission;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.receiveState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.reference;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.sendState;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.toMany;
@@ -80,13 +77,11 @@ public class DefinitionFactoryTest {
         FieldBuilder o2Field1 = field("Object 2 - Field 1", FieldType.STRING)
                 .asIndexed();
         FieldBuilder o2Field2 = field("Object 2 - Field 2", FieldType.STRING);
-        ReferenceBuilder o2Reference = reference("Object 2 - Reference", object1);
-        
+
         ObjectBuilder object2 = object("Object 2")
                 .withDisplayName("Object 2 - Display")
                 .addAttribute(o2Field1)
-                .addAttribute(o2Field2)
-                .addAttribute(o2Reference);
+                .addAttribute(o2Field2);
         
         ServiceSubjectBuilder serviceSubject = serviceSubject("Service")
                 .addState(receiveState("Receive").asStart()
@@ -106,7 +101,6 @@ public class DefinitionFactoryTest {
                                 .addPermission(permission(object2)
                                         .addPermission(o2Field1, Permission.WRITE, true)
                                         .addReadPermission(o2Field2)
-                                        .addReadPermission(o2Reference)
                                 )
                                 .toHead(functionState("End").asEnd()))
                 );
@@ -197,8 +191,7 @@ public class DefinitionFactoryTest {
                                 ),
                                 isPermission("Object 2",
                                         isFieldPermission("Object 2 - Field 1", Permission.WRITE, true),
-                                        isFieldPermission("Object 2 - Field 2", Permission.READ, false),
-                                        isFieldPermission("Object 2 - Reference", Permission.READ, false)
+                                        isFieldPermission("Object 2 - Field 2", Permission.READ, false)
                                 )
                         )
                         ),
@@ -219,8 +212,7 @@ public class DefinitionFactoryTest {
                         ),
                         isObject("Object 2", "Object 2 - Display",
                                 isFieldWithIndex("Object 2 - Field 1", FieldType.STRING),
-                                isField("Object 2 - Field 2", FieldType.STRING),
-                                isReference("Object 2 - Reference", "Object 1")
+                                isField("Object 2 - Field 2", FieldType.STRING)
                         )
                 ));
     }

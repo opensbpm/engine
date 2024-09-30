@@ -26,7 +26,6 @@ import static org.opensbpm.engine.api.junit.FunctionStateDefinitionMatchers.isNe
 import static org.opensbpm.engine.api.junit.ModelUtils.getState;
 import static org.opensbpm.engine.api.junit.ModelUtils.getSubject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isField;
-import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isReference;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObject;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isObjectName;
 import static org.opensbpm.engine.api.junit.ProcessDefinitionMatchers.isStarterSubjectName;
@@ -167,7 +166,7 @@ public class ProcessModelTest {
                                 isField("Reiseende", FieldType.DATE),
                                 isField("Reiseziel", FieldType.STRING),
                                 isToMany("Mitreisende",
-                                        isReference("Antragsteller", "Angestellter"),
+                                        isField("Antragsteller", FieldType.STRING),
                                         isField("Bemerkung", FieldType.STRING)
                                 ),
                                 isToOne("Kostenstelle",
@@ -225,7 +224,6 @@ public class ProcessModelTest {
                 containsInAnyOrder(
                         isObject("My Object", 
                                 isField("Name", FieldType.STRING),
-                                isReference("Referencing Object","Referenced Object"),
                                 isToOne("Single Nested",
                                         isField("Name", FieldType.STRING)
                                 ),

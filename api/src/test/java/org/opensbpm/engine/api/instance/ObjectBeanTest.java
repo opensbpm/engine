@@ -29,7 +29,6 @@ import org.junit.Test;
 import org.opensbpm.engine.api.junit.ObjectSchemaBuilder;
 import org.opensbpm.engine.api.model.Binary;
 import org.opensbpm.engine.api.model.FieldType;
-import org.opensbpm.engine.api.model.ObjectReference;
 import static org.apache.commons.beanutils.PropertyUtils.getProperty;
 import static org.apache.commons.beanutils.PropertyUtils.setProperty;
 import static org.hamcrest.CoreMatchers.instanceOf;
@@ -63,7 +62,6 @@ public class ObjectBeanTest {
         assertSetGetProperty(dynaBean, "time", now());
         assertSetGetProperty(dynaBean, "boolean", Boolean.TRUE);
         assertSetGetProperty(dynaBean, "binary", new Binary());
-        assertSetGetProperty(dynaBean, "reference", ObjectReference.of("1", "Reference"));
 
         assertSetGetProperty(dynaBean, "nested.string", "a");
         assertSetGetProperty(dynaBean, "nested.number", 10);
@@ -72,7 +70,6 @@ public class ObjectBeanTest {
         assertSetGetProperty(dynaBean, "nested.time", now());
         assertSetGetProperty(dynaBean, "nested.boolean", Boolean.TRUE);
         assertSetGetProperty(dynaBean, "nested.binary", new Binary());
-        assertSetGetProperty(dynaBean, "nested.reference", ObjectReference.of("1", "Reference"));
         assertSetGetProperty(dynaBean, "nested.nested.string", "a");
         assertSetGetProperty(dynaBean, "nested.indexed[0].string", "a");
 
@@ -83,7 +80,6 @@ public class ObjectBeanTest {
         assertSetGetProperty(dynaBean, "indexed[0].time", now());
         assertSetGetProperty(dynaBean, "indexed[0].boolean", Boolean.TRUE);
         assertSetGetProperty(dynaBean, "indexed[0].binary", new Binary());
-        assertSetGetProperty(dynaBean, "indexed[0].reference", ObjectReference.of("1", "Reference"));
         assertSetGetProperty(dynaBean, "indexed[0].nested.string", "a");
         assertSetGetProperty(dynaBean, "indexed[0].indexed[0].string", "a");
     }

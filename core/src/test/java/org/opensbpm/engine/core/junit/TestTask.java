@@ -43,13 +43,11 @@ import org.opensbpm.engine.api.instance.NestedAttributeSchema;
 import org.opensbpm.engine.api.instance.NextState;
 import org.opensbpm.engine.api.instance.ObjectData;
 import org.opensbpm.engine.api.instance.ObjectSchema;
-import org.opensbpm.engine.api.instance.ReferenceAttributeSchema;
 import org.opensbpm.engine.api.instance.SimpleAttributeSchema;
 import org.opensbpm.engine.api.instance.Task;
 import org.opensbpm.engine.api.instance.TaskInfo;
 import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
-import org.opensbpm.engine.api.model.FieldType;
 import org.springframework.data.util.Pair;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -145,11 +143,6 @@ public class TestTask extends Task {
                     }
 
                     @Override
-                    public DynaProperty visitReference(ReferenceAttributeSchema attributeSchema) {
-                        return new DynaProperty(attribute.getName(), Map.class);
-                    }
-
-                    @Override
                     public DynaProperty visitNested(NestedAttributeSchema attributeSchema) {
                         return new DynaProperty(attribute.getName(), LazyDynaBean.class);
                     }
@@ -176,9 +169,7 @@ public class TestTask extends Task {
             super(dynaClass);
             this.attributes = attributes;
             data.replaceAll((t, u) -> {
-                if (getAttribute(t) instanceof ReferenceAttributeSchema) {
-                    return u;
-                } else if (u instanceof Map) {
+                if (u instanceof Map) {
                     NestedAttributeSchema attribute = (NestedAttributeSchema) getAttribute(t);
                     return createDynaBean(attribute.getName(), attribute.getAttributes(), (Map<Long, Serializable>) u);
                 } else if (u instanceof List) {

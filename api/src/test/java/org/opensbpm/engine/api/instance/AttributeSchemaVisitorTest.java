@@ -22,18 +22,6 @@ public class AttributeSchemaVisitorTest {
     }
 
     @Test
-    public void testReference() {
-        //arrange
-        ReferenceAttributeSchema attributeSchema = ReferenceAttributeSchema.create(0L, "name", null);
-
-        //act
-        Optional<ReferenceAttributeSchema> optional = attributeSchema.accept(AttributeSchemaVisitor.reference());
-
-        //assert
-        assertThat(optional.get(), is(attributeSchema));
-    }
-
-    @Test
     public void testNested() {
         //arrange
         NestedAttributeSchema attributeSchema = NestedAttributeSchema.create(0L, "name", Collections.emptyList());

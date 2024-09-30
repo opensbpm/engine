@@ -27,7 +27,6 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefini
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefinitionVisitor;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.NestedAttribute;
-import org.opensbpm.engine.api.model.definition.ObjectDefinition.ReferenceDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
 import org.opensbpm.engine.api.model.definition.PermissionDefinition.AttributePermissionDefinition;
@@ -51,7 +50,6 @@ import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ReceiveState;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.SendState;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
@@ -162,20 +160,6 @@ public class ProcessDefinitionPersistor {
                     }
                     simpleAttributeModel.setIndexed(fieldDefinition.isIndexed());
                     return simpleAttributeModel;
-                }
-
-                @Override
-                public AttributeModel visitReference(ReferenceDefinition referenceDefinition) {
-                    ObjectModel reference = objects.get(referenceDefinition.getObjectDefinition()).getObjectModel();
-                    ReferenceAttributeModel referenceAttributeModel;
-                    if (attributeParent instanceof ObjectModel) {
-                        referenceAttributeModel = new ReferenceAttributeModel((ObjectModel) attributeParent, referenceDefinition.getName(), reference);
-                    } else if (attributeParent instanceof AttributeModel) {
-                        referenceAttributeModel = new ReferenceAttributeModel((AttributeModel) attributeParent, referenceDefinition.getName(), reference);
-                    } else {
-                        throw new UnsupportedOperationException(attributeParent + " not supported yet");
-                    }
-                    return referenceAttributeModel;
                 }
 
                 @Override

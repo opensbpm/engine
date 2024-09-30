@@ -43,7 +43,7 @@ public interface ObjectDefinition {
     List<AttributeDefinition> getAttributes();
 
     /**
-     * Definition of an attribute of an document.
+     * Definition of an attribute of a document.
      */
     interface AttributeDefinition {
 
@@ -59,8 +59,6 @@ public interface ObjectDefinition {
 
         T visitField(FieldDefinition fieldDefinition);
 
-        T visitReference(ReferenceDefinition referenceDefinition);
-
         T visitToOne(ToOneDefinition toOneDefinition);
 
         T visitToMany(ToManyDefinition toManyDefinition);
@@ -68,7 +66,7 @@ public interface ObjectDefinition {
     }
 
     /**
-     * Definition of an field.
+     * Definition of a field.
      */
     interface FieldDefinition extends AttributeDefinition {
 
@@ -86,21 +84,7 @@ public interface ObjectDefinition {
     }
 
     /**
-     * Definition of an referencing attribute.
-     */
-    interface ReferenceDefinition extends NestedAttribute {
-
-        ObjectDefinition getObjectDefinition();
-
-        @Override
-        default <T> T accept(AttributeDefinitionVisitor<T> visitor) {
-            return visitor.visitReference(this);
-        }
-
-    }
-
-    /**
-     * Definition of an nested attribute.
+     * Definition of a nested attribute.
      */
     interface NestedAttribute extends AttributeDefinition {
 
@@ -108,7 +92,7 @@ public interface ObjectDefinition {
     }
 
     /**
-     * Definition of an single nested attribute.
+     * Definition of a single nested attribute.
      */
     interface ToOneDefinition extends NestedAttribute {
 
@@ -119,7 +103,7 @@ public interface ObjectDefinition {
     }
 
     /**
-     * Definition of an list nested attribute.
+     * Definition of a list nested attribute.
      */
     interface ToManyDefinition extends NestedAttribute {
 

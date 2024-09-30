@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.AttributeBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.FieldBuilder;
-import org.opensbpm.engine.api.model.builder.ObjectBuilder.ReferenceBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToManyBuilder;
 import org.opensbpm.engine.api.model.builder.ObjectBuilder.ToOneBuilder;
 import org.opensbpm.engine.core.model.ObjectModelConverter.ObjectModelCache.ObjectCache;
@@ -34,7 +33,6 @@ import org.opensbpm.engine.core.model.entities.IndexedAttributeModel;
 import org.opensbpm.engine.core.model.entities.NestedAttributeModel;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
-import org.opensbpm.engine.core.model.entities.ReferenceAttributeModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.springframework.data.util.Pair;
 
@@ -83,11 +81,6 @@ class ObjectModelConverter {
                     fieldBuilder.asIndexed();
                 }
                 return fieldBuilder;
-            }
-
-            @Override
-            public ReferenceBuilder visitReference(ReferenceAttributeModel referenceAttributeModel) {
-                return new ReferenceBuilder(referenceAttributeModel.getName(), objectModelCache.getObjectBuilder(referenceAttributeModel.getReference()));
             }
 
             @Override

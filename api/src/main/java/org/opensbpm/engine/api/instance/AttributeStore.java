@@ -87,10 +87,6 @@ public class AttributeStore {
                 .orElse(null));
     }
 
-    public HashMap<String, String> getReference(ReferenceAttributeSchema attributeSchema) {
-        return computeIfAbsent(attributeSchema, attrId -> null);
-    }
-
     public HashMap<Long, Serializable> getNested(NestedAttributeSchema attributeSchema) {
         return computeIfAbsent(attributeSchema, attrId -> new HashMap<>());
     }
@@ -105,10 +101,6 @@ public class AttributeStore {
     }
 
     public void putSimple(/*Simple*/AttributeSchema attributeSchema, Serializable value) {
-        putValue(attributeSchema, value);
-    }
-
-    public void putReference(ReferenceAttributeSchema attributeSchema, HashMap<String, String> value) {
         putValue(attributeSchema, value);
     }
 
@@ -135,12 +127,6 @@ public class AttributeStore {
 //                        .map(v -> (Serializable) attributeSchema.getFieldType().getType().cast(v))
 //                        .orElse(null);
 //                return checkedValue;
-                return value;
-            }
-
-            @Override
-            public Serializable visitReference(ReferenceAttributeSchema attributeSchema) {
-                validateRequiredValue(attributeSchema, () -> value == null);
                 return value;
             }
 
@@ -188,11 +174,6 @@ public class AttributeStore {
                         @Override
                         public Serializable visitSimple(SimpleAttributeSchema attributeSchema) {
                             return getSimple(attributeSchema);
-                        }
-
-                        @Override
-                        public Serializable visitReference(ReferenceAttributeSchema attributeSchema) {
-                            return getReference(attributeSchema);
                         }
 
                         @Override
@@ -325,14 +306,6 @@ public class AttributeStore {
         public Optional<Serializable> visitSimple(SimpleAttributeSchema attributeModel) {
             Serializable value = data.getSimple(attributeModel);
             validateRequiredValue("Attribute", attributeModel, () -> value == null);
-
-            return Optional.ofNullable(value);
-        }
-
-        @Override
-        public Optional<Serializable> visitReference(ReferenceAttributeSchema attributeSchema) {
-            HashMap<String, String> value = data.getReference(attributeSchema);
-            validateRequiredValue("Nestedattribute", attributeSchema, () -> value == null);
 
             return Optional.ofNullable(value);
         }

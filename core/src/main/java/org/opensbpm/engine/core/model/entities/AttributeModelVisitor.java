@@ -21,8 +21,6 @@ public interface AttributeModelVisitor<T> {
 
     T visitSimple(SimpleAttributeModel simpleAttributeModel);
 
-    T visitReference(ReferenceAttributeModel referenceAttribute);
-
     T visitNested(NestedAttributeModel nestedAttribute);
 
     T visitIndexed(IndexedAttributeModel indexedAttribute);

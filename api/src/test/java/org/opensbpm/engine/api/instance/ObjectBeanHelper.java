@@ -17,21 +17,15 @@
  */
 package org.opensbpm.engine.api.instance;
 
-import org.opensbpm.engine.api.junit.ObjectSchemaBuilder;
 import org.opensbpm.engine.api.model.FieldType;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.indexed;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.nested;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.schema;
 import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.simple;
-import static org.opensbpm.engine.api.junit.ObjectSchemaBuilder.referenced;
 
 public class ObjectBeanHelper {
 
     public static ObjectSchema createObjetSchema() {
-        ObjectSchema refObjectSchema = ObjectSchemaBuilder.schema("ref")
-                .attribute(simple("name", FieldType.STRING))
-                .build();
-
         return schema("root")
                 .attribute(simple("string", FieldType.STRING))
                 .attribute(simple("number", FieldType.NUMBER))
@@ -40,7 +34,6 @@ public class ObjectBeanHelper {
                 .attribute(simple("time", FieldType.TIME))
                 .attribute(simple("boolean", FieldType.BOOLEAN))
                 .attribute(simple("binary", FieldType.BINARY))
-                .attribute(referenced("reference", refObjectSchema))
                 .attribute(nested("nested")
                         .attribute(simple("string", FieldType.STRING))
                         .attribute(simple("number", FieldType.NUMBER))
@@ -49,7 +42,6 @@ public class ObjectBeanHelper {
                         .attribute(simple("time", FieldType.TIME))
                         .attribute(simple("boolean", FieldType.BOOLEAN))
                         .attribute(simple("binary", FieldType.BINARY))
-                        .attribute(referenced("reference", refObjectSchema))
                         .attribute(nested("nested")
                                 .attribute(simple("string", FieldType.STRING))
                         )
@@ -65,7 +57,6 @@ public class ObjectBeanHelper {
                         .attribute(simple("time", FieldType.TIME))
                         .attribute(simple("boolean", FieldType.BOOLEAN))
                         .attribute(simple("binary", FieldType.BINARY))
-                        .attribute(referenced("reference", refObjectSchema))
                         .attribute(nested("nested")
                                 .attribute(simple("string", FieldType.STRING))
                         )
