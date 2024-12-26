@@ -37,7 +37,7 @@ import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableMap;
 
 @Entity
 @Table(uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"object_model", "processinstance"})
+    @UniqueConstraint(columnNames = {"object_model", "process_instance"})
 })
 public class ObjectInstance implements HasId, Serializable {
 
@@ -46,11 +46,11 @@ public class ObjectInstance implements HasId, Serializable {
     private Long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "object_model")
+    @JoinColumn(name = "object_model", nullable = false, updatable = false)
     private ObjectModel objectModel;
 
-    @ManyToOne
-    @JoinColumn
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "process_instance", nullable = false, updatable = false)
     private ProcessInstance processInstance;
 
     @Lob
@@ -61,8 +61,8 @@ public class ObjectInstance implements HasId, Serializable {
     protected ObjectInstance() {
     }
 
-    public ObjectInstance(ObjectModel objectModel, ProcessInstance processInstance) {
-        setProcessInstance(processInstance);
+    /*default*/ ObjectInstance(ObjectModel objectModel, ProcessInstance processInstance) {
+        this.processInstance = processInstance;
         this.objectModel = objectModel;
     }
 
@@ -77,13 +77,6 @@ public class ObjectInstance implements HasId, Serializable {
 
     public ProcessInstance getProcessInstance() {
         return processInstance;
-    }
-
-    public void setProcessInstance(ProcessInstance processInstance) {
-        this.processInstance = processInstance;
-        if (processInstance != null && !processInstance.getObjectInstances().contains(this)) {
-            processInstance.addObjectInstance(this);
-        }
     }
 
     public Map<Long, Serializable> getValue() {

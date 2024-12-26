@@ -205,7 +205,7 @@ public class EngineConverterIT extends ServiceITCase {
 
         Map<Long, Serializable> values = new HashMap<>();
         values.put(attributeModel.getId(), "X");
-        processInstance.addObjectInstance(objectModel).setValue(values);
+        processInstance.getOrAddObjectInstance(objectModel).setValue(values);
 
         Subject subject = new ServiceSubject(processInstance, new ServiceSubjectModel("name"));
         FunctionState state = spyFunctionState(1l, subject.getSubjectModel(), "Function");

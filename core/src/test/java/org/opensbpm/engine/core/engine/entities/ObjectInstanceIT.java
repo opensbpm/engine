@@ -71,15 +71,14 @@ public class ObjectInstanceIT extends EntityDataTestCase {
         ObjectModel objectModel = persistedObjectModel(processModel);
 
         ProcessInstance processInstance = persistedProcessInstance(processModel);
-        ObjectInstance objectInstance = processInstance.addObjectInstance(objectModel);
+        ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
 
         objectInstance = entityManager.persist(objectInstance);
         assertThat(objectInstance.getId(), is(notNullValue()));
 
-        ObjectInstance newObjectInstance = processInstance.addObjectInstance(objectModel);
-
         //when        
         PersistenceException persistenceException = assertThrows("UniqueKey doesn't work", PersistenceException.class, () -> {
+            ObjectInstance newObjectInstance = new ObjectInstance(objectModel, processInstance);
             ObjectInstance result = entityManager.persistFlushFind(newObjectInstance);
             fail("persist of the same ObjectInstance twice must throw exception, but was " + result);
         });

@@ -196,25 +196,27 @@ public class ProcessInstance implements HasId, Serializable {
         return emptyOrUnmodifiableList(objectInstances);
     }
 
-    public ObjectInstance addObjectInstance(ObjectModel objectModel) {
+    public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
         Objects.requireNonNull(objectModel, "objectModel must not be null");
+        return getObjectInstance(objectModel)
+                .orElseGet(() -> addObjectInstance(objectModel));
+    }
+
+    private Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {
+        return getObjectInstances().stream()
+                .filter(objectInstance -> objectInstance.getObjectModel().equalsId(objectModel))
+                .findFirst();
+    }
+
+    
+    private ObjectInstance addObjectInstance(ObjectModel objectModel) {
         ObjectInstance objectInstance = new ObjectInstance(objectModel, this);
-        addObjectInstance(objectInstance);
+        objectInstances = lazyAdd(objectInstances, objectInstance);
         return objectInstance;
     }
 
-    public void addObjectInstance(ObjectInstance objectInstance) {
-        Objects.requireNonNull(objectInstance, "objectInstance must not be null");
-        if (!getObjectInstances().contains(objectInstance)) {
-            objectInstances = lazyAdd(objectInstances, objectInstance);
-        }
-        if (objectInstance.getProcessInstance() != this) {
-            objectInstance.setProcessInstance(this);
-        }
-    }
-
     /**
-     * Return the read only values for the given ObjectModel or return an empty 
+     * Return the read-only values for the given ObjectModel or return an empty
      * map.
      *
      * @param objectModel
@@ -225,19 +227,6 @@ public class ProcessInstance implements HasId, Serializable {
         return getObjectInstance(objectModel)
                 .map(objectInstance -> objectInstance.getValue())
                 .orElse(Collections.emptyMap());
-    }
-
-    public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
-        ObjectInstance objectInstance = getObjectInstance(objectModel)
-                .orElseGet(() -> addObjectInstance(objectModel));
-        return objectInstance;
-    }
-
-    private Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {
-        Objects.requireNonNull(objectModel, "objectModel must not be null");
-        return getObjectInstances().stream()
-                .filter(objectInstance -> objectInstance.getObjectModel().equalsId(objectModel))
-                .findFirst();
     }
 
     @Override
