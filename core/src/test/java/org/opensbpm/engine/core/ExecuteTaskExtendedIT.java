@@ -41,6 +41,7 @@ import org.opensbpm.engine.core.junit.UserProcessController;
 import org.opensbpm.engine.core.junit.UserProcessController.ProcessInstanceController;
 import org.opensbpm.engine.core.junit.WorkflowTestCase;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.isA;
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -49,6 +50,7 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
+import org.opensbpm.engine.api.SubjectAlreadyBoundException;
 import static org.opensbpm.engine.api.junit.AuditTrailMatchers.isTrail;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isProviderTaskChangedEvent;
 import static org.opensbpm.engine.api.junit.EngineEventMatcher.isUserTaskChangedEvent;
@@ -165,8 +167,9 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
         }
 
         //Subject2 User 2
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () -> 
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
                 subject2User2.execute(subject2User2ask, "End"));
+        assertThat(exception.getCause(), instanceOf(SubjectAlreadyBoundException.class));
         assertThat(exception.getMessage(), containsString("is not user of subject"));
         
     }

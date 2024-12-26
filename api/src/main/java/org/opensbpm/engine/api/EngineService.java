@@ -114,7 +114,7 @@ public interface EngineService {
      * @throws TaskOutOfDateException
      */
     Boolean executeTask(UserToken userToken, TaskRequest taskRequest)
-            throws UserNotFoundException, TaskNotFoundException, TaskOutOfDateException;
+            throws UserNotFoundException, SubjectAlreadyBoundException, TaskNotFoundException, TaskOutOfDateException;
 
     public static interface ObjectRequest {
 

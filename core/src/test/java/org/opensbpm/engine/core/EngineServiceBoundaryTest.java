@@ -79,6 +79,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import org.opensbpm.engine.api.SubjectAlreadyBoundException;
 import static org.opensbpm.engine.core.junit.MockData.spyFunctionState;
 import static org.opensbpm.engine.core.junit.MockData.spyObjectModel;
 import static org.opensbpm.engine.core.junit.MockData.spyProcessInstance;
@@ -467,7 +468,7 @@ public class EngineServiceBoundaryTest {
         fail("executeTask with wrong 'userId' must throw IllegalArgumentException but was " + result);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = SubjectAlreadyBoundException.class)
     public void executeTaskWithWrongUserSubjectUser() throws Exception {
         //given
         Long pmId = 1l;
@@ -494,7 +495,7 @@ public class EngineServiceBoundaryTest {
         Boolean result = engineServiceBoundary.executeTask(userToken, taskRequest);
 
         //then
-        fail("executeTask with wrong user for userSubject must throw IllegalStateException but was " + result);
+        fail("executeTask with wrong user for userSubject must throw SubjectAlreadyBoundException but was " + result);
     }
 
     @Test(expected = NullPointerException.class)

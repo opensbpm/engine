@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import org.opensbpm.engine.api.EngineService;
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ModelService.ModelRequest;
+import org.opensbpm.engine.api.SubjectAlreadyBoundException;
 import org.opensbpm.engine.api.UserNotFoundException;
 import org.opensbpm.engine.api.instance.AutocompleteResponse;
 import org.opensbpm.engine.api.instance.ProcessInfo;
@@ -223,14 +224,14 @@ public class EngineServiceBoundary implements EngineService {
     @Transactional
     @Override
     public Boolean executeTask(UserToken userToken, TaskRequest taskRequest)
-            throws UserNotFoundException, TaskNotFoundException, TaskOutOfDateException {
+            throws UserNotFoundException, SubjectAlreadyBoundException, TaskNotFoundException, TaskOutOfDateException {
         User user = getUser(userToken);
         UserSubject userSubject = userSubjectService.retrieveForWrite(taskRequest.getId())
                 .orElseThrow(newTaskNotFoundException(taskRequest.getId()));
         if (userSubject.getUser() == null) {
             userSubject.setUser(user);
         } else if (!user.equalsId(userSubject.getUser())) {
-            throw new IllegalStateException(user + " is not user of subject " + userSubject.getId() + " (current user " + userSubject.getUser());
+            throw new SubjectAlreadyBoundException(user + " is not user of subject " + userSubject.getId() + " (current user " + userSubject.getUser());
         }
 
         if (userSubject.getLastChanged().isAfter(taskRequest.getLastChanged())) {
