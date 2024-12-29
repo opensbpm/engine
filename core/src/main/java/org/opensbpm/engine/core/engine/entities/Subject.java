@@ -55,7 +55,7 @@ import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 
 @Entity
 /* 
-    there is no unique-key; on recursions exists multiple subjects (with 
+    there is no unique-key; on recursions there are multiple subjects (with
     different user of the same role) per subjectmodel 
  */
 public abstract class Subject implements HasId, Serializable {
