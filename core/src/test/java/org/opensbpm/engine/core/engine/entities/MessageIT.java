@@ -45,11 +45,11 @@ public class MessageIT extends EntityDataTestCase {
 
         ProcessInstance processInstance = persistedProcessInstance(processModel);
 
-        //Subject senderSubject = new ServiceSubject(processInstance, senderSubjectModel);
+        Subject senderSubject = new ServiceSubject(processInstance, senderSubjectModel);
         Subject receiverSubject = new ServiceSubject(processInstance, receiverSubjectModel);
 
         ObjectInstance objectInstance = new ObjectInstance(objectModel, processInstance);
-        Message message = receiverSubject.addMessage(objectModel, senderSubjectModel);
+        Message message = receiverSubject.addMessage(objectModel, senderSubject);
 
         //when
         receiverSubject = entityManager.persistAndFlush(receiverSubject);
@@ -74,11 +74,11 @@ public class MessageIT extends EntityDataTestCase {
 
         ProcessInstance processInstance = persistedProcessInstance(processModel);
 
-        //Subject senderSubject = new ServiceSubject(processInstance, senderSubjectModel);
+        Subject senderSubject = new ServiceSubject(processInstance, senderSubjectModel);
         Subject receiverSubject = new ServiceSubject(processInstance, receiverSubjectModel);
 
         ObjectInstance objectInstance = new ObjectInstance(objectModel, processInstance);
-        Message message = receiverSubject.addMessage(objectModel, senderSubjectModel);
+        Message message = receiverSubject.addMessage(objectModel, senderSubject);
         receiverSubject = entityManager.persistAndFlush(receiverSubject);
 
         //when

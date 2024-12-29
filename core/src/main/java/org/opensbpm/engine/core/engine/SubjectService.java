@@ -113,7 +113,7 @@ public class SubjectService {
         Subject receiverSubject = processInstance.findActiveSubject(sendState.getReceiver())
                 .orElseGet(() -> createSubject(processInstance, sendState.getReceiver(), null));
 
-        receiverSubject.addMessage(sendState.getObjectModel(), sender.getSubjectModel());
+        receiverSubject.addMessage(sendState.getObjectModel(), sender);
 
         publishCreateEvents(receiverSubject);
         return subjectRepository.save(receiverSubject);

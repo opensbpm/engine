@@ -167,7 +167,7 @@ public abstract class Subject implements HasId, Serializable {
         return !subjectTrail.isEmpty() && !getCurrentState().isEnd();
     }
 
-    public Message addMessage(ObjectModel objectModel, SubjectModel sender) {
+    public Message addMessage(ObjectModel objectModel, Subject sender) {
         Message message = new Message(objectModel, sender);
         messages = lazyAdd(messages, message);
         return message;

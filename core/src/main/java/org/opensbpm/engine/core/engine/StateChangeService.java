@@ -159,22 +159,15 @@ public class StateChangeService {
     private void consumeMessage(Subject subject, ObjectModel objectModel) {
         subject.getUnconsumedMessages(objectModel).forEach(message -> {
             message.setConsumed(true);
+            Subject senderSubject = message.getSender();
+            //switch sender send-state to next state
+            LOGGER.log(Level.FINE, "received Message from {0}", senderSubject);
 
-            Optional<Subject> sender = subject.getProcessInstance().findActiveSubject(message.getSender());
-            if (sender.isPresent()) {
-                Subject senderSubject = sender.get();
-                //switch sender send-state to next state
-                LOGGER.log(Level.FINE, "received Message from {0}", sender);
-
-                senderSubject.getCurrent(sendState()).ifPresent(sendState -> {
-                    if (sendState.getHead() != null) {
-                        switchToNextState(senderSubject, sendState.getHead());
-                    }
-                });
-            } else {
-                Object[] params = new Object[]{subject.getProcessInstance(), message.getSender()};
-                LOGGER.log(Level.FINER, "no active sender-subject for {0} {1}", params);
-            }
+            senderSubject.getCurrent(sendState()).ifPresent(sendState -> {
+                if (sendState.getHead() != null) {
+                    switchToNextState(senderSubject, sendState.getHead());
+                }
+            });
         });
     }
 

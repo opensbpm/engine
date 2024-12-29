@@ -38,7 +38,7 @@ public class Message implements HasId, Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false, updatable = false)
-    private SubjectModel sender;
+    private Subject sender;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(nullable = false, updatable = false)
@@ -49,7 +49,7 @@ public class Message implements HasId, Serializable {
     protected Message() {
     }
 
-    public Message(ObjectModel objectModel, SubjectModel sender) {
+    public Message(ObjectModel objectModel, Subject sender) {
         this.objectModel = Objects.requireNonNull(objectModel);
         this.sender = Objects.requireNonNull(sender);
     }
@@ -63,7 +63,7 @@ public class Message implements HasId, Serializable {
         return objectModel;
     }
 
-    public SubjectModel getSender() {
+    public Subject getSender() {
         return sender;
     }
 
