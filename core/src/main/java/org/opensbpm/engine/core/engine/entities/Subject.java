@@ -127,8 +127,9 @@ public abstract class Subject implements HasId, Serializable {
             @Override
             public Optional<FunctionState> visitReceiveState(ReceiveState receiveState) {
                 //recurse over messageModels.head till functionState (or break with Optional.empty()
-                return filterToOne(receiveState.getMessageModels(), message
-                        -> hasUnconsumedMessages(message.getObjectModel()))
+                return receiveState.getMessageModels().stream()
+                        .filter(message -> hasUnconsumedMessages(message.getObjectModel()))
+                        .findFirst()
                         .map(MessageModel::getHead)
                         .map(headState -> getVisibleState(headState))
                         .orElse(Optional.empty());
