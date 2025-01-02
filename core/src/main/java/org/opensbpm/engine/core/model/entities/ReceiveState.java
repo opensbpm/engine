@@ -48,7 +48,7 @@ public class ReceiveState extends State {
     }
 
     /**
-     * create a new {@link MessageModel} with the given objectMdoel and state and add it to this ReceiveState
+     * create a new {@link MessageModel} with the given objectModel and state and add it to this ReceiveState
      *
      * @param objectModel see {@link MessageModel#objectModel}
      * @param state see {@link MessageModel#head}
