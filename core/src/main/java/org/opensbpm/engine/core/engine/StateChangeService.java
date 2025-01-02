@@ -69,7 +69,7 @@ public class StateChangeService {
 
         State nextState = filterToOne(currentState.getHeads(), state
                 -> state.getId().equals(taskRequest.getNextState().getId()))
-                .orElseThrow(() -> new IllegalArgumentException("State-id " + taskRequest.getNextState() + " not in possible next-states"));
+                .orElseThrow(() -> new IllegalArgumentException("State " + taskRequest.getNextState() + " not in possible next-states"));
         LOGGER.log(Level.FINE, "change state of {0} from {1}/{2} to {3}", new Object[]{subject, subject.getCurrentState(), currentState, nextState});
 
         //TODO fix wrong behaviour: when state has mandatory fields and ObjectData is empty no error is thrown
