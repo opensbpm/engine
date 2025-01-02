@@ -196,7 +196,7 @@ public class ProcessInstance implements HasId, Serializable {
         return emptyOrUnmodifiableList(objectInstances);
     }
 
-    public synchronized ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
+    public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
         Objects.requireNonNull(objectModel, "objectModel must not be null");
         return getObjectInstance(objectModel)
                 .orElseGet(() -> addObjectInstance(objectModel));
