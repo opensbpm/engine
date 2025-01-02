@@ -144,11 +144,15 @@ public abstract class Subject implements HasId, Serializable {
     }
 
     public State getCurrentState() {
-        return getCurrentTrail().map(trail -> trail.getState()).orElse(null);
+        return getCurrentTrail()
+                .map(trail -> trail.getState())
+                .orElse(null);
     }
 
     public LocalDateTime getLastChanged() {
-        return getCurrentTrail().map(trail -> LocalDateTime.ofInstant(new Date(trail.getLastModified()).toInstant(), ZoneId.systemDefault())).orElse(null);
+        return getCurrentTrail()
+                .map(trail -> LocalDateTime.ofInstant(new Date(trail.getLastModified()).toInstant(), ZoneId.systemDefault()))
+                .orElse(null);
     }
 
     private Optional<SubjectTrail> getCurrentTrail() {
