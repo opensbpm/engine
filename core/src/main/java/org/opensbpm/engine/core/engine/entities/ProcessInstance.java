@@ -184,7 +184,9 @@ public class ProcessInstance implements HasId, Serializable {
     }
 
     public Optional<Subject> findActiveSubject(SubjectModel subjectModel) {
-        return filterToOne(getActiveSubjects(), subject -> subject.getSubjectModel().equalsId(subjectModel));
+        return getActiveSubjects()
+                .filter( subject -> subject.getSubjectModel().equalsId(subjectModel))
+                .findFirst();
     }
 
     private Stream<Subject> getActiveSubjects() {
