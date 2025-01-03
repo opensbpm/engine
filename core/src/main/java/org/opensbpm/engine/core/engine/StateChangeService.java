@@ -93,7 +93,7 @@ public class StateChangeService {
     private List<ObjectInstance> updateObjectInstances(Subject subject, FunctionState state, List<ObjectData> objectDatas) {
         return objectDatas.stream()
                 .map(objectData -> {
-                    ObjectInstance objectInstance = findObjectModel(subject.getProcessInstance(), state, objectData);
+                    ObjectInstance objectInstance = findByObjectModel(subject.getProcessInstance(), state, objectData);
                     BindingContext bindingContext = BindingContext.ofSubject(subject);
 
                     ObjectSchema objectSchema = ObjectSchemaConverter.toObjectSchema(scriptService, state, objectInstance.getObjectModel(), bindingContext);
@@ -106,7 +106,7 @@ public class StateChangeService {
                 .collect(Collectors.toList());
     }
 
-    private ObjectInstance findObjectModel(ProcessInstance processInstance, FunctionState state, ObjectData objectData) {
+    private ObjectInstance findByObjectModel(ProcessInstance processInstance, FunctionState state, ObjectData objectData) {
         return processInstance.getProcessModel().getObjectModels().stream()
                 .filter(objectModel -> state.hasAnyStatePermission(objectModel))
                 .filter(objectModel -> objectModel.getName().equals(objectData.getName()))
