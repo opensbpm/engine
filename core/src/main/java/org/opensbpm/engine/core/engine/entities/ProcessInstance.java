@@ -204,7 +204,6 @@ public class ProcessInstance implements HasId, Serializable {
     }
 
     public ObjectInstance addObjectInstance(ObjectModel objectModel) {
-        System.err.println(toString()+hashCode()+ " "+ (objectInstances==null?null:objectInstances.size()));
         ObjectInstance objectInstance = new ObjectInstance(objectModel, this);
         objectInstances = lazyAdd(objectInstances, objectInstance);
         return objectInstance;
