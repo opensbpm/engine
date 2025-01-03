@@ -71,7 +71,7 @@ public class ObjectInstanceIT extends EntityDataTestCase {
         ObjectModel objectModel = persistedObjectModel(processModel);
 
         ProcessInstance processInstance = persistedProcessInstance(processModel);
-        ObjectInstance objectInstance = processInstance.getOrAddObjectInstance(objectModel);
+        ObjectInstance objectInstance = new ObjectInstance(objectModel, processInstance);
 
         objectInstance = entityManager.persist(objectInstance);
         assertThat(objectInstance.getId(), is(notNullValue()));

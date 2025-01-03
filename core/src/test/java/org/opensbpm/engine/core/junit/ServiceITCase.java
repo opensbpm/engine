@@ -25,6 +25,7 @@ import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaDelete;
 import org.hamcrest.Matcher;
@@ -48,6 +49,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.opensbpm.engine.utils.StreamUtils.oneOrMoreAsList;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 /**
  * Abstract Spring-Boot Test-Case for Service-Layer related Integration-Tests.
@@ -62,6 +64,9 @@ public abstract class ServiceITCase {
 
     @PersistenceContext
     protected EntityManager entityManager;
+
+    @Autowired
+    protected EntityManagerFactory entityManagerFactory;
 
     @Autowired
     private PlatformTransactionManager platformTransactionManager;

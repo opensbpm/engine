@@ -52,6 +52,7 @@ import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubjec
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
 import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
+import static org.opensbpm.engine.utils.StreamUtils.toOne;
 
 @Entity(name = "processinstance")
 public class ProcessInstance implements HasId, Serializable {
@@ -196,20 +197,14 @@ public class ProcessInstance implements HasId, Serializable {
         return emptyOrUnmodifiableList(objectInstances);
     }
 
-    public ObjectInstance getOrAddObjectInstance(ObjectModel objectModel) {
-        Objects.requireNonNull(objectModel, "objectModel must not be null");
-        return getObjectInstance(objectModel)
-                .orElseGet(() -> addObjectInstance(objectModel));
-    }
-
-    private Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {
+    public Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {
         return getObjectInstances().stream()
                 .filter(objectInstance -> objectInstance.getObjectModel().equalsId(objectModel))
-                .findFirst();
+                .reduce(toOne());
     }
 
-    
-    private ObjectInstance addObjectInstance(ObjectModel objectModel) {
+    public ObjectInstance addObjectInstance(ObjectModel objectModel) {
+        System.err.println(toString()+hashCode()+ " "+ (objectInstances==null?null:objectInstances.size()));
         ObjectInstance objectInstance = new ObjectInstance(objectModel, this);
         objectInstances = lazyAdd(objectInstances, objectInstance);
         return objectInstance;

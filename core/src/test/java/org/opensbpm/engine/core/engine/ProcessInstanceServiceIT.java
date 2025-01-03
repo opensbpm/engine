@@ -1,22 +1,27 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core.engine;
 
+import jakarta.persistence.PersistenceException;
 import java.util.List;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,14 +35,20 @@ import org.opensbpm.engine.core.model.ProcessModelService;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import org.hibernate.exception.ConstraintViolationException;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.fail;
+import org.opensbpm.engine.api.model.FieldType;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
+import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
+import org.opensbpm.engine.core.engine.entities.ObjectInstance;
+import org.opensbpm.engine.core.model.entities.ObjectModel;
 
 public class ProcessInstanceServiceIT extends ServiceITCase {
 

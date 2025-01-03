@@ -111,7 +111,7 @@ public class StateChangeService {
                 .filter(objectModel -> state.hasAnyStatePermission(objectModel))
                 .filter(objectModel -> objectModel.getName().equals(objectData.getName()))
                 .reduce(toOne())
-                .map(objectModel -> processInstance.getOrAddObjectInstance(objectModel))
+                .map(objectModel -> objectInstanceService.retrieveObjectInstance(processInstance,objectModel))
                 .orElseThrow(() -> new IllegalArgumentException("No ObjectModel for " + objectData + " found"));
     }
 
