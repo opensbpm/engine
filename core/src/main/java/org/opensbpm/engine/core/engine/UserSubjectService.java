@@ -45,7 +45,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.engine.UserSubjectService.UserSubjectSpecifications.ofUserOrRoles;
 import static org.opensbpm.engine.core.engine.UserSubjectService.UserSubjectSpecifications.withSubjectId;
 
