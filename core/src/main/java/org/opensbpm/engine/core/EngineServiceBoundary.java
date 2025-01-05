@@ -226,8 +226,7 @@ public class EngineServiceBoundary implements EngineService {
     public Boolean executeTask(UserToken userToken, TaskRequest taskRequest)
             throws UserNotFoundException, SubjectAlreadyBoundException, TaskNotFoundException, TaskOutOfDateException {
         User user = getUser(userToken);
-        UserSubject userSubject = userSubjectService.retrieveForWrite(taskRequest.getId())
-                .orElseThrow(newTaskNotFoundException(taskRequest.getId()));
+        UserSubject userSubject = userSubjectService.retrieveForWrite(taskRequest.getId());
         if (userSubject.getUser() == null) {
             userSubject.setUser(user);
         } else if (!user.equalsId(userSubject.getUser())) {

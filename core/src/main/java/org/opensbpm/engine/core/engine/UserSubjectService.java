@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ * ****************************************************************************
+ */
 package org.opensbpm.engine.core.engine;
 
 import java.util.List;
@@ -26,6 +27,8 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.SetJoin;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
+import org.opensbpm.engine.api.instance.TaskNotFoundException;
+import static org.opensbpm.engine.core.ExceptionFactory.newTaskNotFoundException;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance_;
 import org.opensbpm.engine.core.engine.entities.Subject_;
@@ -52,18 +55,18 @@ public class UserSubjectService {
     @Autowired
     private UserSubjectRepository userSubjectRepository;
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    public Optional<UserSubject> retrieveForWrite(Long subjectId) {
-        return userSubjectRepository.findOne(withSubjectId(subjectId));
+    public UserSubject retrieveForWrite(Long subjectId) throws TaskNotFoundException {
+        return userSubjectRepository.findBySubjectIdForWrite(subjectId)
+                .orElseThrow(newTaskNotFoundException(subjectId));
     }
 
     /**
-     * search all assigned and unassigned {@link UserSubject}'s for the given {@link User}
+     * search all assigned and unassigned {@link UserSubject}'s for the given
+     * {@link User}
      *
      * @param user
      * @return
      */
-    @Transactional(readOnly = true, noRollbackFor = Exception.class)
     public List<UserSubject> findAllByUser(User user) {
         //PENDING filter locked subject
         return userSubjectRepository.findAll(ofUserOrRoles(user));
@@ -71,6 +74,11 @@ public class UserSubjectService {
 
     @Repository
     public interface UserSubjectRepository extends JpaSpecificationRepository<UserSubject, Long> {
+
+        @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+        default Optional<UserSubject> findBySubjectIdForWrite(Long subjectId) {
+            return findOne(withSubjectId(subjectId));
+        }
     }
 
     static class UserSubjectSpecifications {

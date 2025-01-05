@@ -488,7 +488,7 @@ public class EngineServiceBoundaryTest {
         User userSubjectUser = spyUser(10l, "username-1", "firstname-1", "lastname-1");
         UserSubject userSubject = spyUserSubject(sId, processInstance, userSubjectModel, userSubjectUser);
         userSubject.setCurrentState(spyFunctionState(5l, userSubjectModel, "Function"));
-        when(userSubjectService.retrieveForWrite(sId)).thenReturn(Optional.of(userSubject));
+        when(userSubjectService.retrieveForWrite(sId)).thenReturn(userSubject);
 
         //when
         TaskRequest taskRequest = new TaskRequest(sId, NextState.of(Long.MIN_VALUE, "doesn't exists"), LocalDateTime.MIN);
@@ -530,7 +530,7 @@ public class EngineServiceBoundaryTest {
         //create subject without user!
         UserSubject userSubject = spyUserSubject(sId, processInstance, userSubjectModel, null);
         userSubject.setCurrentState(spyFunctionState(5l, userSubjectModel, "Function"));
-        when(userSubjectService.retrieveForWrite(sId)).thenReturn(Optional.of(userSubject));
+        when(userSubjectService.retrieveForWrite(sId)).thenReturn(userSubject);
 
         //when
         TaskRequest taskRequest = new TaskRequest(sId, NextState.of(Long.MIN_VALUE, "doesn't exists"), LocalDateTime.MIN);
@@ -558,7 +558,7 @@ public class EngineServiceBoundaryTest {
         //create subject without user!
         UserSubject userSubject = spyUserSubject(sId, processInstance, userSubjectModel, null);
         userSubject.setCurrentState(spyFunctionState(5l, userSubjectModel, "Function"));
-        when(userSubjectService.retrieveForWrite(sId)).thenReturn(Optional.of(userSubject));
+        when(userSubjectService.retrieveForWrite(sId)).thenReturn(userSubject);
 
         when(stateChangeService.changeState(any(Subject.class), any(TaskRequest.class))).thenReturn(true);
 

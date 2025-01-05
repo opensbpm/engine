@@ -19,7 +19,6 @@ package org.opensbpm.engine.core;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.function.Supplier;
-import java.util.logging.Level;
 
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ProcessNotFoundException;
@@ -64,12 +63,12 @@ public final class ExceptionFactory {
         String userMessage = subject.accept(userSubject())
                 .map(userSubject -> userSubject.getUser() == null ? "unknown" : userSubject.getUser().getName())
                 .orElse("<service>");
-        String message = String.format("Task %s changed since %s by %s",
+        String msg = MessageFormat.format("Task {0} changed since {1} by {2}",
                 subject.getCurrentState().getName(),
                 lastChanged,
                 userMessage
         );
-        return new TaskOutOfDateException(message);
+        return new TaskOutOfDateException(msg);
     }
 
     private ExceptionFactory() {
