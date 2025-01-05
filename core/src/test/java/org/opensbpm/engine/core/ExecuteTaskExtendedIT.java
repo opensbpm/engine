@@ -1,19 +1,20 @@
-/*******************************************************************************
+/** *****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ *****************************************************************************
+ */
 package org.opensbpm.engine.core;
 
 import java.io.IOException;
@@ -95,19 +96,13 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
 
         TestTask task = startUser.getTask("Start");
         //1.st execution of task
-        try {
-            startUser.execute(task, "Function");
-        } catch (Exception ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            fail("exception to early: " + ex.getMessage());
-        }
+        startUser.execute(task, "Function");
 
         //2.nd execution of task must throw TaskOutOfDateException
-        
-        RuntimeException exception = assertThrows(RuntimeException.class,() -> startUser.execute(task, "Function"));
-        assertThat("original exception is wrappped in doInTransaction", (TaskOutOfDateException)exception.getCause(), isA(TaskOutOfDateException.class));
-        assertThat("executing the same Task twice must throw TaskOutOfDateException but was successfull", 
-                exception.getCause().getMessage(), startsWith("Subject Starter of User Start User changed since"));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> startUser.execute(task, "Function"));
+        assertThat("original exception is wrappped in doInTransaction", (TaskOutOfDateException) exception.getCause(), isA(TaskOutOfDateException.class));
+        assertThat("executing the same Task twice must throw TaskOutOfDateException but wrong message",
+                exception.getCause().getMessage(), startsWith("Task Function changed since "));
     }
 
     @Test
@@ -167,11 +162,11 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
         }
 
         //Subject2 User 2
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> 
-                subject2User2.execute(subject2User2ask, "End"));
+        RuntimeException exception = assertThrows(RuntimeException.class, ()
+                -> subject2User2.execute(subject2User2ask, "End"));
         assertThat(exception.getCause(), instanceOf(SubjectAlreadyBoundException.class));
         assertThat(exception.getMessage(), containsString("is not user of subject"));
-        
+
     }
 
     @Test

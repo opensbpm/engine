@@ -1,16 +1,16 @@
 /*******************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
@@ -19,12 +19,15 @@ package org.opensbpm.engine.core;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.function.Supplier;
+import java.util.logging.Level;
+
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ProcessNotFoundException;
 import org.opensbpm.engine.api.UserNotFoundException;
 import org.opensbpm.engine.api.instance.TaskNotFoundException;
 import org.opensbpm.engine.api.instance.TaskOutOfDateException;
 import org.opensbpm.engine.core.engine.entities.Subject;
+
 import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
 
 public final class ExceptionFactory {
@@ -59,9 +62,13 @@ public final class ExceptionFactory {
 
     public static TaskOutOfDateException newTaskOutOfDateException(Subject subject, LocalDateTime lastChanged) {
         String userMessage = subject.accept(userSubject())
-                .map(userSubject -> userSubject.getUser() == null ? "" : " of User " + userSubject.getUser().getName())
-                .orElse("");
-        String message = "Subject " + subject.getSubjectModel().getName() + userMessage + " changed since " + lastChanged;
+                .map(userSubject -> userSubject.getUser() == null ? "unknown" : userSubject.getUser().getName())
+                .orElse("<service>");
+        String message = String.format("Task %s changed since %s by %s",
+                subject.getCurrentState().getName(),
+                lastChanged,
+                userMessage
+        );
         return new TaskOutOfDateException(message);
     }
 

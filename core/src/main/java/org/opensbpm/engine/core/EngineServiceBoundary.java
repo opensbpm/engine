@@ -236,7 +236,6 @@ public class EngineServiceBoundary implements EngineService {
 
         if (userSubject.getLastChanged().isAfter(taskRequest.getLastChanged())) {
             //this happens if the task is already changed by the same user
-            LOGGER.log(Level.SEVERE, "TaskOutOfDate: userId={0},processId={1} subject:{2} changeObject: {3}", new Object[]{user.getId(), userSubject.getProcessInstance().getId(), userSubject.getLastChanged(), taskRequest.getLastChanged()});
             throw newTaskOutOfDateException(userSubject, taskRequest.getLastChanged());
         }
         return stateChangeService.changeState(userSubject, taskRequest);
