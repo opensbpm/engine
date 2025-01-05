@@ -63,6 +63,7 @@ import static org.opensbpm.engine.core.ExceptionFactory.newTaskNotFoundException
 import static org.opensbpm.engine.core.ExceptionFactory.newTaskOutOfDateException;
 import static org.opensbpm.engine.core.ExceptionFactory.newUserNotFoundException;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModels;
+import org.springframework.transaction.annotation.Isolation;
 
 /**
  * Service implementation of {@link EngineService}. All nesercary database
@@ -221,7 +222,7 @@ public class EngineServiceBoundary implements EngineService {
     /**
      * {@inheritDoc}
      */
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public Boolean executeTask(UserToken userToken, TaskRequest taskRequest)
             throws UserNotFoundException, SubjectAlreadyBoundException, TaskNotFoundException, TaskOutOfDateException {
