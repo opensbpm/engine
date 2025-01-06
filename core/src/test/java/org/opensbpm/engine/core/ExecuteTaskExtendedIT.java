@@ -13,7 +13,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *****************************************************************************
+ * ****************************************************************************
  */
 package org.opensbpm.engine.core;
 
@@ -154,12 +154,7 @@ public class ExecuteTaskExtendedIT extends WorkflowTestCase {
         TestTask subject2User2ask = subject2User2.getTask("Receive Function");
 
         //Subject2 User 1
-        try {
-            subject2User1.execute(subject2User1Task, "End");
-        } catch (Exception ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            fail("exception to early: " + ex.getMessage());
-        }
+        subject2User1.execute(subject2User1Task, "End");
 
         //Subject2 User 2
         RuntimeException exception = assertThrows(RuntimeException.class, ()
