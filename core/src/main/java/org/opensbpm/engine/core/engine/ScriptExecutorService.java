@@ -58,10 +58,11 @@ public class ScriptExecutorService {
 
     private String evalStateScript(String script, ProcessInstance processInstance, State state, BindingContext bindingContext) {
         return eval(script, bindings -> {
-            processInstance.getProcessModel().getObjectModels().stream().forEach(objectModel -> {
-                ObjectBean objectBean = createObjectBean(processInstance, state, objectModel, bindingContext);
-                bindings.put(objectModel.getName(), objectBean);
-            });
+            processInstance.getProcessModel().getObjectModels().stream()
+                    .forEach(objectModel -> {
+                        ObjectBean objectBean = createObjectBean(processInstance, state, objectModel, bindingContext);
+                        bindings.put(objectModel.getName(), objectBean);
+                    });
         });
     }
 
