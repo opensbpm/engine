@@ -31,6 +31,9 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.EqualsExclude;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
@@ -45,6 +48,7 @@ public class ObjectInstance implements HasId, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsExclude
     private Long id;
 
     @ManyToOne(optional = false)
@@ -58,6 +62,7 @@ public class ObjectInstance implements HasId, Serializable {
     @Lob
 //    @Basic(fetch = LAZY)
     @Column(name = "virtue")
+    @EqualsExclude
     private HashMap<Long, Serializable> value = new HashMap<Long, Serializable>();
 
     protected ObjectInstance() {
@@ -88,6 +93,17 @@ public class ObjectInstance implements HasId, Serializable {
     public void setValue(Map<Long, Serializable> value) {
         this.value = new HashMap<>(value);
     }    
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return EqualsBuilder.reflectionEquals(this, obj);
+    }
+    
     
     @Override
     public String toString() {

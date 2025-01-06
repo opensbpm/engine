@@ -74,10 +74,14 @@ public class UserSubjectService {
     @Repository
     public interface UserSubjectRepository extends JpaSpecificationRepository<UserSubject, Long> {
 
-        @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
+        //@Lock(LockModeType.PESSIMISTIC_WRITE)
         default Optional<UserSubject> findBySubjectIdForWrite(Long subjectId) {
             return findOne(withSubjectId(subjectId));
         }
+
+        @Lock(LockModeType.PESSIMISTIC_WRITE)
+        Optional<UserSubject> findOne(Specification<UserSubject> spec);
+
     }
 
     static class UserSubjectSpecifications {

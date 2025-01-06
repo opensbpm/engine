@@ -40,6 +40,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
+import java.util.Set;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.instance.ProcessInstanceState;
@@ -50,6 +51,7 @@ import org.opensbpm.engine.core.utils.LocalDateTimeAttributeConverter;
 import org.opensbpm.engine.core.utils.entities.HasId;
 import static org.opensbpm.engine.core.engine.entities.SubjectVisitor.userSubject;
 import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableList;
+import static org.opensbpm.engine.utils.StreamUtils.emptyOrUnmodifiableSet;
 import static org.opensbpm.engine.utils.StreamUtils.filterToOne;
 import static org.opensbpm.engine.utils.StreamUtils.lazyAdd;
 import static org.opensbpm.engine.utils.StreamUtils.toOne;
@@ -90,9 +92,8 @@ public class ProcessInstance implements HasId, Serializable {
     @OneToMany(mappedBy = "processInstance", cascade = CascadeType.ALL)
     private List<Subject> subjects;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "processinstance")
-    private List<ObjectInstance> objectInstances;
+    @OneToMany(mappedBy="processInstance", cascade = CascadeType.ALL)
+    private Set<ObjectInstance> objectInstances;
 
     protected ProcessInstance() {
     }
@@ -194,7 +195,7 @@ public class ProcessInstance implements HasId, Serializable {
     }
 
     public Collection<ObjectInstance> getObjectInstances() {
-        return emptyOrUnmodifiableList(objectInstances);
+        return emptyOrUnmodifiableSet(objectInstances);
     }
 
     public Optional<ObjectInstance> getObjectInstance(ObjectModel objectModel) {

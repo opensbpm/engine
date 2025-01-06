@@ -49,7 +49,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.opensbpm.engine.utils.StreamUtils.oneOrMoreAsList;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 /**
  * Abstract Spring-Boot Test-Case for Service-Layer related Integration-Tests.

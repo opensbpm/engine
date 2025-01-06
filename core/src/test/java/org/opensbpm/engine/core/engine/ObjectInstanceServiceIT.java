@@ -1,11 +1,8 @@
 package org.opensbpm.engine.core.engine;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 import static org.hamcrest.CoreMatchers.is;
@@ -13,7 +10,6 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import org.junit.Test;
-import org.opensbpm.engine.core.engine.ObjectInstanceService;
 import org.opensbpm.engine.core.engine.entities.ObjectInstance;
 import org.opensbpm.engine.core.engine.entities.ProcessInstance;
 import org.opensbpm.engine.core.engine.entities.User;
@@ -23,6 +19,9 @@ import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.support.TransactionTemplate;
 
 public class ObjectInstanceServiceIT extends ServiceITCase {
 
