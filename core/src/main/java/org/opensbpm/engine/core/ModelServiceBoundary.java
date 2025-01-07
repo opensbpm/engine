@@ -67,14 +67,14 @@ public class ModelServiceBoundary implements ModelService {
         return convertModel(processModel);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
+    @Transactional(rollbackFor = EngineException.class)
     @Override
     public void updateState(ModelRequest modelRequest, ProcessModelState newState) throws ModelNotFoundException {
         ProcessModel processModel = findModel(modelRequest);
         processModelService.updateState(processModel, newState);
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
+    @Transactional(rollbackFor = EngineException.class)
     @Override
     public void delete(ModelRequest modelRequest) throws ModelNotFoundException {
         ProcessModel processModel = findModel(modelRequest);

@@ -113,7 +113,7 @@ public class EngineServiceBoundary implements EngineService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
+    @Transactional(rollbackFor = EngineException.class)
     @Override
     public TaskInfo startProcess(UserToken userToken, ModelRequest modelRequest) throws UserNotFoundException, ModelNotFoundException {
         User startUser = getUser(userToken);
@@ -223,7 +223,7 @@ public class EngineServiceBoundary implements EngineService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
+    @Transactional(rollbackFor = EngineException.class)
     @Override
     public Boolean executeTask(UserToken userToken, TaskRequest taskRequest)
             throws UserNotFoundException, SubjectAlreadyBoundException, TaskNotFoundException, TaskOutOfDateException {

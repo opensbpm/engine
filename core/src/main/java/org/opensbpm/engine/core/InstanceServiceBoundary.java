@@ -53,7 +53,7 @@ public class InstanceServiceBoundary implements InstanceService {
         return engineConverter.convertInstances(processInstanceService.findAllByStates(states));
     }
 
-    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
+    @Transactional(rollbackFor = EngineException.class)
     @Override
     public ProcessInfo stopProcess(ProcessRequest processRequest) throws ProcessNotFoundException {
         ProcessInstance processInstance = processInstanceService.cancelByUser(findInstance(processRequest));
