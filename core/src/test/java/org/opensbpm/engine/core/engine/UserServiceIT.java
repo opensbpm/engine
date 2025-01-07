@@ -16,6 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.core.engine;
 
+import java.util.concurrent.Callable;
 import org.junit.Test;
 import org.opensbpm.engine.api.events.EngineEvent.Type;
 import org.opensbpm.engine.core.engine.entities.User;
@@ -43,7 +44,7 @@ public class UserServiceIT extends ServiceITCase {
         User user = new User("username");
 
         //when
-        User result = userService.save(user);
+        User result = doInTransaction(()-> userService.save(user));
 
         //then
         assertThat(result.getId(), is(notNullValue()));
@@ -67,11 +68,14 @@ public class UserServiceIT extends ServiceITCase {
         Long userId = user.getId();
 
         //when
-        userService.delete(user);
+        doInTransaction(() -> {
+            userService.delete(user);
+            return null;
+        });
 
         //then
-        user = entityManager.find(User.class, user.getId());
-        assertThat(user, is(nullValue()));
+        User result = entityManager.find(User.class, user.getId());
+        assertThat(result, is(nullValue()));
 
         assertThat(engineEventsCollector, contains(
                 isUserChangedEvent(userId, Type.DELETE)

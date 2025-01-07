@@ -16,7 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
-public class ModelNotFoundException extends Exception {
+public class ModelNotFoundException extends EngineException {
 
     public ModelNotFoundException(String message) {
         super(message);

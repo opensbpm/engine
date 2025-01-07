@@ -90,7 +90,6 @@ public class ProcessModelService {
         return modelRepository.findOne(newestVersion(name, major));
     }
 
-    @Transactional
     public ProcessModel save(ProcessModel processModel) {
         //FIXME
 //        if (processModel.getId() != null) {
@@ -101,7 +100,6 @@ public class ProcessModelService {
         return savedModel;
     }
 
-    @Transactional
     public void updateState(ProcessModel processModel, ProcessModelState newState) {
         processModel.setState(newState);
         modelRepository.save(processModel);
@@ -109,7 +107,6 @@ public class ProcessModelService {
         eventPublisher.fireProcessModelUpdate(processModel);
     }
 
-    @Transactional
     public void delete(ProcessModel processModel) {
         eventPublisher.fireProcessModelChanged(processModel, Type.DELETE);
 

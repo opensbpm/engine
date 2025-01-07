@@ -16,7 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.instance;
 
-public class TaskNotFoundException extends Exception {
+import org.opensbpm.engine.api.EngineException;
+
+public class TaskNotFoundException extends EngineException {
 
     public TaskNotFoundException(String message) {
         super(message);

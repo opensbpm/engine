@@ -17,9 +17,7 @@
  */
 package org.opensbpm.engine.core.engine;
 
-import jakarta.persistence.PersistenceException;
 import java.util.List;
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import org.junit.After;
@@ -36,19 +34,11 @@ import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.MatcherAssert.assertThat;
-import org.hibernate.exception.ConstraintViolationException;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.fail;
-import org.opensbpm.engine.api.model.FieldType;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.functionState;
-import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.process;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.serviceSubject;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.userSubject;
-import org.opensbpm.engine.core.engine.entities.ObjectInstance;
-import org.opensbpm.engine.core.model.entities.ObjectModel;
 
 public class ProcessInstanceServiceIT extends ServiceITCase {
 
@@ -147,9 +137,8 @@ public class ProcessInstanceServiceIT extends ServiceITCase {
         engineEventsCollector.clear();
 
         //when
-        ProcessInstance result = doInTransaction(() -> {
-            return processInstanceService.start(entityManager.merge(processModel), user1);
-        });
+        ProcessInstance result = doInTransaction(() -> 
+                processInstanceService.start(entityManager.merge(processModel), user1));
 
         //then
         assertThat(result.getId(), is(notNullValue()));
@@ -177,7 +166,8 @@ public class ProcessInstanceServiceIT extends ServiceITCase {
         engineEventsCollector.clear();
 
         //when
-        ProcessInstance result = processInstanceService.cancelByUser(processInstance);
+        ProcessInstance result = doInTransaction(() -> 
+                processInstanceService.cancelByUser(processInstance));
 
         //then
         assertThat(result.getId(), is(notNullValue()));

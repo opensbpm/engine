@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.opensbpm.engine.api.EngineException;
 import org.opensbpm.engine.api.EngineService;
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ModelService.ModelRequest;
@@ -112,7 +113,7 @@ public class EngineServiceBoundary implements EngineService {
     /**
      * {@inheritDoc}
      */
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
     @Override
     public TaskInfo startProcess(UserToken userToken, ModelRequest modelRequest) throws UserNotFoundException, ModelNotFoundException {
         User startUser = getUser(userToken);
@@ -222,7 +223,7 @@ public class EngineServiceBoundary implements EngineService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(isolation = Isolation.REPEATABLE_READ)
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
     @Override
     public Boolean executeTask(UserToken userToken, TaskRequest taskRequest)
             throws UserNotFoundException, SubjectAlreadyBoundException, TaskNotFoundException, TaskOutOfDateException {

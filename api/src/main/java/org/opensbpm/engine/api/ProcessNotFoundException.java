@@ -16,7 +16,7 @@
  ******************************************************************************/
 package org.opensbpm.engine.api;
 
-public class ProcessNotFoundException extends Exception {
+public class ProcessNotFoundException extends EngineException {
 
     public ProcessNotFoundException(String message) {
         super(message);

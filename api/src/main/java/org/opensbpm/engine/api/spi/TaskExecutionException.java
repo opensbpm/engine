@@ -16,7 +16,9 @@
  ******************************************************************************/
 package org.opensbpm.engine.api.spi;
 
-public class TaskExecutionException extends Exception {
+import org.opensbpm.engine.api.EngineException;
+
+public class TaskExecutionException extends EngineException {
 
     public TaskExecutionException(String message) {
         super(message);

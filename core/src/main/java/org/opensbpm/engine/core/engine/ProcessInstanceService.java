@@ -38,7 +38,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.engine.ProcessInstanceService.ProcessInstanceSpecifications.withStates;
 import static org.opensbpm.engine.core.engine.ProcessInstanceService.ProcessInstanceSpecifications.withUserAndState;
 
@@ -51,12 +50,10 @@ public class ProcessInstanceService {
     @Autowired
     private EngineEventPublisher eventPublisher;
 
-    @Transactional(readOnly = true, noRollbackFor = Exception.class)
     public Collection<ProcessInstance> findAllByStates(Set<ProcessInstanceState> states) {
         return instanceRepository.findAll(withStates(states));
     }
 
-    @Transactional(readOnly = true, noRollbackFor = Exception.class)
     public List<ProcessInstance> findAllByUserAndState(User user, final ProcessInstanceState state) {
         return instanceRepository.findAll(withUserAndState(user, state));
     }
@@ -65,7 +62,6 @@ public class ProcessInstanceService {
         return instanceRepository.findById(id);
     }
 
-    @Transactional
     public ProcessInstance start(ProcessModel processModel, User startUser) {
         ProcessInstance savedInstance = save(new ProcessInstance(processModel, startUser));
 
@@ -73,18 +69,15 @@ public class ProcessInstanceService {
         return savedInstance;
     }
 
-    @Transactional
     public ProcessInstance cancelByUser(ProcessInstance processInstance) {
         return stop(processInstance, ProcessInstanceState.CANCELLED_BY_USER);
     }
 
-    @Transactional
     public ProcessInstance cancelBySystem(ProcessInstance processInstance, String message) {
         processInstance.setCancelMessage(message);
         return stop(processInstance, ProcessInstanceState.CANCELLED_BY_SYSTEM);
     }
 
-    @Transactional
     public ProcessInstance finish(ProcessInstance processInstance) {
         return stop(processInstance, ProcessInstanceState.FINISHED);
     }

@@ -33,12 +33,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withIds;
 import static org.opensbpm.engine.core.engine.UserService.UserSpecifications.withName;
 
 @Service
-@Transactional
 public class UserService {
 
     @Autowired

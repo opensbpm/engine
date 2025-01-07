@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2020 Stefan Sedelmaier
+ * Copyright (C) 2025 Stefan Sedelmaier
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
@@ -14,17 +14,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.opensbpm.engine.api.instance;
+package org.opensbpm.engine.api;
 
-import org.opensbpm.engine.api.EngineException;
+public class EngineException extends Exception {
 
-/**
- * Exception if {@link TaskInfo} is outdated.
- */
-public class TaskOutOfDateException extends EngineException {
-
-    public TaskOutOfDateException(String message) {
+    protected EngineException(String message) {
         super(message);
     }
 
+    protected EngineException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    
+    
 }

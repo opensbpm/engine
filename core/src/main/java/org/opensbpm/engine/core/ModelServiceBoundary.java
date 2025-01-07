@@ -20,6 +20,7 @@ package org.opensbpm.engine.core;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import org.opensbpm.engine.api.EngineException;
 import org.opensbpm.engine.api.ModelNotFoundException;
 import org.opensbpm.engine.api.ModelService;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
@@ -35,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.ExceptionFactory.newModelNotFoundException;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModel;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModels;
+import org.springframework.transaction.annotation.Isolation;
 
 @Service
 public class ModelServiceBoundary implements ModelService {
@@ -65,14 +67,14 @@ public class ModelServiceBoundary implements ModelService {
         return convertModel(processModel);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
     @Override
     public void updateState(ModelRequest modelRequest, ProcessModelState newState) throws ModelNotFoundException {
         ProcessModel processModel = findModel(modelRequest);
         processModelService.updateState(processModel, newState);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
     @Override
     public void delete(ModelRequest modelRequest) throws ModelNotFoundException {
         ProcessModel processModel = findModel(modelRequest);

@@ -19,6 +19,7 @@ package org.opensbpm.engine.core;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import org.opensbpm.engine.api.EngineException;
 import org.opensbpm.engine.api.InstanceService;
 import org.opensbpm.engine.api.ProcessNotFoundException;
 import org.opensbpm.engine.api.instance.AuditTrail;
@@ -32,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.ExceptionFactory.newProcessNotFoundException;
+import org.springframework.transaction.annotation.Isolation;
 
 @Service
 public class InstanceServiceBoundary implements InstanceService {
@@ -51,7 +53,7 @@ public class InstanceServiceBoundary implements InstanceService {
         return engineConverter.convertInstances(processInstanceService.findAllByStates(states));
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.REPEATABLE_READ, rollbackFor = EngineException.class)
     @Override
     public ProcessInfo stopProcess(ProcessRequest processRequest) throws ProcessNotFoundException {
         ProcessInstance processInstance = processInstanceService.cancelByUser(findInstance(processRequest));

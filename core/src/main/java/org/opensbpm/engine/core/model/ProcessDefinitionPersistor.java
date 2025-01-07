@@ -59,7 +59,6 @@ import org.opensbpm.engine.core.model.entities.SubjectModel;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ProcessDefinitionPersistor {
@@ -73,7 +72,6 @@ public class ProcessDefinitionPersistor {
         this.roleService = roleService;
     }
 
-    @Transactional
     public ProcessModel saveDefinition(ProcessDefinition definition) {
         Objects.requireNonNull(definition);
 
