@@ -33,7 +33,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import static org.opensbpm.engine.core.ExceptionFactory.newProcessNotFoundException;
-import org.springframework.transaction.annotation.Isolation;
 
 @Service
 public class InstanceServiceBoundary implements InstanceService {
@@ -51,6 +50,12 @@ public class InstanceServiceBoundary implements InstanceService {
     @Override
     public Collection<ProcessInfo> findAllByStates(Set<ProcessInstanceState> states) {
         return engineConverter.convertInstances(processInstanceService.findAllByStates(states));
+    }
+
+    @Transactional(readOnly = true, noRollbackFor = Exception.class)
+    @Override
+    public ProcessInfo findById(ProcessRequest processRequest) throws ProcessNotFoundException {
+        return engineConverter.convertInstance(findInstance(processRequest));
     }
 
     @Transactional(rollbackFor = EngineException.class)

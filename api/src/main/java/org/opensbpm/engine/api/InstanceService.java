@@ -27,6 +27,8 @@ public interface InstanceService {
 
     //TODO add find-method with SearchFilter
     Collection<ProcessInfo> findAllByStates(Set<ProcessInstanceState> states);
+    
+    ProcessInfo findById(ProcessRequest processRequest) throws ProcessNotFoundException;
 
     ProcessInfo stopProcess(ProcessRequest processRequest) throws ProcessNotFoundException;
 
