@@ -1,16 +1,17 @@
-/** *****************************************************************************
+/**
+ * ****************************************************************************
  * Copyright (C) 2020 Stefan Sedelmaier
- *
+ * <p>
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published
  * by the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * <p>
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Affero General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  * ****************************************************************************
@@ -24,6 +25,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
 import org.opensbpm.engine.api.EngineException;
 import org.opensbpm.engine.api.EngineService;
 import org.opensbpm.engine.api.ModelNotFoundException;
@@ -57,14 +59,15 @@ import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import static org.opensbpm.engine.core.ExceptionFactory.newModelNotFoundException;
 import static org.opensbpm.engine.core.ExceptionFactory.newTaskNotFoundException;
 import static org.opensbpm.engine.core.ExceptionFactory.newTaskOutOfDateException;
 import static org.opensbpm.engine.core.ExceptionFactory.newUserNotFoundException;
 import static org.opensbpm.engine.core.model.ModelConverter.convertModels;
-import org.springframework.transaction.annotation.Isolation;
 
 /**
  * Service implementation of {@link EngineService}. All nesercary database
@@ -148,9 +151,9 @@ public class EngineServiceBoundary implements EngineService {
      */
     @Transactional(readOnly = true, noRollbackFor = Exception.class)
     @Override
-    public List<TaskInfo> getTasks(UserToken userToken) throws UserNotFoundException {
+    public List<TaskInfo> getTasks(UserToken userToken, Pageable pageable) throws UserNotFoundException {
         User user = getUser(userToken);
-        return userSubjectService.findAllByUser(user).stream()
+        return userSubjectService.findAllByUser(user, pageable).stream()
                 .map(subject -> createTaskInfoFromSubject(subject))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -182,7 +185,7 @@ public class EngineServiceBoundary implements EngineService {
         Subject subject = validateTaskInfo(taskInfo);
 
         BindingContext bindingContext = BindingContext.ofSubject(subject);
-        
+
         FunctionState currentState = subject.getVisibleCurrentState()
                 .orElseThrow(() -> {
                     String msg = MessageFormat.format("no current state for {0}", subject.toString());

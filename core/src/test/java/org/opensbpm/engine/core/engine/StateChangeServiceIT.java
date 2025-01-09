@@ -43,6 +43,8 @@ import org.opensbpm.engine.core.engine.entities.Subject;
 import org.opensbpm.engine.core.junit.ServiceITCase;
 import org.opensbpm.engine.core.junit.TestTask;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+
 import static org.junit.Assert.fail;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.field;
 import static org.opensbpm.engine.api.model.builder.DefinitionFactory.object;
@@ -102,7 +104,7 @@ public class StateChangeServiceIT extends ServiceITCase {
 
         //when
         boolean changeStateResult = doInTransaction(() -> {
-            TaskInfo taskInfo = engineService.getTasks(userToken).stream()
+            TaskInfo taskInfo = engineService.getTasks(userToken, PageRequest.of(0, Integer.MAX_VALUE)).stream()
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("no tasks for user " + userToken));
             TaskResponse taskResponse = engineService.getTaskResponse(userToken, taskInfo);
@@ -148,7 +150,7 @@ public class StateChangeServiceIT extends ServiceITCase {
 
         //when
         boolean changeStateResult = doInTransaction(() -> {
-            TaskInfo taskInfo = engineService.getTasks(userToken).stream()
+            TaskInfo taskInfo = engineService.getTasks(userToken, PageRequest.of(0, Integer.MAX_VALUE)).stream()
                     .findFirst()
                     .orElseThrow(() -> new IllegalStateException("no tasks for user " + userToken));
             TaskResponse taskResponse = engineService.getTaskResponse(userToken, taskInfo);

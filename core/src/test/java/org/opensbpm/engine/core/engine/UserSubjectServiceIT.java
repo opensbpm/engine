@@ -29,6 +29,9 @@ import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.Role;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -130,19 +133,19 @@ public class UserSubjectServiceIT extends ServiceITCase {
 
         List<UserSubject> subjects;
 
-        subjects = userSubjectService.findAllByUser(starterUser1);
+        subjects = userSubjectService.findAllByUser(starterUser1, Pageable.unpaged()).get().toList();
         assertThat("starterSubject found", subjects, hasSize(1));
 
-        subjects = userSubjectService.findAllByUser(starterUser2);
+        subjects = userSubjectService.findAllByUser(starterUser2,Pageable.unpaged()).get().toList();
         assertThat("subject for non-starter found", subjects, hasSize(0));
 
-        subjects = userSubjectService.findAllByUser(subject2User1);
+        subjects = userSubjectService.findAllByUser(subject2User1,Pageable.unpaged()).get().toList();
         assertThat("unassigned subject with 'Subject 2- Role' not found", subjects, hasSize(1));
 
-        subjects = userSubjectService.findAllByUser(subject2User2);
+        subjects = userSubjectService.findAllByUser(subject2User2,Pageable.unpaged()).get().toList();
         assertThat("unassigned subject with 'Subject 2- Role' not found", subjects, hasSize(1));
 
-        subjects = userSubjectService.findAllByUser(otherRoleUser);
+        subjects = userSubjectService.findAllByUser(otherRoleUser,Pageable.unpaged()).get().toList();
         assertThat("unassigned subject with 'Other Role' not found", subjects, hasSize(0));
     }
 

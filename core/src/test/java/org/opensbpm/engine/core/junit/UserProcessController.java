@@ -38,6 +38,7 @@ import org.opensbpm.engine.api.instance.TaskOutOfDateException;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.core.engine.UserService;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.support.TransactionTemplate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.opensbpm.engine.api.junit.ProcessInfoMatchers.isState;
@@ -74,7 +75,8 @@ public class UserProcessController {
     }
 
     public Collection<TaskInfo> getTasks() throws UserNotFoundException {
-        return engineService.getTasks(userToken);
+        PageRequest pageRequest = PageRequest.of(0, Integer.MAX_VALUE);
+        return engineService.getTasks(userToken, pageRequest);
     }
 
     public TestTask getTask(String taskName) throws UserNotFoundException, TaskNotFoundException, TaskOutOfDateException {

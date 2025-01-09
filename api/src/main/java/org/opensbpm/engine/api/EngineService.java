@@ -29,6 +29,7 @@ import org.opensbpm.engine.api.instance.TaskRequest;
 import org.opensbpm.engine.api.instance.TaskResponse;
 import org.opensbpm.engine.api.instance.UserToken;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Service interface to query and execute user specific SBPM processes
@@ -74,10 +75,11 @@ public interface EngineService {
      * Retrieve an overview of all executable tasks.
      *
      * @param userToken
+     * @param pageable
      * @return
      * @throws UserNotFoundException
      */
-    Collection<TaskInfo> getTasks(UserToken userToken) throws UserNotFoundException;
+    Collection<TaskInfo> getTasks(UserToken userToken, Pageable pageable) throws UserNotFoundException;
 
     /**
      * Retrieve all necessary data to execute the task.

@@ -48,6 +48,8 @@ import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.opensbpm.engine.core.model.entities.ServiceSubjectModel;
 import org.opensbpm.engine.core.model.entities.SimpleAttributeModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -134,7 +136,7 @@ public class EngineConverterIT extends ServiceITCase {
             return engineService.startProcess(userToken, modelRequest).getProcessId();
         });
 
-        TaskInfo taskInfo = engineService.getTasks(userToken).stream()
+        TaskInfo taskInfo = engineService.getTasks(userToken, PageRequest.of(0, Integer.MAX_VALUE)).stream()
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("no tasks for user " + userToken));
 

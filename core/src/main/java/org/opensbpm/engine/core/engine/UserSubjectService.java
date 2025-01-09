@@ -41,6 +41,8 @@ import org.opensbpm.engine.core.model.entities.UserSubjectModel;
 import org.opensbpm.engine.core.model.entities.UserSubjectModel_;
 import org.opensbpm.engine.core.utils.repositories.JpaSpecificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Repository;
@@ -66,9 +68,9 @@ public class UserSubjectService {
      * @param user
      * @return
      */
-    public List<UserSubject> findAllByUser(User user) {
+    public Page<UserSubject> findAllByUser(User user, Pageable pageable) {
         //PENDING filter locked subject
-        return userSubjectRepository.findAll(ofUserOrRoles(user));
+        return userSubjectRepository.findAll(ofUserOrRoles(user),pageable);
     }
 
     @Repository
