@@ -44,7 +44,7 @@ public class Role implements HasId, Serializable {
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "roleuser")
+    @JoinTable(name = "roles_user")
     private Set<User> users;
 
     protected Role() {
