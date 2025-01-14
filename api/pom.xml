@@ -15,13 +15,14 @@
   You should have received a copy of the GNU Affero General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-       <groupId>org.opensbpm.engine</groupId>
-       <artifactId>engine-bom</artifactId>
-       <version>1.1-SNAPSHOT</version>
+        <groupId>org.opensbpm.engine</groupId>
+        <artifactId>engine-bom</artifactId>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>api</artifactId>
@@ -31,7 +32,7 @@
     <description>(XML)-DTO's and API Interfaces for SBPM Engine</description>
 
     <dependencies>
-        
+
         <!-- 
         ====================
         Compile Dependencies 
@@ -48,7 +49,7 @@
             <artifactId>commons-beanutils</artifactId>
             <version>1.9.4</version>
         </dependency>
-        
+
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
@@ -64,7 +65,7 @@
         ====================
         Runtime Dependencies 
         ====================
-        --> 
+        -->
 
         <!-- JAXB RI, Jakarta XML Binding -->
         <!--dependency>
@@ -77,19 +78,18 @@
             <artifactId>jaxb-impl</artifactId>
             <scope>runtime</scope>
         </dependency-->
-        <dependency>
+        <!--dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <scope>runtime</scope>
-        </dependency>
-        
+        </dependency-->
 
 
         <!-- 
         ====================
           Test Dependencies 
         ====================
-        --> 
+        -->
 
         <dependency>
             <groupId>junit</groupId>
@@ -110,6 +110,17 @@
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jakarta-xmlbind-annotations</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--
+        ===============================
+          Test (Runtime) Dependencies
+        ===============================
+        -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
             <scope>test</scope>
         </dependency>
 

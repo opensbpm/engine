@@ -66,11 +66,11 @@
             <artifactId>jaxb-impl</artifactId>
             <scope>runtime</scope>
         </dependency-->
-        <dependency>
+        <!--dependency>
             <groupId>org.glassfish.jaxb</groupId>
             <artifactId>jaxb-runtime</artifactId>
             <scope>runtime</scope>
-        </dependency>
+        </dependency-->
         
         
         <!-- 
@@ -115,6 +115,11 @@
          Test Runtime Dependencies 
         ============================
         -->
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
