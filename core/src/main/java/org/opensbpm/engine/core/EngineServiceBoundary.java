@@ -59,8 +59,6 @@ import org.opensbpm.engine.core.model.entities.FunctionState;
 import org.opensbpm.engine.core.model.entities.ObjectModel;
 import org.opensbpm.engine.core.model.entities.ProcessModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -152,14 +150,13 @@ public class EngineServiceBoundary implements EngineService {
      */
     @Transactional(readOnly = true, noRollbackFor = Exception.class)
     @Override
-    public List<TaskInfo> getTasks(UserToken userToken, Pageable pageable) throws UserNotFoundException {
+    public List<TaskInfo> getTasks(UserToken userToken) throws UserNotFoundException {
         User user = getUser(userToken);
-        List<TaskInfo> taskInfos = userSubjectService.findAllByUser(user).stream()
+        return userSubjectService.findAllByUser(user).stream()
                 .map(subject -> createTaskInfoFromSubject(subject))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());
-        return PageableExecutionUtils.getPage(taskInfos, pageable, taskInfos::size).getContent();
     }
 
     private Optional<TaskInfo> createTaskInfoFromSubject(Subject subject) {

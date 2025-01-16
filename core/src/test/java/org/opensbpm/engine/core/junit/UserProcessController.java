@@ -76,7 +76,7 @@ public class UserProcessController {
 
     public Collection<TaskInfo> getTasks() throws UserNotFoundException {
         PageRequest pageRequest = PageRequest.of(0, Integer.MAX_VALUE);
-        return engineService.getTasks(userToken, pageRequest);
+        return engineService.getTasks(userToken);
     }
 
     public TestTask getTask(String taskName) throws UserNotFoundException, TaskNotFoundException, TaskOutOfDateException {
