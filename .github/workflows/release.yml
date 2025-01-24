@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger release on pushing any tag starting with "v"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'  # Choose the JDK version you're using
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Publish release to GitHub
+      uses: softprops/action-gh-release@v1
+      with:
+        files: **/target/*.jar  # Upload the generated JAR file(s) as part of the release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
