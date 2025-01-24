@@ -13,14 +13,10 @@ For experimental usage snapshot JARs are available in Maven Repository of this r
 
 ```xml
 <repositories>
-    <id>opensbpm-snapshots</id>
-    <name>OpenSBPM Snapshots</name>
-    <url>http://team.sedelmaier.at/archiva/repository/opensbpm-snapshots/</url>
-    <releases>
-        <enabled>false</enabled>
-    </releases>
-    <snapshots>
-        <enabled>true</enabled>
-    </snapshots>
+    <repository>
+        <id>opensbpm-release</id>
+        <name>OpenSBPM Releases</name>
+        <url>https://maven.pkg.github.com/opensbpm/engine</url>
+    </repository>
 </repositories>
 ```
