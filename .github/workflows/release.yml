@@ -26,6 +26,7 @@ jobs:
     - name: Publish release to GitHub
       uses: softprops/action-gh-release@v1
       with:
-        files: **/target/*.jar  # Upload the generated JAR file(s) as part of the release
+        # Upload the generated JAR file(s) as part of the release
+        files: ./**/target/*.jar
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
