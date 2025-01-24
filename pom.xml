@@ -117,25 +117,25 @@
             -->
             <dependency>
                 <groupId>org.opensbpm.engine</groupId>
-                <artifactId>api</artifactId>
+                <artifactId>opensbpm-engine-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.opensbpm.engine</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>opensbpm-engine-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.opensbpm.engine</groupId>
-                <artifactId>xmlmodel</artifactId>
+                <artifactId>opensbpm-engine-xmlmodel</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.opensbpm.engine</groupId>
-                <artifactId>examples</artifactId>
+                <artifactId>opensbpm-engine-examples</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -146,7 +146,7 @@
             -->
             <dependency>
                 <groupId>org.opensbpm.engine</groupId>
-                <artifactId>api-junit</artifactId>
+                <artifactId>opensbpm-engine-api-junit</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
