@@ -40,7 +40,7 @@
 
     <modules>
         <module>api</module>
-        <module>api/junit</module>
+        <module>api-junit</module>
         <module>xmlmodel</module>
         <module>core</module>
         <module>utils</module>

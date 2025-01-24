@@ -22,7 +22,6 @@
         <groupId>org.opensbpm.engine</groupId>
         <artifactId>opensbpm-engine-bom</artifactId>
         <version>0.1</version>
-        <relativePath>../../</relativePath>
     </parent>
 
     <artifactId>opensbpm-engine-api-junit</artifactId>
