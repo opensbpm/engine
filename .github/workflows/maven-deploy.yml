@@ -29,7 +29,7 @@ jobs:
                     xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
             <servers>
               <server>
-                <id>github</id>
+                <id>opensbpm-release</id>
                 <username>${{ github.actor }}</username>
                 <password>${{ secrets.GITHUB_TOKEN }}</password>
               </server>
