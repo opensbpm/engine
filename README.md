@@ -1,6 +1,6 @@
 # OpenSBPM:engine
 
-*OpenSBPM:engine* is a free implementation of a Subject-Oriented Business Process Management (S-BPM) workflow engine. It 
+*OpenSBPM:engine* is a free implementation of a Subject-Oriented Business Process Management ([S-BPM](https://en.wikipedia.org/wiki/Subject-oriented_business_process_management)) workflow engine. It 
 serves as the core component for executing S-BPM models, utilizing Spring Boot Data JPA to persist states into a configurable 
 database.
 
@@ -30,7 +30,7 @@ To get started with OpenSBPM:engine, you can refer to the "Get Started" guide av
 ## Features
 
 - **Subject-Oriented Modeling**: Facilitates the creation and execution of S-BPM models.
-- **Database Persistence**: Utilizes Spring Boot Data JPA for state persistence in configurable databases.
+- **Database Persistence**: Utilizes [SpringBoot Data JPA](https://spring.io/projects/spring-data-jpa) for state persistence in configurable databases.
 - **Extensible Architecture**: Designed for easy integration and extension to fit various business needs.
 
 ## Contributing
