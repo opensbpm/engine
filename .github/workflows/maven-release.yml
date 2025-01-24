@@ -1,0 +1,35 @@
+name: Release Workflow
+
+on:
+  workflow_dispatch:  # Trigger manually from GitHub Actions UI
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'  # Use the appropriate Java version for your project
+          distribution: 'adopt'
+
+      - name: Extract Maven version
+        id: extract_version
+        run: |
+          version=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "MAVEN_VERSION=$version" >> $GITHUB_ENV
+
+      - name: Create Git tag
+        if: startsWith(env.MAVEN_VERSION, 'SNAPSHOT') == false
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ env.MAVEN_VERSION }}" -m "Release version ${{ env.MAVEN_VERSION }}"
+          git push origin "v${{ env.MAVEN_VERSION }}"
+
+      - name: Deploy to GitHub Packages
+        run: mvn clean deploy
