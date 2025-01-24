@@ -4,11 +4,11 @@
 
     <parent>
         <groupId>org.opensbpm.engine</groupId>
-        <artifactId>engine-bom</artifactId>
+        <artifactId>opensbpm-engine-bom</artifactId>
         <version>0.1</version>
     </parent>
 
-    <artifactId>utils</artifactId>
+    <artifactId>opensbpm-engine-utils</artifactId>
 
     <name>OpenSBPM Engine - Utils</name>
 

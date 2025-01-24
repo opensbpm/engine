@@ -20,12 +20,12 @@
 
     <parent>
         <groupId>org.opensbpm.engine</groupId>
-        <artifactId>engine-bom</artifactId>
+        <artifactId>opensbpm-engine-bom</artifactId>
         <version>0.1</version>
         <relativePath>../../</relativePath>
     </parent>
 
-    <artifactId>api-junit</artifactId>
+    <artifactId>opensbpm-engine-api-junit</artifactId>
     <packaging>jar</packaging>
 
     <name>OpenSBPM Engine - API Junit Library</name>
@@ -44,7 +44,7 @@
         --> 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>opensbpm-engine-api</artifactId>
             <version>${project.version}</version>
         </dependency>        
         

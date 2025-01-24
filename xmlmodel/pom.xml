@@ -20,11 +20,11 @@
 
     <parent>
         <groupId>org.opensbpm.engine</groupId>
-        <artifactId>engine-bom</artifactId>
+        <artifactId>opensbpm-engine-bom</artifactId>
         <version>0.1</version>
     </parent>
 
-    <artifactId>xmlmodel</artifactId>
+    <artifactId>opensbpm-engine-xmlmodel</artifactId>
 
     <name>OpenSBPM Engine - XML Processmodel</name>
 
@@ -38,7 +38,7 @@
             
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api</artifactId>
+            <artifactId>opensbpm-engine-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         
@@ -99,13 +99,13 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>api-junit</artifactId>
+            <artifactId>opensbpm-engine-api-junit</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>examples</artifactId>
+            <artifactId>opensbpm-engine-examples</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>            

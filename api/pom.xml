@@ -21,11 +21,11 @@
 
     <parent>
         <groupId>org.opensbpm.engine</groupId>
-        <artifactId>engine-bom</artifactId>
+        <artifactId>opensbpm-engine-bom</artifactId>
         <version>0.1</version>
     </parent>
 
-    <artifactId>api</artifactId>
+    <artifactId>opensbpm-engine-api</artifactId>
     <packaging>jar</packaging>
 
     <name>OpenSBPM Engine - API</name>
@@ -40,7 +40,7 @@
         -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>opensbpm-engine-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
 
