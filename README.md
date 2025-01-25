@@ -15,7 +15,7 @@ To include the snapshot repository in your Maven project, add the following to y
 ```xml
 <repositories>
     <repository>
-        <id>opensbpm-release</id>
+        <id>opensbpm</id>
         <name>OpenSBPM Releases</name>
         <url>https://maven.pkg.github.com/opensbpm/engine</url>
     </repository>

@@ -1,10 +1,10 @@
-name: Publish Maven Artifact to GitHub Packages
+name: Publish release artifacts to GitHub Packages
 
 on:
   push:
     tags:
       - 'v*'  # Trigger release on pushing any tag starting with "v"
-  workflow_dispatch:  # Allow manual triggering of the workflow
+#  workflow_dispatch:  # Allow manual triggering of the workflow
 
 jobs:
   deploy:
@@ -29,7 +29,7 @@ jobs:
                     xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
             <servers>
               <server>
-                <id>opensbpm-release</id>
+                <id>opensbpm</id>
                 <username>${{ github.actor }}</username>
                 <password>${{ secrets.GITHUB_TOKEN }}</password>
               </server>

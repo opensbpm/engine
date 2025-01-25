@@ -59,7 +59,7 @@
             <url>https://team.sedelmaier.at/archiva/repository/opensbpm-snapshots/</url>
         </snapshotRepository>
         <repository>
-            <id>opensbpm-release</id>
+            <id>opensbpm</id>
             <url>https://maven.pkg.github.com/opensbpm/engine</url>
         </repository>
         <site>
