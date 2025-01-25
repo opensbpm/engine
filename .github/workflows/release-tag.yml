@@ -33,6 +33,3 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag -a "v${{ env.MAVEN_VERSION }}" -m "Release version ${{ env.MAVEN_VERSION }}"
           git push origin "v${{ env.MAVEN_VERSION }}"
-
-      - name: Deploy to GitHub Packages
-        run: mvn clean deploy
