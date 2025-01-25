@@ -21,3 +21,15 @@ mvn versions:set -DnewVersion=0.1.1-SNAPSHOT
 git add .
 git commit -m "Prepare for next development iteration"
 ```
+
+# Summary Workflow
+
+Develop on a branch with a -SNAPSHOT version.
+When ready for release:
+- Remove -SNAPSHOT.
+- Tag the release.
+- Deploy artifacts.
+Increment the version to the next -SNAPSHOT.
+
+By combining Maven's version management, Git's tagging system, and a clear branching strategy, you can effectively handle 
+SemVer releases and SNAPSHOT versions in a Git repository.
