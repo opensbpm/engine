@@ -1,7 +1,10 @@
-name: Release Workflow
+name: Create release tag from Maven version
 
 on:
-  workflow_dispatch:  # Trigger manually from GitHub Actions UI
+  push:
+    branches:
+      - main
+#  workflow_dispatch:  # Trigger manually from GitHub Actions UI
 
 jobs:
   release:
@@ -24,7 +27,7 @@ jobs:
           echo "MAVEN_VERSION=$version" >> $GITHUB_ENV
 
       - name: Create Git tag
-        if: startsWith(env.MAVEN_VERSION, 'SNAPSHOT') == false
+        if: endsWith(env.MAVEN_VERSION, 'SNAPSHOT') == false
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
