@@ -178,7 +178,7 @@
                     
                     <!-- Netbeans doesn't index generated sources
                     <compilerArguments>                        
-                        <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                        <processor>org.hibernate.processor.HibernateProcessor</processor>
                     </compilerArguments>
                     <annotationProcessorPaths>
                         <annotationProcessorPath>
@@ -202,7 +202,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <processors>
-                                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                                <processor>org.hibernate.processor.HibernateProcessor</processor>
                             </processors>
                         </configuration>
                     </execution>
