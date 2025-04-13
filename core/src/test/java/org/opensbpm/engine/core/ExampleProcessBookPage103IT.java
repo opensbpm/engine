@@ -77,16 +77,16 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         travelagency.assertTasks(is(empty()));
         //
 
-        //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
+        //Mitarbeiter: "DR-Antrag an Vorgesetzter senden" (send message)
         task = employee.getTask("DR-Antrag ausfüllen");
         task.setValue("DR-Antrag", "Name", "Test");
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 10));
         task.setValue("DR-Antrag", "Reiseziel", "Test");
-        employee.execute(task, "DR-Antrag an Vorgesetzer senden");
+        employee.execute(task, "DR-Antrag an Vorgesetzter senden");
         //synchronized Message, send-state must be current state for user employee
         processController.assertState(ProcessInstanceState.ACTIVE, hasSubjects(
-                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
+                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzter senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
 
@@ -117,7 +117,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         //dumpEngineEvents();
         processController.assertTrail(contains(
                 isTrail("Mitarbeiter", "DR-Antrag ausfüllen"),
-                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzer senden"),
+                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzter senden"),
                 isTrail("Vorgesetzter", "DR-Antrag empfangen"),
                 isTrail("Vorgesetzter", "DR-Antrag prüfen"),
                 isTrail("Mitarbeiter", "Antwort von Vorgesetzter empfangen"),
@@ -153,20 +153,20 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         travelagency.assertTasks(is(empty()));
         //
 
-        //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
+        //Mitarbeiter: "DR-Antrag an Vorgesetzter senden" (send message)
         task = employee.getTask("DR-Antrag ausfüllen");
         task.setValue("DR-Antrag", "Name", "Test");
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 10));
         task.setValue("DR-Antrag", "Reiseziel", "Test");
-        employee.execute(task, "DR-Antrag an Vorgesetzer senden");
+        employee.execute(task, "DR-Antrag an Vorgesetzter senden");
         //synchronized Message, send-state must be current state for user employee
         assertEngineEvents(
                 isUserTaskChangedEvent(employee.getId(), "DR-Antrag ausfüllen", Type.DELETE),
                 isUserTaskChangedEvent(superior.getId(), "DR-Antrag prüfen", Type.CREATE)
         );
         processController.assertState(ProcessInstanceState.ACTIVE, hasSubjects(
-                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
+                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzter senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
         employee.assertTasks(is(empty()));
@@ -243,7 +243,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
 
         processController.assertTrail(contains(
                 isTrail("Mitarbeiter", "DR-Antrag ausfüllen"),
-                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzer senden"),
+                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzter senden"),
                 isTrail("Vorgesetzter", "DR-Antrag empfangen"),
                 isTrail("Vorgesetzter", "DR-Antrag prüfen"),
                 isTrail("Mitarbeiter", "Antwort von Vorgesetzter empfangen"),
@@ -284,20 +284,20 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         travelagency.assertTasks(is(empty()));
         //
 
-        //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
+        //Mitarbeiter: "DR-Antrag an Vorgesetzter senden" (send message)
         task = employee.getTask("DR-Antrag ausfüllen");
         task.setValue("DR-Antrag", "Name", "Test");
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 10));
         task.setValue("DR-Antrag", "Reiseziel", "Test");
-        employee.execute(task, "DR-Antrag an Vorgesetzer senden");
+        employee.execute(task, "DR-Antrag an Vorgesetzter senden");
         //synchronized Message, send-state must be current state for user employee
         assertEngineEvents(
                 isUserTaskChangedEvent(employee.getId(), "DR-Antrag ausfüllen", Type.DELETE),
                 isUserTaskChangedEvent(superior.getId(), "DR-Antrag prüfen", Type.CREATE)
         );
         processController.assertState(ProcessInstanceState.ACTIVE, hasSubjects(
-                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
+                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzter senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
         employee.assertTasks(is(empty()));
@@ -373,7 +373,7 @@ public class ExampleProcessBookPage103IT extends WorkflowTestCase {
         //'DR beendet' is executed bevor
         processController.assertTrail(contains(
                 isTrail("Mitarbeiter", "DR-Antrag ausfüllen"),
-                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzer senden"),
+                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzter senden"),
                 isTrail("Vorgesetzter", "DR-Antrag empfangen"),
                 isTrail("Vorgesetzter", "DR-Antrag prüfen"),
                 isTrail("Mitarbeiter", "Antwort von Vorgesetzter empfangen"),

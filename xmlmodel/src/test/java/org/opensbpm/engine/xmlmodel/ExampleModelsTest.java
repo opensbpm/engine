@@ -83,9 +83,9 @@ public class ExampleModelsTest {
                                 isFieldPermission("Reiseziel", Permission.WRITE, true)
                         )
                         ),
-                        containsHeads(isSendState("DR-Antrag an Vorgesetzer senden"))
+                        containsHeads(isSendState("DR-Antrag an Vorgesetzter senden"))
                 ),
-                        isSendState("DR-Antrag an Vorgesetzer senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
+                        isSendState("DR-Antrag an Vorgesetzter senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
                         isReceiveState("Antwort von Vorgesetzter empfangen", isMessage("Genehmigung", "DR antreten"), isMessage("Ablehnung", "Abgelehnt")),
                         isFunctionState("DR antreten", containsHeads(isFunctionState("DR beendet"))),
                         isFunctionState("DR beendet"),
@@ -153,9 +153,9 @@ public class ExampleModelsTest {
                                 isFieldPermission("Reiseziel", Permission.WRITE, true)
                         )
                         ),
-                        containsHeads(isSendState("DR-Antrag an Vorgesetzer senden"))
+                        containsHeads(isSendState("DR-Antrag an Vorgesetzter senden"))
                 ),
-                        isSendState("DR-Antrag an Vorgesetzer senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
+                        isSendState("DR-Antrag an Vorgesetzter senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
                         isReceiveState("Antwort von Vorgesetzter empfangen", isMessage("Genehmigung", "DR antreten"), isMessage("Ablehnung", "DR-Antrag zurückziehen/ändern")),
                         isFunctionState("DR antreten", containsHeads(isFunctionState("DR beendet"))),
                         isFunctionState("DR beendet"),
@@ -168,7 +168,7 @@ public class ExampleModelsTest {
                                 )
                                 ),
                                 containsHeads(
-                                        isSendState("DR-Antrag an Vorgesetzer senden"),
+                                        isSendState("DR-Antrag an Vorgesetzter senden"),
                                         isFunctionState("DR-Antrag zurückziehen")
                                 )
                         ),
@@ -240,15 +240,15 @@ public class ExampleModelsTest {
                                 )
                         )
                         ),
-                        containsHeads(isSendState("DR-Antrag an Vorgesetzer senden"))
+                        containsHeads(isSendState("DR-Antrag an Vorgesetzter senden"))
                 ),
-                        isSendState("DR-Antrag an Vorgesetzer senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
+                        isSendState("DR-Antrag an Vorgesetzter senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
                         isReceiveState("Antwort von Vorgesetzter empfangen", isMessage("Genehmigung", "Buchung von Reisestelle empfangen"), isMessage("Ablehnung", "DR-Antrag zurückziehen/ändern")),
                         isReceiveState("Buchung von Reisestelle empfangen", isMessage("Buchung", "DR antreten")),
                         isFunctionState("DR antreten"),
                         isFunctionState("DR beendet"),
                         isFunctionState("DR-Antrag zurückziehen/ändern",
-                                containsHeads(isSendState("DR-Antrag an Vorgesetzer senden"),
+                                containsHeads(isSendState("DR-Antrag an Vorgesetzter senden"),
                                         isFunctionState("DR-Antrag zurückziehen")
                                 )
                         ),

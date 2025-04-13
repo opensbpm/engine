@@ -72,10 +72,10 @@
                     </attribute>                    
                 </object>
             </object>
-            <toState>DR-Antrag an Vorgesetzer senden</toState>
+            <toState>DR-Antrag an Vorgesetzter senden</toState>
         </functionState>
         <sendState>
-            <name>DR-Antrag an Vorgesetzer senden</name>
+            <name>DR-Antrag an Vorgesetzter senden</name>
             <receiver>Vorgesetzter</receiver>
             <message>DR-Antrag</message>
             <toState>Antwort von Vorgesetzter empfangen</toState>
@@ -193,7 +193,7 @@
                     <permission>READ</permission>
                 </attribute>
             </object>
-            <toState>DR-Antrag an Vorgesetzer senden</toState>
+            <toState>DR-Antrag an Vorgesetzter senden</toState>
             <toState>DR-Antrag zurückziehen</toState>            
         </functionState>
         <functionState eventType="END">

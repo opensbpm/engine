@@ -102,15 +102,15 @@ public class ProcessModelTest {
                                 )
                         )
                         ),
-                        containsHeads(isSendState("DR-Antrag an Vorgesetzer senden"))
+                        containsHeads(isSendState("DR-Antrag an Vorgesetzter senden"))
                 ),
-                        isSendState("DR-Antrag an Vorgesetzer senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
+                        isSendState("DR-Antrag an Vorgesetzter senden", "Vorgesetzter", "DR-Antrag", "Antwort von Vorgesetzter empfangen"),
                         isReceiveState("Antwort von Vorgesetzter empfangen", isMessage("Genehmigung", "Buchung von Reisestelle empfangen"), isMessage("Ablehnung", "DR-Antrag zurückziehen/ändern")),
                         isReceiveState("Buchung von Reisestelle empfangen", isMessage("Buchung", "DR antreten")),
                         isFunctionState("DR antreten"),
                         isFunctionState("DR beendet"),
                         isFunctionState("DR-Antrag zurückziehen/ändern",
-                                containsHeads(isSendState("DR-Antrag an Vorgesetzer senden"),
+                                containsHeads(isSendState("DR-Antrag an Vorgesetzter senden"),
                                         isFunctionState("DR-Antrag zurückziehen")
                                 )
                         ),

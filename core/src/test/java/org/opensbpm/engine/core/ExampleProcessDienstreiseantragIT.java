@@ -80,10 +80,10 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         travelagency.assertTasks(is(empty()));
         //
 
-        //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
+        //Mitarbeiter: "DR-Antrag an Vorgesetzter senden" (send message)
         task = employee.getTask("DR-Antrag ausfüllen");
         task.assertNextStates(
-                isNextState("DR-Antrag an Vorgesetzer senden", true)
+                isNextState("DR-Antrag an Vorgesetzter senden", true)
         );
         //TODO assertThat(task.getValue("DR-Antrag", "Name"), is("Max Mitarbeiter"));
 
@@ -91,10 +91,10 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 10));
         task.setValue("DR-Antrag", "Reiseziel", "Test");
-        employee.execute(task, "DR-Antrag an Vorgesetzer senden");
+        employee.execute(task, "DR-Antrag an Vorgesetzter senden");
         //synchronized Message, send-state must be current state for user employee
         processController.assertState(ProcessInstanceState.ACTIVE, hasSubjects(
-                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
+                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzter senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
 
@@ -133,7 +133,7 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         //Mitarbeiter: "DR-Antrag zurückziehen/ändern", (task after receive message), read message from Vorgesetzter,send message
         task = employee.getTask("DR-Antrag zurückziehen/ändern");
         task.assertNextStates(
-                isNextState("DR-Antrag an Vorgesetzer senden", true),
+                isNextState("DR-Antrag an Vorgesetzter senden", true),
                 isNextState("DR-Antrag zurückziehen", true)
         );
         assertThat(task.getDisplayName("DR-Antrag"), is("Test - Test: 2018-09-01 - 2018-09-10"));
@@ -141,9 +141,9 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 2));
         task.setValue("DR-Antrag", "Reiseende", LocalDate.of(2018, Month.SEPTEMBER, 9));
         task.setValue("DR-Antrag", "Reiseziel", "Test-Changed");
-        employee.execute(task, "DR-Antrag an Vorgesetzer senden");
+        employee.execute(task, "DR-Antrag an Vorgesetzter senden");
         processController.assertState(ProcessInstanceState.ACTIVE, hasSubjects(
-                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
+                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzter senden", StateFunctionType.SEND),
                 isUserSubjectState(superior.getUsername(), "Vorgesetzter", "Ablehnen", StateFunctionType.SEND)
         ));
 
@@ -179,7 +179,7 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         //Mitarbeiter: "DR-Antrag zurückziehen/ändern", (task after receive message), read message from Vorgesetzter
         task = employee.getTask("DR-Antrag zurückziehen/ändern");
         task.assertNextStates(
-                isNextState("DR-Antrag an Vorgesetzer senden", true),
+                isNextState("DR-Antrag an Vorgesetzter senden", true),
                 isNextState("DR-Antrag zurückziehen", true)
         );
         employee.execute(task, "DR-Antrag zurückziehen");
@@ -198,13 +198,13 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         //dumpEngineEvents();
         processController.assertTrail(contains(
                 isTrail("Mitarbeiter", "DR-Antrag ausfüllen"),
-                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzer senden"),
+                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzter senden"),
                 isTrail("Vorgesetzter", "DR-Antrag empfangen"),
                 isTrail("Vorgesetzter", "DR-Antrag prüfen"),
                 isTrail("Mitarbeiter", "Antwort von Vorgesetzter empfangen"),
                 isTrail("Vorgesetzter", "Ablehnen"),
                 isTrail("Mitarbeiter", "DR-Antrag zurückziehen/ändern"),
-                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzer senden"),
+                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzter senden"),
                 isTrail("Vorgesetzter", "DR-Antrag empfangen"),
                 isTrail("Vorgesetzter", "DR-Antrag prüfen"),
                 isTrail("Mitarbeiter", "Antwort von Vorgesetzter empfangen"),
@@ -240,10 +240,10 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         travelagency.assertTasks(is(empty()));
         //
 
-        //Mitarbeiter: "DR-Antrag an Vorgesetzer senden" (send message)
+        //Mitarbeiter: "DR-Antrag an Vorgesetzter senden" (send message)
         task = employee.getTask("DR-Antrag ausfüllen");
         task.assertNextStates(
-                isNextState("DR-Antrag an Vorgesetzer senden", true)
+                isNextState("DR-Antrag an Vorgesetzter senden", true)
         );
         task.setValue("DR-Antrag", "Name", "Test");
         task.setValue("DR-Antrag", "Reisebeginn", LocalDate.of(2018, Month.SEPTEMBER, 1));
@@ -253,14 +253,14 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
         task.setValue("DR-Antrag", "Mitreisende[0].Bemerkung", "Test 1");
         task.setValue("DR-Antrag", "Mitreisende[1].Antragsteller", "Test");
         task.setValue("DR-Antrag", "Mitreisende[1].Bemerkung", "Test 2");
-        employee.execute(task, "DR-Antrag an Vorgesetzer senden");
+        employee.execute(task, "DR-Antrag an Vorgesetzter senden");
         //synchronized Message, send-state must be current state for user employee
         assertEngineEvents(
                 isUserTaskChangedEvent(employee.getId(), "DR-Antrag ausfüllen", Type.DELETE),
                 isUserTaskChangedEvent(superior.getId(), "DR-Antrag prüfen", Type.CREATE)
         );
         processController.assertState(ProcessInstanceState.ACTIVE, hasSubjects(
-                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzer senden", StateFunctionType.SEND),
+                isSubjectState("Mitarbeiter", "DR-Antrag an Vorgesetzter senden", StateFunctionType.SEND),
                 isSubjectState("Vorgesetzter", "DR-Antrag empfangen", StateFunctionType.RECEIVE)
         ));
         employee.assertTasks(is(empty()));
@@ -360,7 +360,7 @@ public class ExampleProcessDienstreiseantragIT extends WorkflowTestCase {
 
         processController.assertTrail(contains(
                 isTrail("Mitarbeiter", "DR-Antrag ausfüllen"),
-                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzer senden"),
+                isTrail("Mitarbeiter", "DR-Antrag an Vorgesetzter senden"),
                 isTrail("Vorgesetzter", "DR-Antrag empfangen"),
                 isTrail("Vorgesetzter", "DR-Antrag prüfen"),
                 isTrail("Mitarbeiter", "Antwort von Vorgesetzter empfangen"),
