@@ -17,11 +17,7 @@
  */
 package org.opensbpm.engine.api.model.builder;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
@@ -37,8 +33,8 @@ public class SendStateBuilder extends StateBuilder<SendStateBuilder, SendStateDe
 
     public SendStateBuilder(String name, SubjectBuilder<?, ?> receiverBuilder, ObjectBuilder objectBuilder) {
         super(name);
-        this.receiverBuilder = receiverBuilder;
-        this.objectBuilder = objectBuilder;
+        this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "receiverBuilder must be non null");
+        this.objectBuilder = Objects.requireNonNull(objectBuilder, "objectBuilder must be non null");
     }
 
     @Override
