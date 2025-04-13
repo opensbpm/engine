@@ -22,14 +22,14 @@ To create a release:
 The release version is the current version without the _-SNAPSHOT_ suffix.
 Run the following command:
 ```
-mvn versions:set -DnewVersion=0.1.0
+mvn versions:set -DnewVersion=0.1.1
 ```
 
 #### 2. Push Changes to Trigger GitHub Actions. 
 Stage and commit your changes, then push them to GitHub:
 ```
 git add .
-git commit -m "Prepare release 0.1.0"
+git commit -m "Prepare release 0.1.1"
 git push origin
 ```
 This will trigger the GitHub Actions workflow to create the release. 
@@ -41,7 +41,7 @@ The development version is the next version with the _-SNAPSHOT_ suffix.
 
 Run the following command:
 ```
-mvn versions:set -DnewVersion=0.1.1-SNAPSHOT
+mvn versions:set -DnewVersion=0.1.2-SNAPSHOT
 ```
 
 #### 4. Commit and Push the Development Version
