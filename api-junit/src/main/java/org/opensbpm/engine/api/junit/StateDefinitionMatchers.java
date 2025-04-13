@@ -62,7 +62,7 @@ public final class StateDefinitionMatchers {
     }
 
     public static Matcher<StateDefinition> isStateName(String name) {
-        return value(StateDefinition::getName, is(name));
+        return value("name", StateDefinition::getName, is(name));
     }
 
     /**
@@ -71,7 +71,7 @@ public final class StateDefinitionMatchers {
      * @return 
      */
     public static Matcher<StateDefinition> isDisplayName(String displayName) {
-        return value(StateDefinition::getDisplayName, is(displayName));
+        return value("displayName",StateDefinition::getDisplayName, is(displayName));
     }
 
     private StateDefinitionMatchers() {

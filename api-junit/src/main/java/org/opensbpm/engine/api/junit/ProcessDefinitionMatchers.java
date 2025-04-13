@@ -25,6 +25,7 @@ import org.opensbpm.engine.api.model.definition.ObjectDefinition.AttributeDefini
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.FieldDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToManyDefinition;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition.ToOneDefinition;
+import org.opensbpm.engine.api.model.definition.ProcessDefinition;
 import org.opensbpm.engine.api.model.definition.SubjectDefinition;
 import org.hamcrest.Matcher;
 
@@ -34,8 +35,15 @@ import static org.hamcrest.Matchers.is;
 
 public final class ProcessDefinitionMatchers {
 
+    public static Matcher<ProcessDefinition> isProcessName(String name) {
+        return value(ProcessDefinition::getName, is(name));
+    }
+    public static Matcher<ProcessDefinition> isProcessVersion(int name) {
+        return value(ProcessDefinition::getVersion, is(name));
+    }
+
     public static Matcher<SubjectDefinition> isSubjectName(String name) {
-        return value(SubjectDefinition::getName, is(name));
+        return value("subject",SubjectDefinition::getName, is(name));
     }
 
     public static Matcher<SubjectDefinition> isStarterSubjectName(String name) {
@@ -61,7 +69,7 @@ public final class ProcessDefinitionMatchers {
     }
 
     public static Matcher<ObjectDefinition> isObjectName(String name) {
-        return value(ObjectDefinition::getName, is(name));
+        return value("object",ObjectDefinition::getName, is(name));
     }
 
     public static Matcher<ObjectDefinition> isObjectDisplayName(String displayName) {
