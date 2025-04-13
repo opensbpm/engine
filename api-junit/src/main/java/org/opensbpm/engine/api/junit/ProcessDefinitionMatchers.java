@@ -48,8 +48,8 @@ public final class ProcessDefinitionMatchers {
 
     public static Matcher<SubjectDefinition> isStarterSubjectName(String name) {
         return allOf(
-                value(SubjectDefinition::getName, is(name)),
-                value(SubjectDefinition::isStarter, is(true))
+                value("name", SubjectDefinition::getName, is(name)),
+                value("starter", SubjectDefinition::isStarter, is(true))
         );
     }
 
