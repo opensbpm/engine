@@ -19,6 +19,9 @@ package org.opensbpm.engine.api.model.builder;
 
 import java.util.*;
 import java.util.logging.Level;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.opensbpm.engine.api.model.definition.ObjectDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition;
 import org.opensbpm.engine.api.model.definition.StateDefinition.SendStateDefinition;
@@ -120,5 +123,16 @@ public class SendStateBuilder extends StateBuilder<SendStateBuilder, SendStateDe
         public boolean isAsync() {
             return async;
         }
+
+        @Override
+        public String toString() {
+            return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+                    .append("name", getName())
+                    .append("object", objectDefinition,false)
+                    .append("receiver", receiver,false)
+                    .append("head", head, false)
+                    .toString();
+        }
+
     }
 }
