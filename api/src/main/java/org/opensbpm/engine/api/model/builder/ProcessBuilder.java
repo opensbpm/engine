@@ -85,7 +85,7 @@ public class ProcessBuilder extends AbstractBuilder<ProcessDefinition,ProcessBui
 
     public ObjectBuilder getObject(String name) {
         if (!objectBuilders.containsKey(name)) {
-            throw new IllegalArgumentException("ObjectBuilder " + name + " not found");
+            throw new IllegalArgumentException("ObjectBuilder '" + name + "' not found");
         }
         return objectBuilders.get(name);
     }
