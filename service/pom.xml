@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.opensbpm</groupId>
-        <artifactId>opensbpm-engine</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.opensbpm.engine</groupId>
+        <artifactId>opensbpm-engine-bom</artifactId>
+        <version>0.1.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>opensbpm-engine-service</artifactId>
@@ -27,11 +27,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>opensbpm-engine-service-api</artifactId>
             <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.opensbpm.engine</groupId>
-            <artifactId>opensbpm-engine-core</artifactId>
         </dependency>
 
         <dependency>
@@ -93,6 +88,12 @@
          Runtime Dependencies
        ========================
        -->
+        <dependency>
+            <groupId>org.opensbpm.engine</groupId>
+            <artifactId>opensbpm-engine-core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>

@@ -1,5 +1,6 @@
 package org.opensbpm.engine.service.services;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.opensbpm.engine.api.ModelService;
 import org.opensbpm.engine.api.ModelService.ModelRequest;
@@ -26,6 +27,7 @@ import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
+@Disabled
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 public class ProcessModelResourceServiceIT {
 

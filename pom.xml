@@ -96,6 +96,7 @@
         <!-- dependency versions -->
         <spring.boot.version>3.4.1</spring.boot.version>
         <hibernate.version>6.6.4.Final</hibernate.version>
+        <apache.cxf.version>4.0.4</apache.cxf.version>
     </properties>
 
     <dependencyManagement>
@@ -113,7 +114,16 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- 
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>apache-cxf</artifactId>
+                <version>${apache.cxf.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+
+            <!--
             =======================
               Compile Dependencies 
             =======================
