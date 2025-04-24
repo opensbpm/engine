@@ -44,6 +44,9 @@
         <module>xmlmodel</module>
         <module>core</module>
         <module>utils</module>
+        <module>service-api</module>
+        <module>service</module>
+        <module>client</module>
 
         <module>examples</module>
     </modules>

@@ -36,7 +36,7 @@
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>opensbpm-engine-api</artifactId>
+            <artifactId>opensbpm-engine-service-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
