@@ -12,11 +12,6 @@
 
     <name>OpenSBPM Engine - SpringBoot Service</name>
 
-    <properties>
-        <!-- dependency versions -->
-        <!--jasperreports.version>6.17.0</jasperreports.version-->
-    </properties>
-
     <dependencies>
         <!--
         =======================
@@ -30,8 +25,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.opensbpm.engine</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>opensbpm-engine-xmlmodel</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- opensbpm plugins -->
@@ -48,8 +44,9 @@
         </dependency-->
 
         <dependency>
-            <groupId>org.opensbpm.engine</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>opensbpm-engine-examples</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -63,6 +60,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>opensbpm-engine-core</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
@@ -88,12 +91,6 @@
          Runtime Dependencies
        ========================
        -->
-        <dependency>
-            <groupId>org.opensbpm.engine</groupId>
-            <artifactId>opensbpm-engine-core</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
@@ -155,14 +152,6 @@
         </dependency>
 
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>maven_central</id>
-            <name>Maven Central</name>
-            <url>https://repo.maven.apache.org/maven2/</url>
-        </repository>
-    </repositories>
 
     <build>
         <plugins>

@@ -7,6 +7,7 @@ import org.opensbpm.engine.api.ModelService.ModelRequest;
 import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.api.model.builder.DefinitionFactory;
 import org.opensbpm.engine.api.model.definition.ProcessDefinition;
+import org.opensbpm.engine.service.EngineServiceApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.*;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @Disabled
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(classes = EngineServiceApplication.class, webEnvironment = RANDOM_PORT)
 public class ProcessModelResourceServiceIT {
 
     @Autowired
