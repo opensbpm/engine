@@ -1,4 +1,4 @@
-package org.opensbpm.engine.client;
+package org.opensbpm.engine.rest.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

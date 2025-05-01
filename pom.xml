@@ -50,6 +50,7 @@
 
         <module>examples</module>
         <module>sample-app</module>
+        <module>sample-e2e</module>
     </modules>
 
     <scm>

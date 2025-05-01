@@ -1,4 +1,4 @@
-package org.opensbpm.engine.client;
+package org.opensbpm.engine.rest.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -45,12 +45,12 @@ public abstract class EngineServiceClient {
         requireAddress(serviceAddress);
         requireNonNull(credentials, "Credentials must not be null");
 
-        return new EngineServiceClient(serviceAddress) {
+        return create(serviceAddress, new AuthenticationTokenProvider() {
             private final Object lock = new Object();
             private Authentication authentication;
 
             @Override
-            protected String getAuthenticationToken() {
+            public String getAuthenticationToken() {
                 synchronized (lock) {
                     if (authentication == null || authentication.isRefreshExpired()) {
                         authentication = authenticate();
@@ -103,8 +103,16 @@ public abstract class EngineServiceClient {
                     throw new RuntimeException(ex);
                 }
             }
+        });
+    }
 
-
+    public static EngineServiceClient create(String serviceAddress, AuthenticationTokenProvider authenticationTokenProvider) {
+        requireAddress(serviceAddress);
+        return new EngineServiceClient(serviceAddress) {
+            @Override
+            protected String getAuthenticationToken() {
+                return authenticationTokenProvider.getAuthenticationToken();
+            }
         };
     }
 
@@ -128,7 +136,7 @@ public abstract class EngineServiceClient {
     private UserToken userToken;
 
 
-    public EngineServiceClient(String baseAddress) {
+    EngineServiceClient(String baseAddress) {
         this.baseAddress = requireNonNull(baseAddress, "baseAddress must not be null");
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(TaskResponse.class);
@@ -210,7 +218,7 @@ public abstract class EngineServiceClient {
                         new Annotations[]{Annotations.JAKARTA_XML_BIND})
         );
         JAXRSClientFactoryBean factoryBean = new JAXRSClientFactoryBean();
-        factoryBean.setAddress(String.format("%s/api/services", baseAddress));
+        factoryBean.setAddress(String.format("%s/services", baseAddress));
         factoryBean.setProviders(providers);
         factoryBean.setInheritHeaders(true);
         factoryBean.setServiceClass(type);

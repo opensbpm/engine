@@ -22,6 +22,7 @@ public class JwtTokenService {
         // Define claims
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(username)
+                .claim("preferred_username", username)
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(3600)) // 1 hour expiration
                 .build();

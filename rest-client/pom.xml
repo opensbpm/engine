@@ -24,7 +24,7 @@
         <version>0.1.2-SNAPSHOT</version>
     </parent>
 
-    <artifactId>opensbpm-engine-client</artifactId>
+    <artifactId>opensbpm-engine-rest-client</artifactId>
 
     <name>OpenSBPM Engine - Client</name>
 

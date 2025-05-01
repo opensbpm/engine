@@ -99,6 +99,20 @@
         </dependency>
 
 
+
+        <!--
+       ========================
+         Provided Dependencies
+       ========================
+       -->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>${hibernate.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
         <!--
        ========================
          Runtime Dependencies

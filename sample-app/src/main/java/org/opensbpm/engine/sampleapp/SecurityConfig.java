@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -31,9 +32,12 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())))
                 .cors(Customizer.withDefaults())
                 .build();
+    }
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        return new JwtAuthenticationConverter();
     }
 
     @Bean
@@ -73,6 +77,11 @@ public class SecurityConfig {
     public UserDetailsService users() {
         // The builder will ensure the passwords are encoded before saving in memory
         User.UserBuilder users = User.builder().passwordEncoder(s -> passwordEncoder().encode(s));
+        UserDetails jdoe = users
+                .username("jdoe")
+                .password("jdoe")
+                .roles("Angestellter")
+                .build();
         UserDetails user = users
                 .username("user")
                 .password("password")
@@ -83,7 +92,7 @@ public class SecurityConfig {
                 .password("password")
                 .roles("USER", "ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(jdoe, user, admin);
     }
 
 }
