@@ -86,8 +86,8 @@ public class SubjectService {
     }
 
     public void updateState(Subject subject, State state, boolean fireEvents) {
-        Objects.requireNonNull(subject, "subject must be non null");
-        Objects.requireNonNull(state, "state must be non null");
+        Objects.requireNonNull(subject, "subject must not be null");
+        Objects.requireNonNull(state, "state must not be null");
 
         State oldState = subject.getCurrentState();
 

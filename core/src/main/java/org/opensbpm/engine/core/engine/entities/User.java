@@ -50,7 +50,7 @@ public class User implements HasId, Serializable {
     }
 
     public User(String name) {
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     @Override
@@ -63,7 +63,7 @@ public class User implements HasId, Serializable {
     }
 
     public void setName(String name) {
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     public Set<Role> getRoles() {

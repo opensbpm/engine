@@ -151,7 +151,7 @@ public class ProcessModelInfo implements Serializable {
 
             public static RoleInfo of(String name) {
                 RoleInfo roleInfo = new RoleInfo();
-                roleInfo.name = Objects.requireNonNull(name, "name must be non null");
+                roleInfo.name = Objects.requireNonNull(name, "name must not be null");
                 return roleInfo;
             }
 

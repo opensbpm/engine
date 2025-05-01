@@ -64,7 +64,7 @@ public abstract class State implements HasId, HasDisplayName, Serializable {
     }
 
     protected State(String name) {
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     @Override

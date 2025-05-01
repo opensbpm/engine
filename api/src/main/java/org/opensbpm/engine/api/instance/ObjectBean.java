@@ -74,12 +74,12 @@ public class ObjectBean implements DynaBean {
      * @deprecated
      */
     public ObjectBean(IsAttributesContainer attributesContainer, AttributeStore attributeStore) {
-        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
-        this.attributeStore = Objects.requireNonNull(attributeStore, "attributeStore must be non null");
+        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must not be null");
+        this.attributeStore = Objects.requireNonNull(attributeStore, "attributeStore must not be null");
     }
 
     public ObjectBean(IsAttributesContainer attributesContainer) {
-        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
+        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must not be null");
         this.attributeStore = new AttributeStore(attributesContainer);
     }
 

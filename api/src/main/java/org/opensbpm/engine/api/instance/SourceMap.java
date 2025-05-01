@@ -33,8 +33,8 @@ public final class SourceMap {
     private final String id;
 
     public SourceMap(IsAttributesContainer attributesContainer, Map<String, Object> sourceData, String id) {
-        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must be non null");
-        this.sourceData = Objects.requireNonNull(sourceData, "sourceData must be non null");
+        this.attributesContainer = Objects.requireNonNull(attributesContainer, "attributesContainer must not be null");
+        this.sourceData = Objects.requireNonNull(sourceData, "sourceData must not be null");
         this.id = id;
     }
 

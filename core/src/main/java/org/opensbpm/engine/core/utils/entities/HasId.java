@@ -43,7 +43,7 @@ public interface HasId {
      * @throws NullPointerException if other is <code>null</code>
      */
     default boolean equalsId(HasId other) {
-        Objects.requireNonNull(other, "other must be non null");
+        Objects.requireNonNull(other, "other must not be null");
         //type check doesn't work with Hibernate Proxies
 //        return getClass() == other.getClass()
         return getId() != null

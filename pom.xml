@@ -44,11 +44,12 @@
         <module>xmlmodel</module>
         <module>core</module>
         <module>utils</module>
-        <module>service-api</module>
-        <module>service</module>
-        <module>client</module>
+        <module>rest-api</module>
+        <module>rest-services</module>
+        <module>rest-client</module>
 
         <module>examples</module>
+        <module>sample-app</module>
     </modules>
 
     <scm>

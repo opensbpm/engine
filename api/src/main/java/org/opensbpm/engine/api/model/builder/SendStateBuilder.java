@@ -36,8 +36,8 @@ public class SendStateBuilder extends StateBuilder<SendStateBuilder, SendStateDe
 
     public SendStateBuilder(String name, SubjectBuilder<?, ?> receiverBuilder, ObjectBuilder objectBuilder) {
         super(name);
-        this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "receiverBuilder must be non null");
-        this.objectBuilder = Objects.requireNonNull(objectBuilder, "objectBuilder must be non null");
+        this.receiverBuilder = Objects.requireNonNull(receiverBuilder, "receiverBuilder must not be null");
+        this.objectBuilder = Objects.requireNonNull(objectBuilder, "objectBuilder must not be null");
     }
 
     @Override

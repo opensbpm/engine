@@ -46,7 +46,7 @@ public class ScriptExecutorService {
     private final ScriptEngine scriptEngine;
 
     public ScriptExecutorService(ScriptEngine scriptEngine) {
-        this.scriptEngine = Objects.requireNonNull(scriptEngine, "ScriptEngine must be non null");
+        this.scriptEngine = Objects.requireNonNull(scriptEngine, "ScriptEngine must not be null");
     }
 
     public String evaluteStateDisplayName(Subject subject, State state) {

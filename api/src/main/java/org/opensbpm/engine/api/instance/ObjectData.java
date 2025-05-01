@@ -57,7 +57,7 @@ public class ObjectData implements Serializable {
         private String id;
 
         private ObjectDataBuilder(String name) {
-            this.name = Objects.requireNonNull(name, "name must be non null");
+            this.name = Objects.requireNonNull(name, "name must not be null");
         }
 
         /**
@@ -101,7 +101,7 @@ public class ObjectData implements Serializable {
         public ObjectData build() {
             ObjectData objectData = new ObjectData();
             objectData.id = id;
-            objectData.name = Objects.requireNonNull(name, "name must be non null");
+            objectData.name = Objects.requireNonNull(name, "name must not be null");
             objectData.displayName = displayName;
             objectData.data = new HashMap<>(data);
             return objectData;

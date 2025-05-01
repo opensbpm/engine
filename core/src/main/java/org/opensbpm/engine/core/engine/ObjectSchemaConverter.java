@@ -52,9 +52,9 @@ class ObjectSchemaConverter {
     private final BindingContext bindingContext;
 
     public ObjectSchemaConverter(ScriptExecutorService scriptService, State state, BindingContext bindingContext) {
-        this.scriptService = Objects.requireNonNull(scriptService, "ScriptExecutorService must be non null");
-        this.state = Objects.requireNonNull(state, "State must be non null");
-        this.bindingContext = Objects.requireNonNull(bindingContext, "BindingContext must be non null");
+        this.scriptService = Objects.requireNonNull(scriptService, "ScriptExecutorService must not be null");
+        this.state = Objects.requireNonNull(state, "State must not be null");
+        this.bindingContext = Objects.requireNonNull(bindingContext, "BindingContext must not be null");
     }
 
     private Optional<FunctionState> getState() {
@@ -84,8 +84,8 @@ class ObjectSchemaConverter {
         private final BindingContext bindingContext;
 
         private SchemaCreator(State state, BindingContext bindingContext) {
-            this.state = Objects.requireNonNull(state, "State must be non null");
-            this.bindingContext = Objects.requireNonNull(bindingContext, "BindingContext must be non null");
+            this.state = Objects.requireNonNull(state, "State must not be null");
+            this.bindingContext = Objects.requireNonNull(bindingContext, "BindingContext must not be null");
         }
 
         @Override
