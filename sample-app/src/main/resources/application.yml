@@ -4,6 +4,8 @@ spring:
   datasource.url: jdbc:h2:mem:opensbpm
   main.allow-circular-references: true
 
+management.endpoints.web.exposure.include: health
+
 #debug: true
 logging.level:
 #    root: INFO

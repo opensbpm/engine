@@ -88,7 +88,19 @@ node('jdk17'){
                 */
             }
         }
-        
+
+        stage('E2E Tests'){
+            withMaven(
+                jdk: 'jdk17',
+                maven: 'default',
+                mavenSettingsConfig: '05894f91-85e1-4e6d-8eb5-a101d90c62e3'
+            ) {
+                sh "mvn -pl sample-e2e,sample-app spring-boot:build-image"
+            }
+            sh "docker-compose -f sample-e2e/docker-compose.yml up --abort-on-container-exit"
+        }
+
+
         stage('Deploy'){
             retry(3) {
                 withMaven(jdk: 'jdk17',
