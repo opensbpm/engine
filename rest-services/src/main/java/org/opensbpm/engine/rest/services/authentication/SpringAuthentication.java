@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package org.opensbpm.engine.service.authentication;
+package org.opensbpm.engine.rest.services.authentication;
 
 import org.opensbpm.engine.api.UserTokenService.TokenRequest;
 import org.springframework.security.core.Authentication;

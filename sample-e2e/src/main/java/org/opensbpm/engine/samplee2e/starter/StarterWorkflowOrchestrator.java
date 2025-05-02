@@ -71,11 +71,14 @@ public class StarterWorkflowOrchestrator implements WorkflowOrchestrator {
     private void waitFinished() {
         int activeCount = Integer.MAX_VALUE;
         while (activeCount > 0) {
-            if(appParameters.getStatistics().getInterval() != null &&
-                    userBot.getStartedProcesses().size() <
-                            (appParameters.getStatistics().getInterval()*appParameters.getStatistics().getProcesses())
-            ){
-                activeCount = Integer.MAX_VALUE;
+            if(appParameters.getStartProcesses() > userBot.getStartedProcesses().size()){
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                    // Restore interrupted state...
+                    Thread.currentThread().interrupt();
+                }
             }else {
                 List<ProcessInfo> activeProcesses = userBot.getActiveProcesses();
                 if (activeCount == activeProcesses.size()) {
@@ -90,13 +93,13 @@ public class StarterWorkflowOrchestrator implements WorkflowOrchestrator {
                     LOGGER.info("Still " + activeProcesses.size() + " processes running");
                 }
                 activeCount = activeProcesses.size();
-            }
-            try {
-                Thread.sleep(2000);
-            } catch (InterruptedException ex) {
-                LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
-                // Restore interrupted state...
-                Thread.currentThread().interrupt();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex) {
+                    LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                    // Restore interrupted state...
+                    Thread.currentThread().interrupt();
+                }
             }
         }
     }

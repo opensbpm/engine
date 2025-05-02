@@ -1,6 +1,7 @@
 package org.opensbpm.engine.samplee2e.client;
 
 import org.opensbpm.engine.api.instance.*;
+import org.opensbpm.engine.api.model.ProcessModelInfo;
 import org.opensbpm.engine.rest.client.EngineServiceClient;
 import org.opensbpm.engine.rest.api.dto.instance.Audits;
 import org.opensbpm.engine.samplee2e.AppParameters;
@@ -45,36 +46,15 @@ public class UserBot {
     }
 
     public void startProcesses(AppParameters appParameters) {
-        LOGGER.info("User[" + getUserToken().getName() + "] start processes");
-        if (appParameters.getStatistics().getInterval() != null) {
-            startedProcesses = new ArrayList<>();
-
-            processStarter = Executors.newScheduledThreadPool(1);
-            processStarter.scheduleWithFixedDelay(() -> {
-                try {
-                    synchronized (lock) {
-                        List<TaskInfo> processes = startProcesses(appParameters.getStatistics().getProcesses());
-                        startedProcesses.addAll(processes);
-                        LOGGER.info("User[" + getUserToken().getName() + "] started " + startedProcesses.size() + " processes");
-                    }
-                } catch (Throwable ex) {
-                    //TODO handle uncaught exceptions correctly
-                    LOGGER.log(Level.SEVERE, "User[" + getUserToken().getName() + "] : " + ex.getMessage(), ex);
-                }
-                if (startedProcesses.size() >= appParameters.getStatistics().getInterval() * appParameters.getStatistics().getProcesses()) {
-                    processStarter.shutdown();
-                }
-            }, 10, appParameters.getStatistics().getInterval(), TimeUnit.SECONDS);
-        } else {
-            synchronized (lock) {
-                startedProcesses = startProcesses(appParameters.getStatistics().getProcesses());
-                LOGGER.info("User[" + getUserToken().getName() + "] started " + startedProcesses.size() + " processes");
-            }
+        LOGGER.fine("User[" + getUserToken().getName() + "] starting " + appParameters.getStartProcesses() + " processes");
+        synchronized (lock) {
+            startedProcesses = startProcesses(appParameters.getStartProcesses());
+            LOGGER.info("User[" + getUserToken().getName() + "] started " + startedProcesses.size() + " processes");
         }
     }
 
     private List<TaskInfo> startProcesses(Integer processes) {
-        return engineServiceClient.onEngineModelResource(modelResource -> modelResource.index().getProcessModelInfos()).stream()
+        return engineServiceClient.onEngineModelResource(modelResource -> requireNotEmpty(modelResource.index().getProcessModelInfos())).stream()
                 .flatMap(model -> IntStream.range(0, processes).boxed()
                         .parallel()
                         .map(idx -> {
@@ -90,6 +70,13 @@ public class UserBot {
                         )
                 )
                 .toList();
+    }
+
+    private <T extends Collection<?>> T requireNotEmpty(T collection) {
+        if (collection.isEmpty()) {
+            throw new IllegalStateException("Collection must not be empty");
+        }
+        return collection;
     }
 
     public void startTaskFetcher() {

@@ -33,7 +33,7 @@ public class AppParameters {
 
     private boolean starter;
 
-    private Statistics statistics;
+    private int startProcesses;
 
     public String getUrl() {
         return url;
@@ -79,12 +79,12 @@ public class AppParameters {
         this.starter = starter;
     }
 
-    public Statistics getStatistics() {
-        return statistics;
+    public int getStartProcesses() {
+        return startProcesses;
     }
 
-    public void setStatistics(Statistics statistics) {
-        this.statistics = statistics;
+    public void setStartProcesses(int startProcesses) {
+        this.startProcesses = startProcesses;
     }
 
     public EngineServiceClient createEngineServiceClient() {
@@ -145,64 +145,6 @@ public class AppParameters {
     record LoginResponse(String token) {
         LoginResponse(String token) {
             this.token = Objects.requireNonNull(token);
-        }
-    }
-
-    public static class Statistics {
-        private String url;
-        private String username;
-        private String password;
-
-        private String config;
-        private Integer interval;
-        private Integer processes;
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
-        public String getConfig() {
-            return config;
-        }
-
-        public void setConfig(String config) {
-            this.config = config;
-        }
-
-        public Integer getInterval() {
-            return interval;
-        }
-
-        public void setInterval(Integer interval) {
-            this.interval = interval;
-        }
-
-        public Integer getProcesses() {
-            return processes;
-        }
-
-        public void setProcesses(Integer processes) {
-            this.processes = processes;
         }
     }
 

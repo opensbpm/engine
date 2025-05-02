@@ -43,7 +43,7 @@ import org.opensbpm.engine.rest.api.EngineResource;
 import org.opensbpm.engine.rest.api.dto.instance.Processes;
 import org.opensbpm.engine.rest.api.dto.instance.Tasks;
 import org.opensbpm.engine.rest.api.dto.model.ProcessModels;
-import org.opensbpm.engine.service.authentication.SpringAuthentication;
+import org.opensbpm.engine.rest.services.authentication.SpringAuthentication;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

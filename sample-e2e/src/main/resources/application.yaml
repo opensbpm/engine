@@ -10,7 +10,7 @@ server:
   port: -1
 
 #debug: true
-#logging.level:
+logging.level:
   #    root: INFO
-  #org.opensbpm.engine.e2e.user.UserClient: DEBUG
+  org.opensbpm.engine.samplee2e.client.UserBot: DEBUG
 

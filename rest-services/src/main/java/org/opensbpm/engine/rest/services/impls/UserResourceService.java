@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import java.util.Set;
-import org.opensbpm.engine.service.authentication.SpringAuthentication;
+import org.opensbpm.engine.rest.services.authentication.SpringAuthentication;
 
 @Component
 public class UserResourceService implements UserResource {

@@ -32,7 +32,7 @@ public class LoginController {
                     )
             );
 
-            String token = jwtTokenService.generateToken(authentication.getName());
+            String token = jwtTokenService.generateToken(authentication);
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(401).body("Invalid credentials");

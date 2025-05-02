@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -37,7 +38,11 @@ public class SecurityConfig {
                 .build();
     }
     private JwtAuthenticationConverter jwtAuthenticationConverter() {
-        return new JwtAuthenticationConverter();
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        JwtGrantedAuthoritiesConverter authoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        authoritiesConverter.setAuthorityPrefix("ROLE_");
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(authoritiesConverter);
+        return jwtAuthenticationConverter;
     }
 
     @Bean
@@ -77,22 +82,30 @@ public class SecurityConfig {
     public UserDetailsService users() {
         // The builder will ensure the passwords are encoded before saving in memory
         User.UserBuilder users = User.builder().passwordEncoder(s -> passwordEncoder().encode(s));
+        UserDetails admin = users
+                .username("admin")
+                .password("admin")
+                .roles("user")
+                .build();
+
+        UserDetails alice = users
+                .username("alice")
+                .password("alice")
+                .roles("User", "Angestellte")
+                .build();
+
         UserDetails jdoe = users
                 .username("jdoe")
                 .password("jdoe")
-                .roles("Angestellter")
+                .roles("User", "Abteilungsleiter")
                 .build();
-        UserDetails user = users
-                .username("user")
-                .password("password")
-                .roles("USER")
+        UserDetails miriam = users
+                .username("miriam")
+                .password("miriam")
+                .roles("User", "Reisestelle")
                 .build();
-        UserDetails admin = users
-                .username("admin")
-                .password("password")
-                .roles("USER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(jdoe, user, admin);
+
+        return new InMemoryUserDetailsManager(admin, alice, jdoe, miriam);
     }
 
 }

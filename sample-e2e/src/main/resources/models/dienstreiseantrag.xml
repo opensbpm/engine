@@ -19,7 +19,7 @@
     xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
     xmlns:pm='http://api.opensbpm.org/processmodel'>
 
-    <name>Erweiterter Dienstreiseantrag</name>
+    <name>Dienstreiseantrag</name>
     <version>1</version>
     <description>Dienstreiseantrag von 'Subjektorientiertes Prozessmanagment' Seite 105
         Erweiterungen:
