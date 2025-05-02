@@ -182,6 +182,7 @@
                     <image>
                         <!--name>docker.io/opensbpm/${project.artifactId}:${project.version}</name-->
                         <name>docker.io/opensbpm/sample-app</name>
+                        <builder>paketobuildpacks/builder-jammy-full</builder>
                     </image>
                 </configuration>
                 <executions>
