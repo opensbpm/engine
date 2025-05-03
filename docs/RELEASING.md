@@ -25,6 +25,8 @@ Run the following command:
 mvn versions:set -DnewVersion=0.1.1
 ```
 
+Update current release version in the `docs/getting-started.md` file.
+
 remove snapshot repositories from pom.xml file:
 
 #### 2. Push Changes to Trigger GitHub Actions. 
