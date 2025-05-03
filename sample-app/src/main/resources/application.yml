@@ -1,0 +1,16 @@
+#A description about all values is available on https://docs.spring.io/spring-boot/appendix/application-properties/index.html
+
+spring:
+  datasource.url: jdbc:h2:mem:opensbpm
+  main.allow-circular-references: true
+
+management.endpoints.web.exposure.include: health
+
+#debug: true
+logging.level:
+#    root: INFO
+  org.hibernate.engine.internal.StatefulPersistenceContext: ERROR # avoid HHH000179 info
+#  org.springframework.web: DEBUG
+#  org.springframework.security: DEBUG
+#  org.springframework.security.oauth2: INFO
+#  org.apache.cxf: DEBUG

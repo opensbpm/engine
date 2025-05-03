@@ -1,0 +1,34 @@
+services:
+  sample-app:
+    image: opensbpm/sample-app:latest
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  userbot-alice:
+    image: opensbpm/sample-e2e:latest
+    command: --opensbpm.url=http://sample-app:8080 --opensbpm.username=alice --opensbpm.password=alice --opensbpm.starter=true --opensbpm.startProcesses=10
+    depends_on:
+      sample-app:
+        condition: service_healthy
+    restart: "no"
+
+  userbot-jdoe:
+    image: opensbpm/sample-e2e:latest
+    command: --opensbpm.url=http://sample-app:8080 --opensbpm.username=jdoe --opensbpm.password=jdoe
+    depends_on:
+      sample-app:
+        condition: service_healthy
+
+  userbot-miriam:
+    image: opensbpm/sample-e2e:latest
+    command: --opensbpm.url=http://sample-app:8080 --opensbpm.username=miriam --opensbpm.password=miriam
+    depends_on:
+      sample-app:
+        condition: service_healthy
+

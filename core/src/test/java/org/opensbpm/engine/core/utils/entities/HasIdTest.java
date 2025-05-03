@@ -37,7 +37,7 @@ public class HasIdTest {
 
         //then
         assertThat("equalsId(null) must throw NullPointerException",
-                exception.getMessage(), is("other must be non null"));
+                exception.getMessage(), is("other must not be null"));
     }
 
     @Ignore("Typecheck doesn't work Hibernate Proxies")
@@ -55,7 +55,7 @@ public class HasIdTest {
         boolean equalsId = hasId1.equalsId(hasId2);
 
         //then
-        assertThat("two differnt types of HasId must not equals", equalsId, is(false));
+        assertThat("two different types of HasId must not equals", equalsId, is(false));
     }
 
     @Test

@@ -78,7 +78,7 @@ public class ObjectSchemaBuilder {
     private final List<AttributeBuilder> attributeBuilders = new ArrayList<>();
 
     private ObjectSchemaBuilder(String name) {
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     /**
@@ -113,7 +113,7 @@ public class ObjectSchemaBuilder {
         protected boolean required;
 
         protected AttributeBuilder(String name) {
-            this.name = Objects.requireNonNull(name, "name must be non null");
+            this.name = Objects.requireNonNull(name, "name must not be null");
         }
 
         protected abstract V self();

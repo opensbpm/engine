@@ -83,7 +83,7 @@ public class TestTask extends Task {
 
     @Override
     public TaskRequest createTaskRequest(NextState nextState) {
-        Objects.requireNonNull(nextState, "nextState must be non null");
+        Objects.requireNonNull(nextState, "nextState must not be null");
         if (!getNextStates().contains(nextState)) {
             throw new IllegalArgumentException("nextStates doesn't contain " + nextState);
         }

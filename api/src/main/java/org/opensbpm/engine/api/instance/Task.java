@@ -35,8 +35,8 @@ public class Task {
     private final Map<ObjectSchema, ObjectData> objectCache = new HashMap<>();
 
     public Task(TaskInfo taskInfo, TaskResponse taskResponse) {
-        this.taskInfo = Objects.requireNonNull(taskInfo, "taskInfo must be non null");
-        this.taskResponse = Objects.requireNonNull(taskResponse, "taskResponse must be non null");
+        this.taskInfo = Objects.requireNonNull(taskInfo, "taskInfo must not be null");
+        this.taskResponse = Objects.requireNonNull(taskResponse, "taskResponse must not be null");
     }
 
     public TaskInfo getTaskInfo() {
@@ -96,7 +96,7 @@ public class Task {
      * @return TaskRequest of the desired NextState
      */
     public TaskRequest createTaskRequest(NextState nextState) {
-        Objects.requireNonNull(nextState, "nextState must be non null");
+        Objects.requireNonNull(nextState, "nextState must not be null");
         if (!getNextStates().contains(nextState)) {
             throw new IllegalArgumentException("nextStates doesn't contain " + nextState);
         }

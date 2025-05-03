@@ -56,8 +56,8 @@ public abstract class AbstractAttributeSchema implements AttributeSchema {
     }
 
     protected AbstractAttributeSchema(Long id, String name) {
-        this.id = Objects.requireNonNull(id, "id must be non null");
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.id = Objects.requireNonNull(id, "id must not be null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     @Override

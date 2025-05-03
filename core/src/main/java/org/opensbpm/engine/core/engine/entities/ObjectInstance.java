@@ -69,8 +69,8 @@ public class ObjectInstance implements HasId, Serializable {
     }
 
     /*default*/ ObjectInstance(ObjectModel objectModel, ProcessInstance processInstance) {
-        this.processInstance = Objects.requireNonNull(processInstance, "ProcessInstance must be non null");
-        this.objectModel = Objects.requireNonNull(objectModel, "ObjectModel must be non null");
+        this.processInstance = Objects.requireNonNull(processInstance, "ProcessInstance must not be null");
+        this.objectModel = Objects.requireNonNull(objectModel, "ObjectModel must not be null");
     }
 
     @Override

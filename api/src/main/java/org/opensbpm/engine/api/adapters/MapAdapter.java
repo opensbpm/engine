@@ -65,7 +65,7 @@ public class MapAdapter extends XmlAdapter<ValueElement[], Map<Long, Serializabl
         }
 
         public ValueElement(Long id, Serializable value) {
-            this.id = Objects.requireNonNull(id);
+            this.id = Objects.requireNonNull(id, "id must not be null");
             this.value = value;
         }
 

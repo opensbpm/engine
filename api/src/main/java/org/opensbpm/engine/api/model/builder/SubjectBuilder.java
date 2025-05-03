@@ -35,7 +35,7 @@ public abstract class SubjectBuilder<T extends SubjectBuilder<T, V>, V extends S
     private final Map<String, StateBuilder<?, ?>> stateBuilders = new LinkedHashMap<>();
 
     protected SubjectBuilder(String name) {
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     public String getName() {

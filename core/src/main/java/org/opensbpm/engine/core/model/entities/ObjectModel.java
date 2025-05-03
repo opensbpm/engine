@@ -66,7 +66,7 @@ public class ObjectModel implements IsAttributeParent, HasId, Serializable {
     }
 
     public ObjectModel(String name) {
-        this.name = Objects.requireNonNull(name, "name must be non null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
     }
 
     @Override

@@ -44,8 +44,8 @@ public class AttributeStore {
      * @return a new instance with the given parameters
      */
     public static AttributeStore of(ObjectSchema objectSchema, SourceMap sourceMap) {
-        Objects.requireNonNull(objectSchema, "attributeContainer must be non null");
-        Objects.requireNonNull(sourceMap, "sourceMap must be non null");
+        Objects.requireNonNull(objectSchema, "attributeContainer must not be null");
+        Objects.requireNonNull(sourceMap, "sourceMap must not be null");
         return new AttributeStore(objectSchema,
                 sourceMap.getId(),
                 sourceMap.toIdMap());
