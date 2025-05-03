@@ -35,55 +35,14 @@ automatically after the tests complete.
 
 OpenSBPM:engine can be used in two main ways:
 
-### 1. As a Java Library
+1. As an **embedded Java library**: See [Library Usage](docs/getting-started.md#1-embedding-as-a-java-library).
 
-Use the `core` module in your own Java project. See [Library Usage](docs/library-usage.md).
-
-### 2. As a REST API (Spring Boot App)
-
-Add the `rest-services` module to your Spring Boot application. This module provides a REST API for interacting with the engine.
-This module provides a REST API for the engine,
-allowing you to interact with it over HTTP. You can use it to start workflows, manage tasks, and more.
-See [Spring Boot Usage](docs/springboot-usage.md).
+2. As an **embedded REST API**: See [REST API Usage](docs/getting-started.md#2-embedding-as-a-rest-api).
 
 
 ### Maven Dependency
-The releases are hosted in the GitHub Packages repository. To include the dependency in your Maven project, add the following 
-to your `pom.xml`:
-```xml
-<repositories>
-    <repository>
-        <id>opensbpm</id>
-        <name>OpenSBPM Releases</name>
-        <url>https://maven.pkg.github.com/opensbpm/engine</url>
-    </repository>
-</repositories>
-```
-You need to authenticate with GitHub Packages. You can do this by creating a personal access token with the `read:packages`
-
-Use dependency management to import the `opensbpm-engine-core` dependency.
-The current latest release is `0.1.1`.
-
-```xml
-<dependencyManagment>
-    <dependencies>
-        <dependency>
-            <groupId>org.opensbpm.engine</groupId>
-            <artifactId>opensbpm-engine-bom</artifactId>
-            <version>0.1.1</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagment>
-
-<dependencies>
-    <dependency>
-        <groupId>org.opensbpm.engine</groupId>
-        <artifactId>opensbpm-engine-core</artifactId>
-    </dependency>
-</dependencies>
-```
+The releases are hosted in the GitHub Packages repository. To include the dependency in your Maven project, follow the
+Maven Dependency instructions in [Maven Dependency Usage](docs/getting-started.md#maven-dependency).
 
 You can find additional examples in https://github.com/opensbpm/opensbpm repository. 
 
