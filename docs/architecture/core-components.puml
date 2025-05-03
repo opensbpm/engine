@@ -1,0 +1,31 @@
+@startuml
+' !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include <C4/C4_Component>
+
+Container(app_service, "OpenSBPM:engine", "Spring Component", "Executes business logic for OpenSBPM processes")
+
+Component(model_service, "ModelService", "Component", "Manage process models")
+Component(engine_service, "EngineService", "Component", "Manages process execution and state changes")
+Component(task_provider_service, "TaskProviderService", "Component", "Manages task providers")
+
+Component(event_publisher, "EventPublisher", "Component", "Notifies about all kind of engine events")
+
+ComponentDb(engine_db, "Database") {
+    System_Ext(model_repo, "Model Repository", "Stores workflow models and business object definitions")
+    System_Ext(instance_repo, "Instance Repository", "Stores process instances, states and business object instances")
+    System_Ext(plugin_repo, "Plugin Repository", "Stores plugin configuration and states")
+}
+
+Rel(app_service, model_service, "Uses")
+Rel(model_service, model_repo, "Stores models")
+
+Rel(app_service, engine_service, "Uses")
+Rel(engine_service, instance_repo, "Stores instances and state")
+Rel(engine_service, task_provider_service, "Delegates tasks")
+
+Rel(app_service, task_provider_service, "Uses")
+Rel(task_provider_service, plugin_repo, "Stores plugin states")
+
+Rel_L(event_publisher, app_service, "Informs")
+
+@enduml
