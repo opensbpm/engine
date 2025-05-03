@@ -21,6 +21,31 @@ To include the snapshot repository in your Maven project, add the following to y
     </repository>
 </repositories>
 ```
+The current latest release is `0.0.1-SNAPSHOT`. To include the dependency in your project, add the following to your `pom.xml`:
+```xml
+<dependencyManagment>
+    <dependencies>
+        <dependency>
+            <groupId>org.opensbpm.engine</groupId>
+            <artifactId>opensbpm-engine-core</artifactId>
+            <version>0.1.1</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagment>
+
+<dependencies>
+    <dependency>
+        <groupId>org.opensbpm.engine</groupId>
+        <artifactId>opensbpm-engine-core</artifactId>
+    </dependency>
+</dependencies>
+```
+
+You can find an example of a Spring Boot application using the engine in https://github.com/opensbpm/opensbpm repository. 
+The Spring Boot Application is located in the `engine/service` module. The example application demonstrates how to use the engine.
+
 
 ## Getting Started
 
