@@ -69,7 +69,7 @@ import static org.opensbpm.engine.core.ExceptionFactory.newUserNotFoundException
 import static org.opensbpm.engine.core.model.ModelConverter.convertModels;
 
 /**
- * Service implementation of {@link EngineService}. All nesercary database
+ * Service implementation of {@link EngineService}. All necessary database
  * transactions for a {@link EngineService} call are started and commited in
  * this class.
  */
