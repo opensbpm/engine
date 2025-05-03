@@ -4,6 +4,7 @@
 serves as the core component for executing S-BPM models, utilizing Spring Boot Data JPA to persist states into a configurable 
 database.
 
+
 ## Project Status
 
 The engine is under active development and currently considered unstable. The public API is subject to change without 
@@ -11,7 +12,44 @@ prior notice. As of now, there are no known production deployments. If you plan 
 please create an issue in the repository to facilitate the creation of a stable release. For experimental purposes, snapshot 
 JARs are available in the Maven Repository associated with this project.
 
-To include the snapshot repository in your Maven project, add the following to your `pom.xml`:
+
+## Getting Started
+
+To run the sample application and end-to-end (E2E) tests, ensure Docker and Docker Compose are installed on your machine. 
+Follow these steps:
+
+1. Build the OCI containers and register the images in your local Docker registry:
+```bash
+mvn -pl sample-e2e,sample-app spring-boot:build-image
+```
+
+2. Run the E2E tests using the docker-compose.yml file in the sample-e2e module:
+```bash
+docker-compose -f sample-e2e/docker-compose.yml up --abort-on-container-exit
+```
+The E2E tests will start the sample-app and use sample-e2e user bots to initiate a workflow. The containers will stop 
+automatically after the tests complete.
+
+
+## Usage
+
+OpenSBPM:engine can be used in two main ways:
+
+### 1. As a Java Library
+
+Use the `core` module in your own Java project. See [Library Usage](docs/library-usage.md).
+
+### 2. As a REST API (Spring Boot App)
+
+Add the `rest-services` module to your Spring Boot application. This module provides a REST API for interacting with the engine.
+This module provides a REST API for the engine,
+allowing you to interact with it over HTTP. You can use it to start workflows, manage tasks, and more.
+See [Spring Boot Usage](docs/springboot-usage.md).
+
+
+### Maven Dependency
+The releases are hosted in the GitHub Packages repository. To include the dependency in your Maven project, add the following 
+to your `pom.xml`:
 ```xml
 <repositories>
     <repository>
@@ -21,13 +59,17 @@ To include the snapshot repository in your Maven project, add the following to y
     </repository>
 </repositories>
 ```
-The current latest release is `0.0.1-SNAPSHOT`. To include the dependency in your project, add the following to your `pom.xml`:
+You need to authenticate with GitHub Packages. You can do this by creating a personal access token with the `read:packages`
+
+Use dependency management to import the `opensbpm-engine-core` dependency.
+The current latest release is `0.1.1`.
+
 ```xml
 <dependencyManagment>
     <dependencies>
         <dependency>
             <groupId>org.opensbpm.engine</groupId>
-            <artifactId>opensbpm-engine-core</artifactId>
+            <artifactId>opensbpm-engine-bom</artifactId>
             <version>0.1.1</version>
             <type>pom</type>
             <scope>import</scope>
@@ -43,20 +85,8 @@ The current latest release is `0.0.1-SNAPSHOT`. To include the dependency in you
 </dependencies>
 ```
 
-You can find an example of a Spring Boot application using the engine in https://github.com/opensbpm/opensbpm repository. 
-The Spring Boot Application is located in the `engine/service` module. The example application demonstrates how to use the engine.
+You can find additional examples in https://github.com/opensbpm/opensbpm repository. 
 
-
-## Getting Started
-
-To get started with OpenSBPM:engine, you can refer to the "Get Started" guide available on the official website: 
-([OpenSBPM](https://www.opensbpm.org/getstarted))
-
-## Features
-
-- **Subject-Oriented Modeling**: Facilitates the creation and execution of S-BPM models.
-- **Database Persistence**: Utilizes [SpringBoot Data JPA](https://spring.io/projects/spring-data-jpa) for state persistence in configurable databases.
-- **Extensible Architecture**: Designed for easy integration and extension to fit various business needs.
 
 ## Contributing
 
