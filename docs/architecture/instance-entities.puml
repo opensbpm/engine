@@ -1,0 +1,129 @@
+@startuml
+
+package "instance" {
+
+    class ProcessInstance {
+        {field} +cancelMessage : String
+        {field} -endTime : java.time.LocalDateTime
+        {field} -id : Long
+        {field} -startTime : java.time.LocalDateTime
+        {field} +state : org.opensbpm.engine.api.instance.ProcessInstanceState
+        ' {method} +addObjectInstance ( paramObjectModel1 : ObjectModel ) : ObjectInstance
+        ' {method} +addSubject ( paramSubject1 : Subject ) : void
+        ' {method} +findActiveSubject ( paramSubjectModel1 : SubjectModel ) : java.util.Optional
+        ' {method} -getActiveSubjects () : java.util.stream.Stream
+        ' {method} +getObjectInstance ( paramObjectModel1 : ObjectModel ) : java.util.Optional
+        ' {method} +getUserSubjects () : java.util.Collection
+        ' {method} +getValues ( paramObjectModel1 : ObjectModel ) : java.util.Map
+        ' {method} +hasActiveSubjects () : boolean
+        ' {method} +isActive () : boolean
+        ' {method} +isStopped () : boolean
+        ' {method}  {static} -lambda$findActiveSubject$1 ( paramSubjectModel1 : SubjectModel , paramSubject2 : Subject ) : boolean
+        ' {method}  {static} -lambda$getObjectInstance$2 ( paramObjectModel1 : ObjectModel , paramObjectInstance2 : ObjectInstance ) : boolean
+        ' {method}  {static} -lambda$getUserSubjects$0 ( paramSubject1 : Subject ) : java.util.Optional
+        ' {method}  {static} -lambda$getValues$3 ( paramObjectInstance1 : ObjectInstance ) : java.util.Map
+        ' {method} +toString () : String
+    }
+
+    abstract class Subject {
+        {field} -id : Long
+        {field} -subjectTrail : java.util.SortedMap
+        ' {method}  {abstract} +accept ( paramSubjectVisitor1 : SubjectVisitor ) : Object
+        ' {method} +addMessage ( paramObjectModel1 : ObjectModel , paramSubject2 : Subject ) : Message
+        ' {method} +getCurrent ( paramStateVisitor1 : StateVisitor ) : Object
+        ' {method} +getCurrentState () : State
+        ' {method} +getLastChanged () : java.time.LocalDateTime
+        ' {method} -getUnconsumedMessages () : java.util.Collection
+        ' {method} +getUnconsumedMessages ( paramObjectModel1 : ObjectModel ) : java.util.Collection
+        ' {method} +getVisibleCurrentState () : java.util.Optional
+        ' {method} +getVisibleState ( paramState1 : State ) : java.util.Optional
+        ' {method} +hasUnconsumedMessages ( paramObjectModel1 : ObjectModel ) : boolean
+        ' {method} +isActive () : boolean
+        ' {method}  {static} -lambda$getCurrentState$1 ( paramSubjectTrail1 : SubjectTrail ) : State
+        ' {method}  {static} -lambda$getLastChanged$2 ( paramSubjectTrail1 : SubjectTrail ) : java.time.LocalDateTime
+        ' {method}  {static} -lambda$getUnconsumedMessages$3 ( paramMessage1 : Message ) : boolean
+        ' {method}  {static} -lambda$getUnconsumedMessages$4 ( paramObjectModel1 : ObjectModel , paramMessage2 : Message ) : boolean
+        ' {method} -lambda$getVisibleState$0 ( paramState1 : State ) : java.util.Optional
+        ' {method} +setCurrentState ( paramState1 : State ) : void
+        ' {method} +toString () : String
+    }
+
+    class ServiceSubject {
+        ' {method} +accept ( paramSubjectVisitor1 : SubjectVisitor ) : Object
+        ' {method} +getSubjectModel () : SubjectModel
+        ' {method} +getSubjectModel () : ServiceSubjectModel
+        ' {method} -lambda$getSubjectModel$0 () : IllegalStateException
+    }
+
+    class SubjectTrail {
+        {field} -id : Long
+        {field} -lastModified : long
+        ' {method} +getLastModifiedDateTime () : java.time.LocalDateTime
+        ' {method} +toString () : String
+    }
+
+    class User {
+        {field} -id : Long
+        {field} +name : String
+        ' {method} +addRole ( paramRole1 : Role ) : void
+        ' {method} +removeRole ( paramRole1 : Role ) : void
+        ' {method} +toString () : String
+    }
+
+    class UserSubject {
+        ' {method} +accept ( paramSubjectVisitor1 : SubjectVisitor ) : Object
+        ' {method} +getCurrentOrAllUsers () : java.util.stream.Stream
+        ' {method} +getSubjectModel () : SubjectModel
+        ' {method} +getSubjectModel () : UserSubjectModel
+        ' {method} -lambda$getSubjectModel$0 () : IllegalStateException
+        ' {method} +toString () : String
+    }
+
+    class ObjectInstance {
+        {field} -id : Long
+        {field} +value : java.util.HashMap
+        ' {method} +equals ( paramObject1 : Object ) : boolean
+        ' {method} +hashCode () : int
+        ' {method} +toString () : String
+    }
+
+    class Message {
+        {field} -id : Long
+        {field} +consumed : boolean
+    }
+
+}
+
+
+'package "model" {
+    class ProcessModel
+
+    abstract class State
+
+    abstract class SubjectModel
+
+    class ObjectModel
+
+'}
+
+ProcessInstance "1" o-- "0..*"  ObjectInstance : objectInstances
+ProcessInstance "1" o-- "0..*"  Subject : subjects
+ProcessInstance -->  User : startUser
+ProcessInstance -->  ProcessModel : processModel
+
+Message -->  Subject : sender
+Message -->  ObjectModel : objectModel
+ObjectInstance -->  ProcessInstance : processInstance
+ObjectInstance -->  ObjectModel : objectModel
+ServiceSubject --|>  Subject
+Subject "1" o-- "0..*"  Message : messages
+Subject -->  ProcessInstance : processInstance
+Subject -->  SubjectTrail : currentTrail
+Subject -->  SubjectModel : subjectModel
+SubjectTrail -->  Subject : subject
+SubjectTrail -->  State : state
+User "1" o-- "0..*"  Role : roles
+UserSubject -->  User : user
+UserSubject --|>  Subject
+
+@enduml

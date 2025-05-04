@@ -1,0 +1,231 @@
+@startuml
+
+package "model" {
+    class ProcessModel {
+        {field} -id : Long
+        {field} -name : String
+        {field} +description : String
+        {field} +state : org.opensbpm.engine.api.model.ProcessModelState
+        {field} -createdAt : java.time.LocalDateTime
+        ' {method} +addObjectModel ( paramString1 : String ) : ObjectModel
+        ' {method} +addObjectModel ( paramObjectModel1 : ObjectModel ) : void
+        ' {method} +addServiceSubjectModel ( paramString1 : String ) : ServiceSubjectModel
+        ' {method} +addSubjectModel ( paramSubjectModel1 : SubjectModel ) : SubjectModel
+        ' {method} +addUserSubjectModel ( paramString1 : String , paramList2 : java.util.List ) : UserSubjectModel
+        ' {method} +getStarterSubjectModel () : SubjectModel
+        ' {method} +getUserSubjectModels () : java.util.Collection
+        ' {method} +isStarterSubjectModel ( paramSubjectModel1 : SubjectModel ) : boolean
+        ' {method}  {static} -lambda$getUserSubjectModels$0 ( paramSubjectModel1 : SubjectModel ) : java.util.Optional
+        ' {method} +setStarterSubject ( paramSubjectModel1 : SubjectModel ) : void
+        ' {method} +toString () : String
+    }
+
+    class ModelVersion {
+        {field} -major : int
+        {field} -minor : int
+        ' {method} +incrementMinor () : ModelVersion
+        ' {method} +toString () : String
+    }
+
+    package "subjects" {
+
+        abstract class SubjectModel {
+            {field} -id : Long
+            {field} -name : String
+            {field} +starter : boolean
+            ' {method}  {abstract} +accept ( paramSubjectModelVisitor1 : SubjectModelVisitor ) : Object
+            ' {method} +addFunctionState ( paramString1 : String ) : FunctionState
+            ' {method} +addReceiveState ( paramString1 : String ) : ReceiveState
+            ' {method} +addSendState ( paramString1 : String , paramSubjectModel2 : SubjectModel , paramObjectModel3 : ObjectModel ) : SendState
+            ' {method} -addState ( paramState1 : State ) : State
+            ' {method} +toString () : String
+        }
+
+        class ServiceSubjectModel {
+            ' {method} +accept ( paramSubjectModelVisitor1 : SubjectModelVisitor ) : Object
+        }
+
+        class UserSubjectModel {
+            ' {method} +accept ( paramSubjectModelVisitor1 : SubjectModelVisitor ) : Object
+            ' {method} +getAllUsers () : java.util.stream.Stream
+            ' {method}  {static} -lambda$getAllUsers$0 ( paramRole1 : Role ) : java.util.stream.Stream
+        }
+
+        class Role {
+            {field} -id : Long
+            {field} -name : String
+            ' {method} +addUser ( paramUser1 : User ) : void
+            ' {method} +getAllUsers () : java.util.Set
+            ' {method} +removeUser ( paramUser1 : User ) : void
+            ' {method} +toString () : String
+        }
+    }
+
+    package "states"{
+
+        abstract class State {
+            {field} -id : Long
+            {field} -name : String
+            {field} +displayName : String
+            {field} +eventType : org.opensbpm.engine.api.model.definition.StateDefinition$StateEventType
+            ' {method}  {abstract} +accept ( paramStateVisitor1 : StateVisitor ) : Object
+            ' {method}  {abstract} +getHeads () : java.util.Collection
+            ' {method} +isEnd () : boolean
+            ' {method} +isStart () : boolean
+            ' {method} +toString () : String
+        }
+
+        class FunctionState {
+            {field} -parameters : java.util.Map
+            {field} +providerName : String
+            ' {method} +accept ( paramStateVisitor1 : StateVisitor ) : Object
+            ' {method} +addHead ( paramState1 : State ) : void
+            ' {method} +addStatePermission ( paramStatePermission1 : StatePermission ) : void
+            ' {method} +addStatePermission ( paramAttributeModel1 : AttributeModel , paramPermissionDefinition$Permission2 : org.opensbpm.engine.api.model.definition.PermissionDefinition$Permission ) : StatePermission
+            ' {method} +findStatePermission ( paramAttributeModel1 : AttributeModel ) : java.util.Optional
+            ' {method} +hasAnyPermission ( paramAttributeModel1 : AttributeModel ) : boolean
+            ' {method} +hasAnyStatePermission ( paramObjectModel1 : ObjectModel ) : boolean
+            ' {method} -hasPermission ( paramAttributeModel1 : AttributeModel , paramPermissionDefinition$Permission2 : org.opensbpm.engine.api.model.definition.PermissionDefinition$Permission ) : boolean
+            ' {method} +hasReadPermission ( paramAttributeModel1 : AttributeModel ) : boolean
+            ' {method} +hasWritePermission ( paramAttributeModel1 : AttributeModel ) : boolean
+            ' {method} +isMandatory ( paramAttributeModel1 : AttributeModel ) : boolean
+            ' {method}  {static} -lambda$findStatePermission$3 ( paramStatePermission1 : StatePermission ) : java.util.stream.Stream
+            ' {method}  {static} -lambda$findStatePermission$4 ( paramAttributeModel1 : AttributeModel , paramStatePermission2 : StatePermission ) : boolean
+            ' {method} -lambda$hasAnyStatePermission$0 ( paramAttributeModel1 : AttributeModel ) : boolean
+            ' {method}  {static} -lambda$hasPermission$1 ( paramPermissionDefinition$Permission1 : org.opensbpm.engine.api.model.definition.PermissionDefinition$Permission , paramStatePermission2 : StatePermission ) : Boolean
+            ' {method}  {static} -lambda$isMandatory$2 ( paramStatePermission1 : StatePermission ) : Boolean
+            ' {method} +putParameter ( paramString1 : String , paramString2 : String ) : void
+            ' {method} +toString () : String
+        }
+
+        class StatePermission {
+            {field} -id : Long
+            {field} -permission : org.opensbpm.engine.api.model.definition.PermissionDefinition$Permission
+            {field} +mandatory : boolean
+            {field} +defaultValue : String
+            ' {method} +addChildPermission ( paramAttributeModel1 : AttributeModel , paramPermissionDefinition$Permission2 : org.opensbpm.engine.api.model.definition.PermissionDefinition$Permission ) : StatePermission
+            ' {method} +getAllPermissions () : java.util.stream.Stream
+            ' {method}  {static} -lambda$getAllPermissions$0 ( paramStatePermission1 : StatePermission ) : java.util.stream.Stream
+            ' {method} +toString () : String
+        }
+
+        class SendState {
+            {field} +async : boolean
+            ' {method} +accept ( paramStateVisitor1 : StateVisitor ) : Object
+            ' {method} +getHeads () : java.util.Collection
+        }
+
+        class ReceiveState {
+            ' {method} +accept ( paramStateVisitor1 : StateVisitor ) : Object
+            ' {method} +addMessageModel ( paramObjectModel1 : ObjectModel , paramState2 : State ) : MessageModel
+            ' {method} +getHeads () : java.util.Collection
+        }
+
+        class MessageModel {
+            {field} -id : Long
+        }
+
+        ' class StateGraph {
+        '     {field} -vertices : java.util.Map
+        '     {method} +getHeads () : java.util.Collection
+        '     {method} +getLeafs () : java.util.Collection
+        '     {method} +getRoots () : java.util.Collection
+        '     {method} +getTails () : java.util.Collection
+        '     ' {method}  {static} -lambda$new$0 ( paramState1 : State ) : boolean
+        '     ' {method}  {static} -lambda$new$1 ( paramState1 : State ) : State
+        ' }
+    }
+
+
+    package "objects" {
+
+        class ObjectModel {
+            {field} -id : Long
+            {field} #name : String
+            {field} +displayName : String
+            ' {method} +addAttributeModel ( paramAttributeModel1 : AttributeModel ) : AttributeModel
+            ' {method} +getAllAttributeModels () : java.util.stream.Stream
+            ' {method}  {static} -lambda$addAttributeModel$2 ( paramAttributeModel1 : AttributeModel , paramAttributeModel2 : AttributeModel ) : int
+            ' {method} -lambda$getAllAttributeModels$0 ( paramAttributeModel1 : AttributeModel ) : IsAttributeParent
+            ' {method}  {static} -lambda$getAllAttributeModels$1 ( paramIsAttributeParent1 : IsAttributeParent ) : java.util.stream.Stream
+            ' {method} +toString () : String
+        }
+
+        interface IsAttributeParent {
+            ' {method}  {abstract} +getAttributeModels () : java.util.Collection
+            ' {method}  {abstract} +getName () : String
+        }
+
+        abstract class AbstractContainerAttributeModel {
+            ' {method} +addAttributeModel ( paramAttributeModel1 : AttributeModel ) : AttributeModel
+            ' {method}  {static} -lambda$addAttributeModel$0 ( paramAttributeModel1 : AttributeModel , paramAttributeModel2 : AttributeModel ) : int
+        }
+
+        abstract class AttributeModel {
+            {field} -id : Long
+            {field} -name : String
+            {field} +position : int
+            ' {method}  {abstract} +accept ( paramAttributeModelVisitor1 : AttributeModelVisitor ) : Object
+        }
+
+        class SimpleAttributeModel {
+            {field} -fieldType : org.opensbpm.engine.api.model.FieldType
+            {field} -id : Long
+            {field} +indexed : boolean
+            ' {method} +accept ( paramAttributeModelVisitor1 : AttributeModelVisitor ) : Object
+            ' {method} +toString () : String
+        }
+
+        class NestedAttributeModel {
+            ' {method} +accept ( paramAttributeModelVisitor1 : AttributeModelVisitor ) : Object
+            ' {method} +toString () : String
+        }
+
+        class IndexedAttributeModel {
+            ' {method} +accept ( paramAttributeModelVisitor1 : AttributeModelVisitor ) : Object
+            ' {method} +toString () : String
+        }
+
+    }
+
+}
+
+ProcessModel -r->  ModelVersion : version
+ProcessModel "1" o-- "0..*"  SubjectModel : subjectModels
+ProcessModel "1" o-- "0..*"  ObjectModel : objectModels
+
+SubjectModel "1" o-- "0..*"  State : states
+ServiceSubjectModel -u-|>  SubjectModel
+UserSubjectModel "1" o-- "0..*"  Role : roles
+UserSubjectModel -u-|>  SubjectModel
+
+FunctionState -u-|>  State
+FunctionState "1" o-- "0..*"  State : heads
+FunctionState "1" o-- "0..*"  StatePermission : statePermissions
+StatePermission "1" o-- "0..*"  StatePermission : childPermissions
+StatePermission -->  AttributeModel : attributeModel
+StatePermission -->  FunctionState : functionState
+StatePermission -->  StatePermission : parent
+SendState -u-|>  State
+SendState -->  ObjectModel : objectModel
+SendState -->  State : head
+SendState -->  SubjectModel : receiver
+ReceiveState -u-|>  State
+ReceiveState "1" o-- "0..*"  MessageModel : messageModels
+MessageModel -->  State : head
+MessageModel -->  ObjectModel : objectModel
+
+ObjectModel "1" o-- "0..*"  AttributeModel : attributeModels
+ObjectModel ..|>  IsAttributeParent
+
+AbstractContainerAttributeModel "1" o-- "0..*"  AttributeModel : attributeModels
+AbstractContainerAttributeModel --|>  AttributeModel
+AbstractContainerAttributeModel ..|>  IsAttributeParent
+
+AttributeModel -->  ObjectModel : objectModel
+AttributeModel -->  AttributeModel : parent
+IndexedAttributeModel --|>  AbstractContainerAttributeModel
+NestedAttributeModel --|>  AbstractContainerAttributeModel
+SimpleAttributeModel --|>  AttributeModel
+
+@enduml
