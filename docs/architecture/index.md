@@ -9,7 +9,7 @@ It is built using Java, Spring Boot, and Spring Data JPA, enabling it to persist
 data in relational databases like H2, PostgreSQL, and MariaDB. The engine can be 
 extended with custom plugins to enhance its functionality.
 
-![System Context Diagram](architecture/images/system-context.svg)
+![System Context Diagram](images/system-context.svg)
 
 - **User**: A human interacts with S-BPM processes through a client application.
 - **Client Application**: Serves as the user interface, communicating with OpenSBPM:engine 
@@ -30,7 +30,7 @@ storage and retrieval.
 ## Core Components 
 OpenSBPM:engine is designed to be modular and extensible, allowing for easy integration.
 
-![Core Components](architecture/images/core-components.svg)
+![Core Components](images/core-components.svg)
 
 The architecture of the system is designed to be modular and scalable. It consists
 of several key parts:  
