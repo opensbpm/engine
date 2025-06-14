@@ -1,0 +1,29 @@
+@startuml
+'!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include <C4/C4_Context>
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!include DEVICONS/java.puml
+!include DEVICONS/database.puml
+
+Person(user, "User", "Human interacting with S-BPM processes")
+
+System_Ext(client_app, "Client Application", "User interface to interact with OpenSBPM:engine")
+
+System_Boundary(opensbpm_engine, "OpenSBPM:engine") {
+
+    System(engine_core, "OpenSBPM:engine Core", "Executes S-BPM process models and manages process state", $sprite="java")
+    SystemDb(engine_db, "Engine Database", "Stores process models and runtime data", $sprite="database")
+    System(engine_plugins, "OpenSBPM:engine Plugins", "Communicates with external systems and services", $sprite="java")
+}
+
+System_Ext(external_services, "External Services", "External services to store and retrieve documents")
+
+Rel_R(user, client_app, "Uses")
+Rel_R(client_app, engine_core, "Sends process commands and queries via Java/REST API")
+Rel_R(engine_core, client_app, "Retrieves events via listeners")
+Rel_R(engine_core, engine_db, "Reads/writes process data")
+Rel(engine_core, engine_plugins, "Reads/writes process documents")
+Rel_R(engine_plugins, external_services, "Reads/writes process documents")
+
+@enduml

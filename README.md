@@ -12,6 +12,9 @@ prior notice. As of now, there are no known production deployments. If you plan 
 please create an issue in the repository to facilitate the creation of a stable release. For experimental purposes, snapshot 
 JARs are available in the Maven Repository associated with this project.
 
+## Documentation
+
+You can find detailed design and architecture documentation in the [docs folder](docs/index.md)
 
 ## Getting Started
 
