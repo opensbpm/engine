@@ -45,7 +45,7 @@ The development version is the next version with the _-SNAPSHOT_ suffix.
 
 Run the following command:
 ```
-mvn versions:set -DnewVersion=0.1.2-SNAPSHOT
+mvn versions:set -DnewVersion=0.1.4-SNAPSHOT
 ```
 
 #### 4. Commit and Push the Development Version
