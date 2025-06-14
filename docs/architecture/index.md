@@ -48,6 +48,9 @@ The main application uses the ModelService, EngineService, and TaskProviderServi
 Each service interacts with its respective repository. EventPublisher informs the 
 main application about events.
 
+## ER Model
+![ER Model](images/er-model.svg)
+
 
 ## Maven Modules
 - **Core Engine** (core): The heart of the system, responsible for managing and executing processes.
