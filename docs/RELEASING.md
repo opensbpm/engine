@@ -22,7 +22,7 @@ To create a release:
 The release version is the current version without the _-SNAPSHOT_ suffix.
 Run the following command:
 ```
-mvn versions:set -DnewVersion=0.1.1
+mvn versions:set -DnewVersion=0.1.4
 ```
 
 Update current release version in the `docs/getting-started.md` file.

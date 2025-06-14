@@ -72,7 +72,7 @@ to your `pom.xml`:
 You need to authenticate with GitHub Packages. You can do this by creating a personal access token with the `read:packages`
 
 Use dependency management to import the `opensbpm-engine-bom` dependency.
-The current latest release is `0.1.2`.
+The current latest release is `0.1.3`.
 
 ```xml
 <dependencyManagment>
@@ -80,7 +80,7 @@ The current latest release is `0.1.2`.
         <dependency>
             <groupId>org.opensbpm.engine</groupId>
             <artifactId>opensbpm-engine-bom</artifactId>
-            <version>0.1.1</version>
+            <version>0.1.3</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

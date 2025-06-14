@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.opensbpm.engine</groupId>
         <artifactId>opensbpm-engine</artifactId>
-        <version>0.1.3-SNAPSHOT</version>
+        <version>0.1.3</version>
     </parent>
 
     <artifactId>opensbpm-engine-api-junit</artifactId>
