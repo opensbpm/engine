@@ -73,6 +73,7 @@ public class CxfConfig {
     }
 
     private OpenApiFeature openApiFeature() {
+        //see https://cxf.apache.org/docs/openapifeature.html
         final OpenApiFeature openApiFeature = new OpenApiFeature();
         openApiFeature.setTitle("OpenSBPM Engine");
         openApiFeature.setVersion("1.0");
