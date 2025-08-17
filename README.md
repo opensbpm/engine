@@ -33,6 +33,23 @@ docker-compose -f sample-e2e/docker-compose.yml up --abort-on-container-exit
 The E2E tests will start the sample-app and use sample-e2e user bots to initiate a workflow. The containers will stop 
 automatically after the tests complete.
 
+### Testing the Sample Application
+To test the sample application, you can use the following steps:
+1. Start the sample application using docker and the image built in the previous step:
+```bash
+docker run opensbpm/sample-app:latest  
+```
+
+Alternatively, you can run the sample application using Maven:
+```bash
+mvn -pl sample-app spring-boot:run
+```
+
+2. You can fetch the openapi specification for the REST API using http://localhost:8080/v3/api-docs/swagger-config
+
+3. Swagger UI is available at http://localhost:8080/services/api-docs/
+4. Explore '/v3/api-docs/public' to get info about the login endpoint.
+ 
 
 ## Usage
 

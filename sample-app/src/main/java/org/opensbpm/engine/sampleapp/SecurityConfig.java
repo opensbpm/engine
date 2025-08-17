@@ -27,6 +27,7 @@ public class SecurityConfig {
         return http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable()) // Disable CSRF
             .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/services/openapi.yaml","/services/api-docs/**").permitAll()
                         .requestMatchers("/services/engine/**").authenticated()
                         //.requestMatchers("/actuator/health").permitAll()
