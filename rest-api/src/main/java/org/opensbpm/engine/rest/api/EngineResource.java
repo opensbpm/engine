@@ -48,16 +48,20 @@ public interface EngineResource {
 
     public interface ProcessModelResource {
 
-        @Operation(summary = "Retrieve all executable process models",
-                description = "Retrieve all process models the given user can start")
+        @Operation(summary = "Retrieve all executable process models.",
+                description = "Retrieve all process models the given user can start.")
         @GET
         ProcessModels index();
 
+        @Operation(summary = "Retrieve information about a specific process models.",
+                description = "Retrieve information about a specific process models.")
         @GET
         @Path(value = "/{modelId}")
         ProcessModelInfo retrieve(
                 @PathParam(value = "modelId") Long modelId);
 
+        @Operation(summary = "Start a process models.",
+                description = "Start a process identified with the given process model id.")
         @POST
         @Path(value = "/{modelId}/start")
         TaskInfo start(@PathParam(value = "modelId") Long modelId);
@@ -65,9 +69,13 @@ public interface EngineResource {
 
     public interface ProcessInstanceResource {
 
+        @Operation(summary = "Retrieve a summary about all currently started process.",
+                description = "Retrieve a summary about all currently started process.")
         @GET
         Processes index();
 
+        @Operation(summary = "Retrieve information about a process.",
+                description = "Retrieve information about a specific process identified by the given process instance id.")
         @GET
         @Path(value = "/{instanceId}")
         ProcessInfo retrieve(@PathParam(value = "instanceId") Long instanceId);
@@ -75,13 +83,19 @@ public interface EngineResource {
 
     public interface TaskResource {
 
+        @Operation(summary = "Retrieve all task.",
+                description = "Retrieve information about all a tasks a specific user should execute.")
         @GET
         Tasks index();
 
+        @Operation(summary = "Retrieve all task.",
+                description = "Retrieve information about all a tasks a specific user should execute.")
         @GET
         @Path(value = "/{taskId}")
         TaskResponse retrieve(@PathParam(value = "taskId") Long taskId);
 
+        @Operation(summary = "Execute atask.",
+                description = "Execute the task and switcht the process to the given state.")
         //TODO create useful response-object
         @POST
         @Path(value = "/{taskId}")
